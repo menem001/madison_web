@@ -8,6 +8,7 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { Button } from '../ui'
 import { MotorcycleCard } from './cards'
+import { useGetCurrencyListQuery } from '@/redux/api/commonApi'
 
 export function HeroContent() {
 	const router = useRouter()
@@ -22,6 +23,10 @@ export function HeroContent() {
 	function buy() {
 		router.push('/car-insurance')
 	}
+
+	const { data: CurrencyList } = useGetCurrencyListQuery()
+
+	console.log(CurrencyList)
 
 	return (
 		<section className='flex flex-col gap-10 px-4 py-10 font-jakarta lg:px-32 lg:py-12'>
