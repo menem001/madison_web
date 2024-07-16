@@ -27,50 +27,47 @@ const usages = [
 		name: 'Ambulance'
 	}
 ]
-type usageProps = {
-	setCount:(num:number) => void
-}
 
-export function VehicleUsage(props: usageProps) {
+export function VehicleUsage() {
 	const vehicleData = useAppSelector((state) => state.carInsurance)
 
 	const dispatch = useAppDispatch()
 
 	useGSAP(() => {
 		if (vehicleData.vehicleUsage === '') {
-			gsap.from('.selectUsage', { y: 80, opacity: 0, duration: 1, delay: 2 })
-			gsap.to('.usagetitle', { duration: 1, text: 'Vehicle Usage' })
+			gsap.from('.selectUsage', { y: 80, opacity: 0, duration: 0.5, delay: 1 })
+			gsap.to('.usagetitle', { duration: 0.5, text: 'Vehicle Usage' })
 			gsap.to('.usagesubtitle', {
-				duration: 1,
+				duration: 0.5,
 				text: 'How the vehicle is used, such as for personal, business, or commercial purposes',
-				delay: 1
+				delay: 0.5
 			})
 			gsap.to('.usageSuggest', {
-				duration: 1,
+				duration: 0.5,
 				text: 'Suggested Usage Types',
-				delay: 3
+				delay: 1.5
 			})
 			gsap.from('.suggestedGridusage', {
 				y: 80,
 				opacity: 0,
-				duration: 1,
-				delay: 4
+				duration: 0.5,
+				delay: 2
 			})
 		} else {
-			gsap.from('.selectUsage', { y: 80, opacity: 0, duration: 1 })
-			gsap.to('.usagetitle', { duration: 1, text: 'Vehicle Usage' })
+			gsap.from('.selectUsage', { y: 80, opacity: 0, duration: 0.5 })
+			gsap.to('.usagetitle', { duration: 0.5, text: 'Vehicle Usage' })
 			gsap.to('.usagesubtitle', {
-				duration: 1,
+				duration: 0.5,
 				text: 'How the vehicle is used, such as for personal, business, or commercial purposes'
 			})
 			gsap.to('.usageSuggest', {
-				duration: 1,
+				duration: 0.5,
 				text: 'Suggested Usage Types'
 			})
 			gsap.from('.suggestedGridusage', {
 				y: 80,
 				opacity: 0,
-				duration: 1
+				duration: 0.5
 			})
 		}
 	})
@@ -78,7 +75,6 @@ export function VehicleUsage(props: usageProps) {
 	function updateUsage(usage: string) {
 		return function () {
 			dispatch(updateVehicleUsage(usage))
-			props.setCount(2)
 		}
 	}
 
@@ -96,10 +92,9 @@ export function VehicleUsage(props: usageProps) {
 					value={vehicleData.vehicleUsage}
 					onValueChange={(e) => {
 						dispatch(updateVehicleUsage(e))
-						props.setCount(2)
 					}}>
 					<SelectTrigger
-						className='w-1/2'
+						className='w-3/4'
 						title='Usage'
 						value={vehicleData.vehicleUsage}>
 						<SelectValue />
@@ -119,7 +114,7 @@ export function VehicleUsage(props: usageProps) {
 					return (
 						<div
 							key={usage.id}
-							className='flex cursor-pointer items-center justify-center rounded-md shadow-md py-3 hover:shadow-xl text-sm font-inter'
+							className='flex cursor-pointer items-center justify-center rounded-md py-3 font-inter text-sm shadow-md hover:shadow-xl'
 							onClick={updateUsage(usage.name)}>
 							{usage.name}
 						</div>

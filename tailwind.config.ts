@@ -23,9 +23,11 @@ const config = {
 					300: '#E2E8F0', // lightestGray
 					400: '#656565', // gray
 					500: '#6E6D7A', // slate
+					550: '#3D3D3D',
 					600: '#221F1F', // dark
 					700: '#1A1A1A', // almostBlack
-					800: '#818181' // mediumGray
+					800: '#818181', // mediumGray
+					900: '#AFAFAF'
 				},
 				blue: {
 					100: '#D8E4FC', // lightBlue
@@ -36,12 +38,16 @@ const config = {
 					600: '#1E293B', // gunmetal
 					700: '#4285F4', // vibrantBlue
 					800: '#EDEEFF', // paleBlue
-					900: '#337ab7' // Moderate blue
+					900: '#337ab7', // Moderate blue
+					925: '#2498DBB2'
 				},
 				green: {
 					50: '#11221150', // translucentDarkGreen
+					75: '#112211',
 					100: '#8DD3BB', // mintGreen
-					200: '#06B217' // brightGreen
+					200: '#06B217', // brightGreen
+					300: '#0D8536',
+					320: '#0D85361A'
 				},
 				yellow: {
 					100: '#FDEB9D' // paleYellow

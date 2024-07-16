@@ -1,7 +1,7 @@
 'use client'
 
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
-import { updateCode, updateDob, updateMobile, updateName } from '@/redux/slices'
+import { updateCode, updateMobile, updateName } from '@/redux/slices'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { useRouter } from 'next/navigation'
@@ -15,12 +15,12 @@ export function CustomerInfo() {
 	const router = useRouter()
 
 	useGSAP(() => {
-		gsap.from('.selectCustomerInfo', { y: 80, opacity: 0, duration: 1, delay: 2 })
-		gsap.to('.CustomerInfotitle', { duration: 1, text: 'Personal Details' })
+		gsap.from('.selectCustomerInfo', { y: 80, opacity: 0, duration: 0.5, delay: 1 })
+		gsap.to('.CustomerInfotitle', { duration: 0.5, text: 'Personal Details' })
 		gsap.to('.CustomerInfosubtitle', {
-			duration: 1,
+			duration: 0.5,
 			text: 'Please provide your details to proceed',
-			delay: 1
+			delay: 0.5
 		})
 	})
 
@@ -44,17 +44,10 @@ export function CustomerInfo() {
 				</div>
 				<div className='selectCustomerInfo flex flex-row gap-10'>
 					<Input
-						placeholder='Name'
+						placeholder='Customer Name'
 						value={customerData.name}
 						onChange={(e) => {
 							dispatch(updateName(e.target.value))
-						}}
-					/>
-					<Input
-						placeholder='DOB'
-						value={customerData.dob}
-						onChange={(e) => {
-							dispatch(updateDob(e.target.value))
 						}}
 					/>
 				</div>
@@ -84,7 +77,7 @@ export function CustomerInfo() {
 				className='selectCustomerInfo w-full'
 				variant='bluebtn'
 				onClick={goToConfirm}>
-				Next
+				View Premium
 			</Button>
 			<div className='flex items-center justify-center'>
 				<div className='relative w-full border-t border-green-50'>

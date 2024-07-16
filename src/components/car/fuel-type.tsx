@@ -34,39 +34,39 @@ export function FuelType() {
 
 	useGSAP(() => {
 		if (vehicleData.fuelType === '') {
-			gsap.from('.selectFuel', { y: 80, opacity: 0, duration: 1, delay: 2 })
-			gsap.to('.fueltitle', { duration: 1, text: 'Fuel Type' })
+			gsap.from('.selectFuel', { y: 80, opacity: 0, duration: 0.5, delay: 1 })
+			gsap.to('.fueltitle', { duration: 0.5, text: 'Fuel Type' })
 			gsap.to('.fuelsubtitle', {
-				duration: 1,
+				duration: 0.5,
 				text: 'The type of Fuel used for your vehicle',
-				delay: 1
+				delay: 0.5
 			})
 			gsap.to('.fuelSuggest', {
-				duration: 1,
+				duration: 0.5,
 				text: 'Suggested Models',
-				delay: 3
+				delay: 1.5
 			})
 			gsap.from('.suggestedGridFuel', {
 				y: 80,
 				opacity: 0,
-				duration: 1,
-				delay: 4
+				duration: 0.5,
+				delay: 2
 			})
 		} else {
-			gsap.from('.selectFuel', { y: 80, opacity: 0, duration: 1 })
-			gsap.to('.fueltitle', { duration: 1, text: 'Fuel Type' })
+			gsap.from('.selectFuel', { y: 80, opacity: 0, duration: 0.5 })
+			gsap.to('.fueltitle', { duration: 0.5, text: 'Fuel Type' })
 			gsap.to('.fuelsubtitle', {
-				duration: 1,
+				duration: 0.5,
 				text: 'The type of Fuel used for your vehicle'
 			})
 			gsap.to('.fuelSuggest', {
-				duration: 1,
+				duration: 0.5,
 				text: 'Suggested Models'
 			})
 			gsap.from('.suggestedGridFuel', {
 				y: 80,
 				opacity: 0,
-				duration: 1
+				duration: 0.5
 			})
 		}
 	})
@@ -90,7 +90,7 @@ export function FuelType() {
 						dispatch(updateVehicleFuel(e))
 					}}>
 					<SelectTrigger
-						className='w-1/2'
+						className='w-3/4'
 						title='Fuel Type'
 						value={vehicleData.fuelType}>
 						<SelectValue />
@@ -110,7 +110,7 @@ export function FuelType() {
 					return (
 						<div
 							key={fuelType.id}
-							className='flex cursor-pointer items-center justify-center rounded-md shadow-md py-3 hover:shadow-xl text-sm font-inter'
+							className='flex cursor-pointer items-center justify-center rounded-md py-3 font-inter text-sm shadow-md hover:shadow-xl'
 							onClick={updateFuel(fuelType.name)}>
 							{fuelType.name}
 						</div>

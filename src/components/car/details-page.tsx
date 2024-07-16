@@ -3,14 +3,13 @@
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
 import { setScrollTo } from '@/redux/slices'
 import { useRouter } from 'next/navigation'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import { Button } from '../ui'
 import { BodyType } from './body-type'
 import { FuelType } from './fuel-type'
 import { SelectMark } from './select-mark'
 import { SelectModel } from './select-model'
 import { VehicleUsage } from './vehicle-usage'
-import { cn } from '@/lib'
 
 export function DetailsPage() {
 	const router = useRouter()
@@ -22,16 +21,6 @@ export function DetailsPage() {
 	const pageEnd = useRef<HTMLDivElement>(null)
 	const specificRef = useRef<HTMLDivElement>(null)
 
-	const [current, setCurrent] = useState<number>(0)
-
-	function addCount() {
-		setCurrent((pre) => pre + 1)
-	}
-
-	function setCount(num:number){
-		setCurrent(num)
-	}
-
 	function scrollToBottom() {
 		pageEnd.current?.scrollIntoView({ behavior: 'smooth' })
 	}
@@ -42,7 +31,7 @@ export function DetailsPage() {
 
 	useEffect(() => {
 		scrollToBottom()
-	}, [vehicleData, current])
+	}, [vehicleData])
 
 	useEffect(() => {
 		if (appData.scrollTo !== 0) {
@@ -61,12 +50,6 @@ export function DetailsPage() {
 			dispatch(setScrollTo(0))
 		}
 	}, [appData, dispatch])
-
-	useEffect(()=>{
-		if(vehicleData.fuelType !== ''){
-			setCurrent(4)
-		}
-	},[])
 
 	return (
 		<section className='flex justify-end'>
@@ -92,56 +75,36 @@ export function DetailsPage() {
 						</p>
 					</div>
 				</div> */}
-				<div ref={appData.scrollTo === 1 ? specificRef : undefined} className='flex flex-col gap-6'>
-					<SelectMark setCount={setCount}/>
-					{current === 0 && vehicleData.mark !== '' && (
-						<Button
-							variant='bluebtn'
-							onClick={addCount}>
-							Continue
-						</Button>
-					)}
+				<div
+					ref={appData.scrollTo === 1 ? specificRef : undefined}
+					className='flex flex-col gap-6'>
+					<SelectMark />
 				</div>
-				{vehicleData.mark !== '' && current !== 0 && (
-					<div ref={appData.scrollTo === 2 ? specificRef : undefined} className={cn('flex flex-col gap-6', {'min-h-[65vh]':vehicleData.model !== '' && current === 1  })}>
-						<SelectModel setCount={setCount}/>
-						{current === 1 && vehicleData.model !== '' && (
-							<Button
-								variant='bluebtn'
-								onClick={addCount}>
-								Continue
-							</Button>
-						)}
+				{vehicleData.mark !== '' && (
+					<div
+						ref={appData.scrollTo === 2 ? specificRef : undefined}
+						className='flex flex-col gap-6'>
+						<SelectModel />
 					</div>
 				)}
-				
-				{vehicleData.model !== '' && current !== 1 && (
-					<div ref={appData.scrollTo === 3 ? specificRef : undefined} className={cn('flex flex-col gap-6', {'min-h-[65vh]':vehicleData.vehicleUsage !== '' && current === 2  })}>
-						<VehicleUsage setCount={setCount}/>
-						{current === 2 && vehicleData.vehicleUsage !== '' && (
-							<Button
-								variant='bluebtn'
-								onClick={addCount}>
-								Continue
-							</Button>
-						)}
+
+				{vehicleData.model !== '' && (
+					<div
+						ref={appData.scrollTo === 3 ? specificRef : undefined}
+						className='flex flex-col gap-6'>
+						<VehicleUsage />
 					</div>
 				)}
-				
-				{vehicleData.vehicleUsage !== '' && current !== 2 && (
-					<div ref={appData.scrollTo === 4 ? specificRef : undefined} className={cn('flex flex-col gap-6', {'min-h-[65vh]':vehicleData.bodyType.length !== 0 && current === 3  })}>
-						<BodyType setCount={setCount}/>
-						{current === 3 && vehicleData.bodyType.length !== 0 && (
-							<Button
-								variant='bluebtn'
-								onClick={addCount}>
-								Continue
-							</Button>
-						)}
+
+				{vehicleData.vehicleUsage !== '' && (
+					<div
+						ref={appData.scrollTo === 4 ? specificRef : undefined}
+						className='flex flex-col gap-6'>
+						<BodyType />
 					</div>
 				)}
-				
-				{vehicleData.bodyType.length !== 0 && current !== 3 && (
+
+				{vehicleData.bodyType.length !== 0 && (
 					<div ref={appData.scrollTo === 5 ? specificRef : undefined}>
 						<FuelType />
 					</div>

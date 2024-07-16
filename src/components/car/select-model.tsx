@@ -32,52 +32,48 @@ const models = [
 	}
 ]
 
-type ModelProps = {
-	setCount:(num:number) => void
-}
-
-export function SelectModel(props: ModelProps) {
+export function SelectModel() {
 	const vehicleData = useAppSelector((state) => state.carInsurance)
 
 	const dispatch = useAppDispatch()
 
 	useGSAP(() => {
 		if (vehicleData.model === '') {
-			gsap.from('.selectModel', { y: 80, opacity: 0, duration: 1, delay: 2 })
-			gsap.to('.modeltitle', { duration: 1, text: 'Select the Model' })
+			gsap.from('.selectModel', { y: 80, opacity: 0, duration: 0.5, delay: 1 })
+			gsap.to('.modeltitle', { duration: 0.5, text: 'Select the Model' })
 			gsap.to('.modelsubtitle', {
-				duration: 1,
+				duration: 0.5,
 				// eslint-disable-next-line quotes
 				text: "The specific design or type of vehicle within the manufacturer's lineup (e.g. Corolla, Civic, Mustang)",
-				delay: 1
+				delay: 0.5
 			})
 			gsap.to('.modelSuggest', {
-				duration: 1,
+				duration: 0.5,
 				text: 'Suggested Models',
-				delay: 3
+				delay: 1.5
 			})
 			gsap.from('.suggestedGridModel', {
 				y: 80,
 				opacity: 0,
-				duration: 1,
-				delay: 4
+				duration: 0.5,
+				delay: 2
 			})
 		} else {
-			gsap.from('.selectModel', { y: 80, opacity: 0, duration: 1 })
-			gsap.to('.modeltitle', { duration: 1, text: 'Select the Model' })
+			gsap.from('.selectModel', { y: 80, opacity: 0, duration: 0.5 })
+			gsap.to('.modeltitle', { duration: 0.5, text: 'Select the Model' })
 			gsap.to('.modelsubtitle', {
-				duration: 1,
+				duration: 0.5,
 				// eslint-disable-next-line quotes
 				text: "The specific design or type of vehicle within the manufacturer's lineup (e.g. Corolla, Civic, Mustang)"
 			})
 			gsap.to('.modelSuggest', {
-				duration: 1,
+				duration: 0.5,
 				text: 'Suggested Models'
 			})
 			gsap.from('.suggestedGridModel', {
 				y: 80,
 				opacity: 0,
-				duration: 1
+				duration: 0.5
 			})
 		}
 	})
@@ -85,7 +81,6 @@ export function SelectModel(props: ModelProps) {
 	function updateModel(model: string) {
 		return function () {
 			dispatch(updateVehicleModel(model))
-			props.setCount(1)
 		}
 	}
 
@@ -100,10 +95,9 @@ export function SelectModel(props: ModelProps) {
 					value={vehicleData.model}
 					onValueChange={(e) => {
 						dispatch(updateVehicleModel(e))
-						props.setCount(1)
 					}}>
 					<SelectTrigger
-						className='w-1/2'
+						className='w-3/4'
 						title='Select the Model'
 						value={vehicleData.model}>
 						<SelectValue />
@@ -124,7 +118,7 @@ export function SelectModel(props: ModelProps) {
 					return (
 						<div
 							key={model.id}
-							className='flex cursor-pointer items-center justify-center rounded-md shadow-md py-3 hover:shadow-xl text-sm font-inter'
+							className='flex cursor-pointer items-center justify-center rounded-md py-3 font-inter text-sm shadow-md hover:shadow-xl'
 							onClick={updateModel(model.name)}>
 							{model.name}
 						</div>

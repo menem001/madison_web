@@ -10,10 +10,6 @@ import gsap from 'gsap'
 import { TextPlugin } from 'gsap/all'
 import { MarkCard } from './mark-card'
 
-type MarkProps = {
-	setCount:(num:number) => void
-}
-
 const brands = [
 	{
 		id: 'Peugeot',
@@ -69,31 +65,31 @@ const brands = [
 
 gsap.registerPlugin(TextPlugin)
 
-export function SelectMark(props: MarkProps) {
+export function SelectMark() {
 	const vehicleData = useAppSelector((state) => state.carInsurance)
 
 	const dispatch = useAppDispatch()
 
 	useGSAP(() => {
 		if (vehicleData.mark === '') {
-			gsap.from('.select', { y: 80, opacity: 0, duration: 1, delay: 2 })
-			gsap.to('.popular', { duration: 1, text: 'Popular Brands', delay: 3 })
-			gsap.from('.suggestedGrid1', { y: 80, opacity: 0, duration: 1, delay: 4 })
-			gsap.from('.suggestedGrid2', { y: 80, opacity: 0, duration: 1, delay: 5 })
-			gsap.to('.marktitle', { duration: 1, text: 'Select the Mark' })
+			gsap.from('.select', { y: 80, opacity: 0, duration: 0.5, delay: 1 })
+			gsap.to('.popular', { duration: 0.5, text: 'Popular Brands', delay: 1.5 })
+			gsap.from('.suggestedGrid1', { y: 80, opacity: 0, duration: 0.5, delay: 2 })
+			gsap.from('.suggestedGrid2', { y: 80, opacity: 0, duration: 0.5, delay: 2.5 })
+			gsap.to('.marktitle', { duration: 0.5, text: 'Select the Mark' })
 			gsap.to('.marksubtitle', {
-				duration: 1,
+				duration: 0.5,
 				text: 'The manufacturer or brand of the vehicle (e.g. Toyota, Honda, Ford)',
-				delay: 1
+				delay: 0.5
 			})
 		} else {
-			gsap.from('.select', { y: 80, opacity: 0, duration: 1 })
-			gsap.to('.popular', { duration: 1, text: 'Popular Brands' })
-			gsap.from('.suggestedGrid1', { y: 80, opacity: 0, duration: 1 })
-			gsap.from('.suggestedGrid2', { y: 80, opacity: 0, duration: 1 })
-			gsap.to('.marktitle', { duration: 1, text: 'Select the Mark' })
+			gsap.from('.select', { y: 80, opacity: 0, duration: 0.5 })
+			gsap.to('.popular', { duration: 0.5, text: 'Popular Brands' })
+			gsap.from('.suggestedGrid1', { y: 80, opacity: 0, duration: 0.5 })
+			gsap.from('.suggestedGrid2', { y: 80, opacity: 0, duration: 0.5 })
+			gsap.to('.marktitle', { duration: 0.5, text: 'Select the Mark' })
 			gsap.to('.marksubtitle', {
-				duration: 1,
+				duration: 0.5,
 				text: 'The manufacturer or brand of the vehicle (e.g. Toyota, Honda, Ford)'
 			})
 		}
@@ -101,7 +97,6 @@ export function SelectMark(props: MarkProps) {
 
 	function updateMark(mark: string) {
 		dispatch(updateVehicleMark(mark))
-		props.setCount(0)
 	}
 
 	return (
@@ -118,7 +113,7 @@ export function SelectMark(props: MarkProps) {
 					value={vehicleData.mark}
 					onValueChange={updateMark}>
 					<SelectTrigger
-						className='w-1/2'
+						className='w-3/4'
 						title='Select the Mark'
 						value={vehicleData.mark}>
 						<SelectValue />

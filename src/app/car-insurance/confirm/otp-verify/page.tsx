@@ -1,5 +1,5 @@
 import { assets } from '@/assets'
-import { AccountOptions } from '@/components/common/account_options'
+import { OtpForm } from '@/components/common/otp-form'
 import Image from 'next/image'
 
 export default function Page() {
@@ -8,7 +8,7 @@ export default function Page() {
 			<div className='min-h-[45vh] w-full rounded-2xl overflow-hidden block lg:hidden'>
 				<Image alt='trip' className='h-auto w-full object-cover object-bottom' height={1000} src={assets.images.trip} width={1000}/>
 			</div>
-			<AccountOptions />
+			<OtpForm />
 			<div className='h-[85vh] w-full rounded-2xl overflow-hidden hidden lg:block'>
 				<Image alt='trip' className='h-auto w-full object-cover object-center' height={1000} src={assets.images.trip} width={1000}/>
 			</div>

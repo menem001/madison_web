@@ -12,7 +12,7 @@ export const assets = {
 		car: '/images/car.png',
 		logo: '/images/sanlam-logo.png',
 		home: '/images/home.png',
-		health: '/images/health.png',
+		health: '/images/Health.png',
 		travel: '/images/travel.jpeg',
 		boat: '/images/boat.jpeg',
 		personal: '/images/personal.png',
@@ -27,10 +27,11 @@ export const assets = {
 		audi: '/images/audi.png',
 		bentley: '/images/bentley.png',
 		benz: '/images/benz.png',
-		bmw: '/images/bmw.png',
+		bmw: '/images/BMW.png',
 		ford: '/images/ford.png',
 		jeep: '/images/jeep.png',
 		nissan: '/images/nissan.png',
-		trip: '/images/trip.jpeg'
+		trip: '/images/trip.jpeg',
+		qr: '/images/qrcode.png'
 	}
 }

@@ -12,18 +12,18 @@ export function SumInsuredDeductibles() {
 
 	useGSAP(() => {
 		if (vehicleData.sumInsured === 0 || vehicleData.deductibles === 0) {
-			gsap.from('.selectsumDeductibles', { y: 80, opacity: 0, duration: 1, delay: 2 })
-			gsap.to('.sumDeductiblestitle', { duration: 1, text: 'Sum Insured and Deductibles' })
+			gsap.from('.selectsumDeductibles', { y: 80, opacity: 0, duration: 0.5, delay: 1 })
+			gsap.to('.sumDeductiblestitle', { duration: 0.5, text: 'Sum Insured and Deductibles' })
 			gsap.to('.sumDeductiblessubtitle', {
-				duration: 1,
+				duration: 0.5,
 				text: 'How the vehicle is used, such as for personal, business, or commercial purposes',
-				delay: 1
+				delay: 0.5
 			})
 		} else {
-			gsap.from('.selectsumDeductibles', { y: 80, opacity: 0, duration: 1 })
-			gsap.to('.sumDeductiblestitle', { duration: 1, text: 'Sum Insured and Deductibles' })
+			gsap.from('.selectsumDeductibles', { y: 80, opacity: 0, duration: 0.5 })
+			gsap.to('.sumDeductiblestitle', { duration: 0.5, text: 'Sum Insured and Deductibles' })
 			gsap.to('.sumDeductiblessubtitle', {
-				duration: 1,
+				duration: 0.5,
 				text: 'How the vehicle is used, such as for personal, business, or commercial purposes'
 			})
 		}

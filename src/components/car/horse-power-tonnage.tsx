@@ -6,7 +6,7 @@ import gsap from 'gsap'
 import { Input } from '../ui'
 
 type horsePowerTonnageProps = {
-	setCount:(num:number) => void
+	setCount: (num: number) => void
 }
 
 export function HorsePowerTonnage(props: horsePowerTonnageProps) {
@@ -16,18 +16,18 @@ export function HorsePowerTonnage(props: horsePowerTonnageProps) {
 
 	useGSAP(() => {
 		if (vehicleData.horsePower === '' || vehicleData.tonnage === '') {
-			gsap.from('.selectHorseTonnage', { y: 80, opacity: 0, duration: 1, delay: 2 })
-			gsap.to('.HorseTonnagetitle', { duration: 1, text: 'Horse Power and Tonnage' })
+			gsap.from('.selectHorseTonnage', { y: 80, opacity: 0, duration: 0.5, delay: 1 })
+			gsap.to('.HorseTonnagetitle', { duration: 0.5, text: 'Horse Power and Tonnage' })
 			gsap.to('.HorseTonnagesubtitle', {
-				duration: 1,
+				duration: 0.5,
 				text: 'How the vehicle is used, such as for personal, business, or commercial purposes',
-				delay: 1
+				delay: 0.5
 			})
 		} else {
-			gsap.from('.selectHorseTonnage', { y: 80, opacity: 0, duration: 1 })
-			gsap.to('.HorseTonnagetitle', { duration: 1, text: 'Horse Power and Tonnage' })
+			gsap.from('.selectHorseTonnage', { y: 80, opacity: 0, duration: 0.5 })
+			gsap.to('.HorseTonnagetitle', { duration: 0.5, text: 'Horse Power and Tonnage' })
 			gsap.to('.HorseTonnagesubtitle', {
-				duration: 1,
+				duration: 0.5,
 				text: 'How the vehicle is used, such as for personal, business, or commercial purposes'
 			})
 		}

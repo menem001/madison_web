@@ -40,60 +40,56 @@ const bodyTypes = [
 	}
 ]
 
-type bodyTypeProps = {
-	setCount:(num:number) => void
-}
-
-export function BodyType(props:bodyTypeProps) {
+export function BodyType() {
 	const vehicleData = useAppSelector((state) => state.carInsurance)
 	const dispatch = useAppDispatch()
 
 	useGSAP(() => {
 		if (vehicleData.bodyType.length === 0) {
-			gsap.from('.selectBody', { y: 80, opacity: 0, duration: 1, delay: 2 })
-			gsap.to('.bodytitle', { duration: 1, text: 'Body Type' })
+			gsap.from('.selectBody', { y: 80, opacity: 0, duration: 0.5, delay: 1 })
+			gsap.to('.bodytitle', { duration: 0.5, text: 'Body Type' })
 			gsap.to('.bodysubtitle', {
-				duration: 1,
+				duration: 0.5,
 				text: 'How the vehicle is used, such as for personal, business, or commercial purposes',
-				delay: 1
+				delay: 0.5
 			})
 			gsap.to('.bodySuggest', {
-				duration: 1,
+				duration: 0.5,
 				text: 'Suggested Body Type',
-				delay: 3
+				delay: 1.5
 			})
 			gsap.from('.suggestedBodyGrid1', {
 				y: 80,
 				opacity: 0,
-				duration: 1,
-				delay: 4
+				duration: 0.5,
+				delay: 2
 			})
 			gsap.from('.suggestedBodyGrid2', {
 				y: 80,
 				opacity: 0,
-				duration: 1,
-				delay: 5
+				duration: 0.5,
+				delay: 2.5
 			})
 		} else {
-			gsap.from('.selectBody', { y: 80, opacity: 0, duration: 1 })
-			gsap.to('.bodytitle', { duration: 1, text: 'Body Type' })
+			gsap.from('.selectBody', { y: 80, opacity: 0, duration: 0.5 })
+			gsap.to('.bodytitle', { duration: 0.5, text: 'Body Type' })
 			gsap.to('.bodysubtitle', {
-				duration: 1,
+				duration: 0.5,
 				text: 'How the vehicle is used, such as for personal, business, or commercial purposes'
 			})
 			gsap.to('.bodySuggest', {
-				duration: 1,
+				duration: 0.5,
 				text: 'Suggested Body Type'
 			})
 			gsap.from('.suggestedBodyGrid1', {
 				y: 80,
 				opacity: 0,
-				duration: 1
+				duration: 0.5
 			})
 			gsap.from('.suggestedBodyGrid2', {
 				y: 80,
 				opacity: 0,
-				duration: 1
+				duration: 0.5
 			})
 		}
 	})
@@ -105,13 +101,11 @@ export function BodyType(props:bodyTypeProps) {
 	function handleClick(type: string) {
 		return function () {
 			dispatch(updateVehicleBodyType(type))
-			props.setCount(3)
 		}
 	}
 
 	function handleChange(type: string) {
 		dispatch(updateVehicleBodyType(type))
-		props.setCount(3)
 	}
 
 	return (
@@ -128,7 +122,7 @@ export function BodyType(props:bodyTypeProps) {
 					value={vehicleData.bodyType.join(',')}
 					onValueChange={handleChange}>
 					<SelectTrigger
-						className='w-1/2'
+						className='w-3/4'
 						title='Body Type'
 						value={vehicleData.bodyType.join(',')}>
 						<SelectValue />
@@ -149,7 +143,7 @@ export function BodyType(props:bodyTypeProps) {
 					return (
 						<div
 							key={body.id}
-							className='suggestedBodyGrid1 flex flex-col overflow-hidden cursor-pointer items-center justify-center rounded-md shadow-md py-3 hover:shadow-xl text-sm font-inter'
+							className='suggestedBodyGrid1 flex cursor-pointer flex-col items-center justify-center overflow-hidden rounded-md py-3 font-inter text-sm shadow-md hover:shadow-xl'
 							onClick={handleClick(body.name)}>
 							<div className='h-24 w-40'>
 								<Image
@@ -169,7 +163,7 @@ export function BodyType(props:bodyTypeProps) {
 					return (
 						<div
 							key={body.id}
-							className='suggestedBodyGrid2 flex flex-col overflow-hidden cursor-pointer items-center justify-center rounded-md shadow-md py-3 hover:shadow-xl text-sm font-inter'
+							className='suggestedBodyGrid2 flex cursor-pointer flex-col items-center justify-center overflow-hidden rounded-md py-3 font-inter text-sm shadow-md hover:shadow-xl'
 							onClick={handleClick(body.name)}>
 							<div className='h-24 w-40'>
 								<Image

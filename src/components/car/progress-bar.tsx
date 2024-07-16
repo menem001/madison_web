@@ -109,7 +109,7 @@ export function ProgressBar() {
 			})
 			setCurrentPageRate(value)
 		}
-	}, [displayDataPage1])
+	}, [displayDataPage1, displayDataPage2, path, vehicleData.bodyType.length, vehicleData.deductibles, vehicleData.sumInsured])
 
 	return (
 		<div className='flex flex-col items-start'>
