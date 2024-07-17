@@ -10,7 +10,7 @@ export const assets = {
 	images: {
 		bike: '/images/bike.png',
 		car: '/images/car.png',
-		logo: '/images/sanlam-logo.png',
+		logo: '/images/madisonLogo.jpg',
 		home: '/images/home.png',
 		health: '/images/Health.png',
 		travel: '/images/travel.jpeg',

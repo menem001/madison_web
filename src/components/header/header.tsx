@@ -3,12 +3,12 @@ import { Logo } from './logo'
 
 export function Header() {
 	return (
-		<section className='sticky top-0 z-20 flex h-full w-full flex-row items-center justify-between bg-white shadow max-h-20'>
+		<section className='sticky top-0 z-20 flex h-full max-h-20 w-full flex-row items-center justify-between bg-white shadow'>
 			<div className='flex h-full flex-row items-center gap-8 p-3 font-jakarta text-xs font-medium text-gray-500 md:text-sm'>
 				<Logo />
 				<div className='hidden h-full flex-row items-center gap-8 md:flex'>
 					<span>Home</span>
-					<span>About Sanlam</span>
+					<span>About Madison</span>
 					<span>Investor centre</span>
 					<span>Sustainability</span>
 					<span>Media</span>

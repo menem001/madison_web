@@ -42,7 +42,7 @@ class API {
 				// }
 
 				req.headers.Authorization =
-					'Bearer $2a$10$VccoTYOy28cWPC2KOlVpWuBGwMVkg86G0OOr8RERc.bfw425a3e5O'
+					'Bearer $2a$10$4uC5fHSD0rDvWmqx6REEwu1btzj0UciqAKpjlNWfKUJZw0HuLYT9q'
 
 				return req
 			},
