@@ -2,12 +2,16 @@
 
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
 import { setScrollTo } from '@/redux/slices'
-import { Fragment, useEffect, useRef, useState } from 'react'
-import { Button } from '../ui'
+import { useEffect, useRef } from 'react'
+// import { Button } from '../ui'
 import { CustomerInfo } from './customer-info'
-import { HorsePowerTonnage } from './horse-power-tonnage'
-import { SumInsuredDeductibles } from './sum-insured-deductibles'
-import { cn } from '@/lib'
+import { SelectInsuranceClass } from './select-insurance-class'
+import { SumInsured } from './sum-insured'
+import { Claims } from './claims'
+import { GPSTracking } from './gps-tracking'
+// import { HorsePowerTonnage } from './horse-power-tonnage'
+// import { SumInsuredDeductibles } from './sum-insured-deductibles'
+// import { cn } from '@/lib'
 
 export function MoreDetailsPage() {
 	const dispatch = useAppDispatch()
@@ -15,31 +19,31 @@ export function MoreDetailsPage() {
 	const vehicleData = useAppSelector((state) => state.carInsurance)
 	const appData = useAppSelector((state) => state.apps)
 
-	const [current, setCurrent] = useState<number>(0)
+	// const [current, setCurrent] = useState<number>(0)
 
 	const pageEnd = useRef<HTMLDivElement>(null)
 	const specificRef = useRef<HTMLDivElement>(null)
 	const customerRef = useRef<HTMLDivElement>(null)
 
-	function scrollToBottom() {
-		pageEnd.current?.scrollIntoView({ behavior: 'smooth' })
-	}
+	// function scrollToBottom() {
+	// 	pageEnd.current?.scrollIntoView({ behavior: 'smooth' })
+	// }
 
-	function addCount() {
-		setCurrent((pre) => pre + 1)
-	}
+	// function addCount() {
+	// 	setCurrent((pre) => pre + 1)
+	// }
 
-	function setCount(num:number){
-		setCurrent(num)
-	}
+	// function setCount(num: number) {
+	// 	setCurrent(num)
+	// }
 
-	useEffect(() => {
-		if (current !== 2) {
-			scrollToBottom()
-		} else {
-			customerRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' })
-		}
-	}, [vehicleData, current])
+	// useEffect(() => {
+	// 	if (current !== 2) {
+	// 		scrollToBottom()
+	// 	} else {
+	// 		customerRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' })
+	// 	}
+	// }, [vehicleData, current])
 
 	useEffect(() => {
 		if (appData.scrollTo !== 0) {
@@ -51,12 +55,6 @@ export function MoreDetailsPage() {
 			dispatch(setScrollTo(0))
 		}
 	}, [appData, dispatch])
-
-	useEffect(()=>{
-		if(vehicleData.sumInsured !== 0 || vehicleData.deductibles !== 0){
-			setCurrent(2)
-		}
-	},[])
 
 	return (
 		<section className='flex justify-end'>
@@ -79,7 +77,7 @@ export function MoreDetailsPage() {
 							Ensure all information provided is correct and up-to-date.
 						</p>
 					</div>
-				</div> */}
+				</div>
 				<div
 					ref={
 						appData.scrollTo === 1 || appData.scrollTo === 2 ? specificRef : undefined
@@ -92,10 +90,14 @@ export function MoreDetailsPage() {
 						Continue
 						</Button>
 					)}
-				</div>
-				
+				</div> */}
+				<SelectInsuranceClass />
+				{vehicleData.insuranceClass !== 'TPO' && <SumInsured />}
+				<Claims />
+				{vehicleData.insuranceClass === 'Comprehensive' && <GPSTracking />}
+
 				{/* {vehicleData.horsePower !== '' && <Tonnage />} */}
-				{vehicleData.horsePower !== '' && vehicleData.tonnage !== '' && current !== 0 && (
+				{/* {vehicleData.horsePower !== '' && vehicleData.tonnage !== '' && current !== 0 && (
 					<div
 						ref={
 							appData.scrollTo === 3 || appData.scrollTo === 4
@@ -115,18 +117,28 @@ export function MoreDetailsPage() {
 							</Fragment>
 						)}
 					</div>
-				)}
-				
+				)} */}
+
 				{/* {vehicleData.sumInsured !== 0 && <Deductibles />} */}
-				{vehicleData.sumInsured !== 0 && vehicleData.deductibles !== 0 && (
-					<Fragment>
-						{current === 2 && (
-							<div ref={customerRef}>
-								<CustomerInfo />
-							</div>
-						)}
-					</Fragment>
+				{/* {vehicleData.sumInsured !== 0 && vehicleData.deductibles !== 0 && ( */}
+				{/* <Fragment>
+					{current === 2 && ( */}
+
+				{((vehicleData.insuranceClass === 'Comprehensive' &&
+					vehicleData.sumInsured !== null &&
+					vehicleData.gpsTraking !== null &&
+					vehicleData.claims !== null) ||
+					(vehicleData.insuranceClass === 'TPFT' &&
+						vehicleData.sumInsured !== null &&
+						vehicleData.claims !== null) ||
+					(vehicleData.insuranceClass === 'TPO' && vehicleData.claims !== null)) && (
+					<div ref={customerRef}>
+						<CustomerInfo />
+					</div>
 				)}
+				{/* )}
+				</Fragment> */}
+				{/* )} */}
 				<div ref={pageEnd}></div>
 			</section>
 		</section>

@@ -2,14 +2,12 @@ import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
 
 const initialState = {
 	name: '',
-	dob: '',
 	code: '266',
 	mobile: ''
 }
 
 export type CustomerDetails = {
 	name: string
-	dob: string
 	code: string
 	mobile: string
 }
@@ -21,9 +19,6 @@ export const customerDetailsSlice = createSlice({
 		updateName(state: CustomerDetails, action: PayloadAction<string>) {
 			state.name = action.payload
 		},
-		updateDob(state: CustomerDetails, action: PayloadAction<string>) {
-			state.dob = action.payload
-		},
 		updateCode(state: CustomerDetails, action: PayloadAction<string>) {
 			state.code = action.payload
 		},
@@ -33,4 +28,4 @@ export const customerDetailsSlice = createSlice({
 	}
 })
 
-export const { updateDob, updateCode, updateMobile, updateName } = customerDetailsSlice.actions
+export const { updateCode, updateMobile, updateName } = customerDetailsSlice.actions

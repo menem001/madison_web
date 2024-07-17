@@ -2,105 +2,80 @@ import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
 
 const initialState = {
 	mark: '',
-	model: '',
 	vehicleUsage: '',
-	fuelType: '',
 	bodyType: [],
-	sumInsured: 0,
-	deductibles: 0,
-	horsePower: '',
-	tonnage: ''
+	year: 0,
+	description: '',
+	insuranceClass: 'Comprehensive',
+	sumInsured: null,
+	claims: null,
+	gpsTraking: null
 }
 
 export type CarDetails = {
 	mark: string
-	model: string
 	vehicleUsage: string
-	fuelType: string
 	bodyType: string[]
-	sumInsured: number
-	deductibles: number
-	horsePower: string
-	tonnage: string
+	year: number
+	description: string
+	insuranceClass: string
+	sumInsured: number | null
+	claims: boolean | null
+	gpsTraking: boolean | null
 }
 
 export const carInsuranceSlice = createSlice({
 	name: 'carInsurance',
 	initialState: initialState,
 	reducers: {
-		updateVehicleMark(state: CarDetails, action: PayloadAction<string>) {
-			state.mark = action.payload
-			state.model = ''
-			state.vehicleUsage = ''
-			state.fuelType = ''
-			state.bodyType = []
-			state.sumInsured = 0
-			state.deductibles = 0
-			state.horsePower = ''
-			state.tonnage = ''
-		},
-		updateVehicleModel(state: CarDetails, action: PayloadAction<string>) {
-			state.model = action.payload
-			state.vehicleUsage = ''
-			state.fuelType = ''
-			state.bodyType = []
-			state.sumInsured = 0
-			state.deductibles = 0
-			state.horsePower = ''
-			state.tonnage = ''
-		},
 		updateVehicleUsage(state: CarDetails, action: PayloadAction<string>) {
 			state.vehicleUsage = action.payload
-			state.fuelType = ''
+			state.mark = ''
 			state.bodyType = []
-			state.sumInsured = 0
-			state.deductibles = 0
-			state.horsePower = ''
-			state.tonnage = ''
+			state.year = 0
+			state.description = ''
 		},
 		updateVehicleBodyType(state: CarDetails, action: PayloadAction<string>) {
 			state.bodyType = [action.payload]
-			state.fuelType = ''
-			state.sumInsured = 0
-			state.deductibles = 0
-			state.horsePower = ''
-			state.tonnage = ''
+			state.mark = ''
+			state.year = 0
+			state.description = ''
 		},
-		updateVehicleFuel(state: CarDetails, action: PayloadAction<string>) {
-			state.fuelType = action.payload
-			state.sumInsured = 0
-			state.deductibles = 0
-			state.horsePower = ''
-			state.tonnage = ''
+		updateVehicleMark(state: CarDetails, action: PayloadAction<string>) {
+			state.mark = action.payload
+			state.year = 0
+			state.description = ''
 		},
-		updateHorsePower(state: CarDetails, action: PayloadAction<string>) {
-			state.sumInsured = 0
-			state.deductibles = 0
-			state.horsePower = action.payload
+		updateVehicleManufactureYear(state: CarDetails, action: PayloadAction<string>) {
+			state.year = +action.payload
+			state.description = ''
 		},
-		updateTonnage(state: CarDetails, action: PayloadAction<string>) {
-			state.sumInsured = 0
-			state.deductibles = 0
-			state.tonnage = action.payload
+		updateDescription(state: CarDetails, action: PayloadAction<string>) {
+			state.description = action.payload
 		},
-		updateInsuredSum(state: CarDetails, action: PayloadAction<string>) {
-			state.sumInsured = +action.payload
-			state.deductibles = 0
+		updateClass(state: CarDetails, action: PayloadAction<string>) {
+			state.insuranceClass = action.payload
 		},
-		updateDeductibles(state: CarDetails, action: PayloadAction<string>) {
-			state.deductibles = +action.payload
+		updateSumInsured(state: CarDetails, action: PayloadAction<number | null>) {
+			state.sumInsured = action.payload
+		},
+		updateClaims(state: CarDetails, action: PayloadAction<boolean | null>) {
+			state.claims = action.payload
+		},
+		updateGPSTraking(state: CarDetails, action: PayloadAction<boolean | null>) {
+			state.gpsTraking = action.payload
 		}
 	}
 })
 
 export const {
-	updateDeductibles,
-	updateHorsePower,
-	updateInsuredSum,
-	updateTonnage,
 	updateVehicleBodyType,
-	updateVehicleFuel,
 	updateVehicleMark,
-	updateVehicleModel,
-	updateVehicleUsage
+	updateDescription,
+	updateVehicleManufactureYear,
+	updateVehicleUsage,
+	updateClaims,
+	updateClass,
+	updateGPSTraking,
+	updateSumInsured
 } = carInsuranceSlice.actions

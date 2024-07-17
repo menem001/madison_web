@@ -12,18 +12,8 @@ export function RightSideBarList() {
 
 	const displayDataPage1 = [
 		{
-			id: 'Car Brand',
-			field: 'Car Brand',
-			name: vehicleData.mark
-		},
-		{
-			id: 'Car Model',
-			field: 'Car Model',
-			name: vehicleData.model
-		},
-		{
-			id: 'Usage type',
-			field: 'Usage type',
+			id: 'Vehicle Usage',
+			field: 'Vehicle Usage',
 			name: vehicleData.vehicleUsage
 		},
 		{
@@ -32,32 +22,19 @@ export function RightSideBarList() {
 			name: vehicleData.bodyType.join(',')
 		},
 		{
-			id: 'Fuel Type',
-			field: 'Fuel Type',
-			name: vehicleData.fuelType
-		}
-	]
-
-	const displayDataPage2 = [
-		{
-			id: 'Horse Power',
-			field: 'Horse Power',
-			name: vehicleData.horsePower
+			id: 'Car Brand',
+			field: 'Car Brand',
+			name: vehicleData.mark
 		},
 		{
-			id: 'Tonnage',
-			field: 'Tonnage',
-			name: vehicleData.tonnage
+			id: 'Manufacture Year',
+			field: 'Manufacture Year',
+			name: vehicleData.year
 		},
 		{
-			id: 'Sum Insured',
-			field: 'Sum Insured',
-			name: vehicleData.sumInsured
-		},
-		{
-			id: 'Deductibles',
-			field: 'Deductibles',
-			name: vehicleData.deductibles
+			id: 'Vehicle Description',
+			field: 'Vehicle Description',
+			name: vehicleData.description
 		}
 	]
 
@@ -74,18 +51,14 @@ export function RightSideBarList() {
 					<span className='text-sm font-semibold'>Vehicle Details</span>
 					<span className='text-xs opacity-70'>
 						{isPage1
-							? 'Mark, Model , Engine, Body, Type'
+							? 'Usage, Body, Mark, Year, Description'
 							: 'Horse Power, Tonnage, Sum Insured, Deductibles'}
 					</span>
 				</div>
 			</div>
 			<div className='flex flex-col gap-[9px]'>
 				<div className='flex flex-col gap-[9px]'>
-					{isPage1 ? (
-						<ShowList data={displayDataPage1} />
-					) : (
-						<ShowList data={displayDataPage2} />
-					)}
+					<ShowList data={displayDataPage1} />
 				</div>
 			</div>
 		</Fragment>

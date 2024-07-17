@@ -6,10 +6,10 @@ import { useRouter } from 'next/navigation'
 import { useEffect, useRef } from 'react'
 import { Button } from '../ui'
 import { BodyType } from './body-type'
-import { FuelType } from './fuel-type'
 import { SelectMark } from './select-mark'
-import { SelectModel } from './select-model'
 import { VehicleUsage } from './vehicle-usage'
+import { ManufactureYear } from './manufacture-year'
+import { VehicleDescription } from './vehicle-description'
 
 export function DetailsPage() {
 	const router = useRouter()
@@ -78,38 +78,38 @@ export function DetailsPage() {
 				<div
 					ref={appData.scrollTo === 1 ? specificRef : undefined}
 					className='flex flex-col gap-6'>
-					<SelectMark />
+					<VehicleUsage />
 				</div>
-				{vehicleData.mark !== '' && (
-					<div
-						ref={appData.scrollTo === 2 ? specificRef : undefined}
-						className='flex flex-col gap-6'>
-						<SelectModel />
-					</div>
-				)}
-
-				{vehicleData.model !== '' && (
-					<div
-						ref={appData.scrollTo === 3 ? specificRef : undefined}
-						className='flex flex-col gap-6'>
-						<VehicleUsage />
-					</div>
-				)}
-
 				{vehicleData.vehicleUsage !== '' && (
 					<div
-						ref={appData.scrollTo === 4 ? specificRef : undefined}
+						ref={appData.scrollTo === 2 ? specificRef : undefined}
 						className='flex flex-col gap-6'>
 						<BodyType />
 					</div>
 				)}
 
 				{vehicleData.bodyType.length !== 0 && (
-					<div ref={appData.scrollTo === 5 ? specificRef : undefined}>
-						<FuelType />
+					<div
+						ref={appData.scrollTo === 3 ? specificRef : undefined}
+						className='flex flex-col gap-6'>
+						<SelectMark />
 					</div>
 				)}
-				{vehicleData.fuelType !== '' && (
+
+				{vehicleData.mark !== '' && (
+					<div
+						ref={appData.scrollTo === 4 ? specificRef : undefined}
+						className='flex flex-col gap-6'>
+						<ManufactureYear />
+					</div>
+				)}
+
+				{vehicleData.year !== 0 && (
+					<div ref={appData.scrollTo === 5 ? specificRef : undefined}>
+						<VehicleDescription />
+					</div>
+				)}
+				{vehicleData.description !== '' && (
 					<Button
 						className='w-full'
 						variant='bluebtn'

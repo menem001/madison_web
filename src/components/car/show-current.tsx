@@ -17,7 +17,7 @@ type ShowCurrentProps = {
 export function ShowCurrent(props: ShowCurrentProps) {
 	const isIncomplete =
 		props.item.name === '' ||
-		(props.item.field === 'Sum Insured' && +props.item.name === 0) ||
+		(props.item.field === 'Manufacture Year' && +props.item.name === 0) ||
 		(props.item.field === 'Deductibles' && +props.item.name === 0)
 
 	const dispatch = useAppDispatch()

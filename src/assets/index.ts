@@ -32,6 +32,8 @@ export const assets = {
 		jeep: '/images/jeep.png',
 		nissan: '/images/nissan.png',
 		trip: '/images/trip.jpeg',
-		qr: '/images/qrcode.png'
+		qr: '/images/qrcode.png',
+		appStore: '/images/appStore.png',
+		googlePlay: '/images/googlePlay.png'
 	}
 }

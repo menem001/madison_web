@@ -1,8 +1,8 @@
 import { RightSideBarList } from './right-side-bar-list'
 import { ProgressBar } from './progress-bar'
+import { MobileLinkDetails } from './mobile-link-details'
 
 export function CarRightSideBar() {
-
 	return (
 		<div className='flex h-full w-full flex-col gap-4 px-5 py-20 font-roboto'>
 			<h3 className='text-lg font-medium text-gray-700'>
@@ -14,6 +14,7 @@ export function CarRightSideBar() {
 
 			<div className='flex w-3/4 flex-col gap-4'>
 				<RightSideBarList />
+				<MobileLinkDetails />
 			</div>
 		</div>
 	)

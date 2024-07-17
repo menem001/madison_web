@@ -1,8 +1,8 @@
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
-import { updateInsuredSum } from '@/redux/slices'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { Input } from '../ui'
+import { updateSumInsured } from '@/redux/slices'
 
 export function SumInsured() {
 	const vehicleData = useAppSelector((state) => state.carInsurance)
@@ -10,12 +10,12 @@ export function SumInsured() {
 	const dispatch = useAppDispatch()
 
 	useGSAP(() => {
-		gsap.from('.selectsumInsured', { y: 80, opacity: 0, duration: 1, delay: 2 })
-		gsap.to('.sumInsuredtitle', { duration: 1, text: 'Sum Insured' })
+		gsap.from('.selectsumInsured', { y: 80, opacity: 0, duration: 0.5, delay: 1 })
+		gsap.to('.sumInsuredtitle', { duration: 0.5, text: 'Sum Insured' })
 		gsap.to('.sumInsuredsubtitle', {
-			duration: 1,
+			duration: 0.5,
 			text: 'How the vehicle is used, such as for personal, business, or commercial purposes',
-			delay: 1
+			delay: 0.5
 		})
 	})
 	return (
@@ -28,9 +28,9 @@ export function SumInsured() {
 				className='selectsumInsured w-1/2'
 				placeholder='Sum Insured'
 				type='number'
-				value={vehicleData.sumInsured}
+				value={vehicleData.sumInsured !== null ? vehicleData.sumInsured : undefined}
 				onChange={(e) => {
-					dispatch(updateInsuredSum(e.target.value))
+					dispatch(updateSumInsured(+e.target.value))
 				}}
 			/>
 		</div>

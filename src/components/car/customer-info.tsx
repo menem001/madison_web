@@ -6,7 +6,6 @@ import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { useRouter } from 'next/navigation'
 import { Button, Input } from '../ui'
-import { OtherOptions } from './other-options'
 
 export function CustomerInfo() {
 	const customerData = useAppSelector((state) => state.customerDetails)
@@ -79,14 +78,14 @@ export function CustomerInfo() {
 				onClick={goToConfirm}>
 				View Premium
 			</Button>
-			<div className='flex items-center justify-center'>
+			{/* <div className='flex items-center justify-center'>
 				<div className='relative w-full border-t border-green-50'>
 					<span className='absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/2 transform bg-white px-2'>
 						Or
 					</span>
 				</div>
 			</div>
-			<OtherOptions />
+			<OtherOptions /> */}
 		</section>
 	)
 }
