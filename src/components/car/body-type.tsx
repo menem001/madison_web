@@ -1,3 +1,5 @@
+'use client'
+
 import { assets } from '@/assets'
 import { cn } from '@/lib'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
@@ -6,6 +8,8 @@ import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import Image from 'next/image'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui'
+import { useGetBodyTypeListMutation } from '@/redux/api/commonApi'
+import { useEffect, useState } from 'react'
 
 const bodyTypes = [
 	{
@@ -43,6 +47,10 @@ const bodyTypes = [
 export function BodyType() {
 	const vehicleData = useAppSelector((state) => state.carInsurance)
 	const dispatch = useAppDispatch()
+
+	const [BodyType] = useGetBodyTypeListMutation()
+
+	const [bodyTypeList, setBodyTypeList] = useState<{ value: string; label: string }[]>([])
 
 	useGSAP(() => {
 		if (vehicleData.bodyType.length === 0) {
@@ -94,9 +102,22 @@ export function BodyType() {
 		}
 	})
 
-	// function updateBodyType(type: string) {
-	// 	dispatch(updateVehicleBodyType(type))
-	// }
+	useEffect(() => {
+		const tempArr: { value: string; label: string }[] = []
+		const request = { InsuranceId: '100004', BranchCode: '46' }
+		const res = BodyType(request)
+		res.then((value) => {
+			if (value.data?.type === 'success' && value.data.data !== undefined) {
+				value.data.data.Result.map((value) => {
+					tempArr.push({
+						value: value.Code,
+						label: value.CodeDesc
+					})
+				})
+				setBodyTypeList(tempArr)
+			}
+		})
+	}, [BodyType])
 
 	function handleClick(type: string) {
 		return function () {
@@ -128,12 +149,15 @@ export function BodyType() {
 						<SelectValue />
 					</SelectTrigger>
 					<SelectContent>
-						<SelectItem value='Sedan'>Sedan</SelectItem>
-						<SelectItem value='Coupe'>Coupe</SelectItem>
-						<SelectItem value='Truck'>Truck</SelectItem>
-						<SelectItem value='SUV'>SUV</SelectItem>
-						<SelectItem value='Hatchback'>Hatchback</SelectItem>
-						<SelectItem value='Convertible'>Convertible</SelectItem>
+						{bodyTypeList.map((item, index) => {
+							return (
+								<SelectItem
+									key={index}
+									value={item.label}>
+									{item.label}
+								</SelectItem>
+							)
+						})}
 					</SelectContent>
 				</Select>
 			</div>

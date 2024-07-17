@@ -24,10 +24,11 @@ export function MoreDetailsPage() {
 	const pageEnd = useRef<HTMLDivElement>(null)
 	const specificRef = useRef<HTMLDivElement>(null)
 	const customerRef = useRef<HTMLDivElement>(null)
+	const pageStart = useRef<HTMLDivElement | null>(null)
 
-	// function scrollToBottom() {
-	// 	pageEnd.current?.scrollIntoView({ behavior: 'smooth' })
-	// }
+	function scrollToTop() {
+		pageStart.current?.scrollIntoView({ behavior: 'smooth' })
+	}
 
 	// function addCount() {
 	// 	setCurrent((pre) => pre + 1)
@@ -57,7 +58,9 @@ export function MoreDetailsPage() {
 	}, [appData, dispatch])
 
 	return (
-		<section className='flex justify-end'>
+		<section
+			ref={pageStart}
+			className='flex justify-end'>
 			<section className='flex h-full w-full flex-col gap-14 px-4 pt-4 font-roboto lg:w-5/6 lg:px-14 lg:pb-8 lg:pt-14'>
 				{/* <div className='flex flex-row items-start justify-start gap-8'>
 					<Button
@@ -133,7 +136,7 @@ export function MoreDetailsPage() {
 						vehicleData.claims !== null) ||
 					(vehicleData.insuranceClass === 'TPO' && vehicleData.claims !== null)) && (
 					<div ref={customerRef}>
-						<CustomerInfo />
+						<CustomerInfo scrollToTop={scrollToTop} />
 					</div>
 				)}
 				{/* )}

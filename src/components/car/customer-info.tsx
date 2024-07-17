@@ -1,17 +1,26 @@
 'use client'
 
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
-import { updateCode, updateMobile, updateName } from '@/redux/slices'
+import { updateCode, updateMobile, updateName, updatePremium } from '@/redux/slices'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
-import { useRouter } from 'next/navigation'
+// import { useRouter } from 'next/navigation'
 import { Button, Input } from '../ui'
+import { type SaveMotorDetailRequest } from '@/services/models/common.models'
+import { useSaveMotorDetailsMutation } from '@/redux/api/commonApi'
 
-export function CustomerInfo() {
+type CustomerInfoProps = {
+	scrollToTop: () => void
+}
+
+export function CustomerInfo(props: CustomerInfoProps) {
+	// const vehicleData = useAppSelector((state) => state.carInsurance)
 	const customerData = useAppSelector((state) => state.customerDetails)
 
+	const [saveMotor] = useSaveMotorDetailsMutation()
+
 	const dispatch = useAppDispatch()
-	const router = useRouter()
+	// const router = useRouter()
 
 	useGSAP(() => {
 		gsap.from('.selectCustomerInfo', { y: 80, opacity: 0, duration: 0.5, delay: 1 })
@@ -24,7 +33,124 @@ export function CustomerInfo() {
 	})
 
 	function goToConfirm() {
-		router.push('/car-insurance/confirm')
+		doSaveMotorDetails()
+		// router.push('/car-insurance/confirm')
+	}
+
+	function doSaveMotorDetails() {
+		const req: SaveMotorDetailRequest = {
+			BrokerBranchCode: '2',
+			CustomerCode: null,
+			CustomerName: 'Bhuvanesh',
+			BdmCode: null,
+			BrokerCode: '13090',
+			LoginId: 'madison_broker',
+			SubUserType: 'Broker',
+			ApplicationId: '1',
+			CustomerReferenceNo: 'MIC-CUST-12279',
+			RequestReferenceNo: null,
+			Idnumber: '7485963250',
+			VehicleId: '1',
+			AcccessoriesSumInsured: null,
+			AccessoriesInformation: null,
+			AdditionalCircumstances: null,
+			Chassisnumber: '6563456365',
+			CityLimit: null,
+			CoverNoteNo: null,
+			CubicCapacity: null,
+			CreatedBy: 'madison_broker',
+			DrivenByDesc: 'D',
+			MobileCode: '260',
+			MobileNumber: '7485965210',
+			Gpstrackinginstalled: 'N',
+			Grossweight: null,
+			HoldInsurancePolicy: 'N',
+			Insurancetype: null,
+			InsuranceId: '100004',
+			InsuranceClass: null,
+			InsurerSettlement: '',
+			InterestedCompanyDetails: '',
+			ModelNumber: null,
+			MotorCategory: null,
+			MotorusageId: null,
+			NcdYn: null,
+			PolicyRenewalYn: 'N',
+			NoOfClaims: null,
+			BranchCode: '46',
+			AgencyCode: '13090',
+			ProductId: '5',
+			SectionId: null,
+			PolicyType: null,
+			RadioOrCasseteplayer: null,
+			RegistrationYear: '09/07/2006',
+			Registrationnumber: '54353546546',
+			RoofRack: null,
+			SeatingCapacity: '2',
+			SpotFogLamp: null,
+			Stickerno: null,
+			SumInsured: null,
+			Tareweight: null,
+			TppdFreeLimit: null,
+			TppdIncreaeLimit: null,
+			TrailerDetails: null,
+			VehcilemodelId: 'ENCORE',
+			VehicleType: '2',
+			VehicleTypeId: '2',
+			Vehiclemake: 'BUICK',
+			VehiclemakeId: '92',
+			WindScreenSumInsured: null,
+			Windscreencoverrequired: null,
+			accident: null,
+			periodOfInsurance: null,
+			PolicyStartDate: '17/07/2024',
+			PolicyEndDate: '11/07/2025',
+			Currency: 'ZMW',
+			ExchangeRate: '1.0',
+			HavePromoCode: 'N',
+			PromoCode: null,
+			CollateralYn: null,
+			CollateralName: null,
+			FirstLossPayee: null,
+			FleetOwnerYn: 'N',
+			NoOfVehicles: null,
+			NoOfComprehensives: null,
+			ClaimRatio: null,
+			SavedFrom: null,
+			UserType: 'Broker',
+			TiraCoverNoteNo: null,
+			EndorsementYn: 'N',
+			SaveOrSubmit: 'Save',
+			EndorsementDate: null,
+			EndorsementEffectiveDate: null,
+			EndorsementRemarks: null,
+			EndorsementType: null,
+			EndorsementTypeDesc: null,
+			EndtCategoryDesc: null,
+			EndtCount: null,
+			EndtPrevPolicyNo: null,
+			EndtPrevQuoteNo: null,
+			EndtStatus: null,
+			IsFinanceEndt: null,
+			OrginalPolicyNo: null,
+			HorsePower: null,
+			Scenarios: {
+				ExchangeRateScenario: {
+					OldAcccessoriesSumInsured: null,
+					OldCurrency: 'ZMW',
+					OldExchangeRate: '1.0',
+					OldSumInsured: null,
+					OldTppdIncreaeLimit: null,
+					OldWindScreenSumInsured: null
+				}
+			},
+			Status: 'Y'
+		}
+		const res = saveMotor(req)
+		res.then((value) => {
+			dispatch(updatePremium(true))
+			props.scrollToTop()
+			console.log('theee response is', value)
+		})
 	}
 
 	return (

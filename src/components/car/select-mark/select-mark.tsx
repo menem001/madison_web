@@ -9,6 +9,8 @@ import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { TextPlugin } from 'gsap/all'
 import { MarkCard } from './mark-card'
+import { useGetMotorMakeListMutation } from '@/redux/api/commonApi'
+import { useEffect, useState } from 'react'
 
 const brands = [
 	{
@@ -70,6 +72,9 @@ export function SelectMark() {
 
 	const dispatch = useAppDispatch()
 
+	const [MotorMakeList] = useGetMotorMakeListMutation()
+	const [motorListArr, setmotorListArr] = useState<{ value: string; label: string }[]>([])
+
 	useGSAP(() => {
 		if (vehicleData.mark === '') {
 			gsap.from('.select', { y: 80, opacity: 0, duration: 0.5, delay: 1 })
@@ -95,9 +100,32 @@ export function SelectMark() {
 		}
 	})
 
-	function updateMark(mark: string) {
-		dispatch(updateVehicleMark(mark))
+	function updateMark(makeID: string) {
+		const markpos = motorListArr.findIndex((item) => {
+			return item.value === makeID
+		})
+
+		if (markpos !== -1) {
+			dispatch(updateVehicleMark({ mark: motorListArr[markpos].label, makeID: makeID }))
+		}
 	}
+
+	useEffect(() => {
+		const request = { InsuranceId: '100004', BranchCode: '46', BodyId: '2' }
+		const tempArr: { value: string; label: string }[] = []
+		const res = MotorMakeList(request)
+		res.then((value) => {
+			if (value.data?.type === 'success' && value.data?.data !== undefined) {
+				value.data.data!.Result.map((value) => {
+					tempArr.push({
+						value: value.Code,
+						label: value.CodeDesc
+					})
+				})
+				setmotorListArr(tempArr)
+			}
+		})
+	}, [MotorMakeList])
 
 	return (
 		<div
@@ -119,15 +147,15 @@ export function SelectMark() {
 						<SelectValue />
 					</SelectTrigger>
 					<SelectContent>
-						<SelectItem value='Audi'>Audi</SelectItem>
-						<SelectItem value='Peugeot'>Peugeot</SelectItem>
-						<SelectItem value='Bentley'>Bentley</SelectItem>
-						<SelectItem value='Nissan'>Nissan</SelectItem>
-						<SelectItem value='Jeep'>Jeep</SelectItem>
-						<SelectItem value='BMW'>BMW</SelectItem>
-						<SelectItem value='Ford'>Ford</SelectItem>
-						<SelectItem value='Mercedes'>Mercedes</SelectItem>
-						<SelectItem value='Volkswagen'>Volkswagen</SelectItem>
+						{motorListArr.map((item, index) => {
+							return (
+								<SelectItem
+									key={index}
+									value={item.value}>
+									{item.label}
+								</SelectItem>
+							)
+						})}
 					</SelectContent>
 				</Select>
 			</div>

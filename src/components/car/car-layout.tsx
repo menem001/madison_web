@@ -7,6 +7,7 @@ import { CarRightSideBar } from './car-right-side-bar'
 import { DetailsChecker } from './details-checker'
 import { usePathname } from 'next/navigation'
 import { cn } from '@/lib'
+import { PremiumSideBar } from './premium-sidebar'
 
 export function CarLayout(props: PropsWithChildren) {
 	const path = usePathname()
@@ -22,6 +23,12 @@ export function CarLayout(props: PropsWithChildren) {
 							'lg:hidden': path === '/car-insurance/2'
 						})}>
 						<CarRightSideBar />
+					</div>
+					<div
+						className={cn('right-0 top-10 hidden lg:flex', {
+							'lg:hidden': path === '/car-insurance/1'
+						})}>
+						<PremiumSideBar />
 					</div>
 				</section>
 			</DetailsChecker>

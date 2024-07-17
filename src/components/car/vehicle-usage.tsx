@@ -1,37 +1,45 @@
+'use client'
+
 import { cn } from '@/lib'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
 import { updateVehicleUsage } from '@/redux/slices'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select'
+import { useGetVehicleUsageListMutation } from '@/redux/api/commonApi'
+import { useEffect, useState } from 'react'
 
-const usages = [
-	{
-		id: 'Personal',
-		name: 'Personal'
-	},
-	{
-		id: 'Taxi',
-		name: 'Taxi'
-	},
-	{
-		id: 'Commercial',
-		name: 'Commercial'
-	},
-	{
-		id: 'Business',
-		name: 'Business'
-	},
-	{
-		id: 'Ambulance',
-		name: 'Ambulance'
-	}
-]
+// const usages = [
+// 	{
+// 		id: 'Personal',
+// 		name: 'Personal'
+// 	},
+// 	{
+// 		id: 'Taxi',
+// 		name: 'Taxi'
+// 	},
+// 	{
+// 		id: 'Commercial',
+// 		name: 'Commercial'
+// 	},
+// 	{
+// 		id: 'Business',
+// 		name: 'Business'
+// 	},
+// 	{
+// 		id: 'Ambulance',
+// 		name: 'Ambulance'
+// 	}
+// ]
 
 export function VehicleUsage() {
 	const vehicleData = useAppSelector((state) => state.carInsurance)
 
 	const dispatch = useAppDispatch()
+
+	const [vehicleUsage] = useGetVehicleUsageListMutation()
+
+	const [vehicleUsageList, setVehicleUsageList] = useState<{ value: string; label: string }[]>([])
 
 	useGSAP(() => {
 		if (vehicleData.vehicleUsage === '') {
@@ -72,6 +80,23 @@ export function VehicleUsage() {
 		}
 	})
 
+	useEffect(() => {
+		const tempArr: { value: string; label: string }[] = []
+		const request = { InsuranceId: '100004', BranchCode: '46' }
+		const res = vehicleUsage(request)
+		res.then((value) => {
+			if (value.data?.type === 'success' && value.data.data !== undefined) {
+				value.data.data.Result.map((value) => {
+					tempArr.push({
+						value: value.Code,
+						label: value.CodeDesc
+					})
+				})
+				setVehicleUsageList(tempArr)
+			}
+		})
+	}, [vehicleUsage])
+
 	function updateUsage(usage: string) {
 		return function () {
 			dispatch(updateVehicleUsage(usage))
@@ -100,27 +125,35 @@ export function VehicleUsage() {
 						<SelectValue />
 					</SelectTrigger>
 					<SelectContent>
-						<SelectItem value='Personal'>Personal</SelectItem>
-						<SelectItem value='Taxi'>Taxi</SelectItem>
-						<SelectItem value='Commercial'>Commercial</SelectItem>
-						<SelectItem value='Business'>Business</SelectItem>
-						<SelectItem value='Ambulance'>Ambulance</SelectItem>
+						{vehicleUsageList.map((item, index) => {
+							return (
+								<SelectItem
+									key={index}
+									value={item.value}>
+									{item.label}
+								</SelectItem>
+							)
+						})}
 					</SelectContent>
 				</Select>
 			</div>
-			<h2 className='usageSuggest font-jakarta text-lg font-bold'></h2>
-			<div className='suggestedGridusage grid grid-cols-5 gap-9'>
-				{usages.map((usage) => {
-					return (
-						<div
-							key={usage.id}
-							className='flex cursor-pointer items-center justify-center rounded-md py-3 font-inter text-sm shadow-md hover:shadow-xl'
-							onClick={updateUsage(usage.name)}>
-							{usage.name}
-						</div>
-					)
-				})}
-			</div>
+			{vehicleUsageList.length !== 0 && (
+				<>
+					<h2 className='usageSuggest font-jakarta text-lg font-bold'></h2>
+					<div className='suggestedGridusage grid grid-cols-5 gap-9'>
+						{vehicleUsageList.slice(0, 5).map((usage, index) => {
+							return (
+								<div
+									key={index}
+									className='flex cursor-pointer items-center justify-center rounded-md py-3 font-inter text-sm shadow-md hover:shadow-xl'
+									onClick={updateUsage(usage.value)}>
+									{usage.label}
+								</div>
+							)
+						})}
+					</div>
+				</>
+			)}
 		</div>
 	)
 }

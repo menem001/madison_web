@@ -2,13 +2,19 @@ import { cn } from '@/lib'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
-import { Input } from '../ui'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui'
 import { updateVehicleManufactureYear } from '@/redux/slices'
 
 export function ManufactureYear() {
 	const vehicleData = useAppSelector((state) => state.carInsurance)
 
 	const dispatch = useAppDispatch()
+
+	const years = []
+
+	for (let i = 1950; i < 2500; i++) {
+		years.push(i + '')
+	}
 
 	useGSAP(() => {
 		if (vehicleData.year === 0) {
@@ -39,13 +45,36 @@ export function ManufactureYear() {
 				<span className='Yearsubtitle font-roboto text-sm font-medium text-gray-500'></span>
 			</div>
 			<div className='selectManufacture flex w-3/4 flex-row gap-10'>
-				<Input
+				<Select
+					value={vehicleData.year + ''}
+					onValueChange={(e) => {
+						dispatch(updateVehicleManufactureYear(e + ''))
+					}}>
+					<SelectTrigger
+						className='w-3/4'
+						title='Manufacture Year'
+						value={vehicleData.year}>
+						<SelectValue />
+					</SelectTrigger>
+					<SelectContent>
+						{years.map((year) => {
+							return (
+								<SelectItem
+									key={year}
+									value={year}>
+									{year}
+								</SelectItem>
+							)
+						})}
+					</SelectContent>
+				</Select>
+				{/* <Input
 					placeholder='Manufacture'
 					value={vehicleData.year}
 					onChange={(e) => {
 						dispatch(updateVehicleManufactureYear(e.target.value))
 					}}
-				/>
+				/> */}
 			</div>
 		</div>
 	)

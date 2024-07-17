@@ -13,7 +13,7 @@ export function VehicleDescription() {
 	useGSAP(() => {
 		if (vehicleData.description === '') {
 			gsap.from('.selectVehicleDesciption', { y: 80, opacity: 0, duration: 0.5, delay: 1 })
-			gsap.to('.descriptiontitle', { duration: 0.5, text: 'Vehicle Description' })
+			gsap.to('.descriptiontitle', { duration: 0.5, text: 'Model Description' })
 			gsap.to('.descriptionsubtitle', {
 				duration: 0.5,
 				text: 'How the vehicle is used, such as for personal, business, or commercial purposes',
@@ -21,7 +21,7 @@ export function VehicleDescription() {
 			})
 		} else {
 			gsap.from('.selectVehicleDesciption', { y: 80, opacity: 0, duration: 0.5 })
-			gsap.to('.descriptiontitle', { duration: 0.5, text: 'Vehicle Description' })
+			gsap.to('.descriptiontitle', { duration: 0.5, text: 'Model Description' })
 			gsap.to('.descriptionsubtitle', {
 				duration: 0.5,
 				text: 'How the vehicle is used, such as for personal, business, or commercial purposes'
@@ -40,7 +40,7 @@ export function VehicleDescription() {
 			</div>
 			<div className='selectVehicleDesciption flex w-3/4 flex-row gap-10'>
 				<Input
-					placeholder='Vehicle Description'
+					placeholder='Model Description'
 					value={vehicleData.description}
 					onChange={(e) => {
 						dispatch(updateDescription(e.target.value))

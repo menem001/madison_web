@@ -3,13 +3,15 @@ import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
 const initialState = {
 	name: '',
 	code: '266',
-	mobile: ''
+	mobile: '',
+	premium: false
 }
 
 export type CustomerDetails = {
 	name: string
 	code: string
 	mobile: string
+	premium: boolean
 }
 
 export const customerDetailsSlice = createSlice({
@@ -24,8 +26,11 @@ export const customerDetailsSlice = createSlice({
 		},
 		updateMobile(state: CustomerDetails, action: PayloadAction<string>) {
 			state.mobile = action.payload
+		},
+		updatePremium(state: CustomerDetails, action: PayloadAction<boolean>) {
+			state.premium = action.payload
 		}
 	}
 })
 
-export const { updateCode, updateMobile, updateName } = customerDetailsSlice.actions
+export const { updateCode, updateMobile, updateName, updatePremium } = customerDetailsSlice.actions

@@ -1,5 +1,5 @@
 import { cn } from '@/lib'
-import { useAppDispatch } from '@/redux/hooks'
+import { useAppDispatch, useAppSelector } from '@/redux/hooks'
 import { updateClaims } from '@/redux/slices'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
@@ -7,6 +7,8 @@ import { useEffect, useState } from 'react'
 
 export function Claims() {
 	const dispatch = useAppDispatch()
+
+	const vehicleData = useAppSelector((state) => state.carInsurance)
 
 	const [iclaims, setIclaims] = useState<number>(0)
 
@@ -27,6 +29,14 @@ export function Claims() {
 			dispatch(updateClaims(false))
 		}
 	}, [dispatch, iclaims])
+
+	useEffect(() => {
+		if (vehicleData.claims === true) {
+			setIclaims(1)
+		} else if (vehicleData.claims === false) {
+			setIclaims(2)
+		}
+	}, [vehicleData])
 
 	return (
 		<div className='flex w-full flex-row items-center justify-between'>

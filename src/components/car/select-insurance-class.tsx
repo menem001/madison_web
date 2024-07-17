@@ -1,5 +1,5 @@
 import { cn } from '@/lib'
-import { useAppDispatch } from '@/redux/hooks'
+import { useAppDispatch, useAppSelector } from '@/redux/hooks'
 import { updateClass, updateGPSTraking, updateSumInsured } from '@/redux/slices'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
@@ -7,6 +7,8 @@ import { useEffect, useState } from 'react'
 
 export function SelectInsuranceClass() {
 	const dispatch = useAppDispatch()
+
+	const vehicleData = useAppSelector((state) => state.carInsurance)
 
 	const [iclass, setIclass] = useState<number>(0)
 
@@ -32,6 +34,16 @@ export function SelectInsuranceClass() {
 			dispatch(updateSumInsured(null))
 		}
 	}, [dispatch, iclass])
+
+	useEffect(() => {
+		if (vehicleData.insuranceClass === 'Comprehensive') {
+			setIclass(1)
+		} else if (vehicleData.insuranceClass === 'TPFT') {
+			setIclass(2)
+		} else if (vehicleData.insuranceClass === 'TPO') {
+			setIclass(3)
+		}
+	}, [vehicleData])
 
 	return (
 		<div className='flex flex-col gap-7'>

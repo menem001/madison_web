@@ -9,6 +9,14 @@ export function SumInsured() {
 
 	const dispatch = useAppDispatch()
 
+	// function addCommas(num:number) {
+	// 	return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+	// }
+
+	// function removeNonNumeric(num:number) {
+	// 	return num.toString().replace(/[^0-9]/g, '')
+	// }
+
 	useGSAP(() => {
 		gsap.from('.selectsumInsured', { y: 80, opacity: 0, duration: 0.5, delay: 1 })
 		gsap.to('.sumInsuredtitle', { duration: 0.5, text: 'Sum Insured' })
@@ -30,7 +38,7 @@ export function SumInsured() {
 				type='number'
 				value={vehicleData.sumInsured !== null ? vehicleData.sumInsured : undefined}
 				onChange={(e) => {
-					dispatch(updateSumInsured(+e.target.value))
+					dispatch(updateSumInsured(e.target.value))
 				}}
 			/>
 		</div>

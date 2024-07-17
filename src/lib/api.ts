@@ -3,26 +3,26 @@ import axios, { AxiosError } from 'axios'
 import type { z } from 'zod'
 
 export type TSuccess<D = undefined> = {
-  type: 'success';
-  message?: string;
-  data?: D;
-  status: number;
-};
+	type: 'success'
+	message?: string
+	data?: D
+	status: number
+}
 
 type TError = {
-  type: 'error';
-  message?: string;
-  status?: number;
-};
+	type: 'error'
+	message?: string
+	status?: number
+}
 
-export type TResponse<D = undefined> = TSuccess<D> | TError;
+export type TResponse<D = undefined> = TSuccess<D> | TError
 
 type MergeConfig = {
-  url: AxiosRequestConfig['url'];
-  method: AxiosRequestConfig['method'];
-  data?: AxiosRequestConfig['data'];
-  config?: AxiosRequestConfig;
-};
+	url: AxiosRequestConfig['url']
+	method: AxiosRequestConfig['method']
+	data?: AxiosRequestConfig['data']
+	config?: AxiosRequestConfig
+}
 
 class API {
 	private axiosInstance: AxiosInstance
@@ -42,7 +42,7 @@ class API {
 				// }
 
 				req.headers.Authorization =
-                'Bearer $2a$10$8uS27VaAO7m3pYxKVUCMGe8Sg8sbkqgcfzIVYX.wyRK/Xan5H.2CW'
+					'Bearer $2a$10$VccoTYOy28cWPC2KOlVpWuBGwMVkg86G0OOr8RERc.bfw425a3e5O'
 
 				return req
 			},
@@ -52,10 +52,7 @@ class API {
 		)
 	}
 
-	private async request<D = undefined>(
-		config: AxiosRequestConfig,
-		schema: z.Schema<D>
-	) {
+	private async request<D = undefined>(config: AxiosRequestConfig, schema: z.Schema<D>) {
 		try {
 			const res = await this.axiosInstance.request<D>(config)
 
@@ -68,7 +65,7 @@ class API {
 	private getError(error: unknown): TError {
 		const obj: TError = {
 			type: 'error',
-			message: 'Something went wrong',
+			message: 'Something went wrong'
 		}
 
 		if (error instanceof AxiosError) {
@@ -88,14 +85,11 @@ class API {
 		return obj
 	}
 
-	private getResponse<D>(
-		res: AxiosResponse<D>,
-		schema: z.Schema<D>
-	): TSuccess<D> {
+	private getResponse<D>(res: AxiosResponse<D>, schema: z.Schema<D>): TSuccess<D> {
 		return {
 			type: 'success',
 			status: res.status,
-			data: schema.parse(res.data),
+			data: schema.parse(res.data)
 		}
 	}
 
@@ -104,15 +98,11 @@ class API {
 			...config,
 			url,
 			method,
-			data,
+			data
 		}
 	}
 
-	public get<D = undefined>(
-		url: string,
-		schema: z.Schema,
-		config?: AxiosRequestConfig
-	) {
+	public get<D = undefined>(url: string, schema: z.Schema, config?: AxiosRequestConfig) {
 		const finalConfig = this.mergeConfig({ url, method: 'GET', config })
 		return this.request<D>(finalConfig, schema)
 	}
@@ -147,16 +137,12 @@ class API {
 			url,
 			method: 'PATCH',
 			data,
-			config,
+			config
 		})
 		return this.request<D>(finalConfig, schema)
 	}
 
-	public delete<D = undefined>(
-		url: string,
-		schema: z.Schema,
-		config?: AxiosRequestConfig
-	) {
+	public delete<D = undefined>(url: string, schema: z.Schema, config?: AxiosRequestConfig) {
 		const finalConfig = this.mergeConfig({ url, method: 'DELETE', config })
 		return this.request<D>(finalConfig, schema)
 	}
