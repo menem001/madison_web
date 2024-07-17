@@ -146,10 +146,9 @@ export function CustomerInfo(props: CustomerInfoProps) {
 			Status: 'Y'
 		}
 		const res = saveMotor(req)
-		res.then((value) => {
+		res.then(() => {
 			dispatch(updatePremium(true))
 			props.scrollToTop()
-			console.log('theee response is', value)
 		})
 	}
 
