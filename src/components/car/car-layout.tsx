@@ -14,7 +14,6 @@ export function CarLayout(props: PropsWithChildren) {
 	return (
 		<section className='flex h-screen w-full flex-col overflow-y-scroll'>
 			<Header />
-			{/* <ProgressIndicator /> */}
 			<DetailsChecker>
 				<section className='grid flex-grow grid-cols-3 px-12'>
 					<div className='col-span-3 lg:col-span-2'>{props.children}</div>
