@@ -15,10 +15,10 @@ export function ConfirmDetails() {
 			<div className='flex w-full flex-row items-center justify-around gap-6 rounded-md border-[0.5px] border-green-100 p-6 font-inter'>
 				<div className='flex flex-col gap-2'>
 					<h2 className='text-xl font-bold'>{vehicleData.mark}</h2>
-					<span className='text-xs text-gray-500 '>Mark</span>
+					<span className='text-xs text-gray-500'>Mark</span>
 				</div>
 				<div className='flex flex-col gap-2'>
-					<h2 className='text-xl font-bold'>{vehicleData.model}</h2>
+					<h2 className='text-xl font-bold'>Car</h2>
 					<span className='text-xs text-gray-500'>Model</span>
 				</div>
 				<div className='flex flex-col gap-2'>
