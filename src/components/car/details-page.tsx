@@ -7,9 +7,10 @@ import { useEffect, useRef } from 'react'
 import { Button } from '../ui'
 import { BodyType } from './body-type'
 import { SelectMark } from './select-mark'
-import { VehicleUsage } from './vehicle-usage'
+// import { VehicleUsage } from './vehicle-usage'
 import { ManufactureYear } from './manufacture-year'
 import { VehicleDescription } from './vehicle-description'
+import { SelectModel } from './select-model'
 
 export function DetailsPage() {
 	const router = useRouter()
@@ -78,9 +79,16 @@ export function DetailsPage() {
 				<div
 					ref={appData.scrollTo === 1 ? specificRef : undefined}
 					className='flex flex-col gap-6'>
-					<VehicleUsage />
+					<SelectMark />
 				</div>
-				{vehicleData.vehicleUsage !== '' && (
+				{vehicleData.mark !== '' && (
+					<div
+						ref={appData.scrollTo === 2 ? specificRef : undefined}
+						className='flex flex-col gap-6'>
+						<SelectModel />
+					</div>
+				)}
+				{vehicleData.mark !== '' && (
 					<div
 						ref={appData.scrollTo === 2 ? specificRef : undefined}
 						className='flex flex-col gap-6'>
@@ -96,7 +104,7 @@ export function DetailsPage() {
 					</div>
 				)}
 
-				{vehicleData.mark !== '' && (
+				{vehicleData.model !== '' && (
 					<div
 						ref={appData.scrollTo === 4 ? specificRef : undefined}
 						className='flex flex-col gap-6'>

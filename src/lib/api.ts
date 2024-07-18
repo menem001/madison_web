@@ -41,8 +41,8 @@ class API {
 				// 	value.headers.Authorization = `${tokenType} ${token}`
 				// }
 
-				req.headers.Authorization =
-					'Bearer $2a$10$4uC5fHSD0rDvWmqx6REEwu1btzj0UciqAKpjlNWfKUJZw0HuLYT9q'
+				// req.headers.Authorization =
+				// 	'Bearer $2a$10$4uC5fHSD0rDvWmqx6REEwu1btzj0UciqAKpjlNWfKUJZw0HuLYT9q'
 
 				return req
 			},

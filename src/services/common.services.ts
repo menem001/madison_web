@@ -38,8 +38,10 @@ export async function getCurrencyList(data: CurrencyRequest) {
 
 export type MotorListResponse = TResponse<MotorList>
 
-export async function getMotorList(data: CommonModalRequest) {
-	return api.post<MotorList>(endPoints.motorMake, data, MotorMakeSchema)
+export async function getMotorList(data: CommonModalRequest, token: string | null) {
+	return api.post<MotorList>(endPoints.motorMake, data, MotorMakeSchema, {
+		headers: { Authorization: token }
+	})
 }
 
 export type MotorModelListResponse = TResponse<MotorModelList>
@@ -60,8 +62,10 @@ export async function getBodyTypeList() {
 
 export type VehicleUsageListResponse = TResponse<vehicleUsageList>
 
-export async function getVehicleUsageList(data: vehicleUsageRequest) {
-	return api.post<MotorList>(endPoints.vehicleUsage, data, vehicleUsageSchema)
+export async function getVehicleUsageList(data: vehicleUsageRequest, token: string | null) {
+	return api.post<MotorList>(endPoints.vehicleUsage, data, vehicleUsageSchema, {
+		headers: { Authorization: token }
+	})
 }
 
 export type SaveMotorDetailResponse = TResponse<vehicleUsageList>

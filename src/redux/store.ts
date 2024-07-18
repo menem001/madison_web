@@ -7,13 +7,12 @@ const reducer = combineReducers({
 	[carInsuranceSlice.reducerPath]: carInsuranceSlice.reducer,
 	[customerDetailsSlice.reducerPath]: customerDetailsSlice.reducer,
 	[appSlice.reducerPath]: appSlice.reducer,
-	[commonApi.reducerPath]: commonApi.reducer,
+	[commonApi.reducerPath]: commonApi.reducer
 })
 
-export const store = configureStore({ 
-	reducer, 
-	middleware:(getDefaultMiddleware) =>
-		getDefaultMiddleware().concat(commonApi.middleware), 
+export const store = configureStore({
+	reducer,
+	middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(commonApi.middleware)
 })
 
 setupListeners(store.dispatch)

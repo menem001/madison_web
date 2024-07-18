@@ -17,6 +17,7 @@ import {
 import type { Action, PayloadAction } from '@reduxjs/toolkit'
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { HYDRATE } from 'next-redux-wrapper'
+import { store } from '../store'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type RootState = any // normally inferred from state
@@ -30,6 +31,18 @@ export const commonApi = createApi({
 	reducerPath: 'common',
 	baseQuery: fetchBaseQuery({
 		baseUrl: '/api/common/'
+		// prepareHeaders: (headers) => {
+		// 	const state = store.getState()
+		// 	const token = state.apps?.token
+		// 	console.log('prepareHeaders is called', token, 'Here')
+
+		// 	if (token) {
+		// 		headers.append('Authorization', `Bearer ${token}`)
+		// 		console.log('Headers after setting token:', headers)
+		// 	} else {
+		// 		console.log('Token is not set')
+		// 	}
+		// }
 	}),
 	extractRehydrationInfo(action, { reducerPath }) {
 		if (isHydrateAction(action)) {
@@ -51,10 +64,18 @@ export const commonApi = createApi({
 			})
 		}),
 		getMotorMakeList: build.mutation<MotorListResponse, CommonModalRequest>({
-			query: (data) => ({
+			query: (
+				data
+			): {
+				url: string
+				method: string
+				body: vehicleUsageRequest
+				headers: { Authorization: string }
+			} => ({
 				url: 'get_motor_list',
 				method: 'POST',
-				body: data
+				body: data,
+				headers: { Authorization: `Bearer ${store.getState().apps.token}` }
 			})
 		}),
 		getMotorModelList: build.mutation<MotorModelListResponse, MotorModalRequest>({
@@ -72,10 +93,18 @@ export const commonApi = createApi({
 			})
 		}),
 		getVehicleUsageList: build.mutation<VehicleUsageListResponse, vehicleUsageRequest>({
-			query: (data) => ({
+			query: (
+				data
+			): {
+				url: string
+				method: string
+				body: vehicleUsageRequest
+				headers: { Authorization: string }
+			} => ({
 				url: 'get_vehicle_usage',
 				method: 'POST',
-				body: data
+				body: data,
+				headers: { Authorization: `Bearer ${store.getState().apps.token}` }
 			})
 		}),
 		saveMotorDetails: build.mutation<VehicleUsageListResponse, SaveMotorDetailRequest>({

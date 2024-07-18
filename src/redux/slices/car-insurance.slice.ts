@@ -3,10 +3,17 @@ import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
 const initialState = {
 	mark: '',
 	makeID: '',
+	model: '',
+	seat: 0,
+	excessLimit: '',
 	vehicleUsage: '',
+	value: 0,
 	bodyType: [],
 	year: 0,
 	description: '',
+	policyStartDate: '',
+	policyEndDate: '',
+	Currency: '',
 	insuranceClass: 'Comprehensive',
 	sumInsured: null,
 	claims: null,
@@ -16,11 +23,18 @@ const initialState = {
 export type CarDetails = {
 	mark: string
 	makeID: string
+	model: string
+	seat: number
+	value: number
+	excessLimit: string
 	vehicleUsage: string
 	bodyType: string[]
 	year: number
 	description: string
 	insuranceClass: string
+	policyStartDate: string
+	policyEndDate: string
+	Currency: string
 	sumInsured: string | null
 	claims: boolean | null
 	gpsTraking: boolean | null
@@ -30,13 +44,24 @@ export const carInsuranceSlice = createSlice({
 	name: 'carInsurance',
 	initialState: initialState,
 	reducers: {
-		updateVehicleUsage(state: CarDetails, action: PayloadAction<string>) {
-			state.vehicleUsage = action.payload
-			state.makeID = ''
-			state.mark = ''
+		updateVehicleMark(
+			state: CarDetails,
+			action: PayloadAction<{ mark: string; makeID: string }>
+		) {
+			state.mark = action.payload.mark
+			state.makeID = action.payload.makeID
+			state.year = 0
+			state.model = ''
+			state.description = ''
+			state.vehicleUsage = ''
 			state.bodyType = []
+		},
+		updateVehicleModel(state: CarDetails, action: PayloadAction<string>) {
+			state.model = action.payload
 			state.year = 0
 			state.description = ''
+			state.vehicleUsage = ''
+			state.bodyType = []
 		},
 		updateVehicleBodyType(state: CarDetails, action: PayloadAction<string>) {
 			state.bodyType = [action.payload]
@@ -45,12 +70,11 @@ export const carInsuranceSlice = createSlice({
 			state.year = 0
 			state.description = ''
 		},
-		updateVehicleMark(
-			state: CarDetails,
-			action: PayloadAction<{ mark: string; makeID: string }>
-		) {
-			state.mark = action.payload.mark
-			state.makeID = action.payload.makeID
+		updateVehicleUsage(state: CarDetails, action: PayloadAction<string>) {
+			state.vehicleUsage = action.payload
+			state.makeID = ''
+			state.mark = ''
+			state.bodyType = []
 			state.year = 0
 			state.description = ''
 		},
@@ -85,5 +109,6 @@ export const {
 	updateClaims,
 	updateClass,
 	updateGPSTraking,
-	updateSumInsured
+	updateSumInsured,
+	updateVehicleModel
 } = carInsuranceSlice.actions
