@@ -1,22 +1,25 @@
 import api, { type TResponse } from '@/lib/api'
 import endPoints from './endpoints'
 import {
+	BodyTypeSchema,
 	CurrencyListAPISchema,
+	GuestLoginSchema,
+	MotorMakeSchema,
+	MotorModelListSchema,
 	SaveMotorDetailRequestSchema,
-	type vehicleUsageRequest,
+	vehicleUsageSchema,
+	type BodyTypeList,
+	type CommonModalRequest,
 	type CurrencyList,
 	type CurrencyRequest,
-	type SaveMotorDetailRequest
-} from './models/common.models'
-import { MotorMakeSchema, type MotorList, type CommonModalRequest } from './models/common.models'
-import {
-	MotorModelListSchema,
+	type GuestLogin,
+	type MotorList,
+	type MotorModalRequest,
 	type MotorModelList,
-	type MotorModalRequest
+	type SaveMotorDetailRequest,
+	type vehicleUsageList,
+	type vehicleUsageRequest
 } from './models/common.models'
-import { BodyTypeSchema, type BodyTypeList } from './models/common.models'
-import { vehicleUsageSchema, type vehicleUsageList } from './models/common.models'
-import { GuestLoginSchema, type GuestLogin } from './models/common.models'
 
 export type GuestLoginResponse = TResponse<GuestLogin>
 

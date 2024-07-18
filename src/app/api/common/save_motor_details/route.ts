@@ -1,4 +1,3 @@
-/* eslint-disable indent */
 import { saveMotorDetails } from '@/services/common.services'
 import { type NextRequest, NextResponse } from 'next/server'
 

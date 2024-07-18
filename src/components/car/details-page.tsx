@@ -9,8 +9,8 @@ import { BodyType } from './body-type'
 import { SelectMark } from './select-mark'
 // import { VehicleUsage } from './vehicle-usage'
 import { ManufactureYear } from './manufacture-year'
-import { VehicleDescription } from './vehicle-description'
 import { SelectModel } from './select-model'
+import { VehicleDescription } from './vehicle-description'
 
 export function DetailsPage() {
 	const router = useRouter()

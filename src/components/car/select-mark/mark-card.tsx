@@ -16,7 +16,7 @@ export function MarkCard(props: MarkCardProps) {
 	return (
 		<div
 			className={cn(
-				'flex flex-col overflow-hidden cursor-pointer items-center justify-center rounded-md shadow-md py-3 hover:shadow-xl text-sm font-inter gap-4',
+				'flex cursor-pointer flex-col items-center justify-center gap-4 overflow-hidden rounded-md py-3 font-inter text-sm shadow-md hover:shadow-xl',
 				props.className
 			)}
 			onClick={handleClick}>

@@ -1,9 +1,9 @@
 'use client'
+import { cn } from '@/lib'
 import { useState } from 'react'
 import { Button, Input } from '../ui'
 import { Label } from '../ui/label'
 import { FormFieldLayout } from './form-field-layout'
-import { cn } from '@/lib'
 
 type businessDetailsFieldProps = {
 	current: number
@@ -29,7 +29,7 @@ export function BusinessDetailsField(props: businessDetailsFieldProps) {
 					<div className='flex-grow'>
 						<Label htmlFor='source'>Business Source</Label>
 						<Input
-							className='border-blue-925 border-2'
+							className='border-2 border-blue-925'
 							id='source'
 							placeholder='Source of Business '
 						/>

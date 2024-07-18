@@ -1,9 +1,9 @@
 'use client'
 
-import { Button } from '../ui'
-import { useRouter } from 'next/navigation'
-import { InputOTP, InputOTPGroup, InputOTPSlot } from '../ui/input-otp'
 import { useAppSelector } from '@/redux/hooks'
+import { useRouter } from 'next/navigation'
+import { Button } from '../ui'
+import { InputOTP, InputOTPGroup, InputOTPSlot } from '../ui/input-otp'
 
 export function OtpForm() {
 	const route = useRouter()

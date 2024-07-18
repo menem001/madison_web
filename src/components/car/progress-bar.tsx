@@ -1,11 +1,11 @@
 'use client'
 
+import { assets } from '@/assets'
+import { useAppSelector } from '@/redux/hooks'
 import Image from 'next/image'
-import { Progress } from '../ui'
 import { usePathname } from 'next/navigation'
 import { useEffect, useMemo, useState } from 'react'
-import { useAppSelector } from '@/redux/hooks'
-import { assets } from '@/assets'
+import { Progress } from '../ui'
 
 export function ProgressBar() {
 	const path = usePathname()

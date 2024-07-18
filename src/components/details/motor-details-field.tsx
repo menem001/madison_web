@@ -24,7 +24,7 @@ export function MotorDetailsField(props: motorDetailsFieldProps) {
 					<div className='flex-grow'>
 						<Label htmlFor='number'>Registration number</Label>
 						<Input
-							className='border-blue-925 border-2'
+							className='border-2 border-blue-925'
 							id='number'
 							placeholder='Enter Registration number'
 						/>
@@ -32,7 +32,7 @@ export function MotorDetailsField(props: motorDetailsFieldProps) {
 					<div className='flex-grow'>
 						<Label htmlFor='chassis'>Chassis number</Label>
 						<Input
-							className='border-blue-925 border-2'
+							className='border-2 border-blue-925'
 							id='chassis'
 							placeholder='Enter Chassis number'
 						/>
@@ -42,7 +42,7 @@ export function MotorDetailsField(props: motorDetailsFieldProps) {
 					<div className='flex-grow'>
 						<Label htmlFor='category'>Category</Label>
 						<Input
-							className='border-blue-925 border-2'
+							className='border-2 border-blue-925'
 							id='category'
 							placeholder='Category'
 						/>
@@ -50,7 +50,7 @@ export function MotorDetailsField(props: motorDetailsFieldProps) {
 					<div className='flex-grow'>
 						<Label htmlFor='capacity'>Seat capcity</Label>
 						<Input
-							className='border-blue-925 border-2'
+							className='border-2 border-blue-925'
 							id='capacity'
 							placeholder='Enter Seat capcity'
 						/>

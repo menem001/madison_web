@@ -1,13 +1,13 @@
 'use client'
 
-import { useState } from 'react'
-import { PersonalInformationField } from './personal-information-field'
-import { IdentificationDetailsField } from './identification-details-field'
-import { BusinessDetailsField } from './business-details-field'
-import { AddressDetailsField } from './address-details-field'
-import { ContactInformationField } from './contact-information-field'
-import { Button } from '../ui'
 import { useRouter } from 'next/navigation'
+import { useState } from 'react'
+import { Button } from '../ui'
+import { AddressDetailsField } from './address-details-field'
+import { BusinessDetailsField } from './business-details-field'
+import { ContactInformationField } from './contact-information-field'
+import { IdentificationDetailsField } from './identification-details-field'
+import { PersonalInformationField } from './personal-information-field'
 
 export function CustomerDetailsForm() {
 	const [current, setCurrent] = useState(1)
@@ -32,11 +32,11 @@ export function CustomerDetailsForm() {
 				<h1 className='font-roboto text-5xl font-semibold text-blue-300'>
 					Customer Details
 				</h1>
-				<h5 className='text-gray-550 font-roboto text-sm'>
+				<h5 className='font-roboto text-sm text-gray-550'>
 					Hello, please fill in the forms below
 				</h5>
 			</div>
-			<section className='border-blue-925 flex flex-col gap-10 border-l border-dashed'>
+			<section className='flex flex-col gap-10 border-l border-dashed border-blue-925'>
 				<PersonalInformationField
 					current={current}
 					goNext={goNext}

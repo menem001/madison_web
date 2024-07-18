@@ -1,17 +1,17 @@
 'use client'
 
 import { assets } from '@/assets'
+import { useGuestLoginMutation } from '@/redux/api/commonApi'
+import { setGuestLoginDetails } from '@/redux/slices'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { MoveUpRight } from 'lucide-react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import { Button } from '../ui'
-import { MotorcycleCard } from './cards'
-import { useGuestLoginMutation } from '@/redux/api/commonApi'
 import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
-import { setGuestLoginDetails } from '@/redux/slices'
+import { Button } from '../ui'
+import { MotorcycleCard } from './cards'
 
 export function HeroContent() {
 	const router = useRouter()
@@ -31,25 +31,25 @@ export function HeroContent() {
 		router.push('/car-insurance')
 	}
 
-	function loginAsGuest() {
-		const res = guestLogin()
-		res.then((value) => {
-			if (value.data?.type === 'success' && value.data?.data !== undefined) {
-				const details = {
-					token: value.data.data.Result.Token,
-					brokerCode: value.data.data.Result.LoginBranchDetails[0].BrokerBranchCode,
-					insuranceID: value.data.data.Result.LoginBranchDetails[0].InsuranceId,
-					productId: value.data.data.Result.BrokerCompanyProducts[0].ProductId,
-					loginId: value.data.data.Result.LoginId
-				}
-				dispatch(setGuestLoginDetails(details))
-			}
-		})
-	}
-
 	useEffect(() => {
+		function loginAsGuest() {
+			const res = guestLogin()
+			res.then((value) => {
+				if (value.data?.type === 'success' && value.data?.data !== undefined) {
+					const details = {
+						token: value.data.data.Result.Token,
+						brokerCode: value.data.data.Result.LoginBranchDetails[0].BrokerBranchCode,
+						insuranceID: value.data.data.Result.LoginBranchDetails[0].InsuranceId,
+						productId: value.data.data.Result.BrokerCompanyProducts[0].ProductId,
+						loginId: value.data.data.Result.LoginId
+					}
+					dispatch(setGuestLoginDetails(details))
+				}
+			})
+		}
+
 		loginAsGuest()
-	}, [])
+	}, [dispatch, guestLogin])
 
 	return (
 		<section className='flex flex-col gap-10 px-4 py-10 font-jakarta lg:px-32 lg:py-12'>

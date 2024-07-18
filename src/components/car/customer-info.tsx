@@ -5,9 +5,9 @@ import { updateCode, updateMobile, updateName, updatePremium } from '@/redux/sli
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 // import { useRouter } from 'next/navigation'
-import { Button, Input } from '../ui'
-import { type SaveMotorDetailRequest } from '@/services/models/common.models'
 import { useSaveMotorDetailsMutation } from '@/redux/api/commonApi'
+import { type SaveMotorDetailRequest } from '@/services/models/common.models'
+import { Button, Input } from '../ui'
 
 type CustomerInfoProps = {
 	scrollToTop: () => void

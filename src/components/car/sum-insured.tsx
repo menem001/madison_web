@@ -1,8 +1,8 @@
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
+import { updateSumInsured } from '@/redux/slices'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { Input } from '../ui'
-import { updateSumInsured } from '@/redux/slices'
 
 export function SumInsured() {
 	const vehicleData = useAppSelector((state) => state.carInsurance)

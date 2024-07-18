@@ -1,11 +1,11 @@
 'use client'
 
 import { assets } from '@/assets'
+import { useAppSelector } from '@/redux/hooks'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 import { Button } from '../ui'
 import { MobileLinkDetails } from './mobile-link-details'
-import { useRouter } from 'next/navigation'
-import { useAppSelector } from '@/redux/hooks'
 
 export function PremiumSideBar() {
 	const route = useRouter()

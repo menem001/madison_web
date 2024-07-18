@@ -24,7 +24,7 @@ export function IdentificationDetailsField(props: identificationDetailsFieldProp
 					<div className='flex-grow'>
 						<Label htmlFor='type'>ID Type</Label>
 						<Input
-							className='border-blue-925 border-2'
+							className='border-2 border-blue-925'
 							id='type'
 							placeholder='ID Type'
 						/>
@@ -34,7 +34,7 @@ export function IdentificationDetailsField(props: identificationDetailsFieldProp
 					<div className='flex-grow'>
 						<Label htmlFor='number'>ID Number</Label>
 						<Input
-							className='border-blue-925 border-2'
+							className='border-2 border-blue-925'
 							id='number'
 							placeholder='Enter ID Number'
 						/>
@@ -42,7 +42,7 @@ export function IdentificationDetailsField(props: identificationDetailsFieldProp
 					<div className='flex-grow'>
 						<Label htmlFor='expdate'>ID Expiration Date</Label>
 						<Input
-							className='border-blue-925 border-2'
+							className='border-2 border-blue-925'
 							id='expdate'
 							placeholder='DD/MM/YY'
 						/>

@@ -1,13 +1,13 @@
 'use client'
 
 import { cn } from '@/lib'
+import { useGetVehicleUsageListMutation } from '@/redux/api/commonApi'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
 import { updateVehicleUsage } from '@/redux/slices'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select'
-import { useGetVehicleUsageListMutation } from '@/redux/api/commonApi'
 import { useEffect, useState } from 'react'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select'
 
 // const usages = [
 // 	{

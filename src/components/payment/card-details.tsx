@@ -48,7 +48,7 @@ export function CardDetails() {
 				</DialogTrigger>
 				<DialogContent>
 					<div className='flex h-full w-full flex-col items-center justify-center gap-3 p-10'>
-						<div className='bg-green-320 flex h-28 w-28 items-center justify-center rounded-full'>
+						<div className='flex h-28 w-28 items-center justify-center rounded-full bg-green-320'>
 							<div className='flex h-16 w-16 items-center justify-center rounded-full bg-green-300'>
 								<Check
 									color='white'

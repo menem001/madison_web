@@ -24,7 +24,7 @@ export function ValuationDetailsField(props: valuationDetailsFieldProps) {
 					<div className='flex-grow'>
 						<Label htmlFor='number'>New Value</Label>
 						<Input
-							className='border-blue-925 border-2'
+							className='border-2 border-blue-925'
 							id='number'
 							placeholder='New Value'
 						/>
@@ -32,7 +32,7 @@ export function ValuationDetailsField(props: valuationDetailsFieldProps) {
 					<div className='flex-grow'>
 						<Label htmlFor='market'>Market Value</Label>
 						<Input
-							className='border-blue-925 border-2'
+							className='border-2 border-blue-925'
 							id='market'
 							placeholder='Enter Market Value'
 						/>
@@ -42,7 +42,7 @@ export function ValuationDetailsField(props: valuationDetailsFieldProps) {
 					<div className='flex-grow'>
 						<Label htmlFor='aggregated'>Aggregated value</Label>
 						<Input
-							className='border-blue-925 border-2'
+							className='border-2 border-blue-925'
 							id='aggregated'
 							placeholder='Aggregated value'
 						/>
@@ -50,7 +50,7 @@ export function ValuationDetailsField(props: valuationDetailsFieldProps) {
 					<div className='flex-grow'>
 						<Label htmlFor='area'>Traffic area</Label>
 						<Input
-							className='border-blue-925 border-2'
+							className='border-2 border-blue-925'
 							id='area'
 							placeholder='Traffic area'
 						/>

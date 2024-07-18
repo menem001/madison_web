@@ -22,20 +22,20 @@ export function QuoteDetails() {
 				</div>
 				<div className='flex flex-grow flex-col gap-1'>
 					<span className='font-jakarta text-xl font-bold'>Quote No: 301505</span>
-					<span className='text-xs text-gray-500 font-inter'>
+					<span className='font-inter text-xs text-gray-500'>
 						Quote Date: {getPolicyDateFormat('start')}
 					</span>
-					<span className='text-xs text-gray-500 font-inter'>Currency: ZMW</span>
+					<span className='font-inter text-xs text-gray-500'>Currency: ZMW</span>
 				</div>
 				<div className='flex flex-col gap-1 font-jakarta'>
 					<h2 className='text-lg font-bold'>
 						{getPolicyDateFormat('start', new Date(Date.now() + 24 * 60 * 60 * 1000))}
 					</h2>
-					<span className='text-xs text-gray-500 font-inter'>Policy Start Date</span>
+					<span className='font-inter text-xs text-gray-500'>Policy Start Date</span>
 				</div>
 				<div className='flex flex-col gap-1 font-jakarta'>
 					<h2 className='text-lg font-bold'>{getPolicyDateFormat('end')}</h2>
-					<span className='text-xs text-gray-500 font-inter'>Policy End Date</span>
+					<span className='font-inter text-xs text-gray-500'>Policy End Date</span>
 				</div>
 			</div>
 		</div>

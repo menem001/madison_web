@@ -24,7 +24,7 @@ export function ContactInformationField(props: contactInformationFieldProps) {
 					<div className='flex-grow'>
 						<Label htmlFor='email'>Email ID</Label>
 						<Input
-							className='border-blue-925 border-2'
+							className='border-2 border-blue-925'
 							id='email'
 							placeholder='Enter Your Email ID'
 							type='email'
@@ -35,7 +35,7 @@ export function ContactInformationField(props: contactInformationFieldProps) {
 					<div className='flex-grow'>
 						<Label htmlFor='type'>Contact Type</Label>
 						<Input
-							className='border-blue-925 border-2'
+							className='border-2 border-blue-925'
 							id='type'
 							placeholder='Contact Type'
 						/>
@@ -43,7 +43,7 @@ export function ContactInformationField(props: contactInformationFieldProps) {
 					<div className='flex-grow'>
 						<Label htmlFor='code'>Contact Code</Label>
 						<Input
-							className='border-blue-925 border-2'
+							className='border-2 border-blue-925'
 							id='code'
 							placeholder='Contact Code'
 						/>
@@ -51,7 +51,7 @@ export function ContactInformationField(props: contactInformationFieldProps) {
 					<div className='flex-grow'>
 						<Label htmlFor='contact'>Contact</Label>
 						<Input
-							className='border-blue-925 border-2'
+							className='border-2 border-blue-925'
 							id='contact'
 							placeholder='Enter Number'
 						/>

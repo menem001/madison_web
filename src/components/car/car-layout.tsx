@@ -1,12 +1,12 @@
 'use client'
 
+import { cn } from '@/lib'
+import { usePathname } from 'next/navigation'
 import { type PropsWithChildren } from 'react'
 import { Header } from '../header'
 import { ChatBot } from '../support'
 import { CarRightSideBar } from './car-right-side-bar'
 import { DetailsChecker } from './details-checker'
-import { usePathname } from 'next/navigation'
-import { cn } from '@/lib'
 import { PremiumSideBar } from './premium-sidebar'
 
 export function CarLayout(props: PropsWithChildren) {

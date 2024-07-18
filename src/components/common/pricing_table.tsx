@@ -1,8 +1,8 @@
 'use client'
 
 import { pricingData } from '@/lib'
-import { Button } from '../ui'
 import { useRouter } from 'next/navigation'
+import { Button } from '../ui'
 
 export function PricingTable() {
 	const route = useRouter()

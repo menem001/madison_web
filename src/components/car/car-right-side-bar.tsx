@@ -1,6 +1,6 @@
-import { RightSideBarList } from './right-side-bar-list'
-import { ProgressBar } from './progress-bar'
 import { MobileLinkDetails } from './mobile-link-details'
+import { ProgressBar } from './progress-bar'
+import { RightSideBarList } from './right-side-bar-list'
 
 export function CarRightSideBar() {
 	return (

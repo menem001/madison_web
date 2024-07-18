@@ -1,17 +1,17 @@
 import {
-	type MotorModelListResponse,
-	type CurrencyListResponse,
-	type MotorListResponse,
 	type BodyTypeListResponse,
-	type VehicleUsageListResponse,
-	type GuestLoginResponse
+	type CurrencyListResponse,
+	type GuestLoginResponse,
+	type MotorListResponse,
+	type MotorModelListResponse,
+	type VehicleUsageListResponse
 } from '@/services/common.services'
 import {
-	type vehicleUsageRequest,
 	type CommonModalRequest,
 	type CurrencyRequest,
 	type MotorModalRequest,
-	type SaveMotorDetailRequest
+	type SaveMotorDetailRequest,
+	type vehicleUsageRequest
 } from '@/services/models/common.models'
 
 import type { Action, PayloadAction } from '@reduxjs/toolkit'

@@ -1,9 +1,9 @@
 import { cn } from '@/lib'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
+import { updateDescription } from '@/redux/slices'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { Input } from '../ui'
-import { updateDescription } from '@/redux/slices'
 
 export function VehicleDescription() {
 	const vehicleData = useAppSelector((state) => state.carInsurance)

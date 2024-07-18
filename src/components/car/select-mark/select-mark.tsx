@@ -3,14 +3,14 @@
 import { assets } from '@/assets'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui'
 import { cn } from '@/lib'
+import { useGetMotorMakeListMutation } from '@/redux/api/commonApi'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
 import { updateVehicleMark } from '@/redux/slices'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { TextPlugin } from 'gsap/all'
-import { MarkCard } from './mark-card'
-import { useGetMotorMakeListMutation } from '@/redux/api/commonApi'
 import { useEffect, useState } from 'react'
+import { MarkCard } from './mark-card'
 
 const brands = [
 	{

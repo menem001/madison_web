@@ -1,9 +1,9 @@
 'use client'
 
 import { cn, createAccountOptions } from '@/lib'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { Button } from '../ui'
-import { useRouter } from 'next/navigation'
 
 export function AccountOptions() {
 	const [method, setMethod] = useState<number>(0)

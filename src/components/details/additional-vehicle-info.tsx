@@ -24,7 +24,7 @@ export function AdditionalVehicleInfo(props: additionalVehicleInfoProps) {
 					<div className='flex-grow'>
 						<Label htmlFor='number'>Serial number</Label>
 						<Input
-							className='border-blue-925 border-2'
+							className='border-2 border-blue-925'
 							id='number'
 							placeholder='Serial number'
 						/>
@@ -32,7 +32,7 @@ export function AdditionalVehicleInfo(props: additionalVehicleInfoProps) {
 					<div className='flex-grow'>
 						<Label htmlFor='card'>Number of cards (WW Garage)</Label>
 						<Input
-							className='border-blue-925 border-2'
+							className='border-2 border-blue-925'
 							id='card'
 							placeholder='Number of cards (WW Garage)'
 						/>
@@ -42,7 +42,7 @@ export function AdditionalVehicleInfo(props: additionalVehicleInfoProps) {
 					<div className='flex-grow'>
 						<Label htmlFor='circulation'>Date of circulation</Label>
 						<Input
-							className='border-blue-925 border-2'
+							className='border-2 border-blue-925'
 							id='circulation'
 							placeholder='DD/MM/YYYY'
 						/>
@@ -50,7 +50,7 @@ export function AdditionalVehicleInfo(props: additionalVehicleInfoProps) {
 					<div className='flex-grow'>
 						<Label htmlFor='zone'>Tariff zone</Label>
 						<Input
-							className='border-blue-925 border-2'
+							className='border-2 border-blue-925'
 							id='zone'
 							placeholder='Tariff zone'
 						/>

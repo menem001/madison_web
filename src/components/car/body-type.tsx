@@ -2,14 +2,14 @@
 
 import { assets } from '@/assets'
 import { cn } from '@/lib'
+import { useGetBodyTypeListMutation } from '@/redux/api/commonApi'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
 import { updateVehicleBodyType } from '@/redux/slices'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import Image from 'next/image'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui'
-import { useGetBodyTypeListMutation } from '@/redux/api/commonApi'
 import { useEffect, useState } from 'react'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui'
 
 const bodyTypes = [
 	{

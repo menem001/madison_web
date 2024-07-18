@@ -1,9 +1,9 @@
 import { cn } from '@/lib'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
+import { updateVehicleManufactureYear } from '@/redux/slices'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui'
-import { updateVehicleManufactureYear } from '@/redux/slices'
 
 export function ManufactureYear() {
 	const vehicleData = useAppSelector((state) => state.carInsurance)

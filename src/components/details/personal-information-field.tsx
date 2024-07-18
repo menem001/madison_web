@@ -24,7 +24,7 @@ export function PersonalInformationField(props: personalInformationFieldProps) {
 					<div className='max-w-20'>
 						<Label htmlFor='title'>Title</Label>
 						<Input
-							className='border-blue-925 border-2'
+							className='border-2 border-blue-925'
 							id='title'
 							placeholder='Title'
 						/>
@@ -32,7 +32,7 @@ export function PersonalInformationField(props: personalInformationFieldProps) {
 					<div className='flex-grow'>
 						<Label htmlFor='name'>Name</Label>
 						<Input
-							className='border-blue-925 border-2'
+							className='border-2 border-blue-925'
 							id='name'
 							placeholder='Name'
 						/>
@@ -40,7 +40,7 @@ export function PersonalInformationField(props: personalInformationFieldProps) {
 					<div className='flex-grow'>
 						<Label htmlFor='category'>Socio-professional category</Label>
 						<Input
-							className='border-blue-925 border-2'
+							className='border-2 border-blue-925'
 							id='category'
 							placeholder='Socio-professional category'
 						/>
@@ -50,7 +50,7 @@ export function PersonalInformationField(props: personalInformationFieldProps) {
 					<div className='flex-grow'>
 						<Label htmlFor='gender'>Gender</Label>
 						<Input
-							className='border-blue-925 border-2'
+							className='border-2 border-blue-925'
 							id='gender'
 							placeholder='Gender'
 						/>
@@ -58,7 +58,7 @@ export function PersonalInformationField(props: personalInformationFieldProps) {
 					<div className='flex-grow'>
 						<Label htmlFor='Civility'>Civility</Label>
 						<Input
-							className='border-blue-925 border-2'
+							className='border-2 border-blue-925'
 							id='Civility'
 							placeholder='Civility'
 						/>
@@ -68,7 +68,7 @@ export function PersonalInformationField(props: personalInformationFieldProps) {
 					<div className='flex-grow'>
 						<Label htmlFor='job'>Job</Label>
 						<Input
-							className='border-blue-925 border-2'
+							className='border-2 border-blue-925'
 							id='job'
 							placeholder='Job'
 						/>
@@ -76,7 +76,7 @@ export function PersonalInformationField(props: personalInformationFieldProps) {
 					<div className='flex-grow'>
 						<Label htmlFor='Nationality'>Nationality</Label>
 						<Input
-							className='border-blue-925 border-2'
+							className='border-2 border-blue-925'
 							id='Nationality'
 							placeholder='Nationality'
 						/>

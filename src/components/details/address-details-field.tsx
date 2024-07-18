@@ -24,7 +24,7 @@ export function AddressDetailsField(props: addressDetailsFieldProps) {
 					<div className='basis-1/4'>
 						<Label htmlFor='type'>Address Type</Label>
 						<Input
-							className='border-blue-925 border-2'
+							className='border-2 border-blue-925'
 							id='type'
 							placeholder='Address Type'
 						/>
@@ -32,7 +32,7 @@ export function AddressDetailsField(props: addressDetailsFieldProps) {
 					<div className='basis-3/4'>
 						<Label htmlFor='address'>Address</Label>
 						<Input
-							className='border-blue-925 border-2'
+							className='border-2 border-blue-925'
 							id='address'
 							placeholder='Enter your Address'
 						/>
@@ -42,7 +42,7 @@ export function AddressDetailsField(props: addressDetailsFieldProps) {
 					<div className='flex-grow'>
 						<Label htmlFor='country'>Country</Label>
 						<Input
-							className='border-blue-925 border-2'
+							className='border-2 border-blue-925'
 							id='country'
 							placeholder='Country'
 						/>
@@ -50,7 +50,7 @@ export function AddressDetailsField(props: addressDetailsFieldProps) {
 					<div className='flex-grow'>
 						<Label htmlFor='municipality'>Municipality</Label>
 						<Input
-							className='border-blue-925 border-2'
+							className='border-2 border-blue-925'
 							id='municipality'
 							placeholder='Municipality'
 						/>
@@ -58,7 +58,7 @@ export function AddressDetailsField(props: addressDetailsFieldProps) {
 					<div className='flex-grow'>
 						<Label htmlFor='neighborhood'>Neighborhood</Label>
 						<Input
-							className='border-blue-925 border-2'
+							className='border-2 border-blue-925'
 							id='neighborhood'
 							placeholder='Neighborhood'
 						/>
