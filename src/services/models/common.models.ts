@@ -179,7 +179,7 @@ export type vehicleUsageList = z.infer<typeof vehicleUsageSchema>
 export const MotorModalRequestSchema = z.object({
 	InsuranceId: z.string(),
 	BranchCode: z.string(),
-	BodyId: z.string(),
+	BodyId: z.string().optional(),
 	MakeId: z.string()
 })
 
@@ -190,7 +190,7 @@ export type MotorModalRequest = z.infer<typeof MotorModalRequestSchema>
 export const CommonModalRequestSchema = z.object({
 	InsuranceId: z.string(),
 	BranchCode: z.string(),
-	BodyId: z.string()
+	BodyId: z.string().optional()
 })
 
 export type CommonModalRequest = z.infer<typeof CommonModalRequestSchema>

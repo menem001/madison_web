@@ -9,31 +9,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { useGetVehicleUsageListMutation } from '@/redux/api/commonApi'
 import { useEffect, useState } from 'react'
 
-// const usages = [
-// 	{
-// 		id: 'Personal',
-// 		name: 'Personal'
-// 	},
-// 	{
-// 		id: 'Taxi',
-// 		name: 'Taxi'
-// 	},
-// 	{
-// 		id: 'Commercial',
-// 		name: 'Commercial'
-// 	},
-// 	{
-// 		id: 'Business',
-// 		name: 'Business'
-// 	},
-// 	{
-// 		id: 'Ambulance',
-// 		name: 'Ambulance'
-// 	}
-// ]
-
 export function VehicleUsage() {
 	const vehicleData = useAppSelector((state) => state.carInsurance)
+	const appsData = useAppSelector((state) => state.apps)
 
 	const dispatch = useAppDispatch()
 
@@ -50,17 +28,17 @@ export function VehicleUsage() {
 				text: 'How the vehicle is used, such as for personal, business, or commercial purposes',
 				delay: 0.5
 			})
-			gsap.to('.usageSuggest', {
-				duration: 0.5,
-				text: 'Suggested Usage Types',
-				delay: 1.5
-			})
-			gsap.from('.suggestedGridusage', {
-				y: 80,
-				opacity: 0,
-				duration: 0.5,
-				delay: 2
-			})
+			// gsap.to('.usageSuggest', {
+			// 	duration: 0.5,
+			// 	text: 'Suggested Usage Types',
+			// 	delay: 1.5
+			// })
+			// gsap.from('.suggestedGridusage', {
+			// 	y: 80,
+			// 	opacity: 0,
+			// 	duration: 0.5,
+			// 	delay: 2
+			// })
 		} else {
 			gsap.from('.selectUsage', { y: 80, opacity: 0, duration: 0.5 })
 			gsap.to('.usagetitle', { duration: 0.5, text: 'Vehicle Usage' })
@@ -68,21 +46,21 @@ export function VehicleUsage() {
 				duration: 0.5,
 				text: 'How the vehicle is used, such as for personal, business, or commercial purposes'
 			})
-			gsap.to('.usageSuggest', {
-				duration: 0.5,
-				text: 'Suggested Usage Types'
-			})
-			gsap.from('.suggestedGridusage', {
-				y: 80,
-				opacity: 0,
-				duration: 0.5
-			})
+			// gsap.to('.usageSuggest', {
+			// 	duration: 0.5,
+			// 	text: 'Suggested Usage Types'
+			// })
+			// gsap.from('.suggestedGridusage', {
+			// 	y: 80,
+			// 	opacity: 0,
+			// 	duration: 0.5
+			// })
 		}
 	})
 
 	useEffect(() => {
 		const tempArr: { value: string; label: string }[] = []
-		const request = { InsuranceId: '100004', BranchCode: '46' }
+		const request = { InsuranceId: appsData.insuranceID, BranchCode: appsData.branchCode }
 		const res = vehicleUsage(request)
 		res.then((value) => {
 			if (value.data?.type === 'success' && value.data.data !== undefined) {
@@ -95,13 +73,7 @@ export function VehicleUsage() {
 				setVehicleUsageList(tempArr)
 			}
 		})
-	}, [vehicleUsage])
-
-	function updateUsage(usage: string) {
-		return function () {
-			dispatch(updateVehicleUsage(usage))
-		}
-	}
+	}, [appsData.branchCode, appsData.insuranceID, vehicleUsage])
 
 	return (
 		<div
@@ -137,7 +109,7 @@ export function VehicleUsage() {
 					</SelectContent>
 				</Select>
 			</div>
-			{vehicleUsageList.length !== 0 && (
+			{/* {vehicleUsageList.length !== 0 && (
 				<>
 					<h2 className='usageSuggest font-jakarta text-lg font-bold'></h2>
 					<div className='suggestedGridusage grid grid-cols-5 gap-9'>
@@ -153,7 +125,7 @@ export function VehicleUsage() {
 						})}
 					</div>
 				</>
-			)}
+			)} */}
 		</div>
 	)
 }

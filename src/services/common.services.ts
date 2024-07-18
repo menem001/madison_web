@@ -46,18 +46,18 @@ export async function getMotorList(data: CommonModalRequest, token: string | nul
 
 export type MotorModelListResponse = TResponse<MotorModelList>
 
-export async function getMotorModelList(data: MotorModalRequest) {
-	return api.post<MotorList>(endPoints.modelList, data, MotorModelListSchema)
+export async function getMotorModelList(data: MotorModalRequest, token: string | null) {
+	return api.post<MotorList>(endPoints.modelList, data, MotorModelListSchema, {
+		headers: { Authorization: token }
+	})
 }
 
 export type BodyTypeListResponse = TResponse<BodyTypeList>
 
-export async function getBodyTypeList() {
-	return api.post<MotorList>(
-		endPoints.bodyTypeList,
-		{ InsuranceId: '100004', BranchCode: '46' },
-		BodyTypeSchema
-	)
+export async function getBodyTypeList(data: vehicleUsageRequest, token: string | null) {
+	return api.post<MotorList>(endPoints.bodyTypeList, data, BodyTypeSchema, {
+		headers: { Authorization: token }
+	})
 }
 
 export type VehicleUsageListResponse = TResponse<vehicleUsageList>

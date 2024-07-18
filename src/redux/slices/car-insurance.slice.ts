@@ -5,7 +5,7 @@ const initialState = {
 	makeID: '',
 	model: '',
 	seat: 0,
-	excessLimit: '',
+	excessLimit: 0,
 	vehicleUsage: '',
 	value: 0,
 	bodyType: [],
@@ -17,7 +17,11 @@ const initialState = {
 	insuranceClass: 'Comprehensive',
 	sumInsured: null,
 	claims: null,
-	gpsTraking: null
+	gpsTraking: null,
+	driverOrOwner: '',
+	DriverName: '',
+	DriverDOB: '',
+	DriverID: ''
 }
 
 export type CarDetails = {
@@ -26,7 +30,7 @@ export type CarDetails = {
 	model: string
 	seat: number
 	value: number
-	excessLimit: string
+	excessLimit: number
 	vehicleUsage: string
 	bodyType: string[]
 	year: number
@@ -38,6 +42,10 @@ export type CarDetails = {
 	sumInsured: string | null
 	claims: boolean | null
 	gpsTraking: boolean | null
+	driverOrOwner: string
+	DriverName: string
+	DriverDOB: string
+	DriverID: string
 }
 
 export const carInsuranceSlice = createSlice({
@@ -52,35 +60,46 @@ export const carInsuranceSlice = createSlice({
 			state.makeID = action.payload.makeID
 			state.year = 0
 			state.model = ''
-			state.description = ''
+			state.value = 0
 			state.vehicleUsage = ''
 			state.bodyType = []
+			state.seat = 0
 		},
 		updateVehicleModel(state: CarDetails, action: PayloadAction<string>) {
 			state.model = action.payload
 			state.year = 0
-			state.description = ''
+			state.value = 0
 			state.vehicleUsage = ''
 			state.bodyType = []
-		},
-		updateVehicleBodyType(state: CarDetails, action: PayloadAction<string>) {
-			state.bodyType = [action.payload]
-			state.makeID = ''
-			state.mark = ''
-			state.year = 0
-			state.description = ''
+			state.seat = 0
 		},
 		updateVehicleUsage(state: CarDetails, action: PayloadAction<string>) {
 			state.vehicleUsage = action.payload
-			state.makeID = ''
-			state.mark = ''
+			state.seat = 0
 			state.bodyType = []
 			state.year = 0
-			state.description = ''
+			state.value = 0
+		},
+		updateVehicleBodyType(state: CarDetails, action: PayloadAction<string>) {
+			state.bodyType = [action.payload]
+			state.year = 0
+			state.value = 0
+			state.seat = 0
+		},
+		updateSeats(state: CarDetails, action: PayloadAction<number>) {
+			state.seat = action.payload
+			state.year = 0
+			state.value = 0
 		},
 		updateVehicleManufactureYear(state: CarDetails, action: PayloadAction<string>) {
 			state.year = +action.payload
-			state.description = ''
+			state.excessLimit = 0
+		},
+		updateExcessLimit(state: CarDetails, action: PayloadAction<number>) {
+			state.excessLimit = +action.payload
+		},
+		updateValue(state: CarDetails, action: PayloadAction<number>) {
+			state.value = action.payload
 		},
 		updateDescription(state: CarDetails, action: PayloadAction<string>) {
 			state.description = action.payload
@@ -96,6 +115,20 @@ export const carInsuranceSlice = createSlice({
 		},
 		updateGPSTraking(state: CarDetails, action: PayloadAction<boolean | null>) {
 			state.gpsTraking = action.payload
+		},
+		updateDriverDetails(
+			state: CarDetails,
+			action: PayloadAction<{
+				driverOrOwner: string
+				DriverName: string
+				DriverDOB: string
+				DriverID: string
+			}>
+		) {
+			state.driverOrOwner = action.payload.driverOrOwner
+			state.DriverName = action.payload.DriverName
+			state.DriverDOB = action.payload.DriverDOB
+			state.DriverID = action.payload.DriverID
 		}
 	}
 })
@@ -110,5 +143,9 @@ export const {
 	updateClass,
 	updateGPSTraking,
 	updateSumInsured,
-	updateVehicleModel
+	updateSeats,
+	updateVehicleModel,
+	updateValue,
+	updateExcessLimit,
+	updateDriverDetails
 } = carInsuranceSlice.actions

@@ -3,26 +3,26 @@ import { useAppDispatch, useAppSelector } from '@/redux/hooks'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { Input } from '../ui'
-import { updateDescription } from '@/redux/slices'
+import { updateValue } from '@/redux/slices'
 
-export function VehicleDescription() {
+export function VehicleValue() {
 	const vehicleData = useAppSelector((state) => state.carInsurance)
 
 	const dispatch = useAppDispatch()
 
 	useGSAP(() => {
-		if (vehicleData.description === '') {
+		if (vehicleData.value === 0) {
 			gsap.from('.selectVehicleDesciption', { y: 80, opacity: 0, duration: 0.5, delay: 1 })
-			gsap.to('.descriptiontitle', { duration: 0.5, text: 'Model Description' })
-			gsap.to('.descriptionsubtitle', {
+			gsap.to('.Valuetitle', { duration: 0.5, text: 'Model Value' })
+			gsap.to('.Valuesubtitle', {
 				duration: 0.5,
 				text: 'How the vehicle is used, such as for personal, business, or commercial purposes',
 				delay: 0.5
 			})
 		} else {
 			gsap.from('.selectVehicleDesciption', { y: 80, opacity: 0, duration: 0.5 })
-			gsap.to('.descriptiontitle', { duration: 0.5, text: 'Model Description' })
-			gsap.to('.descriptionsubtitle', {
+			gsap.to('.Valuetitle', { duration: 0.5, text: 'Model Value' })
+			gsap.to('.Valuesubtitle', {
 				duration: 0.5,
 				text: 'How the vehicle is used, such as for personal, business, or commercial purposes'
 			})
@@ -32,18 +32,19 @@ export function VehicleDescription() {
 	return (
 		<div
 			className={cn('flex flex-col gap-7', {
-				'min-h-[56vh]': vehicleData.description === ''
+				'min-h-[56vh]': vehicleData.value === 0
 			})}>
 			<div className='flex flex-col gap-2'>
-				<h1 className='descriptiontitle font-jakarta text-xl font-bold text-blue-300'></h1>
-				<span className='descriptionsubtitle font-roboto text-sm font-medium text-gray-500'></span>
+				<h1 className='Valuetitle font-jakarta text-xl font-bold text-blue-300'></h1>
+				<span className='Valuesubtitle font-roboto text-sm font-medium text-gray-500'></span>
 			</div>
 			<div className='selectVehicleDesciption flex w-3/4 flex-row gap-10'>
 				<Input
-					placeholder='Model Description'
-					value={vehicleData.description}
+					placeholder='Model Value'
+					type='number'
+					value={vehicleData.value}
 					onChange={(e) => {
-						dispatch(updateDescription(e.target.value))
+						dispatch(updateValue(+e.target.value))
 					}}
 				/>
 			</div>

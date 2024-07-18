@@ -79,17 +79,33 @@ export const commonApi = createApi({
 			})
 		}),
 		getMotorModelList: build.mutation<MotorModelListResponse, MotorModalRequest>({
-			query: (data) => ({
+			query: (
+				data
+			): {
+				url: string
+				method: string
+				body: vehicleUsageRequest
+				headers: { Authorization: string }
+			} => ({
 				url: 'get_motor_model',
 				method: 'POST',
-				body: data
+				body: data,
+				headers: { Authorization: `Bearer ${store.getState().apps.token}` }
 			})
 		}),
 		getBodyTypeList: build.mutation<BodyTypeListResponse, vehicleUsageRequest>({
-			query: (data) => ({
+			query: (
+				data
+			): {
+				url: string
+				method: string
+				body: vehicleUsageRequest
+				headers: { Authorization: string }
+			} => ({
 				url: 'get_body_type',
 				method: 'POST',
-				body: data
+				body: data,
+				headers: { Authorization: `Bearer ${store.getState().apps.token}` }
 			})
 		}),
 		getVehicleUsageList: build.mutation<VehicleUsageListResponse, vehicleUsageRequest>({

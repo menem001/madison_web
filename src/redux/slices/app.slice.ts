@@ -6,7 +6,8 @@ const initialState = {
 	brokerCode: '',
 	insuranceID: '',
 	productId: '',
-	loginId: ''
+	loginId: '',
+	branchCode: ''
 }
 
 export type AppDetails = {
@@ -16,6 +17,7 @@ export type AppDetails = {
 	insuranceID: string
 	productId: string
 	loginId: string
+	branchCode: string
 }
 
 export const appSlice = createSlice({
@@ -33,6 +35,7 @@ export const appSlice = createSlice({
 				insuranceID: string
 				productId: string
 				loginId: string
+				branchCode: string
 			}>
 		) {
 			state.token = action.payload.token
@@ -40,6 +43,7 @@ export const appSlice = createSlice({
 			state.insuranceID = action.payload.insuranceID
 			state.productId = action.payload.productId
 			state.loginId = action.payload.loginId
+			state.branchCode = action.payload.branchCode
 		}
 	}
 })

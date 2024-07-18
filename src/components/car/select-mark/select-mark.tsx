@@ -69,6 +69,7 @@ gsap.registerPlugin(TextPlugin)
 
 export function SelectMark() {
 	const vehicleData = useAppSelector((state) => state.carInsurance)
+	const appsData = useAppSelector((state) => state.apps)
 
 	const dispatch = useAppDispatch()
 
@@ -111,7 +112,7 @@ export function SelectMark() {
 	}
 
 	useEffect(() => {
-		const request = { InsuranceId: '100004', BranchCode: '46', BodyId: '2' }
+		const request = { InsuranceId: appsData.insuranceID, BranchCode: appsData.branchCode }
 		const tempArr: { value: string; label: string }[] = []
 		const res = MotorMakeList(request)
 		res.then((value) => {
@@ -125,7 +126,7 @@ export function SelectMark() {
 				setmotorListArr(tempArr)
 			}
 		})
-	}, [MotorMakeList])
+	}, [MotorMakeList, appsData.branchCode, appsData.insuranceID])
 
 	return (
 		<div
@@ -138,12 +139,12 @@ export function SelectMark() {
 			</div>
 			<div className='select'>
 				<Select
-					value={vehicleData.mark}
+					value={vehicleData.makeID}
 					onValueChange={updateMark}>
 					<SelectTrigger
 						className='w-3/4'
 						title='Select the Mark'
-						value={vehicleData.mark}>
+						value={vehicleData.makeID}>
 						<SelectValue />
 					</SelectTrigger>
 					<SelectContent>

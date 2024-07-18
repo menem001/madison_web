@@ -1,11 +1,12 @@
 /* eslint-disable indent */
 import { getBodyTypeList } from '@/services/common.services'
-import { NextResponse } from 'next/server'
+import { type NextRequest, NextResponse } from 'next/server'
 
-export async function POST() {
-    const res = await getBodyTypeList()
+export async function POST(req: NextRequest) {
+	const data = await req.json()
+	const res = await getBodyTypeList(data, req.headers.get('authorization'))
 
-    return NextResponse.json(res, {
-        status: res.status,
-    })
+	return NextResponse.json(res, {
+		status: res.status
+	})
 }

@@ -1,51 +1,17 @@
 'use client'
 
-import { assets } from '@/assets'
 import { cn } from '@/lib'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
 import { updateVehicleBodyType } from '@/redux/slices'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
-import Image from 'next/image'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui'
 import { useGetBodyTypeListMutation } from '@/redux/api/commonApi'
 import { useEffect, useState } from 'react'
 
-const bodyTypes = [
-	{
-		id: 'Sedan',
-		name: 'Sedan',
-		image: assets.images.sedan
-	},
-	{
-		id: 'Coupe',
-		name: 'Coupe',
-		image: assets.images.coupe
-	},
-	{
-		id: 'Truck',
-		name: 'Truck',
-		image: assets.images.truck
-	},
-	{
-		id: 'SUV',
-		name: 'SUV',
-		image: assets.images.suv
-	},
-	{
-		id: 'Hatchback',
-		name: 'Hatchback',
-		image: assets.images.hat
-	},
-	{
-		id: 'Convertible',
-		name: 'Convertible',
-		image: assets.images.mini
-	}
-]
-
 export function BodyType() {
 	const vehicleData = useAppSelector((state) => state.carInsurance)
+	const appsData = useAppSelector((state) => state.apps)
 	const dispatch = useAppDispatch()
 
 	const [BodyType] = useGetBodyTypeListMutation()
@@ -61,23 +27,23 @@ export function BodyType() {
 				text: 'How the vehicle is used, such as for personal, business, or commercial purposes',
 				delay: 0.5
 			})
-			gsap.to('.bodySuggest', {
-				duration: 0.5,
-				text: 'Suggested Body Type',
-				delay: 1.5
-			})
-			gsap.from('.suggestedBodyGrid1', {
-				y: 80,
-				opacity: 0,
-				duration: 0.5,
-				delay: 2
-			})
-			gsap.from('.suggestedBodyGrid2', {
-				y: 80,
-				opacity: 0,
-				duration: 0.5,
-				delay: 2.5
-			})
+			// gsap.to('.bodySuggest', {
+			// 	duration: 0.5,
+			// 	text: 'Suggested Body Type',
+			// 	delay: 1.5
+			// })
+			// gsap.from('.suggestedBodyGrid1', {
+			// 	y: 80,
+			// 	opacity: 0,
+			// 	duration: 0.5,
+			// 	delay: 2
+			// })
+			// gsap.from('.suggestedBodyGrid2', {
+			// 	y: 80,
+			// 	opacity: 0,
+			// 	duration: 0.5,
+			// 	delay: 2.5
+			// })
 		} else {
 			gsap.from('.selectBody', { y: 80, opacity: 0, duration: 0.5 })
 			gsap.to('.bodytitle', { duration: 0.5, text: 'Body Type' })
@@ -85,26 +51,26 @@ export function BodyType() {
 				duration: 0.5,
 				text: 'How the vehicle is used, such as for personal, business, or commercial purposes'
 			})
-			gsap.to('.bodySuggest', {
-				duration: 0.5,
-				text: 'Suggested Body Type'
-			})
-			gsap.from('.suggestedBodyGrid1', {
-				y: 80,
-				opacity: 0,
-				duration: 0.5
-			})
-			gsap.from('.suggestedBodyGrid2', {
-				y: 80,
-				opacity: 0,
-				duration: 0.5
-			})
+			// gsap.to('.bodySuggest', {
+			// 	duration: 0.5,
+			// 	text: 'Suggested Body Type'
+			// })
+			// gsap.from('.suggestedBodyGrid1', {
+			// 	y: 80,
+			// 	opacity: 0,
+			// 	duration: 0.5
+			// })
+			// gsap.from('.suggestedBodyGrid2', {
+			// 	y: 80,
+			// 	opacity: 0,
+			// 	duration: 0.5
+			// })
 		}
 	})
 
 	useEffect(() => {
 		const tempArr: { value: string; label: string }[] = []
-		const request = { InsuranceId: '100004', BranchCode: '46' }
+		const request = { InsuranceId: appsData.insuranceID, BranchCode: appsData.branchCode }
 		const res = BodyType(request)
 		res.then((value) => {
 			if (value.data?.type === 'success' && value.data.data !== undefined) {
@@ -117,13 +83,13 @@ export function BodyType() {
 				setBodyTypeList(tempArr)
 			}
 		})
-	}, [BodyType])
+	}, [BodyType, appsData.branchCode, appsData.insuranceID])
 
-	function handleClick(type: string) {
-		return function () {
-			dispatch(updateVehicleBodyType(type))
-		}
-	}
+	// function handleClick(type: string) {
+	// 	return function () {
+	// 		dispatch(updateVehicleBodyType(type))
+	// 	}
+	// }
 
 	function handleChange(type: string) {
 		dispatch(updateVehicleBodyType(type))
@@ -161,8 +127,7 @@ export function BodyType() {
 					</SelectContent>
 				</Select>
 			</div>
-			<h2 className='bodySuggest font-jakarta text-lg font-bold'></h2>
-			<div className='grid grid-cols-3 gap-4'>
+			{/* <div className='grid grid-cols-3 gap-4'>
 				{bodyTypes.slice(0, 3).map((body) => {
 					return (
 						<div
@@ -203,7 +168,7 @@ export function BodyType() {
 						</div>
 					)
 				})}
-			</div>
+			</div> */}
 		</div>
 	)
 }

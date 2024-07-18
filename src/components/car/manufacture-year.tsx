@@ -2,8 +2,8 @@ import { cn } from '@/lib'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui'
-import { updateVehicleManufactureYear } from '@/redux/slices'
+import { Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui'
+import { updateExcessLimit, updateVehicleManufactureYear } from '@/redux/slices'
 
 export function ManufactureYear() {
 	const vehicleData = useAppSelector((state) => state.carInsurance)
@@ -12,7 +12,9 @@ export function ManufactureYear() {
 
 	const years = []
 
-	for (let i = 1950; i < 2500; i++) {
+	const currentYear = new Date(Date.now()).getFullYear()
+
+	for (let i = currentYear; i > currentYear - 25; i--) {
 		years.push(i + '')
 	}
 
@@ -44,7 +46,7 @@ export function ManufactureYear() {
 				<h1 className='Yeartitle font-jakarta text-xl font-bold text-blue-300'></h1>
 				<span className='Yearsubtitle font-roboto text-sm font-medium text-gray-500'></span>
 			</div>
-			<div className='selectManufacture flex w-3/4 flex-row gap-10'>
+			<div className='selectManufacture flex flex-row gap-10'>
 				<Select
 					value={vehicleData.year + ''}
 					onValueChange={(e) => {
@@ -56,7 +58,7 @@ export function ManufactureYear() {
 						value={vehicleData.year}>
 						<SelectValue />
 					</SelectTrigger>
-					<SelectContent>
+					<SelectContent className='max-h-64'>
 						{years.map((year) => {
 							return (
 								<SelectItem
@@ -68,13 +70,15 @@ export function ManufactureYear() {
 						})}
 					</SelectContent>
 				</Select>
-				{/* <Input
-					placeholder='Manufacture'
-					value={vehicleData.year}
+				<Input
+					className='h-16'
+					placeholder='excess Limit'
+					type='number'
+					value={vehicleData.excessLimit !== 0 ? vehicleData.excessLimit : undefined}
 					onChange={(e) => {
-						dispatch(updateVehicleManufactureYear(e.target.value))
+						dispatch(updateExcessLimit(+e.target.value))
 					}}
-				/> */}
+				/>
 			</div>
 		</div>
 	)

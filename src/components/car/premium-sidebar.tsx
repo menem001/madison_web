@@ -3,7 +3,7 @@
 import { assets } from '@/assets'
 import Image from 'next/image'
 import { Button } from '../ui'
-import { MobileLinkDetails } from './mobile-link-details'
+// import { MobileLinkDetails } from './mobile-link-details'
 import { useRouter } from 'next/navigation'
 import { useAppSelector } from '@/redux/hooks'
 
@@ -77,7 +77,7 @@ export function PremiumSideBar() {
 					</Button>
 				</div>
 			)}
-			<MobileLinkDetails />
+			{/* <MobileLinkDetails /> */}
 		</div>
 	)
 }

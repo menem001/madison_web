@@ -40,7 +40,8 @@ export function HeroContent() {
 					brokerCode: value.data.data.Result.LoginBranchDetails[0].BrokerBranchCode,
 					insuranceID: value.data.data.Result.LoginBranchDetails[0].InsuranceId,
 					productId: value.data.data.Result.BrokerCompanyProducts[0].ProductId,
-					loginId: value.data.data.Result.LoginId
+					loginId: value.data.data.Result.LoginId,
+					branchCode: value.data.data.Result.LoginBranchDetails[0].BranchCode
 				}
 				dispatch(setGuestLoginDetails(details))
 			}
