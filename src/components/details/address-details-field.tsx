@@ -2,14 +2,14 @@ import { Button, Input } from '../ui'
 import { Label } from '../ui/label'
 import { FormFieldLayout } from './form-field-layout'
 
-type addressDetailsFieldProps = {
+type AddressDetailsFieldProps = {
 	current: number
 	pos: number
 	goNext: () => void
 	goSpecific: (num: number) => void
 }
 
-export function AddressDetailsField(props: addressDetailsFieldProps) {
+export function AddressDetailsField(props: AddressDetailsFieldProps) {
 	return (
 		<FormFieldLayout
 			current={props.current}

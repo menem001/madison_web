@@ -2,7 +2,7 @@ import { cn } from '@/lib'
 import { Check } from 'lucide-react'
 import { type ReactNode } from 'react'
 
-type formFieldLayoutProps = {
+type FormFieldLayoutProps = {
 	title: string
 	subTitle: string
 	show: boolean
@@ -13,7 +13,7 @@ type formFieldLayoutProps = {
 	goSpecific: (num: number) => void
 }
 
-export function FormFieldLayout(props: formFieldLayoutProps) {
+export function FormFieldLayout(props: FormFieldLayoutProps) {
 	function goToCurrent() {
 		if (props.current > props.pos) {
 			props.goSpecific(props.pos)

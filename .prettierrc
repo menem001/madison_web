@@ -2,6 +2,7 @@
 	"printWidth": 100,
 	"tabWidth": 4,
 	"singleQuote": true,
+	"quoteProps": "consistent",
 	"bracketSameLine": true,
 	"arrowParens": "always",
 	"bracketSpacing": true,

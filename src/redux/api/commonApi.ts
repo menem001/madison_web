@@ -11,19 +11,15 @@ import {
 	type CurrencyRequest,
 	type MotorModalRequest,
 	type SaveMotorDetailRequest,
-	type vehicleUsageRequest
+	type VehicleUsageRequest
 } from '@/services/models/common.models'
 
 import type { Action, PayloadAction } from '@reduxjs/toolkit'
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { HYDRATE } from 'next-redux-wrapper'
-import { store } from '../store'
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type RootState = any // normally inferred from state
+import { type RootState, store } from '../store'
 
 function isHydrateAction(action: Action): action is PayloadAction<RootState> {
-	// eslint-disable-next-line indent
 	return action.type === HYDRATE
 }
 
@@ -44,7 +40,8 @@ export const commonApi = createApi({
 		// 	}
 		// }
 	}),
-	extractRehydrationInfo(action, { reducerPath }) {
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	extractRehydrationInfo(action, { reducerPath }): any {
 		if (isHydrateAction(action)) {
 			return action.payload[reducerPath]
 		}
@@ -69,7 +66,7 @@ export const commonApi = createApi({
 			): {
 				url: string
 				method: string
-				body: vehicleUsageRequest
+				body: VehicleUsageRequest
 				headers: { Authorization: string }
 			} => ({
 				url: 'get_motor_list',
@@ -85,20 +82,20 @@ export const commonApi = createApi({
 				body: data
 			})
 		}),
-		getBodyTypeList: build.mutation<BodyTypeListResponse, vehicleUsageRequest>({
+		getBodyTypeList: build.mutation<BodyTypeListResponse, VehicleUsageRequest>({
 			query: (data) => ({
 				url: 'get_body_type',
 				method: 'POST',
 				body: data
 			})
 		}),
-		getVehicleUsageList: build.mutation<VehicleUsageListResponse, vehicleUsageRequest>({
+		getVehicleUsageList: build.mutation<VehicleUsageListResponse, VehicleUsageRequest>({
 			query: (
 				data
 			): {
 				url: string
 				method: string
-				body: vehicleUsageRequest
+				body: VehicleUsageRequest
 				headers: { Authorization: string }
 			} => ({
 				url: 'get_vehicle_usage',

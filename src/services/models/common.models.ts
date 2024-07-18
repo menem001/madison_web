@@ -172,7 +172,7 @@ export const vehicleUsageSchema = z.object({
 	ErroCode: z.number()
 })
 
-export type vehicleUsageList = z.infer<typeof vehicleUsageSchema>
+export type VehicleUsageList = z.infer<typeof vehicleUsageSchema>
 
 // .........Request Class......................................................
 
@@ -210,7 +210,7 @@ export const VehicleUsageListRequestSchema = z.object({
 	InsuranceId: z.string(),
 	BranchCode: z.string()
 })
-export type vehicleUsageRequest = z.infer<typeof VehicleUsageListRequestSchema>
+export type VehicleUsageRequest = z.infer<typeof VehicleUsageListRequestSchema>
 
 // ....................Save Motor Details Request...................................
 

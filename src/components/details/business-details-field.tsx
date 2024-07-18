@@ -5,14 +5,14 @@ import { Button, Input } from '../ui'
 import { Label } from '../ui/label'
 import { FormFieldLayout } from './form-field-layout'
 
-type businessDetailsFieldProps = {
+type BusinessDetailsFieldProps = {
 	current: number
 	pos: number
 	goNext: () => void
 	goSpecific: (num: number) => void
 }
 
-export function BusinessDetailsField(props: businessDetailsFieldProps) {
+export function BusinessDetailsField(props: BusinessDetailsFieldProps) {
 	const [type, setType] = useState(1)
 
 	return (

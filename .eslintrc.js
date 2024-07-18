@@ -31,9 +31,9 @@ module.exports = {
 	},
 	plugins: ['@typescript-eslint', 'react', 'prettier'],
 	rules: {
-		indent: ['error', 'tab', { SwitchCase: 1 }],
-		quotes: ['error', 'single'],
-		semi: ['error', 'never'],
+		'indent': ['error', 'tab', { SwitchCase: 1 }],
+		'quotes': ['error', 'single', { avoidEscape: true }],
+		'semi': ['error', 'never'],
 		'@typescript-eslint/consistent-type-imports': [
 			'error',
 			{
@@ -80,6 +80,21 @@ module.exports = {
 			{
 				props: 'never',
 				children: 'never'
+			}
+		],
+		'@typescript-eslint/naming-convention': [
+			'error',
+			{
+				selector: 'typeAlias',
+				format: ['PascalCase']
+			},
+			{
+				selector: 'typeParameter',
+				format: ['PascalCase']
+			},
+			{
+				selector: 'interface',
+				format: ['PascalCase']
 			}
 		],
 		'react/jsx-uses-react': 'off',

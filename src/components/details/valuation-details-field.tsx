@@ -2,14 +2,14 @@ import { Button, Input } from '../ui'
 import { Label } from '../ui/label'
 import { FormFieldLayout } from './form-field-layout'
 
-type valuationDetailsFieldProps = {
+type ValuationDetailsFieldProps = {
 	current: number
 	pos: number
 	goNext: () => void
 	goSpecific: (num: number) => void
 }
 
-export function ValuationDetailsField(props: valuationDetailsFieldProps) {
+export function ValuationDetailsField(props: ValuationDetailsFieldProps) {
 	return (
 		<FormFieldLayout
 			current={props.current}

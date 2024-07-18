@@ -17,8 +17,8 @@ import {
 	type MotorModalRequest,
 	type MotorModelList,
 	type SaveMotorDetailRequest,
-	type vehicleUsageList,
-	type vehicleUsageRequest
+	type VehicleUsageList,
+	type VehicleUsageRequest
 } from './models/common.models'
 
 export type GuestLoginResponse = TResponse<GuestLogin>
@@ -63,15 +63,15 @@ export async function getBodyTypeList() {
 	)
 }
 
-export type VehicleUsageListResponse = TResponse<vehicleUsageList>
+export type VehicleUsageListResponse = TResponse<VehicleUsageList>
 
-export async function getVehicleUsageList(data: vehicleUsageRequest, token: string | null) {
+export async function getVehicleUsageList(data: VehicleUsageRequest, token: string | null) {
 	return api.post<MotorList>(endPoints.vehicleUsage, data, vehicleUsageSchema, {
 		headers: { Authorization: token }
 	})
 }
 
-export type SaveMotorDetailResponse = TResponse<vehicleUsageList>
+export type SaveMotorDetailResponse = TResponse<VehicleUsageList>
 
 export async function saveMotorDetails(data: SaveMotorDetailRequest) {
 	return api.post<MotorList>(endPoints.saveMotorDetails, data, SaveMotorDetailRequestSchema)

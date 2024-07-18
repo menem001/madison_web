@@ -2,14 +2,14 @@ import { Button, Input } from '../ui'
 import { Label } from '../ui/label'
 import { FormFieldLayout } from './form-field-layout'
 
-type energySpecificationFieldProps = {
+type EnergySpecificationFieldProps = {
 	current: number
 	pos: number
 	goNext: () => void
 	goSpecific: (num: number) => void
 }
 
-export function EnergySpecificationField(props: energySpecificationFieldProps) {
+export function EnergySpecificationField(props: EnergySpecificationFieldProps) {
 	return (
 		<FormFieldLayout
 			current={props.current}

@@ -2,14 +2,14 @@ import { Input } from '../ui'
 import { Label } from '../ui/label'
 import { FormFieldLayout } from './form-field-layout'
 
-type additionalVehicleInfoProps = {
+type AdditionalVehicleInfoProps = {
 	current: number
 	pos: number
 	goNext: () => void
 	goSpecific: (num: number) => void
 }
 
-export function AdditionalVehicleInfo(props: additionalVehicleInfoProps) {
+export function AdditionalVehicleInfo(props: AdditionalVehicleInfoProps) {
 	return (
 		<FormFieldLayout
 			current={props.current}

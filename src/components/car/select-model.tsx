@@ -43,7 +43,6 @@ export function SelectModel() {
 			gsap.to('.modeltitle', { duration: 1, text: 'Select the Model' })
 			gsap.to('.modelsubtitle', {
 				duration: 1,
-				// eslint-disable-next-line quotes
 				text: "The specific design or type of vehicle within the manufacturer's lineup (e.g. Corolla, Civic, Mustang)",
 				delay: 1
 			})
@@ -63,7 +62,6 @@ export function SelectModel() {
 			gsap.to('.modeltitle', { duration: 1, text: 'Select the Model' })
 			gsap.to('.modelsubtitle', {
 				duration: 1,
-				// eslint-disable-next-line quotes
 				text: "The specific design or type of vehicle within the manufacturer's lineup (e.g. Corolla, Civic, Mustang)"
 			})
 			gsap.to('.modelSuggest', {

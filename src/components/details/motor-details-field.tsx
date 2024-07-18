@@ -2,14 +2,14 @@ import { Button, Input } from '../ui'
 import { Label } from '../ui/label'
 import { FormFieldLayout } from './form-field-layout'
 
-type motorDetailsFieldProps = {
+type MotorDetailsFieldProps = {
 	current: number
 	pos: number
 	goNext: () => void
 	goSpecific: (num: number) => void
 }
 
-export function MotorDetailsField(props: motorDetailsFieldProps) {
+export function MotorDetailsField(props: MotorDetailsFieldProps) {
 	return (
 		<FormFieldLayout
 			current={props.current}
