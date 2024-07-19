@@ -5,7 +5,7 @@ const initialState = {
 	makeID: '',
 	model: '',
 	seat: 0,
-	excessLimit: 0,
+	excessLimit: 750,
 	vehicleUsage: '',
 	value: 0,
 	bodyType: [],
@@ -93,7 +93,6 @@ export const carInsuranceSlice = createSlice({
 		},
 		updateVehicleManufactureYear(state: CarDetails, action: PayloadAction<string>) {
 			state.year = +action.payload
-			state.excessLimit = 0
 		},
 		updateExcessLimit(state: CarDetails, action: PayloadAction<number>) {
 			state.excessLimit = +action.payload
@@ -120,13 +119,11 @@ export const carInsuranceSlice = createSlice({
 			state: CarDetails,
 			action: PayloadAction<{
 				driverOrOwner: string
-				DriverName: string
 				DriverDOB: string
 				DriverID: string
 			}>
 		) {
 			state.driverOrOwner = action.payload.driverOrOwner
-			state.DriverName = action.payload.DriverName
 			state.DriverDOB = action.payload.DriverDOB
 			state.DriverID = action.payload.DriverID
 		}

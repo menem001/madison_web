@@ -6,9 +6,6 @@ import { useEffect, useRef } from 'react'
 // import { Button } from '../ui'
 import { CustomerInfo } from './customer-info'
 import { SelectInsuranceClass } from './select-insurance-class'
-import { SumInsured } from './sum-insured'
-import { Claims } from './claims'
-import { GPSTracking } from './gps-tracking'
 // import { HorsePowerTonnage } from './horse-power-tonnage'
 // import { SumInsuredDeductibles } from './sum-insured-deductibles'
 // import { cn } from '@/lib'
@@ -16,7 +13,7 @@ import { GPSTracking } from './gps-tracking'
 export function MoreDetailsPage() {
 	const dispatch = useAppDispatch()
 
-	const vehicleData = useAppSelector((state) => state.carInsurance)
+	// const vehicleData = useAppSelector((state) => state.carInsurance)
 	const appData = useAppSelector((state) => state.apps)
 
 	// const [current, setCurrent] = useState<number>(0)
@@ -95,9 +92,9 @@ export function MoreDetailsPage() {
 					)}
 				</div> */}
 				<SelectInsuranceClass />
-				{vehicleData.insuranceClass !== 'TPO' && <SumInsured />}
+				{/* {vehicleData.insuranceClass !== 'TPO' && <SumInsured />}
 				<Claims />
-				{vehicleData.insuranceClass === 'Comprehensive' && <GPSTracking />}
+				{vehicleData.insuranceClass === 'Comprehensive' && <GPSTracking />} */}
 
 				{/* {vehicleData.horsePower !== '' && <Tonnage />} */}
 				{/* {vehicleData.horsePower !== '' && vehicleData.tonnage !== '' && current !== 0 && (
@@ -127,14 +124,7 @@ export function MoreDetailsPage() {
 				{/* <Fragment>
 					{current === 2 && ( */}
 
-				{((vehicleData.insuranceClass === 'Comprehensive' &&
-					vehicleData.sumInsured !== null &&
-					vehicleData.gpsTraking !== null &&
-					vehicleData.claims !== null) ||
-					(vehicleData.insuranceClass === 'TPFT' &&
-						vehicleData.sumInsured !== null &&
-						vehicleData.claims !== null) ||
-					(vehicleData.insuranceClass === 'TPO' && vehicleData.claims !== null)) && (
+				{true && (
 					<div ref={customerRef}>
 						<CustomerInfo scrollToTop={scrollToTop} />
 					</div>

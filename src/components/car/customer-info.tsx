@@ -1,7 +1,7 @@
 'use client'
 
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
-import { updateCode, updateMobile, updateName, updatePremium } from '@/redux/slices'
+import { updateMobile, updateName, updatePremium } from '@/redux/slices'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 // import { useRouter } from 'next/navigation'
@@ -167,30 +167,48 @@ export function CustomerInfo(props: CustomerInfoProps) {
 					<span className='CustomerInfosubtitle font-roboto text-sm font-medium text-gray-500'></span>
 				</div>
 				<div className='selectCustomerInfo flex flex-row gap-10'>
-					<Input
-						placeholder='Customer Name'
-						value={customerData.name}
-						onChange={(e) => {
-							dispatch(updateName(e.target.value))
-						}}
-					/>
+					<div className='flex-grow'>
+						<p>First Name</p>
+						<Input
+							placeholder='First Name'
+							value={customerData.name}
+							onChange={(e) => {
+								dispatch(updateName(e.target.value))
+							}}
+						/>
+					</div>
+					<div className='flex-grow'>
+						<p>Last Name</p>
+						<Input
+							placeholder='Last Name'
+							value={customerData.name}
+							onChange={(e) => {
+								dispatch(updateName(e.target.value))
+							}}
+						/>
+					</div>
 				</div>
 				<div className='selectCustomerInfo flex flex-row gap-10'>
-					<Input
-						className='max-w-20'
-						placeholder='Code'
-						value={customerData.code}
-						onChange={(e) => {
-							dispatch(updateCode(e.target.value))
-						}}
-					/>
-					<Input
-						placeholder='Mobile Number'
-						value={customerData.mobile}
-						onChange={(e) => {
-							dispatch(updateMobile(e.target.value))
-						}}
-					/>
+					<div className='flex-grow'>
+						<p>Mail Address</p>
+						<Input
+							placeholder='Mail Address'
+							value={customerData.name}
+							onChange={(e) => {
+								dispatch(updateName(e.target.value))
+							}}
+						/>
+					</div>
+					<div className='flex-grow'>
+						<p>Mobile Number</p>
+						<Input
+							placeholder='Mobile Number'
+							value={customerData.name}
+							onChange={(e) => {
+								dispatch(updateMobile(e.target.value))
+							}}
+						/>
+					</div>
 				</div>
 			</div>
 			<span className='selectCustomerInfo -mt-6 font-jakarta text-xs text-gray-500'>

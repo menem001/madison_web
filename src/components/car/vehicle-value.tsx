@@ -13,7 +13,7 @@ export function VehicleValue() {
 	useGSAP(() => {
 		if (vehicleData.value === 0) {
 			gsap.from('.selectVehicleDesciption', { y: 80, opacity: 0, duration: 0.5, delay: 1 })
-			gsap.to('.Valuetitle', { duration: 0.5, text: 'Model Value' })
+			gsap.to('.Valuetitle', { duration: 0.5, text: 'Vehicle Value' })
 			gsap.to('.Valuesubtitle', {
 				duration: 0.5,
 				text: 'How the vehicle is used, such as for personal, business, or commercial purposes',
@@ -21,7 +21,7 @@ export function VehicleValue() {
 			})
 		} else {
 			gsap.from('.selectVehicleDesciption', { y: 80, opacity: 0, duration: 0.5 })
-			gsap.to('.Valuetitle', { duration: 0.5, text: 'Model Value' })
+			gsap.to('.Valuetitle', { duration: 0.5, text: 'Vehicle Value' })
 			gsap.to('.Valuesubtitle', {
 				duration: 0.5,
 				text: 'How the vehicle is used, such as for personal, business, or commercial purposes'
@@ -32,7 +32,7 @@ export function VehicleValue() {
 	return (
 		<div
 			className={cn('flex flex-col gap-7', {
-				'min-h-[56vh]': vehicleData.value === 0
+				'min-h-[65vh]': vehicleData.value === 0
 			})}>
 			<div className='flex flex-col gap-2'>
 				<h1 className='Valuetitle font-jakarta text-xl font-bold text-blue-300'></h1>
@@ -40,9 +40,9 @@ export function VehicleValue() {
 			</div>
 			<div className='selectVehicleDesciption flex w-3/4 flex-row gap-10'>
 				<Input
-					placeholder='Model Value'
+					placeholder='Vehicle Value'
 					type='number'
-					value={vehicleData.value}
+					value={vehicleData.value !== 0 ? vehicleData.value : undefined}
 					onChange={(e) => {
 						dispatch(updateValue(+e.target.value))
 					}}

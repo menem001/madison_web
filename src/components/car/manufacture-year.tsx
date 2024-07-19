@@ -21,7 +21,7 @@ export function ManufactureYear() {
 	useGSAP(() => {
 		if (vehicleData.year === 0) {
 			gsap.from('.selectManufacture', { y: 80, opacity: 0, duration: 0.5, delay: 1 })
-			gsap.to('.Yeartitle', { duration: 0.5, text: 'Manufacture Year' })
+			gsap.to('.Yeartitle', { duration: 0.5, text: 'Manufacture Year & Excess Limit' })
 			gsap.to('.Yearsubtitle', {
 				duration: 0.5,
 				text: 'How the vehicle is used, such as for personal, business, or commercial purposes',
@@ -29,7 +29,7 @@ export function ManufactureYear() {
 			})
 		} else {
 			gsap.from('.selectManufacture', { y: 80, opacity: 0, duration: 0.5 })
-			gsap.to('.Yeartitle', { duration: 0.5, text: 'Manufacture Year' })
+			gsap.to('.Yeartitle', { duration: 0.5, text: 'Manufacture Year & Excess Limit' })
 			gsap.to('.Yearsubtitle', {
 				duration: 0.5,
 				text: 'How the vehicle is used, such as for personal, business, or commercial purposes'
@@ -40,7 +40,7 @@ export function ManufactureYear() {
 	return (
 		<div
 			className={cn('flex flex-col gap-7', {
-				'min-h-[56vh]': vehicleData.year === 0
+				'min-h-[68vh]': vehicleData.year === 0 || vehicleData.excessLimit === 0
 			})}>
 			<div className='flex flex-col gap-2'>
 				<h1 className='Yeartitle font-jakarta text-xl font-bold text-blue-300'></h1>
@@ -72,7 +72,7 @@ export function ManufactureYear() {
 				</Select>
 				<Input
 					className='h-16'
-					placeholder='excess Limit'
+					placeholder='Excess Limit'
 					type='number'
 					value={vehicleData.excessLimit !== 0 ? vehicleData.excessLimit : undefined}
 					onChange={(e) => {

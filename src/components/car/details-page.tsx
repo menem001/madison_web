@@ -1,9 +1,9 @@
 'use client'
 
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
-import { setScrollTo } from '@/redux/slices'
+import { setGuestLoginDetails, setScrollTo } from '@/redux/slices'
 import { useRouter } from 'next/navigation'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Button } from '../ui'
 import { SelectMark } from './select-mark'
 import { ManufactureYear } from './manufacture-year'
@@ -13,9 +13,11 @@ import { VehicleUsage } from './vehicle-usage'
 import { BodyType } from './body-type'
 import { CarSeating } from './car-seating'
 import { DriverDetails } from './driver-details'
+import { useGuestLoginMutation } from '@/redux/api/commonApi'
 
 export function DetailsPage() {
 	const router = useRouter()
+	const [guestLogin] = useGuestLoginMutation()
 	const dispatch = useAppDispatch()
 
 	const vehicleData = useAppSelector((state) => state.carInsurance)
@@ -23,6 +25,7 @@ export function DetailsPage() {
 
 	const pageEnd = useRef<HTMLDivElement>(null)
 	const specificRef = useRef<HTMLDivElement>(null)
+	const [token, setToken] = useState<string>('')
 
 	function scrollToBottom() {
 		pageEnd.current?.scrollIntoView({ behavior: 'smooth' })
@@ -54,6 +57,28 @@ export function DetailsPage() {
 		}
 	}, [appData, dispatch])
 
+	function loginAsGuest() {
+		const res = guestLogin()
+		res.then((value) => {
+			if (value.data?.type === 'success' && value.data?.data !== undefined) {
+				const details = {
+					token: value.data.data.Result.Token,
+					brokerCode: value.data.data.Result.LoginBranchDetails[0].BrokerBranchCode,
+					insuranceID: value.data.data.Result.LoginBranchDetails[0].InsuranceId,
+					productId: value.data.data.Result.BrokerCompanyProducts[0].ProductId,
+					loginId: value.data.data.Result.LoginId,
+					branchCode: value.data.data.Result.LoginBranchDetails[0].BranchCode
+				}
+				dispatch(setGuestLoginDetails(details))
+				setToken(value.data.data.Result.Token)
+			}
+		})
+	}
+
+	useEffect(() => {
+		loginAsGuest()
+	}, [])
+
 	return (
 		<section className='flex justify-end'>
 			<section className='flex h-full w-full flex-col gap-20 px-4 pt-4 font-roboto lg:w-5/6 lg:px-14 lg:pb-8 lg:pt-14'>
@@ -78,11 +103,14 @@ export function DetailsPage() {
 						</p>
 					</div>
 				</div> */}
-				<div
-					ref={appData.scrollTo === 1 ? specificRef : undefined}
-					className='flex flex-col gap-6'>
-					<SelectMark />
-				</div>
+				{token === '' && <h1>Loading ...</h1>}
+				{token !== '' && (
+					<div
+						ref={appData.scrollTo === 1 ? specificRef : undefined}
+						className='flex flex-col gap-6'>
+						<SelectMark />
+					</div>
+				)}
 				{vehicleData.mark !== '' && (
 					<div
 						ref={appData.scrollTo === 2 ? specificRef : undefined}

@@ -14,12 +14,11 @@ export function DriverDetails() {
 
 	const [isDriver, setIsDriver] = useState<number>(0)
 
-	const [driverName, setDriverName] = useState('')
 	const [driverDOB, setDriverDOB] = useState('')
 	const [driverID, setDriverID] = useState('')
 
 	useGSAP(() => {
-		if (driverName === '') {
+		if (driverID === '') {
 			gsap.from('.selectDriver', { y: 80, opacity: 0, duration: 0.5, delay: 1 })
 			gsap.to('.Drivertitle', { duration: 0.5, text: 'Are you Owner or Driver' })
 			gsap.to('.Driversubtitle', {
@@ -69,34 +68,24 @@ export function DriverDetails() {
 			</div>
 			<div className='selectDriver flex w-full flex-row gap-10'>
 				<div className='flex-grow'>
-					<Label htmlFor='number'>Driver Name</Label>
+					<Label htmlFor='idnumber'>Driver ID(Driving License)</Label>
 					<Input
-						placeholder='Driver Name'
-						value={driverName}
-						onChange={(e) => {
-							setDriverName(e.target.value)
-						}}
-					/>
-				</div>
-				<div className='flex-grow'>
-					<Label htmlFor='number'>Driver DOB</Label>
-					<Input
-						placeholder='Driver DOB'
-						value={driverDOB}
-						onChange={(e) => {
-							setDriverDOB(e.target.value)
-						}}
-					/>
-				</div>
-			</div>
-			<div className='selectDriver flex w-full flex-row gap-10'>
-				<div className='flex-grow'>
-					<Label htmlFor='number'>Driver ID(Driving License)</Label>
-					<Input
+						id='idnumber'
 						placeholder='Enter the ID Number of the Driver'
 						value={driverID}
 						onChange={(e) => {
 							setDriverID(e.target.value)
+						}}
+					/>
+				</div>
+				<div className='flex-grow'>
+					<Label htmlFor='dob'>Driver DOB</Label>
+					<Input
+						id='dob'
+						placeholder='Driver DOB'
+						value={driverDOB}
+						onChange={(e) => {
+							setDriverDOB(e.target.value)
 						}}
 					/>
 				</div>
@@ -108,8 +97,7 @@ export function DriverDetails() {
 						updateDriverDetails({
 							driverOrOwner: isDriver === 1 ? 'Driver' : 'Owner',
 							DriverDOB: driverDOB,
-							DriverID: driverID,
-							DriverName: driverName
+							DriverID: driverID
 						})
 					)
 				}}>

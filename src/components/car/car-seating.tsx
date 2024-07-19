@@ -30,15 +30,16 @@ export function CarSeating() {
 	})
 
 	return (
-		<div className={cn('flex flex-col gap-7', { 'min-h-[65vh]': vehicleData.model === '' })}>
+		<div className={cn('flex flex-col gap-7', { 'min-h-[65vh]': vehicleData.seat === 0 })}>
 			<div className='flex flex-col gap-2'>
 				<h1 className='seattitle font-jakarta text-xl font-bold text-blue-300'></h1>
 				<span className='seatsubtitle font-inter text-sm font-medium text-gray-500'></span>
 			</div>
-			<div className='selectseat flex flex-row gap-10'>
+			<div className='selectseat flex w-3/4 flex-row gap-10'>
 				<Input
 					placeholder='Number of Seats'
-					value={vehicleData.seat}
+					type='number'
+					value={vehicleData.seat !== 0 ? vehicleData.seat : undefined}
 					onChange={(e) => {
 						dispatch(updateSeats(+e.target.value))
 					}}
