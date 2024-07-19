@@ -19,7 +19,7 @@ export function RightSideBarList() {
 		{
 			id: 'Body Type',
 			field: 'Body Type',
-			name: vehicleData.bodyType.join(',')
+			name: vehicleData.bodyType
 		},
 		{
 			id: 'Car Brand',

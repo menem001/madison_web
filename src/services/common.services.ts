@@ -6,7 +6,10 @@ import {
 	type vehicleUsageRequest,
 	type CurrencyList,
 	type CurrencyRequest,
-	type SaveMotorDetailRequest
+	type SaveMotorDetailRequest,
+	type policyEndDateList,
+	policyEndDatesSchema,
+	type saveMotorDetailsList
 } from './models/common.models'
 import { MotorMakeSchema, type MotorList, type CommonModalRequest } from './models/common.models'
 import {
@@ -32,8 +35,10 @@ export async function doGuestLogin() {
 
 export type CurrencyListResponse = TResponse<CurrencyList>
 
-export async function getCurrencyList(data: CurrencyRequest) {
-	return api.post<CurrencyList>(endPoints.currencyList, data, CurrencyListAPISchema)
+export async function getCurrencyList(data: CurrencyRequest, token: string | null) {
+	return api.post<CurrencyList>(endPoints.currencyList, data, CurrencyListAPISchema, {
+		headers: { Authorization: token }
+	})
 }
 
 export type MotorListResponse = TResponse<MotorList>
@@ -63,13 +68,32 @@ export async function getBodyTypeList(data: vehicleUsageRequest, token: string |
 export type VehicleUsageListResponse = TResponse<vehicleUsageList>
 
 export async function getVehicleUsageList(data: vehicleUsageRequest, token: string | null) {
-	return api.post<MotorList>(endPoints.vehicleUsage, data, vehicleUsageSchema, {
+	return api.post<vehicleUsageList>(endPoints.vehicleUsage, data, vehicleUsageSchema, {
 		headers: { Authorization: token }
 	})
 }
 
-export type SaveMotorDetailResponse = TResponse<vehicleUsageList>
+export type SaveMotorDetailResponse = TResponse<saveMotorDetailsList>
 
-export async function saveMotorDetails(data: SaveMotorDetailRequest) {
-	return api.post<MotorList>(endPoints.saveMotorDetails, data, SaveMotorDetailRequestSchema)
+export async function saveMotorDetails(data: SaveMotorDetailRequest, token: string | null) {
+	return api.post<saveMotorDetailsList>(
+		endPoints.saveMotorDetails,
+		data,
+		SaveMotorDetailRequestSchema,
+		{
+			headers: { Authorization: token }
+		}
+	)
+}
+
+export type policyEndDateResponse = TResponse<policyEndDateList>
+
+export async function getPolicyEndDates(data: { date: string }, token: string | null) {
+	return api.get<policyEndDateList>(
+		endPoints.policyEndDates + '?policyStartDate=' + data.date,
+		policyEndDatesSchema,
+		{
+			headers: { Authorization: token }
+		}
+	)
 }

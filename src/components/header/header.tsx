@@ -16,15 +16,9 @@ export function Header() {
 			</div>
 			<div className='flex h-full flex-row items-center gap-4 p-3 font-jakarta text-gray-500'>
 				<Button
-					className='text-base font-normal'
-					size='sm'
-					variant='transparent'>
-					Sign In
-				</Button>
-				<Button
 					className='px-4 py-2'
 					variant='bluebtn'>
-					Buy Policy
+					Sign In
 				</Button>
 			</div>
 		</section>

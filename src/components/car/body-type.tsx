@@ -8,6 +8,8 @@ import gsap from 'gsap'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui'
 import { useGetBodyTypeListMutation } from '@/redux/api/commonApi'
 import { useEffect, useState } from 'react'
+import Image from 'next/image'
+import { assets } from '@/assets'
 
 export function BodyType() {
 	const vehicleData = useAppSelector((state) => state.carInsurance)
@@ -19,7 +21,7 @@ export function BodyType() {
 	const [bodyTypeList, setBodyTypeList] = useState<{ value: string; label: string }[]>([])
 
 	useGSAP(() => {
-		if (vehicleData.bodyType.length === 0) {
+		if (vehicleData.bodyType === '') {
 			gsap.from('.selectBody', { y: 80, opacity: 0, duration: 0.5, delay: 1 })
 			gsap.to('.bodytitle', { duration: 0.5, text: 'Body Type' })
 			gsap.to('.bodysubtitle', {
@@ -98,20 +100,30 @@ export function BodyType() {
 	return (
 		<div
 			className={cn('flex flex-col gap-7', {
-				'min-h-[65vh]': vehicleData.bodyType.length === 0
+				'min-h-[65vh]': vehicleData.bodyType === ''
 			})}>
-			<div className='flex flex-col gap-2'>
-				<h1 className='bodytitle font-jakarta text-xl font-bold text-blue-300'></h1>
-				<span className='bodysubtitle font-roboto text-sm font-medium text-gray-500'></span>
+			<div className='-ml-16 flex flex-row items-center gap-4'>
+				<div className='h-12 w-12 overflow-hidden rounded-full'>
+					<Image
+						alt='face'
+						height={60}
+						src={assets.images.imageFace}
+						width={60}
+					/>
+				</div>
+				<div className='flex flex-col gap-2'>
+					<h1 className='bodytitle font-jakarta text-xl font-bold text-blue-300'></h1>
+					<span className='bodysubtitle font-roboto text-sm font-medium text-gray-500'></span>
+				</div>
 			</div>
 			<div className='selectBody'>
 				<Select
-					value={vehicleData.bodyType.join(',')}
+					value={vehicleData.bodyType}
 					onValueChange={handleChange}>
 					<SelectTrigger
 						className='w-3/4'
 						title='Body Type'
-						value={vehicleData.bodyType.join(',')}>
+						value={vehicleData.bodyType}>
 						<SelectValue />
 					</SelectTrigger>
 					<SelectContent>

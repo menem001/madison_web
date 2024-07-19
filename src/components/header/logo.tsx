@@ -17,7 +17,7 @@ export function Logo() {
 			className='cursor-pointer'
 			height={56}
 			src={assets.images.logo}
-			width={56}
+			width={150}
 			onClick={goToHome}
 		/>
 	)

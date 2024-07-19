@@ -6,7 +6,7 @@ export function MotorcycleCard() {
 		<Template
 			caption="Travel isn't always pretty. It isn't always comfortable."
 			className='bg-blue-200'
-			title='Motorcycle Insurance'
+			title='Travel Insurance'
 			img={{
 				alt: 'bike',
 				height: 400,

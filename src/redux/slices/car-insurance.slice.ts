@@ -8,12 +8,12 @@ const initialState = {
 	excessLimit: 750,
 	vehicleUsage: '',
 	value: 0,
-	bodyType: [],
+	bodyType: '',
 	year: 0,
 	description: '',
 	policyStartDate: '',
 	policyEndDate: '',
-	Currency: '',
+	currency: '',
 	insuranceClass: 'Comprehensive',
 	sumInsured: null,
 	claims: null,
@@ -21,7 +21,8 @@ const initialState = {
 	driverOrOwner: '',
 	DriverName: '',
 	DriverDOB: '',
-	DriverID: ''
+	DriverID: '',
+	exchangeRate: '1.0'
 }
 
 export type CarDetails = {
@@ -32,13 +33,14 @@ export type CarDetails = {
 	value: number
 	excessLimit: number
 	vehicleUsage: string
-	bodyType: string[]
+	bodyType: string
 	year: number
 	description: string
 	insuranceClass: string
 	policyStartDate: string
 	policyEndDate: string
-	Currency: string
+	currency: string
+	exchangeRate: string
 	sumInsured: string | null
 	claims: boolean | null
 	gpsTraking: boolean | null
@@ -62,7 +64,7 @@ export const carInsuranceSlice = createSlice({
 			state.model = ''
 			state.value = 0
 			state.vehicleUsage = ''
-			state.bodyType = []
+			state.bodyType = ''
 			state.seat = 0
 		},
 		updateVehicleModel(state: CarDetails, action: PayloadAction<string>) {
@@ -70,18 +72,18 @@ export const carInsuranceSlice = createSlice({
 			state.year = 0
 			state.value = 0
 			state.vehicleUsage = ''
-			state.bodyType = []
+			state.bodyType = ''
 			state.seat = 0
 		},
 		updateVehicleUsage(state: CarDetails, action: PayloadAction<string>) {
 			state.vehicleUsage = action.payload
 			state.seat = 0
-			state.bodyType = []
+			state.bodyType = ''
 			state.year = 0
 			state.value = 0
 		},
 		updateVehicleBodyType(state: CarDetails, action: PayloadAction<string>) {
-			state.bodyType = [action.payload]
+			state.bodyType = action.payload
 			state.year = 0
 			state.value = 0
 			state.seat = 0
@@ -126,6 +128,20 @@ export const carInsuranceSlice = createSlice({
 			state.driverOrOwner = action.payload.driverOrOwner
 			state.DriverDOB = action.payload.DriverDOB
 			state.DriverID = action.payload.DriverID
+		},
+		updatePolicyStartDate(state: CarDetails, action: PayloadAction<string>) {
+			state.policyStartDate = action.payload
+			state.policyEndDate = ''
+		},
+		updatePolicyEndDate(state: CarDetails, action: PayloadAction<string>) {
+			state.policyEndDate = action.payload
+		},
+		updateCurrency(
+			state: CarDetails,
+			action: PayloadAction<{ currency: string; rate: string }>
+		) {
+			state.currency = action.payload.currency
+			state.exchangeRate = action.payload.rate
 		}
 	}
 })
@@ -144,5 +160,8 @@ export const {
 	updateVehicleModel,
 	updateValue,
 	updateExcessLimit,
-	updateDriverDetails
+	updateDriverDetails,
+	updatePolicyStartDate,
+	updatePolicyEndDate,
+	updateCurrency
 } = carInsuranceSlice.actions

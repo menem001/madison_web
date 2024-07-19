@@ -14,6 +14,7 @@ import { BodyType } from './body-type'
 import { CarSeating } from './car-seating'
 import { DriverDetails } from './driver-details'
 import { useGuestLoginMutation } from '@/redux/api/commonApi'
+import ClipLoader from 'react-spinners/ClipLoader'
 
 export function DetailsPage() {
 	const router = useRouter()
@@ -103,7 +104,11 @@ export function DetailsPage() {
 						</p>
 					</div>
 				</div> */}
-				{token === '' && <h1>Loading ...</h1>}
+				{token === '' && (
+					<div className='flex w-full'>
+						<ClipLoader color='#0C7BC4' />
+					</div>
+				)}
 				{token !== '' && (
 					<div
 						ref={appData.scrollTo === 1 ? specificRef : undefined}
@@ -133,7 +138,7 @@ export function DetailsPage() {
 						<BodyType />
 					</div>
 				)}
-				{vehicleData.bodyType.length !== 0 && (
+				{vehicleData.bodyType !== '' && (
 					<div
 						ref={appData.scrollTo === 4 ? specificRef : undefined}
 						className='flex flex-col gap-6'>

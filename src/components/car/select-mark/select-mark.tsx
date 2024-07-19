@@ -11,6 +11,7 @@ import { TextPlugin } from 'gsap/all'
 import { MarkCard } from './mark-card'
 import { useGetMotorMakeListMutation } from '@/redux/api/commonApi'
 import { useEffect, useState } from 'react'
+import Image from 'next/image'
 
 const brands = [
 	{
@@ -133,9 +134,19 @@ export function SelectMark() {
 			className={cn('flex flex-col gap-7', {
 				'min-h-[60svh]': vehicleData.mark === ''
 			})}>
-			<div className='flex flex-col gap-2'>
-				<h1 className='marktitle font-jakarta text-xl font-bold text-blue-300'></h1>
-				<span className='marksubtitle font-inter text-sm font-medium text-gray-500'></span>
+			<div className='-ml-16 flex flex-row items-center gap-4'>
+				<div className='h-12 w-12 overflow-hidden rounded-full'>
+					<Image
+						alt='face'
+						height={60}
+						src={assets.images.imageFace}
+						width={60}
+					/>
+				</div>
+				<div className='flex flex-col gap-2'>
+					<h1 className='marktitle font-jakarta text-xl font-bold text-blue-300'></h1>
+					<span className='marksubtitle font-inter text-sm font-medium text-gray-500'></span>
+				</div>
 			</div>
 			<div className='select'>
 				<Select

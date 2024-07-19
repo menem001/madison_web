@@ -4,7 +4,9 @@ import {
 	type MotorListResponse,
 	type BodyTypeListResponse,
 	type VehicleUsageListResponse,
-	type GuestLoginResponse
+	type GuestLoginResponse,
+	type policyEndDateResponse,
+	type SaveMotorDetailResponse
 } from '@/services/common.services'
 import {
 	type vehicleUsageRequest,
@@ -57,10 +59,18 @@ export const commonApi = createApi({
 			})
 		}),
 		getCurrencyList: build.mutation<CurrencyListResponse, CurrencyRequest>({
-			query: (data) => ({
+			query: (
+				data
+			): {
+				url: string
+				method: string
+				body: vehicleUsageRequest
+				headers: { Authorization: string }
+			} => ({
 				url: 'get_currency_list',
 				method: 'POST',
-				body: data
+				body: data,
+				headers: { Authorization: `Bearer ${store.getState().apps.token}` }
 			})
 		}),
 		getMotorMakeList: build.mutation<MotorListResponse, CommonModalRequest>({
@@ -123,11 +133,34 @@ export const commonApi = createApi({
 				headers: { Authorization: `Bearer ${store.getState().apps.token}` }
 			})
 		}),
-		saveMotorDetails: build.mutation<VehicleUsageListResponse, SaveMotorDetailRequest>({
-			query: (data) => ({
+		saveMotorDetails: build.mutation<SaveMotorDetailResponse, SaveMotorDetailRequest>({
+			query: (
+				data
+			): {
+				url: string
+				method: string
+				body: SaveMotorDetailRequest
+				headers: { Authorization: string }
+			} => ({
 				url: 'save_motor_details',
 				method: 'POST',
-				body: data
+				body: data,
+				headers: { Authorization: `Bearer ${store.getState().apps.token}` }
+			})
+		}),
+		getPolicyEndDate: build.query<policyEndDateResponse, string>({
+			query: (
+				date
+			): {
+				url: string
+				method: string
+				body: { date: string }
+				headers: { Authorization: string }
+			} => ({
+				url: 'get_policy_date',
+				method: 'POST',
+				body: { date },
+				headers: { Authorization: `Bearer ${store.getState().apps.token}` }
 			})
 		})
 	})
@@ -140,5 +173,6 @@ export const {
 	useGetMotorModelListMutation,
 	useGetBodyTypeListMutation,
 	useGetVehicleUsageListMutation,
-	useSaveMotorDetailsMutation
+	useSaveMotorDetailsMutation,
+	useGetPolicyEndDateQuery
 } = commonApi

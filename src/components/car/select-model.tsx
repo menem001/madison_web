@@ -8,33 +8,8 @@ import gsap from 'gsap'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui'
 import { useGetMotorModelListMutation } from '@/redux/api/commonApi'
 import { useEffect, useState } from 'react'
-
-// const models = [
-// 	{
-// 		id: 'Q7',
-// 		name: 'Q7'
-// 	},
-// 	{
-// 		id: 'RS',
-// 		name: 'RS'
-// 	},
-// 	{
-// 		id: 'Q3',
-// 		name: 'Q3'
-// 	},
-// 	{
-// 		id: 'S5',
-// 		name: 'S5'
-// 	},
-// 	{
-// 		id: 'Comet',
-// 		name: 'Comet'
-// 	},
-// 	{
-// 		id: 'A8',
-// 		name: 'A8'
-// 	}
-// ]
+import Image from 'next/image'
+import { assets } from '@/assets'
 
 export function SelectModel() {
 	const vehicleData = useAppSelector((state) => state.carInsurance)
@@ -116,9 +91,19 @@ export function SelectModel() {
 
 	return (
 		<div className={cn('flex flex-col gap-7', { 'min-h-[65vh]': vehicleData.model === '' })}>
-			<div className='flex flex-col gap-2'>
-				<h1 className='modeltitle font-jakarta text-xl font-bold text-blue-300'></h1>
-				<span className='modelsubtitle font-inter text-sm font-medium text-gray-500'></span>
+			<div className='-ml-16 flex flex-row items-center gap-4'>
+				<div className='h-12 w-12 overflow-hidden rounded-full'>
+					<Image
+						alt='face'
+						height={60}
+						src={assets.images.imageFace}
+						width={60}
+					/>
+				</div>
+				<div className='flex flex-col gap-2'>
+					<h1 className='modeltitle font-jakarta text-xl font-bold text-blue-300'></h1>
+					<span className='modelsubtitle font-inter text-sm font-medium text-gray-500'></span>
+				</div>
 			</div>
 			<div className='selectModel'>
 				<Select

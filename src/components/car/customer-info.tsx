@@ -1,21 +1,23 @@
 'use client'
 
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
-import { updateMobile, updateName, updatePremium } from '@/redux/slices'
+import { updateEmail, updateMobile, updateName, updatePremium } from '@/redux/slices'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 // import { useRouter } from 'next/navigation'
 import { Button, Input } from '../ui'
 import { type SaveMotorDetailRequest } from '@/services/models/common.models'
 import { useSaveMotorDetailsMutation } from '@/redux/api/commonApi'
+import { Label } from '../ui/label'
 
 type CustomerInfoProps = {
 	scrollToTop: () => void
 }
 
 export function CustomerInfo(props: CustomerInfoProps) {
-	// const vehicleData = useAppSelector((state) => state.carInsurance)
+	const vehicleData = useAppSelector((state) => state.carInsurance)
 	const customerData = useAppSelector((state) => state.customerDetails)
+	const appData = useAppSelector((state) => state.apps)
 
 	const [saveMotor] = useSaveMotorDetailsMutation()
 
@@ -41,10 +43,10 @@ export function CustomerInfo(props: CustomerInfoProps) {
 		const req: SaveMotorDetailRequest = {
 			BrokerBranchCode: '2',
 			CustomerCode: null,
-			CustomerName: 'Bhuvanesh',
+			CustomerName: customerData.name,
 			BdmCode: null,
 			BrokerCode: '13090',
-			LoginId: 'madison_broker',
+			LoginId: appData.loginId,
 			SubUserType: 'Broker',
 			ApplicationId: '1',
 			CustomerReferenceNo: 'MIC-CUST-12279',
@@ -54,19 +56,19 @@ export function CustomerInfo(props: CustomerInfoProps) {
 			AcccessoriesSumInsured: null,
 			AccessoriesInformation: null,
 			AdditionalCircumstances: null,
-			Chassisnumber: '6563456365',
+			Chassisnumber: null,
 			CityLimit: null,
 			CoverNoteNo: null,
 			CubicCapacity: null,
-			CreatedBy: 'madison_broker',
+			CreatedBy: appData.loginId,
 			DrivenByDesc: 'D',
 			MobileCode: '260',
-			MobileNumber: '7485965210',
+			MobileNumber: customerData.mobile,
 			Gpstrackinginstalled: 'N',
 			Grossweight: null,
 			HoldInsurancePolicy: 'N',
 			Insurancetype: null,
-			InsuranceId: '100004',
+			InsuranceId: appData.insuranceID,
 			InsuranceClass: null,
 			InsurerSettlement: '',
 			InterestedCompanyDetails: '',
@@ -78,14 +80,14 @@ export function CustomerInfo(props: CustomerInfoProps) {
 			NoOfClaims: null,
 			BranchCode: '46',
 			AgencyCode: '13090',
-			ProductId: '5',
+			ProductId: appData.productId,
 			SectionId: null,
 			PolicyType: null,
 			RadioOrCasseteplayer: null,
-			RegistrationYear: '09/07/2006',
-			Registrationnumber: '54353546546',
+			RegistrationYear: null,
+			Registrationnumber: null,
 			RoofRack: null,
-			SeatingCapacity: '2',
+			SeatingCapacity: vehicleData.seat + '',
 			SpotFogLamp: null,
 			Stickerno: null,
 			SumInsured: null,
@@ -93,19 +95,19 @@ export function CustomerInfo(props: CustomerInfoProps) {
 			TppdFreeLimit: null,
 			TppdIncreaeLimit: null,
 			TrailerDetails: null,
-			VehcilemodelId: 'ENCORE',
-			VehicleType: '2',
-			VehicleTypeId: '2',
-			Vehiclemake: 'BUICK',
-			VehiclemakeId: '92',
+			VehcilemodelId: vehicleData.model,
+			VehicleType: vehicleData.bodyType,
+			VehicleTypeId: vehicleData.bodyType,
+			Vehiclemake: vehicleData.mark,
+			VehiclemakeId: vehicleData.makeID,
 			WindScreenSumInsured: null,
 			Windscreencoverrequired: null,
 			accident: null,
 			periodOfInsurance: null,
-			PolicyStartDate: '17/07/2024',
-			PolicyEndDate: '11/07/2025',
-			Currency: 'ZMW',
-			ExchangeRate: '1.0',
+			PolicyStartDate: vehicleData.policyStartDate,
+			PolicyEndDate: vehicleData.policyEndDate,
+			Currency: vehicleData.currency,
+			ExchangeRate: vehicleData.exchangeRate,
 			HavePromoCode: 'N',
 			PromoCode: null,
 			CollateralYn: null,
@@ -168,19 +170,10 @@ export function CustomerInfo(props: CustomerInfoProps) {
 				</div>
 				<div className='selectCustomerInfo flex flex-row gap-10'>
 					<div className='flex-grow'>
-						<p>First Name</p>
+						<Label htmlFor='name'>Customer Name</Label>
 						<Input
-							placeholder='First Name'
-							value={customerData.name}
-							onChange={(e) => {
-								dispatch(updateName(e.target.value))
-							}}
-						/>
-					</div>
-					<div className='flex-grow'>
-						<p>Last Name</p>
-						<Input
-							placeholder='Last Name'
+							id='name'
+							placeholder='Customer Name'
 							value={customerData.name}
 							onChange={(e) => {
 								dispatch(updateName(e.target.value))
@@ -190,20 +183,59 @@ export function CustomerInfo(props: CustomerInfoProps) {
 				</div>
 				<div className='selectCustomerInfo flex flex-row gap-10'>
 					<div className='flex-grow'>
-						<p>Mail Address</p>
+						<Label htmlFor='email'>Mail Address</Label>
 						<Input
+							id='email'
 							placeholder='Mail Address'
-							value={customerData.name}
+							value={customerData.email}
 							onChange={(e) => {
-								dispatch(updateName(e.target.value))
+								dispatch(updateEmail(e.target.value))
 							}}
 						/>
 					</div>
-					<div className='flex-grow'>
-						<p>Mobile Number</p>
+				</div>
+				<div className='selectCustomerInfo flex flex-row gap-10'>
+					<div className='max-w-20'>
+						<Label htmlFor='code'>Mobile Code</Label>
 						<Input
+							disabled={true}
+							id='mobile'
 							placeholder='Mobile Number'
-							value={customerData.name}
+							value={customerData.code}
+						/>
+						{/* <Select
+							value={customerData.code}
+							// onValueChange={(e) => {
+							// 	dispatch(updateVehicleManufactureYear(e + ''))
+							// }}
+						>
+							<SelectTrigger
+								id='year'
+								value={customerData.code}>
+								<SelectValue />
+							</SelectTrigger>
+							<SelectContent className='max-h-64'>
+								 {years.map((year) => {
+								return (
+									<SelectItem
+										key={year}
+										value={year}>
+										{year}
+									</SelectItem>
+								)
+							})} 
+								<SelectItem value='+211'>+211</SelectItem>
+								<SelectItem value='+167'>+167</SelectItem>
+								<SelectItem value='+260'>+260</SelectItem>
+							</SelectContent>
+						</Select> */}
+					</div>
+					<div className='flex-grow'>
+						<Label htmlFor='mobile'>Mobile Number</Label>
+						<Input
+							id='mobile'
+							placeholder='Mobile Number'
+							value={customerData.mobile}
 							onChange={(e) => {
 								dispatch(updateMobile(e.target.value))
 							}}

@@ -1,21 +1,36 @@
 'use client'
 
-import { cn } from '@/lib'
-import { useAppDispatch } from '@/redux/hooks'
+import { cn, formatDateDDMMYYYY } from '@/lib'
+import { useAppDispatch, useAppSelector } from '@/redux/hooks'
 import { useState } from 'react'
-import { Button, Input } from '../ui'
+import { Button, Input, Popover, PopoverContent, PopoverTrigger } from '../ui'
 import { updateDriverDetails } from '@/redux/slices'
 import { Label } from '../ui/label'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
+import { CalendarDays } from 'lucide-react'
+import { Calendar } from '../ui/calendar'
 
 export function DriverDetails() {
 	const dispatch = useAppDispatch()
+	const vehicleData = useAppSelector((state) => state.carInsurance)
 
-	const [isDriver, setIsDriver] = useState<number>(0)
+	const [isDriver, setIsDriver] = useState<number>(vehicleData.driverOrOwner === 'Driver' ? 1 : 2)
 
-	const [driverDOB, setDriverDOB] = useState('')
-	const [driverID, setDriverID] = useState('')
+	const years18 = new Date()
+
+	years18.setFullYear(years18.getFullYear() - 18)
+
+	const parts = vehicleData.DriverDOB.split('/')
+	const dateObject = new Date(+parts[2], +parts[1] - 1, +parts[0])
+	const timestamp = dateObject.getTime()
+
+	const [driverDOB, setDriverDOB] = useState<Date | undefined>(
+		vehicleData.DriverDOB ? new Date(timestamp) : undefined
+	)
+	const [driverID, setDriverID] = useState(vehicleData.DriverID)
+
+	const [isSent, setIsSent] = useState<boolean>(false)
 
 	useGSAP(() => {
 		if (driverID === '') {
@@ -51,6 +66,7 @@ export function DriverDetails() {
 						)}
 						onClick={() => {
 							setIsDriver(1)
+							setIsSent(false)
 						}}>
 						Driver
 					</div>
@@ -61,6 +77,7 @@ export function DriverDetails() {
 						)}
 						onClick={() => {
 							setIsDriver(2)
+							setIsSent(false)
 						}}>
 						Owner
 					</div>
@@ -75,34 +92,83 @@ export function DriverDetails() {
 						value={driverID}
 						onChange={(e) => {
 							setDriverID(e.target.value)
+							setIsSent(false)
 						}}
 					/>
 				</div>
 				<div className='flex-grow'>
 					<Label htmlFor='dob'>Driver DOB</Label>
-					<Input
-						id='dob'
-						placeholder='Driver DOB'
-						value={driverDOB}
-						onChange={(e) => {
-							setDriverDOB(e.target.value)
-						}}
-					/>
+					<Popover>
+						<PopoverTrigger asChild>
+							<Button
+								id='start'
+								variant='outline'
+								className={cn(
+									'w-full pl-3 text-left font-normal text-muted-foreground',
+									!driverDOB && 'text-muted-foreground'
+								)}>
+								{driverDOB ? (
+									<span>{formatDateDDMMYYYY(driverDOB)}</span>
+								) : (
+									<span>Pick a date</span>
+								)}
+								<CalendarDays className='ml-auto h-4 w-4 opacity-50' />
+							</Button>
+						</PopoverTrigger>
+						<PopoverContent
+							align='start'
+							className='w-auto p-0'>
+							<>
+								<Calendar
+									initialFocus
+									captionLayout='dropdown-buttons'
+									className='p-0'
+									fromYear={1900}
+									id='DOB'
+									mode='single'
+									selected={driverDOB}
+									toMonth={years18}
+									toYear={years18.getFullYear()}
+									classNames={{
+										day_hidden: 'invisible',
+										dropdown:
+											'px-2 py-1.5 rounded-md bg-popover text-popover-foreground text-sm  focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ring-offset-background',
+										caption_dropdowns: 'flex gap-3',
+										vhidden: 'hidden',
+										caption_label: 'hidden'
+									}}
+									disabled={(date) =>
+										date > years18 || date < new Date('1900-01-01')
+									}
+									onSelect={(e) => {
+										if (e) {
+											setDriverDOB(e)
+											setIsSent(false)
+										}
+									}}
+								/>
+							</>
+						</PopoverContent>
+					</Popover>
 				</div>
 			</div>
-			<Button
-				variant='bluebtn'
-				onClick={() => {
-					dispatch(
-						updateDriverDetails({
-							driverOrOwner: isDriver === 1 ? 'Driver' : 'Owner',
-							DriverDOB: driverDOB,
-							DriverID: driverID
-						})
-					)
-				}}>
-				Save
-			</Button>
+			{!isSent && driverDOB && (
+				<Button
+					className='w-1/2'
+					variant='bluebtn'
+					onClick={() => {
+						dispatch(
+							updateDriverDetails({
+								driverOrOwner: isDriver === 1 ? 'Driver' : 'Owner',
+								DriverDOB: formatDateDDMMYYYY(driverDOB),
+								DriverID: driverID
+							})
+						)
+						setIsSent(true)
+					}}>
+					Save
+				</Button>
+			)}
 		</div>
 	)
 }

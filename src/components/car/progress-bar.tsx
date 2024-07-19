@@ -24,7 +24,7 @@ export function ProgressBar() {
 			{
 				id: 'Body Type',
 				field: 'Body Type',
-				name: vehicleData.bodyType.join(',')
+				name: vehicleData.bodyType
 			},
 			{
 				id: 'Car Brand',
@@ -54,9 +54,7 @@ export function ProgressBar() {
 		let value = 0
 
 		displayDataPage1.forEach((data) => {
-			if (data.field === 'Body Type' && vehicleData.bodyType.length !== 0) {
-				value += 20
-			} else if (data.field === 'Manufacture Year' && vehicleData.year === 0) {
+			if (data.field === 'Manufacture Year' && vehicleData.year === 0) {
 				value += 0
 			} else {
 				if (data.name !== '') {
@@ -65,7 +63,7 @@ export function ProgressBar() {
 			}
 		})
 		setCurrentPageRate(value)
-	}, [displayDataPage1, path, vehicleData.bodyType.length, vehicleData.year])
+	}, [displayDataPage1, path, vehicleData.year])
 
 	return (
 		<div className='flex flex-col items-start'>

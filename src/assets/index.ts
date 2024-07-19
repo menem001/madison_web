@@ -34,6 +34,7 @@ export const assets = {
 		trip: '/images/trip.jpeg',
 		qr: '/images/qrcode.png',
 		appStore: '/images/appStore.png',
-		googlePlay: '/images/googlePlay.png'
+		googlePlay: '/images/googlePlay.png',
+		imageFace: '/images/madisonImage.jpg'
 	}
 }

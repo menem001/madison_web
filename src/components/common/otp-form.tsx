@@ -11,7 +11,7 @@ export function OtpForm() {
 	const customerData = useAppSelector((state) => state.customerDetails)
 
 	function navigateToDetails() {
-		route.push('/car-insurance/details')
+		route.push('/car-insurance/details/customer-details')
 	}
 
 	const mobile = customerData.mobile === '' ? '7485981113' : customerData.mobile

@@ -8,6 +8,8 @@ import gsap from 'gsap'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select'
 import { useGetVehicleUsageListMutation } from '@/redux/api/commonApi'
 import { useEffect, useState } from 'react'
+import Image from 'next/image'
+import { assets } from '@/assets'
 
 export function VehicleUsage() {
 	const vehicleData = useAppSelector((state) => state.carInsurance)
@@ -80,9 +82,19 @@ export function VehicleUsage() {
 			className={cn('flex flex-col gap-7', {
 				'min-h-[65vh]': vehicleData.vehicleUsage === ''
 			})}>
-			<div className='flex flex-col gap-2'>
-				<h1 className='usagetitle font-jakarta text-xl font-bold text-blue-300'></h1>
-				<span className='usagesubtitle font-roboto text-sm font-medium text-gray-500'></span>
+			<div className='-ml-16 flex flex-row items-center gap-4'>
+				<div className='h-12 w-12 overflow-hidden rounded-full'>
+					<Image
+						alt='face'
+						height={60}
+						src={assets.images.imageFace}
+						width={60}
+					/>
+				</div>
+				<div className='flex flex-col gap-2'>
+					<h1 className='usagetitle font-jakarta text-xl font-bold text-blue-300'></h1>
+					<span className='usagesubtitle font-roboto text-sm font-medium text-gray-500'></span>
+				</div>
 			</div>
 			<div className='selectUsage'>
 				<Select

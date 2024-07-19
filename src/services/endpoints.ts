@@ -6,6 +6,7 @@ const endPoints = {
 	modelList: 'EwayCommonApi/master/dropdown/motormakemodel',
 	bodyTypeList: 'EwayCommonApi/master/dropdown/induvidual/bodytype',
 	vehicleUsage: 'EwayCommonApi/api/dropdown/induvidual/vehicleusage',
-	saveMotorDetails: 'EwayMotorApi/api/savemotordetails'
+	saveMotorDetails: 'EwayMotorApi/api/savemotordetails',
+	policyEndDates: 'EwayCommonApi/dropdown/policyEndDate'
 }
 export default endPoints
