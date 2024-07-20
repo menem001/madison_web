@@ -2,11 +2,13 @@ import { combineReducers, configureStore } from '@reduxjs/toolkit'
 import { setupListeners } from '@reduxjs/toolkit/query'
 import { appSlice, carInsuranceSlice, customerDetailsSlice } from './slices'
 import { commonApi } from './api/commonApi'
+import { motorSlice } from './slices/motor-detail.slice'
 
 const reducer = combineReducers({
 	[carInsuranceSlice.reducerPath]: carInsuranceSlice.reducer,
 	[customerDetailsSlice.reducerPath]: customerDetailsSlice.reducer,
 	[appSlice.reducerPath]: appSlice.reducer,
+	[motorSlice.reducerPath]: motorSlice.reducer,
 	[commonApi.reducerPath]: commonApi.reducer
 })
 

@@ -77,6 +77,16 @@ export function VehicleUsage() {
 		})
 	}, [appsData.branchCode, appsData.insuranceID, vehicleUsage])
 
+	function updateUsage(id: string) {
+		const pos = vehicleUsageList.findIndex((item) => {
+			return item.value === id
+		})
+
+		if (pos !== -1) {
+			dispatch(updateVehicleUsage({ usage: vehicleUsageList[pos].label, id: id }))
+		}
+	}
+
 	return (
 		<div
 			className={cn('flex flex-col gap-7', {
@@ -98,14 +108,12 @@ export function VehicleUsage() {
 			</div>
 			<div className='selectUsage'>
 				<Select
-					value={vehicleData.vehicleUsage}
-					onValueChange={(e) => {
-						dispatch(updateVehicleUsage(e))
-					}}>
+					value={vehicleData.vehicleUsageID}
+					onValueChange={updateUsage}>
 					<SelectTrigger
 						className='w-3/4'
 						title='Usage'
-						value={vehicleData.vehicleUsage}>
+						value={vehicleData.vehicleUsageID}>
 						<SelectValue />
 					</SelectTrigger>
 					<SelectContent>

@@ -24,7 +24,11 @@ import { cn, formatDateDDMMYYYY } from '@/lib'
 import { Calendar } from '../ui/calendar'
 import { CalendarDays } from 'lucide-react'
 import { Label } from '../ui/label'
-import { useGetCurrencyListMutation, useGetPolicyEndDateQuery } from '@/redux/api/commonApi'
+import {
+	useGetCurrencyListMutation,
+	useGetInsuranceClassMutation,
+	useGetPolicyEndDateQuery
+} from '@/redux/api/commonApi'
 import Image from 'next/image'
 import { assets } from '@/assets'
 // import { useGetPolicyEndDateQuery } from '@/redux/api/commonApi'
@@ -38,6 +42,7 @@ export function SelectInsuranceClass() {
 	const appsData = useAppSelector((state) => state.apps)
 
 	const [iclass, setIclass] = useState<number>(0)
+	const [iclassName, setIclassName] = useState<string>('')
 
 	const date = new Date(Date.now())
 	const parts = vehicleData.policyStartDate.split('/')
@@ -50,9 +55,11 @@ export function SelectInsuranceClass() {
 
 	const { data: EndDateReply, refetch } = useGetPolicyEndDateQuery(formatDateDDMMYYYY(startDate))
 	const [getCurrencies] = useGetCurrencyListMutation()
+	const [SelectInsuranceClass] = useGetInsuranceClassMutation()
 
 	const [endDateLists, setEndDateLists] = useState<{ value: string; label: string }[]>([])
 	const [currencyList, setCurrenctList] = useState<CurrencyRateList[]>([])
+	const [classTypeList, setClassTypeList] = useState<{ value: string; label: string }[]>([])
 
 	useGSAP(() => {
 		gsap.from('.selectInsClass', { y: 80, opacity: 0, duration: 0.5, delay: 1 })
@@ -71,24 +78,13 @@ export function SelectInsuranceClass() {
 	})
 
 	useEffect(() => {
-		if (iclass === 1) {
-			dispatch(updateClass('Comprehensive'))
-		} else if (iclass === 2) {
-			dispatch(updateClass('TPFT'))
-		} else if (iclass === 3) {
-			dispatch(updateClass('TPO'))
-		}
-	}, [dispatch, iclass])
+		dispatch(updateClass({ class: iclassName, id: iclass + '' }))
+	}, [dispatch, iclass, iclassName])
 
 	useEffect(() => {
-		if (vehicleData.insuranceClass === 'Comprehensive') {
-			setIclass(1)
-		} else if (vehicleData.insuranceClass === 'TPFT') {
-			setIclass(2)
-		} else if (vehicleData.insuranceClass === 'TPO') {
-			setIclass(3)
-		}
-	}, [vehicleData])
+		setIclass(+vehicleData.classID)
+		setIclassName(vehicleData.insuranceClass)
+	}, [])
 
 	useEffect(() => {
 		refetch()
@@ -126,6 +122,33 @@ export function SelectInsuranceClass() {
 					})
 				})
 				setCurrenctList(tempArr)
+			}
+		})
+	}, [])
+
+	useEffect(() => {
+		const request = {
+			InsuranceId: appsData.insuranceID,
+			ProductId: appsData.productId,
+			BranchCode: appsData.branchCode,
+			LoginId: appsData.loginId
+		}
+		const tempArr: { value: string; label: string }[] = []
+		const res = SelectInsuranceClass(request)
+		res.then((value) => {
+			if (value.data?.type === 'success' && value.data?.data !== undefined) {
+				value.data.data!.Result.map((value, index) => {
+					tempArr.push({
+						value: value.Code,
+						label: value.CodeDesc
+					})
+
+					if (index === 0) {
+						setIclass(+value.Code)
+						setIclassName(value.CodeDesc)
+					}
+				})
+				setClassTypeList(tempArr)
 			}
 		})
 	}, [])
@@ -259,12 +282,33 @@ export function SelectInsuranceClass() {
 					</SelectContent>
 				</Select>
 			</div>
-			<div className='flex flex-col gap-2'>
-				<h1 className='InsClasstitle font-jakarta text-xl font-bold text-blue-300'></h1>
-				<span className='InsClasssubtitle font-roboto text-sm font-medium text-gray-500'></span>
-			</div>
-			<div className='selectInsClass flex flex-row gap-10'>
-				<div
+			{classTypeList && (
+				<>
+					<div className='flex flex-col gap-2'>
+						<h1 className='InsClasstitle font-jakarta text-xl font-bold text-blue-300'></h1>
+						<span className='InsClasssubtitle font-roboto text-sm font-medium text-gray-500'></span>
+					</div>
+					<div className='selectInsClass flex flex-row gap-10'>
+						{classTypeList.map((insClass) => {
+							return (
+								<div
+									key={insClass.value}
+									className={cn(
+										'cursor-pointer rounded-lg border border-gray-700 bg-white px-7 py-2 font-inter font-semibold text-gray-700',
+										{
+											'border-none bg-blue-300 text-white':
+												iclass === +insClass.value
+										}
+									)}
+									onClick={() => {
+										setIclass(+insClass.value)
+										setIclassName(insClass.label)
+									}}>
+									{insClass.label}
+								</div>
+							)
+						})}
+						{/* <div
 					className={cn(
 						'cursor-pointer rounded-lg border border-gray-700 bg-white px-7 py-2 font-inter font-semibold text-gray-700',
 						{ 'border-none bg-blue-300 text-white': iclass === 1 }
@@ -293,8 +337,10 @@ export function SelectInsuranceClass() {
 						setIclass(3)
 					}}>
 					TPO
-				</div>
-			</div>
+				</div> */}
+					</div>
+				</>
+			)}
 		</div>
 	)
 }

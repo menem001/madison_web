@@ -6,14 +6,24 @@ import {
 	type VehicleUsageListResponse,
 	type GuestLoginResponse,
 	type policyEndDateResponse,
-	type SaveMotorDetailResponse
+	type SaveMotorDetailResponse,
+	type OTPResponse,
+	type verifyOTPResponse,
+	type InsuranceClassTypeResponse,
+	type PremiumCalcDataResponse,
+	type ViewPremiumCalDataResponse
 } from '@/services/common.services'
 import {
 	type vehicleUsageRequest,
 	type CommonModalRequest,
 	type CurrencyRequest,
 	type MotorModalRequest,
-	type SaveMotorDetailRequest
+	type SaveMotorDetailRequest,
+	type GenerateOTPRequest,
+	type ValidateOTPRequest,
+	type InsuranceClassTypeRequest,
+	type PremiumCalcRequest,
+	type ViewPremiumCalcRequest
 } from '@/services/models/common.models'
 
 import type { Action, PayloadAction } from '@reduxjs/toolkit'
@@ -162,6 +172,81 @@ export const commonApi = createApi({
 				body: { date },
 				headers: { Authorization: `Bearer ${store.getState().apps.token}` }
 			})
+		}),
+		generateOTP: build.mutation<OTPResponse, GenerateOTPRequest>({
+			query: (
+				data
+			): {
+				url: string
+				method: string
+				body: GenerateOTPRequest
+				headers: { Authorization: string }
+			} => ({
+				url: 'generate_otp',
+				method: 'POST',
+				body: data,
+				headers: { Authorization: `Bearer ${store.getState().apps.token}` }
+			})
+		}),
+		verifyOTP: build.mutation<verifyOTPResponse, ValidateOTPRequest>({
+			query: (
+				data
+			): {
+				url: string
+				method: string
+				body: ValidateOTPRequest
+				headers: { Authorization: string }
+			} => ({
+				url: 'verify_otp',
+				method: 'POST',
+				body: data,
+				headers: { Authorization: `Bearer ${store.getState().apps.token}` }
+			})
+		}),
+		getInsuranceClass: build.mutation<InsuranceClassTypeResponse, InsuranceClassTypeRequest>({
+			query: (
+				data
+			): {
+				url: string
+				method: string
+				body: InsuranceClassTypeRequest
+				headers: { Authorization: string }
+			} => ({
+				url: 'get_insurance_class',
+				method: 'POST',
+				body: data,
+				headers: { Authorization: `Bearer ${store.getState().apps.token}` }
+			})
+		}),
+		premiumCalc: build.mutation<PremiumCalcDataResponse, PremiumCalcRequest>({
+			query: (
+				data
+			): {
+				url: string
+				method: string
+				body: PremiumCalcRequest
+				headers: { Authorization: string }
+			} => ({
+				url: 'get_premium_calc',
+				method: 'POST',
+				body: data,
+				headers: { Authorization: `Bearer ${store.getState().apps.token}` }
+			})
+		}),
+		viewPremiumCalc: build.mutation<ViewPremiumCalDataResponse, ViewPremiumCalcRequest>({
+			query: (
+				data
+			): {
+				url: string
+				method: string
+				body: ViewPremiumCalcRequest
+				headers: { Authorization: string }
+			} => ({
+				url: 'view_premium_calc',
+				method: 'POST',
+				body: data,
+				headers: { Authorization: `Bearer ${store.getState().apps.token}` }
+			})
 		})
 	})
 })
@@ -174,5 +259,10 @@ export const {
 	useGetBodyTypeListMutation,
 	useGetVehicleUsageListMutation,
 	useSaveMotorDetailsMutation,
-	useGetPolicyEndDateQuery
+	useGetPolicyEndDateQuery,
+	useGenerateOTPMutation,
+	useVerifyOTPMutation,
+	useGetInsuranceClassMutation,
+	usePremiumCalcMutation,
+	useViewPremiumCalcMutation
 } = commonApi

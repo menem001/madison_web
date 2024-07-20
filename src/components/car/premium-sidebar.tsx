@@ -6,10 +6,60 @@ import { Button } from '../ui'
 // import { MobileLinkDetails } from './mobile-link-details'
 import { useRouter } from 'next/navigation'
 import { useAppSelector } from '@/redux/hooks'
+import { useEffect, useState } from 'react'
+import { usePremiumCalcMutation, useViewPremiumCalcMutation } from '@/redux/api/commonApi'
 
 export function PremiumSideBar() {
 	const route = useRouter()
 	const customerData = useAppSelector((state) => state.customerDetails)
+	const motorData = useAppSelector((state) => state.motor)
+	const appData = useAppSelector((state) => state.apps)
+	const vehicleData = useAppSelector((state) => state.carInsurance)
+
+	const [premiumCalculator] = usePremiumCalcMutation()
+	const [viewPremium] = useViewPremiumCalcMutation()
+	const [premiumCalDone, setPremiumCalDone] = useState<boolean>(false)
+
+	useEffect(() => {
+		if (motorData.RequestReferenceNo !== '') {
+			const req = {
+				InsuranceId: appData.insuranceID,
+				BranchCode: appData.branchCode,
+				AgencyCode: appData.agencyCode,
+				SectionId: '1',
+				ProductId: appData.productId,
+				MSRefNo: motorData.MSRefNo,
+				VehicleId: motorData.VehicleId,
+				CdRefNo: motorData.CdRefNo,
+				DdRefNo: motorData.DdRefNo,
+				VdRefNo: motorData.VdRefNo,
+				CreatedBy: motorData.CreatedBy,
+				productId: motorData.ProductId,
+				RequestReferenceNo: motorData.RequestReferenceNo,
+				EffectiveDate: vehicleData.policyStartDate,
+				PolicyEndDate: vehicleData.policyEndDate,
+				CoverModification: 'N'
+			}
+			const res = premiumCalculator(req)
+			res.then(() => {
+				setPremiumCalDone(true)
+			})
+		}
+	}, [motorData])
+
+	useEffect(() => {
+		if (premiumCalDone) {
+			const req = {
+				ProductId: motorData.ProductId,
+				RequestReferenceNo: motorData.RequestReferenceNo
+			}
+			const res = viewPremium(req)
+			res.then(() => {
+				setPremiumCalDone(false)
+			})
+		}
+	}, [premiumCalDone, motorData])
+
 	return (
 		<div className='flex h-full w-full flex-col gap-4 px-5 py-20 font-roboto'>
 			{customerData.premium && (

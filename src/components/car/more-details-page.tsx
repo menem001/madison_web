@@ -119,19 +119,11 @@ export function MoreDetailsPage() {
 					</div>
 				)} */}
 
-				{/* {vehicleData.sumInsured !== 0 && <Deductibles />} */}
-				{/* {vehicleData.sumInsured !== 0 && vehicleData.deductibles !== 0 && ( */}
-				{/* <Fragment>
-					{current === 2 && ( */}
-
 				{true && (
 					<div ref={customerRef}>
 						<CustomerInfo scrollToTop={scrollToTop} />
 					</div>
 				)}
-				{/* )}
-				</Fragment> */}
-				{/* )} */}
 				<div ref={pageEnd}></div>
 			</section>
 		</section>

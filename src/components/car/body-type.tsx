@@ -87,14 +87,14 @@ export function BodyType() {
 		})
 	}, [BodyType, appsData.branchCode, appsData.insuranceID])
 
-	// function handleClick(type: string) {
-	// 	return function () {
-	// 		dispatch(updateVehicleBodyType(type))
-	// 	}
-	// }
+	function updateBody(id: string) {
+		const pos = bodyTypeList.findIndex((item) => {
+			return item.value === id
+		})
 
-	function handleChange(type: string) {
-		dispatch(updateVehicleBodyType(type))
+		if (pos !== -1) {
+			dispatch(updateVehicleBodyType({ bodyType: bodyTypeList[pos].label, id: id }))
+		}
 	}
 
 	return (
@@ -118,12 +118,12 @@ export function BodyType() {
 			</div>
 			<div className='selectBody'>
 				<Select
-					value={vehicleData.bodyType}
-					onValueChange={handleChange}>
+					value={vehicleData.bodyTypeID}
+					onValueChange={updateBody}>
 					<SelectTrigger
 						className='w-3/4'
 						title='Body Type'
-						value={vehicleData.bodyType}>
+						value={vehicleData.bodyTypeID}>
 						<SelectValue />
 					</SelectTrigger>
 					<SelectContent>
@@ -131,7 +131,7 @@ export function BodyType() {
 							return (
 								<SelectItem
 									key={index}
-									value={item.label}>
+									value={item.value}>
 									{item.label}
 								</SelectItem>
 							)

@@ -7,7 +7,12 @@ const initialState = {
 	insuranceID: '',
 	productId: '',
 	loginId: '',
-	branchCode: ''
+	branchCode: '',
+	otpToken: 0,
+	CustomerCode: '',
+	userType: '',
+	subUserType: '',
+	agencyCode: ''
 }
 
 export type AppDetails = {
@@ -18,6 +23,11 @@ export type AppDetails = {
 	productId: string
 	loginId: string
 	branchCode: string
+	otpToken: number
+	CustomerCode: string
+	userType: string
+	subUserType: string
+	agencyCode: string
 }
 
 export const appSlice = createSlice({
@@ -36,6 +46,10 @@ export const appSlice = createSlice({
 				productId: string
 				loginId: string
 				branchCode: string
+				CustomerCode: string
+				userType: string
+				subUserType: string
+				agencyCode: string
 			}>
 		) {
 			state.token = action.payload.token
@@ -44,11 +58,18 @@ export const appSlice = createSlice({
 			state.productId = action.payload.productId
 			state.loginId = action.payload.loginId
 			state.branchCode = action.payload.branchCode
+			state.CustomerCode = action.payload.CustomerCode
+			state.userType = action.payload.userType
+			state.subUserType = action.payload.subUserType
+			state.agencyCode = action.payload.agencyCode
+		},
+		setOTPToken(state: AppDetails, action: PayloadAction<number>) {
+			state.otpToken = action.payload
 		}
 	}
 })
 
-export const { setScrollTo, setGuestLoginDetails } = appSlice.actions
+export const { setScrollTo, setGuestLoginDetails, setOTPToken } = appSlice.actions
 
 export function selectCurrentToken(state: AppDetails) {
 	return state.token

@@ -5,7 +5,6 @@ import { setGuestLoginDetails, setScrollTo } from '@/redux/slices'
 import { useRouter } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 import { Button } from '../ui'
-import { SelectMark } from './select-mark'
 import { ManufactureYear } from './manufacture-year'
 import { VehicleValue } from './vehicle-value'
 import { SelectModel } from './select-model'
@@ -15,6 +14,8 @@ import { CarSeating } from './car-seating'
 import { DriverDetails } from './driver-details'
 import { useGuestLoginMutation } from '@/redux/api/commonApi'
 import ClipLoader from 'react-spinners/ClipLoader'
+import { WhiteBook } from './white-book'
+import { SelectMark } from './select-mark'
 
 export function DetailsPage() {
 	const router = useRouter()
@@ -64,11 +65,15 @@ export function DetailsPage() {
 			if (value.data?.type === 'success' && value.data?.data !== undefined) {
 				const details = {
 					token: value.data.data.Result.Token,
+					loginId: value.data.data.Result.LoginId,
+					userType: value.data.data.Result.UserType,
+					subUserType: value.data.data.Result.SubUserType,
 					brokerCode: value.data.data.Result.LoginBranchDetails[0].BrokerBranchCode,
 					insuranceID: value.data.data.Result.LoginBranchDetails[0].InsuranceId,
+					branchCode: value.data.data.Result.LoginBranchDetails[0].BranchCode,
 					productId: value.data.data.Result.BrokerCompanyProducts[0].ProductId,
-					loginId: value.data.data.Result.LoginId,
-					branchCode: value.data.data.Result.LoginBranchDetails[0].BranchCode
+					CustomerCode: value.data.data.Result.CustomerCode,
+					agencyCode: value.data.data.Result.OaCode
 				}
 				dispatch(setGuestLoginDetails(details))
 				setToken(value.data.data.Result.Token)
@@ -110,10 +115,13 @@ export function DetailsPage() {
 					</div>
 				)}
 				{token !== '' && (
-					<div
-						ref={appData.scrollTo === 1 ? specificRef : undefined}
-						className='flex flex-col gap-6'>
-						<SelectMark />
+					<div className='flex flex-col gap-6'>
+						<WhiteBook />
+						<div
+							ref={appData.scrollTo === 1 ? specificRef : undefined}
+							className='flex flex-col gap-6'>
+							<SelectMark />
+						</div>
 					</div>
 				)}
 				{vehicleData.mark !== '' && (

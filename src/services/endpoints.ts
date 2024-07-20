@@ -7,6 +7,11 @@ const endPoints = {
 	bodyTypeList: 'EwayCommonApi/master/dropdown/induvidual/bodytype',
 	vehicleUsage: 'EwayCommonApi/api/dropdown/induvidual/vehicleusage',
 	saveMotorDetails: 'EwayMotorApi/api/savemotordetails',
-	policyEndDates: 'EwayCommonApi/dropdown/policyEndDate'
+	policyEndDates: 'EwayCommonApi/dropdown/policyEndDate',
+	generateOTP: 'EwayCommonApi/otp/generate',
+	verifyOTP: 'EwayCommonApi/otp/validate',
+	insuranceClass: 'EwayAdminApi/master/dropdown/policytype',
+	calculator: 'EwayCommonApi/calculator/calc',
+	viewCalculated: 'EwayCommonApi/api/view/calc'
 }
 export default endPoints

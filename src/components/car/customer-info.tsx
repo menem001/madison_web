@@ -6,9 +6,10 @@ import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 // import { useRouter } from 'next/navigation'
 import { Button, Input } from '../ui'
-import { type SaveMotorDetailRequest } from '@/services/models/common.models'
 import { useSaveMotorDetailsMutation } from '@/redux/api/commonApi'
 import { Label } from '../ui/label'
+import { type SaveMotorDetailRequest } from '@/services/models/common.models'
+import { updateDetails } from '@/redux/slices/motor-detail.slice'
 
 type CustomerInfoProps = {
 	scrollToTop: () => void
@@ -41,116 +42,63 @@ export function CustomerInfo(props: CustomerInfoProps) {
 
 	function doSaveMotorDetails() {
 		const req: SaveMotorDetailRequest = {
-			BrokerBranchCode: '2',
-			CustomerCode: null,
 			CustomerName: customerData.name,
-			BdmCode: null,
-			BrokerCode: '13090',
 			LoginId: appData.loginId,
-			SubUserType: 'Broker',
-			ApplicationId: '1',
-			CustomerReferenceNo: 'MIC-CUST-12279',
+			SubUserType: appData.subUserType,
+			UserType: appData.userType,
+			ApplicationId: '1', //
+			CustomerReferenceNo: null,
 			RequestReferenceNo: null,
-			Idnumber: '7485963250',
 			VehicleId: '1',
-			AcccessoriesSumInsured: null,
-			AccessoriesInformation: null,
-			AdditionalCircumstances: null,
-			Chassisnumber: null,
-			CityLimit: null,
-			CoverNoteNo: null,
-			CubicCapacity: null,
 			CreatedBy: appData.loginId,
-			DrivenByDesc: 'D',
-			MobileCode: '260',
-			MobileNumber: customerData.mobile,
-			Gpstrackinginstalled: 'N',
-			Grossweight: null,
-			HoldInsurancePolicy: 'N',
-			Insurancetype: null,
 			InsuranceId: appData.insuranceID,
-			InsuranceClass: null,
-			InsurerSettlement: '',
-			InterestedCompanyDetails: '',
-			ModelNumber: null,
-			MotorCategory: null,
-			MotorusageId: null,
-			NcdYn: null,
-			PolicyRenewalYn: 'N',
-			NoOfClaims: null,
-			BranchCode: '46',
-			AgencyCode: '13090',
+			BranchCode: appData.branchCode,
+			BrokerBranchCode: appData.brokerCode,
+			SectionId: vehicleData.classID,
+			AgencyCode: appData.agencyCode,
 			ProductId: appData.productId,
-			SectionId: null,
-			PolicyType: null,
-			RadioOrCasseteplayer: null,
-			RegistrationYear: null,
-			Registrationnumber: null,
-			RoofRack: null,
-			SeatingCapacity: vehicleData.seat + '',
-			SpotFogLamp: null,
-			Stickerno: null,
-			SumInsured: null,
-			Tareweight: null,
-			TppdFreeLimit: null,
-			TppdIncreaeLimit: null,
-			TrailerDetails: null,
-			VehcilemodelId: vehicleData.model,
-			VehicleType: vehicleData.bodyType,
-			VehicleTypeId: vehicleData.bodyType,
+			SavedFrom: 'SQ',
+			MobileCode: customerData.code,
+			MobileNumber: customerData.mobile,
+			Chassisnumber: '',
+			Insurancetype: [appData.insuranceID],
+			InsuranceClass: vehicleData.classID,
+			Motorusage: vehicleData.vehicleUsage,
+			MotorusageId: vehicleData.vehicleUsageID,
 			Vehiclemake: vehicleData.mark,
 			VehiclemakeId: vehicleData.makeID,
-			WindScreenSumInsured: null,
-			Windscreencoverrequired: null,
-			accident: null,
-			periodOfInsurance: null,
+			VehicleModel: vehicleData.model,
+			VehcilemodelId: '1', //
+			VehicleValueType: null,
+			DefenceValue: null,
+			PurchaseDate: null,
+			Deductibles: null,
+			Inflation: null,
+			ManufactureYear: vehicleData.year + '',
+			Gpstrackinginstalled: 'N',
+			NcdYn: 'N',
+			VehicleType: vehicleData.bodyType,
+			VehicleTypeId: vehicleData.bodyTypeID,
+			CarAlarmYn: 'N',
 			PolicyStartDate: vehicleData.policyStartDate,
 			PolicyEndDate: vehicleData.policyEndDate,
-			Currency: vehicleData.currency,
+			CustomerCode: appData.CustomerCode,
+			BdmCode: appData.CustomerCode,
+			SourceTypeId: appData.userType,
+			SumInsured: vehicleData.value,
+			AcccessoriesSumInsured: vehicleData.AcccessoriesSumInsured,
 			ExchangeRate: vehicleData.exchangeRate,
+			Currency: vehicleData.currency,
 			HavePromoCode: 'N',
-			PromoCode: null,
-			CollateralYn: null,
-			CollateralName: null,
-			FirstLossPayee: null,
-			FleetOwnerYn: 'N',
-			NoOfVehicles: null,
-			NoOfComprehensives: null,
-			ClaimRatio: null,
-			SavedFrom: null,
-			UserType: 'Broker',
-			TiraCoverNoteNo: null,
-			EndorsementYn: 'N',
-			SaveOrSubmit: 'Save',
-			EndorsementDate: null,
-			EndorsementEffectiveDate: null,
-			EndorsementRemarks: null,
-			EndorsementType: null,
-			EndorsementTypeDesc: null,
-			EndtCategoryDesc: null,
-			EndtCount: null,
-			EndtPrevPolicyNo: null,
-			EndtPrevQuoteNo: null,
-			EndtStatus: null,
-			IsFinanceEndt: null,
-			OrginalPolicyNo: null,
-			HorsePower: null,
-			Scenarios: {
-				ExchangeRateScenario: {
-					OldAcccessoriesSumInsured: null,
-					OldCurrency: 'ZMW',
-					OldExchangeRate: '1.0',
-					OldSumInsured: null,
-					OldTppdIncreaeLimit: null,
-					OldWindScreenSumInsured: null
-				}
-			},
-			Status: 'Y'
+			SearchFromApi: false
 		}
 		const res = saveMotor(req)
-		res.then(() => {
-			dispatch(updatePremium(true))
-			props.scrollToTop()
+		res.then((value) => {
+			if (value.data?.type === 'success' && value.data.data !== undefined) {
+				dispatch(updatePremium(true))
+				dispatch(updateDetails(value.data.data.Result[0]))
+				props.scrollToTop()
+			}
 		})
 	}
 

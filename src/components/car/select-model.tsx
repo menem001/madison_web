@@ -62,9 +62,19 @@ export function SelectModel() {
 		}
 	})
 
-	function updateModel(model: string) {
-		return function () {
-			dispatch(updateVehicleModel(model))
+	// function updateModel(model: string) {
+	// 	return function () {
+	// 		dispatch(updateVehicleModel(model))
+	// 	}
+	// }
+
+	function updateModel(modelid: string) {
+		const pos = modelsList.findIndex((item) => {
+			return item.value === modelid
+		})
+
+		if (pos !== -1) {
+			dispatch(updateVehicleModel({ model: modelsList[pos].label, modelID: modelid }))
 		}
 	}
 
@@ -87,7 +97,7 @@ export function SelectModel() {
 				setModelsList(tempArr)
 			}
 		})
-	}, [getModel, vehicleData.makeID])
+	}, [appsData.branchCode, appsData.insuranceID, getModel, vehicleData.makeID])
 
 	return (
 		<div className={cn('flex flex-col gap-7', { 'min-h-[65vh]': vehicleData.model === '' })}>
@@ -107,14 +117,12 @@ export function SelectModel() {
 			</div>
 			<div className='selectModel'>
 				<Select
-					value={vehicleData.model}
-					onValueChange={(e) => {
-						dispatch(updateVehicleModel(e))
-					}}>
+					value={vehicleData.modelID}
+					onValueChange={updateModel}>
 					<SelectTrigger
 						className='w-1/2'
 						title='Select the Model'
-						value={vehicleData.model}>
+						value={vehicleData.modelID}>
 						<SelectValue />
 					</SelectTrigger>
 					<SelectContent>
@@ -137,7 +145,9 @@ export function SelectModel() {
 						<div
 							key={model.value}
 							className='flex cursor-pointer items-center justify-center rounded-md py-3 font-inter text-sm shadow-md hover:shadow-xl'
-							onClick={updateModel(model.value)}>
+							onClick={() => {
+								updateModel(model.value)
+							}}>
 							{model.label}
 						</div>
 					)

@@ -2,14 +2,28 @@ import api, { type TResponse } from '@/lib/api'
 import endPoints from './endpoints'
 import {
 	CurrencyListAPISchema,
-	SaveMotorDetailRequestSchema,
 	type vehicleUsageRequest,
 	type CurrencyList,
 	type CurrencyRequest,
 	type SaveMotorDetailRequest,
 	type policyEndDateList,
 	policyEndDatesSchema,
-	type saveMotorDetailsList
+	type saveMotorDetailsList,
+	type GenerateOTPResponse,
+	type GenerateOTPRequest,
+	GenerateOTPResponseSchema,
+	type ValidateOTPResponse,
+	validateOTPResponseSchema,
+	saveMotorDetailsSchema,
+	type InsuranceClassTypeList,
+	insuranceTypeListSchema,
+	type InsuranceClassTypeRequest,
+	type PremiumCalcData,
+	type PremiumCalcRequest,
+	premiumCalcDataSchema,
+	type ViewPremiumCalData,
+	type ViewPremiumCalcRequest,
+	ViewPremiumCalDataSchema
 } from './models/common.models'
 import { MotorMakeSchema, type MotorList, type CommonModalRequest } from './models/common.models'
 import {
@@ -79,7 +93,7 @@ export async function saveMotorDetails(data: SaveMotorDetailRequest, token: stri
 	return api.post<saveMotorDetailsList>(
 		endPoints.saveMotorDetails,
 		data,
-		SaveMotorDetailRequestSchema,
+		saveMotorDetailsSchema,
 		{
 			headers: { Authorization: token }
 		}
@@ -96,4 +110,49 @@ export async function getPolicyEndDates(data: { date: string }, token: string | 
 			headers: { Authorization: token }
 		}
 	)
+}
+
+export type OTPResponse = TResponse<GenerateOTPResponse>
+
+export async function generateOTP(data: GenerateOTPRequest, token: string | null) {
+	return api.post<MotorList>(endPoints.generateOTP, data, GenerateOTPResponseSchema, {
+		headers: { Authorization: token }
+	})
+}
+
+export type verifyOTPResponse = TResponse<ValidateOTPResponse>
+
+export async function verifyOTP(data: GenerateOTPRequest, token: string | null) {
+	return api.post<MotorList>(endPoints.verifyOTP, data, validateOTPResponseSchema, {
+		headers: { Authorization: token }
+	})
+}
+
+export type InsuranceClassTypeResponse = TResponse<InsuranceClassTypeList>
+
+export async function insuranceType(data: InsuranceClassTypeRequest, token: string | null) {
+	return api.post<InsuranceClassTypeList>(
+		endPoints.insuranceClass,
+		data,
+		insuranceTypeListSchema,
+		{
+			headers: { Authorization: token }
+		}
+	)
+}
+
+export type PremiumCalcDataResponse = TResponse<PremiumCalcData>
+
+export async function calculatePremium(data: PremiumCalcRequest, token: string | null) {
+	return api.post<PremiumCalcData>(endPoints.calculator, data, premiumCalcDataSchema, {
+		headers: { Authorization: token }
+	})
+}
+
+export type ViewPremiumCalDataResponse = TResponse<ViewPremiumCalData>
+
+export async function viewCalculatedPremium(data: ViewPremiumCalcRequest, token: string | null) {
+	return api.post<ViewPremiumCalData>(endPoints.viewCalculated, data, ViewPremiumCalDataSchema, {
+		headers: { Authorization: token }
+	})
 }

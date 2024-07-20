@@ -14,12 +14,18 @@ export function VehicleValue() {
 	const dispatch = useAppDispatch()
 
 	const [value, setValue] = useState<number>(vehicleData.value)
+	const [accessoriesSumInsured, setAccessoriesSumInsured] = useState<number>(
+		+vehicleData.AcccessoriesSumInsured
+	)
 	const [isSent, setIsSent] = useState<boolean>(false)
 
 	useGSAP(() => {
 		if (vehicleData.value === 0) {
 			gsap.from('.selectVehicleDesciption', { y: 80, opacity: 0, duration: 0.5, delay: 1 })
-			gsap.to('.Valuetitle', { duration: 0.5, text: 'Vehicle Value' })
+			gsap.to('.Valuetitle', {
+				duration: 0.5,
+				text: 'Vehicle Value & Electrical Accessories'
+			})
 			gsap.to('.Valuesubtitle', {
 				duration: 0.5,
 				text: 'How the vehicle is used, such as for personal, business, or commercial purposes',
@@ -27,7 +33,10 @@ export function VehicleValue() {
 			})
 		} else {
 			gsap.from('.selectVehicleDesciption', { y: 80, opacity: 0, duration: 0.5 })
-			gsap.to('.Valuetitle', { duration: 0.5, text: 'Vehicle Value' })
+			gsap.to('.Valuetitle', {
+				duration: 0.5,
+				text: 'Vehicle Value & Electrical Accessories'
+			})
 			gsap.to('.Valuesubtitle', {
 				duration: 0.5,
 				text: 'How the vehicle is used, such as for personal, business, or commercial purposes'
@@ -54,23 +63,35 @@ export function VehicleValue() {
 					<span className='Valuesubtitle font-roboto text-sm font-medium text-gray-500'></span>
 				</div>
 			</div>
-			<div className='selectVehicleDesciption flex w-3/4 flex-row gap-10'>
-				<Input
-					placeholder='Vehicle Value'
-					type='number'
-					value={value !== 0 ? value : undefined}
-					onChange={(e) => {
-						setValue(+e.target.value)
-						setIsSent(false)
-					}}
-				/>
+			<div className='selectVehicleDesciption flex flex-row gap-10'>
+				<div className='flex-grow'>
+					<Input
+						placeholder='Vehicle Value'
+						type='number'
+						value={value !== 0 ? value : undefined}
+						onChange={(e) => {
+							setValue(+e.target.value)
+							setIsSent(false)
+						}}
+					/>
+				</div>
+				<div className='flex-grow'>
+					<Input
+						placeholder='Electrical Accessories'
+						value={accessoriesSumInsured !== 0 ? accessoriesSumInsured : undefined}
+						onChange={(e) => {
+							setAccessoriesSumInsured(+e.target.value)
+							setIsSent(false)
+						}}
+					/>
+				</div>
 			</div>
-			{value !== 0 && !isSent && (
+			{value !== 0 && accessoriesSumInsured !== 0 && !isSent && (
 				<Button
 					className='w-1/2'
 					variant='bluebtn'
 					onClick={() => {
-						dispatch(updateValue(value))
+						dispatch(updateValue({ value: value, accessories: accessoriesSumInsured }))
 						setIsSent(true)
 					}}>
 					Continue
