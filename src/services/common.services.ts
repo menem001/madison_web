@@ -23,7 +23,11 @@ import {
 	premiumCalcDataSchema,
 	type ViewPremiumCalData,
 	type ViewPremiumCalcRequest,
-	ViewPremiumCalDataSchema
+	ViewPremiumCalDataSchema,
+	type SaveCustomerDetailRequest,
+	SaveCustomerDetailsSchema,
+	type SaveVehicleRequest,
+	SaveVehicleRequestSchema
 } from './models/common.models'
 import { MotorMakeSchema, type MotorList, type CommonModalRequest } from './models/common.models'
 import {
@@ -153,6 +157,22 @@ export type ViewPremiumCalDataResponse = TResponse<ViewPremiumCalData>
 
 export async function viewCalculatedPremium(data: ViewPremiumCalcRequest, token: string | null) {
 	return api.post<ViewPremiumCalData>(endPoints.viewCalculated, data, ViewPremiumCalDataSchema, {
+		headers: { Authorization: token }
+	})
+}
+
+export type SaveCustomerDetailResponse = TResponse<SaveCustomerDetailRequest>
+
+export async function saveCustomerDetails(data: SaveCustomerDetailRequest, token: string | null) {
+	return api.post(endPoints.saveCustomer, data, SaveCustomerDetailsSchema, {
+		headers: { Authorization: token }
+	})
+}
+
+export type SaveVehcileResponse = TResponse<SaveVehicleRequest>
+
+export async function saveVehicleInfo(data: SaveVehicleRequest, token: string | null) {
+	return api.post(endPoints.saveVehicle, data, SaveVehicleRequestSchema, {
 		headers: { Authorization: token }
 	})
 }

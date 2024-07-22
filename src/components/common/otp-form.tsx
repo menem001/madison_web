@@ -57,7 +57,7 @@ export function OtpForm() {
 			AgencyCode: appData.agencyCode,
 			OtpToken: appData.otpToken,
 			UserOTP: otp + '',
-			CreateUser: false,
+			CreateUser: true,
 			CustomerId: null,
 			ReferenceNo: null
 		}

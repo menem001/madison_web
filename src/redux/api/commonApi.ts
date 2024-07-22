@@ -23,7 +23,9 @@ import {
 	type ValidateOTPRequest,
 	type InsuranceClassTypeRequest,
 	type PremiumCalcRequest,
-	type ViewPremiumCalcRequest
+	type ViewPremiumCalcRequest,
+	type SaveCustomerDetailResponse,
+	type SaveCustomerDetailRequest
 } from '@/services/models/common.models'
 
 import type { Action, PayloadAction } from '@reduxjs/toolkit'
@@ -243,6 +245,36 @@ export const commonApi = createApi({
 				headers: { Authorization: string }
 			} => ({
 				url: 'view_premium_calc',
+				method: 'POST',
+				body: data,
+				headers: { Authorization: `Bearer ${store.getState().apps.token}` }
+			})
+		}),
+		saveCustomerDetails: build.mutation<SaveCustomerDetailResponse, SaveCustomerDetailRequest>({
+			query: (
+				data
+			): {
+				url: string
+				method: string
+				body: SaveCustomerDetailRequest
+				headers: { Authorization: string }
+			} => ({
+				url: 'save_customer_details',
+				method: 'POST',
+				body: data,
+				headers: { Authorization: `Bearer ${store.getState().apps.token}` }
+			})
+		}),
+		saveVehicleInfo: build.mutation<SaveCustomerDetailResponse, SaveCustomerDetailRequest>({
+			query: (
+				data
+			): {
+				url: string
+				method: string
+				body: SaveCustomerDetailRequest
+				headers: { Authorization: string }
+			} => ({
+				url: 'save_vehicle_info',
 				method: 'POST',
 				body: data,
 				headers: { Authorization: `Bearer ${store.getState().apps.token}` }

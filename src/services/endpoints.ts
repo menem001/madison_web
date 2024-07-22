@@ -12,6 +12,8 @@ const endPoints = {
 	verifyOTP: 'EwayCommonApi/otp/validate',
 	insuranceClass: 'EwayAdminApi/master/dropdown/policytype',
 	calculator: 'EwayCommonApi/calculator/calc',
-	viewCalculated: 'EwayCommonApi/api/view/calc'
+	viewCalculated: 'EwayCommonApi/api/view/calc',
+	saveCustomer: 'EwayCommonApi/api/savecustomerdetails',
+	saveVehicle: 'EwayMotorApi/regulatory/savevehicleinfo'
 }
 export default endPoints
