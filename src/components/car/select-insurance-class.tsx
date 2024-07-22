@@ -20,7 +20,7 @@ import {
 	SelectValue
 } from '../ui'
 import 'react-datepicker/dist/react-datepicker.css'
-import { cn, formatDateDDMMYYYY } from '@/lib'
+import { cn, formatDateDDMMYYYY, removeParenthesis } from '@/lib'
 import { Calendar } from '../ui/calendar'
 import { CalendarDays } from 'lucide-react'
 import { Label } from '../ui/label'
@@ -96,7 +96,7 @@ export function SelectInsuranceClass() {
 		if (EndDateReply && EndDateReply.type === 'success' && EndDateReply.data !== undefined) {
 			EndDateReply.data!.Result.map((value) => {
 				tempArr.push({
-					value: value.Code,
+					value: removeParenthesis(value.Code),
 					label: value.CodeDesc
 				})
 			})

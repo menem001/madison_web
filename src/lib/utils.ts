@@ -26,3 +26,9 @@ export function formatDateDDMMYYYY(date: Date) {
 
 	return `${day}/${month}/${year}`
 }
+
+export function removeParenthesis(str: string) {
+	const regex = /\(.*?\)/g
+	const result = str.replace(regex, '')
+	return result
+}
