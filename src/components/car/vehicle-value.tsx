@@ -86,7 +86,7 @@ export function VehicleValue() {
 					/>
 				</div>
 			</div>
-			{value !== 0 && accessoriesSumInsured !== 0 && !isSent && (
+			{value !== 0 && !isSent && (
 				<Button
 					className='w-1/2'
 					variant='bluebtn'

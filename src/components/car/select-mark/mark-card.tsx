@@ -4,19 +4,20 @@ import Image from 'next/image'
 type MarkCardProps = {
 	name?: string
 	logo?: string
+	code?: number
 	onClick?: (value: string) => void
 	className?: string
 }
 
 export function MarkCard(props: MarkCardProps) {
 	function handleClick() {
-		props.onClick?.(props.name || '')
+		props.onClick?.(props.code + '' || '')
 	}
 
 	return (
 		<div
 			className={cn(
-				'flex flex-col overflow-hidden cursor-pointer items-center justify-center rounded-md shadow-md py-3 hover:shadow-xl text-sm font-inter gap-4',
+				'flex cursor-pointer flex-col items-center justify-center gap-4 overflow-hidden rounded-md py-3 font-inter text-sm shadow-md hover:shadow-xl',
 				props.className
 			)}
 			onClick={handleClick}>

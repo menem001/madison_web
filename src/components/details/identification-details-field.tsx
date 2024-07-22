@@ -1,3 +1,5 @@
+'use client'
+
 import { z } from 'zod'
 import { Button, Input } from '../ui'
 import { FormFieldLayout } from './form-field-layout'
@@ -6,6 +8,8 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useState } from 'react'
 import { cn } from '@/lib'
+import { useAppDispatch } from '@/redux/hooks'
+import { updateIdentificationDetails } from '@/redux/slices'
 
 type identificationDetailsFieldProps = {
 	current: number
@@ -33,10 +37,7 @@ export function IdentificationDetailsField(props: identificationDetailsFieldProp
 	const [accountType, setAccountType] = useState<string>('')
 	const [companyNumber, setCompanyNumber] = useState<string>('')
 
-	function onSubmit(values: z.infer<typeof identificationformSchema>) {
-		console.log(values, accountType, companyNumber)
-		props.goNext()
-	}
+	const dispatch = useAppDispatch()
 
 	const form = useForm<z.infer<typeof identificationformSchema>>({
 		resolver: zodResolver(identificationformSchema),
@@ -47,6 +48,18 @@ export function IdentificationDetailsField(props: identificationDetailsFieldProp
 			passport: ''
 		}
 	})
+
+	function onSubmit(values: z.infer<typeof identificationformSchema>) {
+		dispatch(
+			updateIdentificationDetails({
+				nrc: values.nrc1 + values.nrc2 + values.nrc3,
+				passport: values.passport,
+				accountType: accountType,
+				companyNumber: companyNumber
+			})
+		)
+		props.goNext()
+	}
 
 	return (
 		<FormFieldLayout

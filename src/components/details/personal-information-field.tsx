@@ -1,3 +1,5 @@
+'use client'
+
 import { z } from 'zod'
 import {
 	Button,
@@ -18,7 +20,9 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { CalendarDays } from 'lucide-react'
 import { Calendar } from '../ui/calendar'
 import { format } from 'date-fns'
-import { cn } from '@/lib'
+import { cn, formatDateDDMMYYYY } from '@/lib'
+import { useAppDispatch, useAppSelector } from '@/redux/hooks'
+import { updatePersonalDetails } from '@/redux/slices'
 
 type personalInformationFieldProps = {
 	current: number
@@ -28,7 +32,7 @@ type personalInformationFieldProps = {
 }
 
 const formSchema = z.object({
-	title: z.string().min(2, {
+	title: z.string().min(1, {
 		message: 'Title'
 	}),
 	firstname: z.string().min(2, {
@@ -50,12 +54,33 @@ const formSchema = z.object({
 })
 
 export function PersonalInformationField(props: personalInformationFieldProps) {
+	const customerData = useAppSelector((state) => state.customerDetails)
+	const vehicleData = useAppSelector((state) => state.carInsurance)
+
+	const parts = vehicleData.DriverDOB.split('/')
+	const dateObject = new Date(+parts[2], +parts[1] - 1, +parts[0])
+	const timestamp = dateObject.getTime()
+
+	const custDob = customerData.dob.split('/')
+	const dateObject2 = new Date(+custDob[2], +custDob[1] - 1, +custDob[0])
+	const timestamp2 = dateObject2.getTime()
+
+	const dispatch = useAppDispatch()
+
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
 			title: '',
-			firstname: '',
-			lastname: ''
+			firstname: customerData.name,
+			lastname: '',
+			mobile: customerData.mobile,
+			gender: '',
+			dob:
+				vehicleData.driverOrOwner === 'Owner'
+					? new Date(timestamp)
+					: customerData.dob !== ''
+						? new Date(timestamp2)
+						: undefined
 		}
 	})
 
@@ -64,7 +89,16 @@ export function PersonalInformationField(props: personalInformationFieldProps) {
 	years18.setFullYear(years18.getFullYear() - 18)
 
 	function onSubmit(values: z.infer<typeof formSchema>) {
-		console.log(values)
+		dispatch(
+			updatePersonalDetails({
+				title: values.title,
+				gender: values.gender,
+				occupation: values.occupation,
+				dob: formatDateDDMMYYYY(values.dob),
+				name: values.firstname + ' ' + values.lastname,
+				mobile: values.mobile
+			})
+		)
 		props.goNext()
 	}
 
@@ -105,12 +139,12 @@ export function PersonalInformationField(props: personalInformationFieldProps) {
 														<SelectContent>
 															<SelectItem
 																key={1}
-																value='Mr.'>
+																value='1'>
 																Mr.
 															</SelectItem>
 															<SelectItem
 																key={2}
-																value='Mrs.'>
+																value='2'>
 																Mrs.
 															</SelectItem>
 														</SelectContent>
@@ -213,7 +247,7 @@ export function PersonalInformationField(props: personalInformationFieldProps) {
 									name='occupation'
 									render={({ field }) => (
 										<FormItem>
-											<FormLabel>Gender</FormLabel>
+											<FormLabel>Occupation</FormLabel>
 											<FormControl>
 												<Input
 													{...field}

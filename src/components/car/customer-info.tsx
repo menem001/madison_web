@@ -68,7 +68,7 @@ export function CustomerInfo(props: CustomerInfoProps) {
 			Vehiclemake: vehicleData.mark,
 			VehiclemakeId: vehicleData.makeID,
 			VehicleModel: vehicleData.model,
-			VehcilemodelId: '1', //
+			VehcilemodelId: vehicleData.modelID,
 			VehicleValueType: null,
 			DefenceValue: null,
 			PurchaseDate: null,
@@ -90,7 +90,8 @@ export function CustomerInfo(props: CustomerInfoProps) {
 			ExchangeRate: vehicleData.exchangeRate,
 			Currency: vehicleData.currency,
 			HavePromoCode: 'N',
-			SearchFromApi: false
+			SearchFromApi: false,
+			SeatingCapacity: vehicleData.seat
 		}
 		const res = saveMotor(req)
 		res.then((value) => {

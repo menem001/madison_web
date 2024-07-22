@@ -296,5 +296,6 @@ export const {
 	useVerifyOTPMutation,
 	useGetInsuranceClassMutation,
 	usePremiumCalcMutation,
-	useViewPremiumCalcMutation
+	useViewPremiumCalcMutation,
+	useSaveCustomerDetailsMutation
 } = commonApi

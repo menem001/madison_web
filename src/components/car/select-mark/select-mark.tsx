@@ -15,54 +15,34 @@ import Image from 'next/image'
 
 const brands = [
 	{
-		id: 'Peugeot',
-		name: 'Peugeot',
-		logo: assets.images.peugeotLogo
-	},
-	{
 		id: 'Audi',
 		name: 'Audi',
-		logo: assets.images.audi
+		logo: assets.images.audi,
+		code: 21
 	},
 	{
 		id: 'Bentley',
 		name: 'Bentley',
-		logo: assets.images.bentley
+		logo: assets.images.bentley,
+		code: 33
 	},
 	{
 		id: 'Nissan',
 		name: 'Nissan',
-		logo: assets.images.nissan
-	},
-	{
-		id: 'Jeep',
-		name: 'Jeep',
-		logo: assets.images.jeep
-	},
-	{
-		id: 'BMW',
-		name: 'BMW',
-		logo: assets.images.bmw
-	},
-	{
-		id: 'Ford',
-		name: 'Ford',
-		logo: assets.images.ford
-	},
-	{
-		id: 'Mercedes',
-		name: 'Mercedes',
-		logo: assets.images.benz
+		logo: assets.images.nissan,
+		code: 4
 	},
 	{
 		id: 'Volkswagen',
 		name: 'Volkswagen',
-		logo: assets.images.vw
+		logo: assets.images.vw,
+		code: 26
 	},
 	{
-		id: 'Peugeot',
-		name: 'Peugeot',
-		logo: assets.images.peugeotLogo
+		id: 'Ford',
+		name: 'Ford',
+		logo: assets.images.ford,
+		code: 98
 	}
 ]
 
@@ -178,17 +158,7 @@ export function SelectMark() {
 						<MarkCard
 							key={brand.id}
 							className='suggestedGrid1'
-							logo={brand.logo}
-							name={brand.name}
-							onClick={updateMark}
-						/>
-					)
-				})}
-				{brands.slice(5, 10).map((brand) => {
-					return (
-						<MarkCard
-							key={brand.id}
-							className='suggestedGrid2'
+							code={brand.code}
 							logo={brand.logo}
 							name={brand.name}
 							onClick={updateMark}

@@ -6,12 +6,13 @@ import { InputOTP, InputOTPGroup, InputOTPSlot } from '../ui/input-otp'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
 import { useGenerateOTPMutation, useVerifyOTPMutation } from '@/redux/api/commonApi'
 import { useState } from 'react'
-import { setOTPToken } from '@/redux/slices'
+import { setGuestLoginDetails, setOTPToken } from '@/redux/slices'
 
 export function OtpForm() {
 	const route = useRouter()
 
 	const customerData = useAppSelector((state) => state.customerDetails)
+	const motorData = useAppSelector((state) => state.motor)
 	const appData = useAppSelector((state) => state.apps)
 
 	const dispatch = useAppDispatch()
@@ -25,7 +26,7 @@ export function OtpForm() {
 
 	function generateOtp() {
 		const request = {
-			CompanyId: '100002',
+			CompanyId: appData.insuranceID,
 			ProductId: appData.productId,
 			LoginId: appData.loginId,
 			TemplateName: null,
@@ -52,22 +53,51 @@ export function OtpForm() {
 
 	function validate() {
 		const request = {
-			CompanyId: '100002',
+			CompanyId: appData.insuranceID,
 			ProductId: appData.productId,
 			AgencyCode: appData.agencyCode,
 			OtpToken: appData.otpToken,
 			UserOTP: otp + '',
 			CreateUser: true,
-			CustomerId: null,
-			ReferenceNo: null
+			CustomerId: motorData.CustomerReferenceNo,
+			ReferenceNo: motorData.RequestReferenceNo
 		}
 		const res = verifyOTP(request)
-		res.then(() => {
-			// if (value.data && value.data.type === 'success' && value.data?.data !== undefined) {
-			// 	const validate = value.data.data.isError
-			// 	console.log(validate)
-			// }
-			route.push('/car-insurance/details/customer-details')
+		res.then((value) => {
+			if (value.data && value.data.type === 'success' && value.data?.data !== undefined) {
+				if (
+					!value.data.data.isError &&
+					value.data.data.LoginResponse &&
+					value.data.data.LoginResponse.Message === 'Success'
+				) {
+					const insuranceId: string | null =
+						value.data.data.LoginResponse.Result.LoginBranchDetails[0].InsuranceId
+					const brokerCode: string | null =
+						value.data.data.LoginResponse.Result.LoginBranchDetails[0].BrokerBranchCode
+					dispatch(
+						setGuestLoginDetails({
+							agencyCode: value.data.data.LoginResponse.Result.OaCode,
+							branchCode:
+								value.data.data.LoginResponse.Result.LoginBranchDetails[0]
+									.BranchCode,
+							brokerCode: brokerCode !== null ? brokerCode : '',
+							CustomerCode:
+								value.data.data.LoginResponse.Result.CustomerCode !== null
+									? value.data.data.LoginResponse.Result.CustomerCode
+									: '',
+							insuranceID: insuranceId !== null ? insuranceId : '',
+							loginId: value.data.data.LoginResponse.Result.LoginId,
+							productId:
+								value.data.data.LoginResponse.Result.BrokerCompanyProducts[0]
+									.ProductId,
+							subUserType: value.data.data.LoginResponse.Result.SubUserType,
+							token: value.data.data.LoginResponse.Result.Token,
+							userType: value.data.data.LoginResponse.Result.UserType
+						})
+					)
+					route.push('/car-insurance/details/customer-details')
+				}
+			}
 		})
 	}
 

@@ -51,7 +51,7 @@ export function CarSeating() {
 				<Input
 					placeholder='Number of Seats'
 					type='number'
-					value={vehicleData.seat !== 0 ? vehicleData.seat : undefined}
+					value={vehicleData.seat !== 0 ? vehicleData.seat : ''}
 					onChange={(e) => {
 						dispatch(updateSeats(+e.target.value))
 					}}

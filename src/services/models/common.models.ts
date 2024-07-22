@@ -312,7 +312,8 @@ export const SaveMotorDetailRequestSchema = z.object({
 	ExchangeRate: z.string(),
 	Currency: z.string(),
 	HavePromoCode: z.string(),
-	SearchFromApi: z.boolean()
+	SearchFromApi: z.boolean(),
+	SeatingCapacity: z.number()
 })
 
 export type SaveMotorDetailRequest = z.infer<typeof SaveMotorDetailRequestSchema>
@@ -364,7 +365,7 @@ export type ValidateOTPRequest = z.infer<typeof validateOTPRequestSchema>
 export const validateOTPResponseSchema = z.object({
 	isError: z.boolean(),
 	OtpToken: z.number(),
-	Errors: z.array(z.unknown()),
+	Errors: z.array(z.unknown()).nullable(),
 	OTP: z.null(),
 	LoginResponse: z
 		.object({
@@ -390,13 +391,13 @@ export const validateOTPResponseSchema = z.object({
 				LoginBranchDetails: z.array(
 					z.object({
 						BranchCode: z.string(),
-						BrokerBranchCode: z.string(),
-						BrokerBranchName: z.string(),
+						BrokerBranchCode: z.string().nullable(),
+						BrokerBranchName: z.string().nullable(),
 						BranchName: z.string(),
-						RegionCode: z.string(),
+						RegionCode: z.string().nullable(),
 						RegionName: z.null(),
-						InsuranceId: z.string(),
-						CompanyName: z.string(),
+						InsuranceId: z.string().nullable(),
+						CompanyName: z.string().nullable(),
 						CompanyLogo: z.null(),
 						AttachedBranchCode: z.null(),
 						AttachedBranchName: z.null(),
@@ -405,8 +406,8 @@ export const validateOTPResponseSchema = z.object({
 						AttachedCompanyId: z.null(),
 						AttachedCompanyName: z.null(),
 						AttachedCompanyLogo: z.null(),
-						CurrencyId: z.string(),
-						SourceType: z.string(),
+						CurrencyId: z.string().nullable(),
+						SourceType: z.string().nullable(),
 						DepartmentCode: z.null()
 					})
 				),
@@ -843,7 +844,7 @@ export type ViewPremiumCalData = z.infer<typeof ViewPremiumCalDataSchema>
 
 export const SaveCustomerDetailsSchema = z.object({
 	BrokerBranchCode: z.string(),
-	CustomerReferenceNo: z.null(),
+	CustomerReferenceNo: z.string().nullable(),
 	InsuranceId: z.string(),
 	BranchCode: z.string(),
 	ProductId: z.string(),
@@ -865,7 +866,7 @@ export const SaveCustomerDetailsSchema = z.object({
 	IsTaxExempted: z.string(),
 	Language: z.string(),
 	MobileNo1: z.string(),
-	MobileNo2: z.null(),
+	MobileNo2: z.string().nullable(),
 	MobileNo3: z.null(),
 	Nationality: z.string(),
 	Occupation: z.string(),
@@ -883,10 +884,10 @@ export const SaveCustomerDetailsSchema = z.object({
 	StateCode: z.string(),
 	StateName: z.null(),
 	Status: z.string(),
-	Type: z.null(),
+	Type: z.string().nullable(),
 	TaxExemptedId: z.null(),
 	TelephoneNo1: z.string(),
-	PinCode: z.null(),
+	PinCode: z.string().nullable(),
 	TelephoneNo2: z.null(),
 	TelephoneNo3: z.null(),
 	VrTinNo: z.null(),
