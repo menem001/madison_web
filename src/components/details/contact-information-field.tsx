@@ -20,15 +20,11 @@ const contactInfoDetailSchema = z.object({
 	contact1: z.string().min(4, {
 		message: 'Contact number is required'
 	}),
-	contact2: z.string().min(4, {
-		message: ''
-	}),
+	contact2: z.string(),
 	contact1Code: z.string().min(3, {
 		message: 'Required'
 	}),
-	contact2Code: z.string().min(3, {
-		message: 'Required'
-	})
+	contact2Code: z.string()
 })
 
 export function ContactInformationField(props: contactInformationFieldProps) {
@@ -165,13 +161,13 @@ export function ContactInformationField(props: contactInformationFieldProps) {
 									name='contact2'
 									render={({ field }) => (
 										<FormItem>
-											<FormLabel>Contact</FormLabel>
+											<FormLabel>Alternative Contact</FormLabel>
 											<FormControl>
 												<Input
 													{...field}
 													className='border-2 border-blue-925'
 													id='passport'
-													placeholder='Enter Mobile Number'
+													placeholder='Enter Alternate Mobile Number'
 												/>
 											</FormControl>
 											<FormMessage />

@@ -14,6 +14,9 @@ const endPoints = {
 	calculator: 'EwayCommonApi/calculator/calc',
 	viewCalculated: 'EwayCommonApi/api/view/calc',
 	saveCustomer: 'EwayCommonApi/api/savecustomerdetails',
-	saveVehicle: 'EwayMotorApi/regulatory/savevehicleinfo'
+	saveVehicle: 'EwayMotorApi/regulatory/savevehicleinfo',
+	occupationList: 'EwayCommonApi/master/dropdown/occupation',
+	regionList: 'EwayCommonApi/master/dropdown/region',
+	colorList: 'EwayCommonApi/master/dropdown/color'
 }
 export default endPoints

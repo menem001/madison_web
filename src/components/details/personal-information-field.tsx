@@ -23,6 +23,8 @@ import { format } from 'date-fns'
 import { cn, formatDateDDMMYYYY } from '@/lib'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
 import { updatePersonalDetails } from '@/redux/slices'
+import { useGetOccupationListMutation } from '@/redux/api/commonApi'
+import { useEffect, useState } from 'react'
 
 type personalInformationFieldProps = {
 	current: number
@@ -56,6 +58,9 @@ const formSchema = z.object({
 export function PersonalInformationField(props: personalInformationFieldProps) {
 	const customerData = useAppSelector((state) => state.customerDetails)
 	const vehicleData = useAppSelector((state) => state.carInsurance)
+	const insuranceID = useAppSelector((state) => state.apps.insuranceID)
+	const branchCode = useAppSelector((state) => state.apps.branchCode)
+	const projectID = useAppSelector((state) => state.apps.productId)
 
 	const parts = vehicleData.DriverDOB.split('/')
 	const dateObject = new Date(+parts[2], +parts[1] - 1, +parts[0])
@@ -66,6 +71,32 @@ export function PersonalInformationField(props: personalInformationFieldProps) {
 	const timestamp2 = dateObject2.getTime()
 
 	const dispatch = useAppDispatch()
+
+	const [getOccupation] = useGetOccupationListMutation()
+
+	const [OccupationList, setOccupation] = useState<{ value: string; label: string }[]>([])
+
+	useEffect(() => {
+		const request = {
+			InsuranceId: insuranceID,
+			BranchCode: branchCode,
+			ProductId: projectID,
+			TitleType: ''
+		}
+		const tempArr: { value: string; label: string }[] = []
+		const res = getOccupation(request)
+		res.then((value) => {
+			if (value.data?.type === 'success' && value.data?.data !== undefined) {
+				value.data.data!.Result.map((value) => {
+					tempArr.push({
+						value: value.Code,
+						label: value.CodeDesc
+					})
+				})
+				setOccupation(tempArr)
+			}
+		})
+	}, [])
 
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
@@ -256,15 +287,19 @@ export function PersonalInformationField(props: personalInformationFieldProps) {
 														<SelectValue placeholder='Occupation' />
 													</SelectTrigger>
 													<SelectContent>
-														<SelectItem
-															key={1}
-															value='1'>
-															Business
-														</SelectItem>
+														{OccupationList.map((occupation, index) => {
+															return (
+																<SelectItem
+																	key={index}
+																	value={occupation.value}>
+																	{occupation.label}
+																</SelectItem>
+															)
+														})}
 														<SelectItem
 															key={2}
-															value='2'>
-															Private Job
+															value='1'>
+															Business
 														</SelectItem>
 													</SelectContent>
 												</Select>

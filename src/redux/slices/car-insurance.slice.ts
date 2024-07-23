@@ -27,7 +27,14 @@ const initialState = {
 	classID: '',
 	vehicleUsageID: '',
 	bodyTypeID: '',
-	AcccessoriesSumInsured: ''
+	AcccessoriesSumInsured: '',
+	leased: false,
+	registrationNumber: '',
+	chassisNumber: '',
+	engineNumber: '',
+	engineCapacity: '',
+	color: '',
+	bankOfFinance: ''
 }
 
 export type CarDetails = {
@@ -58,6 +65,13 @@ export type CarDetails = {
 	classID: string
 	vehicleUsageID: string
 	AcccessoriesSumInsured: string
+	leased: boolean
+	registrationNumber: string
+	chassisNumber: string
+	engineNumber: string
+	engineCapacity: string
+	color: string
+	bankOfFinance: string
 }
 
 export const carInsuranceSlice = createSlice({
@@ -175,6 +189,36 @@ export const carInsuranceSlice = createSlice({
 		) {
 			state.currency = action.payload.currency
 			state.exchangeRate = action.payload.rate
+		},
+		updateVehicleDetails(
+			state: CarDetails,
+			action: PayloadAction<{
+				registrationNumber: string
+				chassisNumber: string
+				engineNumber: string
+				engineCapacity: string
+				color: string
+			}>
+		) {
+			state.registrationNumber = action.payload.registrationNumber
+			state.chassisNumber = action.payload.chassisNumber
+			state.engineNumber = action.payload.engineNumber
+			state.engineCapacity = action.payload.engineCapacity
+			state.color = action.payload.color
+		},
+		updateAdditionalDetails(
+			state: CarDetails,
+			action: PayloadAction<{
+				driverName: string
+				driverID: string
+				leased: boolean
+				bankOfFinance: string
+			}>
+		) {
+			state.DriverName = action.payload.driverName
+			state.DriverID = action.payload.driverID
+			state.leased = action.payload.leased
+			state.bankOfFinance = action.payload.bankOfFinance
 		}
 	}
 })
@@ -196,5 +240,7 @@ export const {
 	updateDriverDetails,
 	updatePolicyStartDate,
 	updatePolicyEndDate,
-	updateCurrency
+	updateCurrency,
+	updateVehicleDetails,
+	updateAdditionalDetails
 } = carInsuranceSlice.actions

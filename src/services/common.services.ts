@@ -26,9 +26,19 @@ import {
 	ViewPremiumCalDataSchema,
 	type SaveCustomerDetailRequest,
 	type SaveVehicleRequest,
-	SaveVehicleRequestSchema,
 	type SaveCustomerDetail,
-	SaveCustomerDetailsResponseSchema
+	SaveCustomerDetailsResponseSchema,
+	type SaveVehicleResponse,
+	SaveVehicleResponseSchema,
+	type OccupationListResponse,
+	type OccupationListRequest,
+	OccupationListResponseSchema,
+	type RegionListResponse,
+	type RegionListRequest,
+	RegionListResponseSchema,
+	type ColorListResponse,
+	type ColorListRequest,
+	ColorListResponseSchema
 } from './models/common.models'
 import { MotorMakeSchema, type MotorList, type CommonModalRequest } from './models/common.models'
 import {
@@ -175,10 +185,39 @@ export async function saveCustomerDetails(data: SaveCustomerDetailRequest, token
 	)
 }
 
-export type SaveVehcileResponse = TResponse<SaveVehicleRequest>
+export type SaveVehcileDetialResponse = TResponse<SaveVehicleResponse>
 
 export async function saveVehicleInfo(data: SaveVehicleRequest, token: string | null) {
-	return api.post(endPoints.saveVehicle, data, SaveVehicleRequestSchema, {
+	return api.post<SaveVehicleResponse>(endPoints.saveVehicle, data, SaveVehicleResponseSchema, {
+		headers: { Authorization: token }
+	})
+}
+
+export type OccupationList = TResponse<OccupationListResponse>
+
+export async function getOccupationList(data: OccupationListRequest, token: string | null) {
+	return api.post<OccupationListResponse>(
+		endPoints.occupationList,
+		data,
+		OccupationListResponseSchema,
+		{
+			headers: { Authorization: token }
+		}
+	)
+}
+
+export type RegionList = TResponse<RegionListResponse>
+
+export async function getRegionList(data: RegionListRequest, token: string | null) {
+	return api.post<RegionListResponse>(endPoints.regionList, data, RegionListResponseSchema, {
+		headers: { Authorization: token }
+	})
+}
+
+export type ColorList = TResponse<ColorListResponse>
+
+export async function getColorList(data: ColorListRequest, token: string | null) {
+	return api.post<ColorListResponse>(endPoints.colorList, data, ColorListResponseSchema, {
 		headers: { Authorization: token }
 	})
 }

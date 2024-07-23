@@ -1,3 +1,5 @@
+'use client'
+
 import { useForm } from 'react-hook-form'
 import { Button, Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form'
@@ -6,6 +8,8 @@ import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
 import { updateAddressDetails } from '@/redux/slices'
+import { useGetRegionListMutation } from '@/redux/api/commonApi'
+import { useEffect, useState } from 'react'
 
 type addressDetailsFieldProps = {
 	current: number
@@ -40,6 +44,28 @@ export function AddressDetailsField(props: addressDetailsFieldProps) {
 			workaddress: customerData.workAddress
 		}
 	})
+	const [cityName, setCityName] = useState<string>('')
+
+	const [cityList, setCityList] = useState<{ value: string; label: string }[]>([])
+
+	const [getRegion] = useGetRegionListMutation()
+
+	useEffect(() => {
+		const request = { CountryId: 'ZMB' }
+		const tempArr: { value: string; label: string }[] = []
+		const res = getRegion(request)
+		res.then((value) => {
+			if (value.data?.type === 'success' && value.data?.data !== undefined) {
+				value.data.data!.Result.map((value) => {
+					tempArr.push({
+						value: value.Code,
+						label: value.CodeDesc
+					})
+				})
+				setCityList(tempArr)
+			}
+		})
+	}, [])
 
 	function onSubmit(values: z.infer<typeof addressDetailSchema>) {
 		dispatch(
@@ -47,7 +73,8 @@ export function AddressDetailsField(props: addressDetailsFieldProps) {
 				address: values.workaddress,
 				city: values.citytown,
 				poBox: values.pobox,
-				workAddress: values.workaddress
+				workAddress: values.workaddress,
+				cityName: cityName
 			})
 		)
 		props.goNext()
@@ -105,23 +132,28 @@ export function AddressDetailsField(props: addressDetailsFieldProps) {
 													disabled={field.disabled}
 													name={field.name}
 													value={field.value}
-													onValueChange={field.onChange}>
+													onValueChange={(e) => {
+														field.onChange(e)
+														const pos = cityList.findIndex((item) => {
+															return item.value === e
+														})
+														setCityName(cityList[pos].label)
+													}}>
 													<SelectTrigger
 														ref={field.ref}
 														className='border-2 border-blue-925'>
 														<SelectValue placeholder='City/Town' />
 													</SelectTrigger>
 													<SelectContent>
-														<SelectItem
-															key={1}
-															value='1'>
-															chennai
-														</SelectItem>
-														<SelectItem
-															key={2}
-															value='2'>
-															mumbai
-														</SelectItem>
+														{cityList.map((city, index) => {
+															return (
+																<SelectItem
+																	key={index}
+																	value={city.value}>
+																	{city.label}
+																</SelectItem>
+															)
+														})}
 													</SelectContent>
 												</Select>
 											</FormControl>

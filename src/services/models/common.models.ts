@@ -999,3 +999,76 @@ export const SaveVehicleResponseSchema = z.object({
 })
 
 export type SaveVehicleResponse = z.infer<typeof SaveVehicleResponseSchema>
+
+export const OccupationListRequestSchema = z.object({
+	InsuranceId: z.string(),
+	BranchCode: z.string(),
+	ProductId: z.string(),
+	TitleType: z.string()
+})
+
+export type OccupationListRequest = z.infer<typeof OccupationListRequestSchema>
+
+export const OccupationListResponseSchema = z.object({
+	Message: z.string(),
+	IsError: z.boolean(),
+	ErrorMessage: z.array(z.unknown()),
+	Result: z.array(
+		z.object({
+			Code: z.string(),
+			CodeDesc: z.string(),
+			Status: z.string(),
+			CategoryId: z.string(),
+			CategoryDesc: z.string(),
+			TitleType: z.string()
+		})
+	),
+	ErroCode: z.number()
+})
+
+export type OccupationListResponse = z.infer<typeof OccupationListResponseSchema>
+
+export const RegionListRequestSchema = z.object({ CountryId: z.string() })
+export type RegionListRequest = z.infer<typeof RegionListRequestSchema>
+
+export const RegionListResponseSchema = z.object({
+	Message: z.string(),
+	IsError: z.boolean(),
+	ErrorMessage: z.array(z.unknown()),
+	Result: z.array(
+		z.object({
+			TitleType: z.null(),
+			Code: z.string(),
+			CodeDesc: z.string(),
+			Status: z.string(),
+			BodyType: z.null(),
+			RiskId: z.null()
+		})
+	),
+	ErroCode: z.number()
+})
+export type RegionListResponse = z.infer<typeof RegionListResponseSchema>
+
+export const ColorListRequestSchema = z.object({
+	InsuranceId: z.string(),
+	BranchCode: z.string()
+})
+export type ColorListRequest = z.infer<typeof ColorListRequestSchema>
+
+export const ColorListResponseSchema = z.object({
+	Message: z.string(),
+	IsError: z.boolean(),
+	ErrorMessage: z.array(z.unknown()),
+	Result: z.array(
+		z.object({
+			TitleType: z.null(),
+			Code: z.string(),
+			CodeDesc: z.string(),
+			Status: z.string(),
+			BodyType: z.null(),
+			RiskId: z.null()
+		})
+	),
+	ErroCode: z.number()
+})
+export type ColorListResponse = z.infer<typeof ColorListResponseSchema>

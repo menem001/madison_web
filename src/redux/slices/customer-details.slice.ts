@@ -19,7 +19,8 @@ const initialState = {
 	poBox: '',
 	workAddress: '',
 	code2: '',
-	mobile2: ''
+	mobile2: '',
+	cityName: ''
 }
 
 export type CustomerDetails = {
@@ -42,6 +43,7 @@ export type CustomerDetails = {
 	workAddress: string
 	code2: string
 	mobile2: string
+	cityName: string
 }
 
 export const customerDetailsSlice = createSlice({
@@ -102,12 +104,14 @@ export const customerDetailsSlice = createSlice({
 				city: string
 				poBox: string
 				workAddress: string
+				cityName: string
 			}>
 		) {
 			state.address = action.payload.address
 			state.city = action.payload.city
 			state.poBox = action.payload.poBox
 			state.workAddress = action.payload.workAddress
+			state.cityName = action.payload.cityName
 		},
 		updateContactInformation(
 			state: CustomerDetails,

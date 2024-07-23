@@ -3,8 +3,7 @@
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { MotorDetailsField } from './motor-details-field'
-import { ValuationDetailsField } from './valuation-details-field'
-import { EnergySpecificationField } from './energy-specification-field'
+import { UploadDocumentsForm } from './upload-documents-form'
 import { AdditionalVehicleInfo } from './additional-vehicle-info'
 import { Button } from '../ui'
 
@@ -31,35 +30,35 @@ export function VehicleDetailsForm() {
 				<h1 className='font-roboto text-5xl font-semibold text-blue-300'>
 					Vehicle Details
 				</h1>
-				<h5 className='text-gray-550 font-roboto text-sm'>
+				<h5 className='font-roboto text-sm text-gray-550'>
 					Hello, please fill in the forms below
 				</h5>
 			</div>
-			<section className='border-blue-925 flex flex-col gap-10 border-l border-dashed'>
+			<section className='flex flex-col gap-10 border-l border-dashed border-blue-925'>
 				<MotorDetailsField
 					current={current}
 					goNext={goNext}
 					goSpecific={goSpecific}
 					pos={1}
 				/>
-				<ValuationDetailsField
+				<AdditionalVehicleInfo
 					current={current}
 					goNext={goNext}
 					goSpecific={goSpecific}
 					pos={2}
 				/>
-				<EnergySpecificationField
+				<UploadDocumentsForm
 					current={current}
 					goNext={goNext}
 					goSpecific={goSpecific}
 					pos={3}
 				/>
-				<AdditionalVehicleInfo
+				{/* <EnergySpecificationField
 					current={current}
 					goNext={goNext}
 					goSpecific={goSpecific}
-					pos={4}
-				/>
+					pos={3}
+				/> */}
 			</section>
 			{current === 4 && (
 				<Button

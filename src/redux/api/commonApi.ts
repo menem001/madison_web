@@ -12,7 +12,11 @@ import {
 	type InsuranceClassTypeResponse,
 	type PremiumCalcDataResponse,
 	type ViewPremiumCalDataResponse,
-	type SaveCustomerDetailResponse
+	type SaveCustomerDetailResponse,
+	type SaveVehcileDetialResponse,
+	type ColorList,
+	type OccupationList,
+	type RegionList
 } from '@/services/common.services'
 import {
 	type vehicleUsageRequest,
@@ -25,7 +29,11 @@ import {
 	type InsuranceClassTypeRequest,
 	type PremiumCalcRequest,
 	type ViewPremiumCalcRequest,
-	type SaveCustomerDetailRequest
+	type SaveCustomerDetailRequest,
+	type SaveVehicleRequest,
+	type OccupationListRequest,
+	type RegionListRequest,
+	type ColorListRequest
 } from '@/services/models/common.models'
 
 import type { Action, PayloadAction } from '@reduxjs/toolkit'
@@ -265,16 +273,61 @@ export const commonApi = createApi({
 				headers: { Authorization: `Bearer ${store.getState().apps.token}` }
 			})
 		}),
-		saveVehicleInfo: build.mutation<SaveCustomerDetailResponse, SaveCustomerDetailRequest>({
+		saveVehicleInfo: build.mutation<SaveVehcileDetialResponse, SaveVehicleRequest>({
 			query: (
 				data
 			): {
 				url: string
 				method: string
-				body: SaveCustomerDetailRequest
+				body: SaveVehicleRequest
 				headers: { Authorization: string }
 			} => ({
 				url: 'save_vehicle_info',
+				method: 'POST',
+				body: data,
+				headers: { Authorization: `Bearer ${store.getState().apps.token}` }
+			})
+		}),
+		getOccupationList: build.mutation<OccupationList, OccupationListRequest>({
+			query: (
+				data
+			): {
+				url: string
+				method: string
+				body: OccupationListRequest
+				headers: { Authorization: string }
+			} => ({
+				url: 'get_occupation_list',
+				method: 'POST',
+				body: data,
+				headers: { Authorization: `Bearer ${store.getState().apps.token}` }
+			})
+		}),
+		getRegionList: build.mutation<RegionList, RegionListRequest>({
+			query: (
+				data
+			): {
+				url: string
+				method: string
+				body: RegionListRequest
+				headers: { Authorization: string }
+			} => ({
+				url: 'get_region_list',
+				method: 'POST',
+				body: data,
+				headers: { Authorization: `Bearer ${store.getState().apps.token}` }
+			})
+		}),
+		getColorList: build.mutation<ColorList, ColorListRequest>({
+			query: (
+				data
+			): {
+				url: string
+				method: string
+				body: ColorListRequest
+				headers: { Authorization: string }
+			} => ({
+				url: 'get_color_list',
 				method: 'POST',
 				body: data,
 				headers: { Authorization: `Bearer ${store.getState().apps.token}` }
@@ -297,5 +350,8 @@ export const {
 	useGetInsuranceClassMutation,
 	usePremiumCalcMutation,
 	useViewPremiumCalcMutation,
-	useSaveCustomerDetailsMutation
+	useSaveCustomerDetailsMutation,
+	useGetColorListMutation,
+	useGetOccupationListMutation,
+	useGetRegionListMutation
 } = commonApi
