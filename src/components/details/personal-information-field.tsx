@@ -37,11 +37,8 @@ const formSchema = z.object({
 	title: z.string().min(1, {
 		message: 'Title'
 	}),
-	firstname: z.string().min(2, {
-		message: 'Please enter First Name'
-	}),
-	lastname: z.string().min(2, {
-		message: 'Please enter Last Name'
+	name: z.string().min(2, {
+		message: 'Please enter Name'
 	}),
 	gender: z.string().min(1, {
 		message: 'Please Pick a gender'
@@ -60,7 +57,6 @@ export function PersonalInformationField(props: personalInformationFieldProps) {
 	const vehicleData = useAppSelector((state) => state.carInsurance)
 	const insuranceID = useAppSelector((state) => state.apps.insuranceID)
 	const branchCode = useAppSelector((state) => state.apps.branchCode)
-	const projectID = useAppSelector((state) => state.apps.productId)
 
 	const parts = vehicleData.DriverDOB.split('/')
 	const dateObject = new Date(+parts[2], +parts[1] - 1, +parts[0])
@@ -80,7 +76,7 @@ export function PersonalInformationField(props: personalInformationFieldProps) {
 		const request = {
 			InsuranceId: insuranceID,
 			BranchCode: branchCode,
-			ProductId: projectID,
+			ProductId: '',
 			TitleType: ''
 		}
 		const tempArr: { value: string; label: string }[] = []
@@ -102,8 +98,7 @@ export function PersonalInformationField(props: personalInformationFieldProps) {
 		resolver: zodResolver(formSchema),
 		defaultValues: {
 			title: customerData.title,
-			firstname: customerData.name.split(' ')[0],
-			lastname: customerData.name.split(' ').slice(1).join(' '),
+			name: customerData.name,
 			mobile: customerData.mobile,
 			gender: customerData.gender,
 			occupation: customerData.occupation,
@@ -127,7 +122,7 @@ export function PersonalInformationField(props: personalInformationFieldProps) {
 				gender: values.gender,
 				occupation: values.occupation,
 				dob: formatDateDDMMYYYY(values.dob),
-				name: values.firstname + ' ' + values.lastname,
+				name: values.name,
 				mobile: values.mobile
 			})
 		)
@@ -191,37 +186,16 @@ export function PersonalInformationField(props: personalInformationFieldProps) {
 							<div className='flex-grow'>
 								<FormField
 									control={form.control}
-									name='firstname'
+									name='name'
 									render={({ field }) => (
 										<FormItem className='w-full'>
-											<FormLabel>First Name</FormLabel>
+											<FormLabel>Customer Name</FormLabel>
 											<FormControl>
 												<Input
 													{...field}
 													className='border-2 border-blue-925'
-													id='firstname'
-													placeholder='First Name'
-												/>
-											</FormControl>
-											<FormMessage />
-										</FormItem>
-									)}
-								/>
-							</div>
-
-							<div className='flex-grow'>
-								<FormField
-									control={form.control}
-									name='lastname'
-									render={({ field }) => (
-										<FormItem>
-											<FormLabel>Last Name</FormLabel>
-											<FormControl>
-												<Input
-													{...field}
-													className='border-2 border-blue-925'
-													id='lastname'
-													placeholder='Last Name'
+													id='name'
+													placeholder='Customer Name'
 												/>
 											</FormControl>
 											<FormMessage />
@@ -296,11 +270,6 @@ export function PersonalInformationField(props: personalInformationFieldProps) {
 																</SelectItem>
 															)
 														})}
-														<SelectItem
-															key={2}
-															value='1'>
-															Business
-														</SelectItem>
 													</SelectContent>
 												</Select>
 											</FormControl>

@@ -8,6 +8,7 @@ import { usePathname, useRouter } from 'next/navigation'
 import { useAppSelector } from '@/redux/hooks'
 import { useEffect, useState } from 'react'
 import { usePremiumCalcMutation, useViewPremiumCalcMutation } from '@/redux/api/commonApi'
+import ClipLoader from 'react-spinners/ClipLoader'
 
 export function PremiumSideBar() {
 	const route = useRouter()
@@ -17,6 +18,8 @@ export function PremiumSideBar() {
 	const vehicleData = useAppSelector((state) => state.carInsurance)
 
 	const path = usePathname()
+
+	const [isLoading, setIsLoading] = useState<boolean>(false)
 
 	const [premiumCalculator] = usePremiumCalcMutation()
 	const [viewPremium] = useViewPremiumCalcMutation()
@@ -33,13 +36,15 @@ export function PremiumSideBar() {
 
 	const [accessories, setAccessories] = useState({ PremiumExcluedTax: 0, PremiumIncludedTax: 0 })
 
+	const [total, setTotal] = useState<string>('')
+
 	useEffect(() => {
 		if (motorData.RequestReferenceNo !== '') {
 			const req = {
 				InsuranceId: appData.insuranceID,
 				BranchCode: appData.branchCode,
 				AgencyCode: appData.agencyCode,
-				SectionId: '1',
+				SectionId: vehicleData.classID,
 				ProductId: appData.productId,
 				MSRefNo: motorData.MSRefNo,
 				VehicleId: motorData.VehicleId,
@@ -53,6 +58,7 @@ export function PremiumSideBar() {
 				PolicyEndDate: vehicleData.policyEndDate,
 				CoverModification: 'N'
 			}
+			setIsLoading(true)
 			const res = premiumCalculator(req)
 			res.then(() => {
 				setPremiumCalDone(true)
@@ -112,9 +118,16 @@ export function PremiumSideBar() {
 						setTaxList(taxes)
 					}
 				}
+
+				setIsLoading(false)
 			})
 		}
 	}, [premiumCalDone, motorData])
+
+	useEffect(() => {
+		const total = basicDetails.PremiumIncludedTax + accessories.PremiumIncludedTax
+		setTotal(total.toFixed(2))
+	}, [accessories.PremiumIncludedTax, basicDetails.PremiumIncludedTax])
 
 	return (
 		<div className='flex h-full w-full flex-col gap-4 px-5 py-20 font-roboto'>
@@ -130,7 +143,7 @@ export function PremiumSideBar() {
 								width={500}
 							/>
 						</div>
-						<div className='flex flex-col justify-around'>
+						<div className='flex flex-col justify-around gap-2'>
 							<div className='flex flex-col gap-1'>
 								<h4 className='text-sm font-bold text-green-75 opacity-75'>
 									RefNumber No: {motorData.RequestReferenceNo}
@@ -139,12 +152,24 @@ export function PremiumSideBar() {
 									{vehicleData.mark} - {vehicleData.model}
 								</h4>
 							</div>
-							<div className='flex flex-row items-center gap-2'>
+							<div className='flex w-full flex-row items-center gap-2'>
 								<span className='rounded-lg border border-green-100 p-2 text-xs font-semibold'>
 									{vehicleData.seat} seats
 								</span>
 								<span className='text-xs font-bold text-green-75'>
 									{vehicleData.year} - {vehicleData.vehicleUsage}
+								</span>
+							</div>
+							<div className='flex w-full flex-row justify-between gap-6'>
+								<span className='flex flex-col text-sm font-bold text-green-75'>
+									Policy Start Date
+									<span className='font-normal'>
+										{vehicleData.policyStartDate}
+									</span>
+								</span>
+								<span className='flex flex-col text-sm font-bold text-green-75'>
+									Policy End Date
+									<span className='font-normal'>{vehicleData.policyEndDate}</span>
 								</span>
 							</div>
 						</div>
@@ -153,84 +178,91 @@ export function PremiumSideBar() {
 						Your Insurance is protected by{' '}
 						<span className='font-bold'>Madison Insurance</span>
 					</div>
-					<div className='flex flex-col gap-4'>
-						<h1 className='font-jakarta text-2xl font-bold text-blue-300'>
-							{vehicleData.insuranceClass}
-						</h1>
-						<div className='flex flex-row justify-between'>
-							<span>Sum Insured</span>
-							<span>
-								{vehicleData.value} {vehicleData.currency}
-							</span>
+					{isLoading ? (
+						<div className='flex w-full flex-row items-center'>
+							<ClipLoader color='#0C7BC4' />
 						</div>
-						<div className='flex flex-row justify-between'>
-							<span>Base Fare</span>
-							<span>
-								{basicDetails.PremiumExcluedTax} {vehicleData.currency}
-							</span>
-						</div>
-						{taxList.map((tax, index) => {
-							return (
-								<div
-									key={index}
-									className='flex flex-row justify-between'>
-									<span>{`${tax.name} ${tax.rate ? '(' + tax.rate + '%)' : ''}`}</span>
-									<span>
-										{tax.amount} {vehicleData.currency}
-									</span>
-								</div>
-							)
-						})}
-					</div>
-					<div className='flex flex-row justify-between border-b-[0.5px] border-green-75 border-opacity-25 pb-4 font-semibold'>
-						<span>Premium Included Tax</span>
-						<span>
-							{basicDetails.PremiumIncludedTax} {vehicleData.currency}
-						</span>
-					</div>
-					{accessories.PremiumExcluedTax !== 0 && (
+					) : (
 						<>
-							<div className='flex flex-row justify-between'>
-								<span>Electronic Accessories</span>
-								<span>
-									{accessories.PremiumExcluedTax} {vehicleData.currency}
-								</span>
-							</div>
-							{taxListAccess.map((tax, index) => {
-								return (
-									<div
-										key={index}
-										className='flex flex-row justify-between'>
-										<span>{`${tax.name} ${tax.rate ? '(' + tax.rate + '%)' : ''}`}</span>
+							<div className='flex flex-col gap-4'>
+								<h1 className='font-jakarta text-2xl font-bold text-blue-300'>
+									{vehicleData.insuranceClass}
+								</h1>
+								{vehicleData.insuranceClass !== 'TPO' && (
+									<div className='flex flex-row justify-between'>
+										<span>Sum Insured</span>
 										<span>
-											{tax.amount} {vehicleData.currency}
+											{vehicleData.value} {vehicleData.currency}
 										</span>
 									</div>
-								)
-							})}
+								)}
+								<div className='flex flex-row justify-between'>
+									<span>Base Fare</span>
+									<span>
+										{basicDetails.PremiumExcluedTax} {vehicleData.currency}
+									</span>
+								</div>
+								{taxList.map((tax, index) => {
+									return (
+										<div
+											key={index}
+											className='flex flex-row justify-between'>
+											<span>{`${tax.name} ${tax.rate ? '(' + tax.rate + '%)' : ''}`}</span>
+											<span>
+												{tax.amount} {vehicleData.currency}
+											</span>
+										</div>
+									)
+								})}
+							</div>
 							<div className='flex flex-row justify-between border-b-[0.5px] border-green-75 border-opacity-25 pb-4 font-semibold'>
 								<span>Premium Included Tax</span>
 								<span>
-									{accessories.PremiumIncludedTax} {vehicleData.currency}
+									{basicDetails.PremiumIncludedTax} {vehicleData.currency}
 								</span>
 							</div>
+							{accessories.PremiumExcluedTax !== 0 && (
+								<>
+									<div className='flex flex-row justify-between'>
+										<span>Electronic Accessories</span>
+										<span>
+											{accessories.PremiumExcluedTax} {vehicleData.currency}
+										</span>
+									</div>
+									{taxListAccess.map((tax, index) => {
+										return (
+											<div
+												key={index}
+												className='flex flex-row justify-between'>
+												<span>{`${tax.name} ${tax.rate ? '(' + tax.rate + '%)' : ''}`}</span>
+												<span>
+													{tax.amount} {vehicleData.currency}
+												</span>
+											</div>
+										)
+									})}
+									<div className='flex flex-row justify-between border-b-[0.5px] border-green-75 border-opacity-25 pb-4 font-semibold'>
+										<span>Premium Included Tax</span>
+										<span>
+											{accessories.PremiumIncludedTax} {vehicleData.currency}
+										</span>
+									</div>
+								</>
+							)}
+							<div className='flex flex-row justify-between font-bold'>
+								<span>Grand Total</span>
+								<span>{`${total} ${vehicleData.currency}`}</span>
+							</div>
+							{path === '/car-insurance/2' && (
+								<Button
+									variant='bluebtn'
+									onClick={() => {
+										route.push('/car-insurance/confirm/otp-verify')
+									}}>
+									Buy Policy
+								</Button>
+							)}
 						</>
-					)}
-					<div className='flex flex-row justify-between font-bold'>
-						<span>Grand Total</span>
-						<span>
-							{basicDetails.PremiumIncludedTax + accessories.PremiumIncludedTax}{' '}
-							{vehicleData.currency}
-						</span>
-					</div>
-					{path === '/car-insurance/2' && (
-						<Button
-							variant='bluebtn'
-							onClick={() => {
-								route.push('/car-insurance/confirm/otp-verify')
-							}}>
-							Buy Policy
-						</Button>
 					)}
 				</div>
 			)}

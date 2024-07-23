@@ -224,8 +224,7 @@ export function MotorDetailsField(props: motorDetailsFieldProps) {
 						</div>
 						<Button
 							className='w-32'
-							variant='bluebtn'
-							onClick={props.goNext}>
+							variant='bluebtn'>
 							Continue
 						</Button>
 					</form>

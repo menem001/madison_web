@@ -6,9 +6,14 @@ import { MotorDetailsField } from './motor-details-field'
 import { UploadDocumentsForm } from './upload-documents-form'
 import { AdditionalVehicleInfo } from './additional-vehicle-info'
 import { Button } from '../ui'
+import { useSaveVehicleInfoMutation } from '@/redux/api/commonApi'
+import { useAppSelector } from '@/redux/hooks'
 
 export function VehicleDetailsForm() {
 	const [current, setCurrent] = useState(1)
+	const customerData = useAppSelector((state) => state.customerDetails)
+	const vehicleData = useAppSelector((state) => state.carInsurance)
+	const appsData = useAppSelector((state) => state.apps)
 
 	const route = useRouter()
 
@@ -20,8 +25,36 @@ export function VehicleDetailsForm() {
 		setCurrent(num)
 	}
 
+	const [saveCustomerData] = useSaveVehicleInfoMutation()
+
 	function navigateToPay() {
-		route.push('/car-insurance/payment')
+		const req = {
+			Insuranceid: appsData.insuranceID,
+			BranchCode: appsData.branchCode,
+			Chassisnumber: vehicleData.chassisNumber,
+			Color: vehicleData.color,
+			CreatedBy: appsData.loginId,
+			EngineNumber: vehicleData.engineNumber,
+			Grossweight: null,
+			ManufactureYear: vehicleData.year + '',
+			Motorusage: vehicleData.vehicleUsageID,
+			NumberOfAxels: null,
+			OwnerCategory: '1',
+			Registrationnumber: vehicleData.registrationNumber,
+			ResEngineCapacity: vehicleData.engineCapacity,
+			ResOwnerName: customerData.name,
+			ResStatusCode: 'Y',
+			ResStatusDesc: 'None',
+			SeatingCapacity: vehicleData.seat + '',
+			Tareweight: null,
+			Vehcilemodel: vehicleData.model,
+			VehicleType: vehicleData.bodyType,
+			Vehiclemake: vehicleData.mark
+		}
+		const res = saveCustomerData(req)
+		res.then(() => {
+			route.push('/car-insurance/payment')
+		})
 	}
 
 	return (

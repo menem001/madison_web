@@ -353,5 +353,6 @@ export const {
 	useSaveCustomerDetailsMutation,
 	useGetColorListMutation,
 	useGetOccupationListMutation,
-	useGetRegionListMutation
+	useGetRegionListMutation,
+	useSaveVehicleInfoMutation
 } = commonApi

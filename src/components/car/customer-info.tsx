@@ -10,6 +10,8 @@ import { useSaveMotorDetailsMutation } from '@/redux/api/commonApi'
 import { Label } from '../ui/label'
 import { type SaveMotorDetailRequest } from '@/services/models/common.models'
 import { updateDetails } from '@/redux/slices/motor-detail.slice'
+import { useState } from 'react'
+import ClipLoader from 'react-spinners/ClipLoader'
 
 type CustomerInfoProps = {
 	scrollToTop: () => void
@@ -21,6 +23,8 @@ export function CustomerInfo(props: CustomerInfoProps) {
 	const appData = useAppSelector((state) => state.apps)
 
 	const [saveMotor] = useSaveMotorDetailsMutation()
+
+	const [isLoading, setIsLoading] = useState<boolean>(false)
 
 	const dispatch = useAppDispatch()
 	// const router = useRouter()
@@ -36,6 +40,7 @@ export function CustomerInfo(props: CustomerInfoProps) {
 	})
 
 	function goToConfirm() {
+		setIsLoading(true)
 		doSaveMotorDetails()
 		// router.push('/car-insurance/confirm')
 	}
@@ -99,6 +104,7 @@ export function CustomerInfo(props: CustomerInfoProps) {
 				dispatch(updatePremium(true))
 				dispatch(updateDetails(value.data.data.Result[0]))
 				props.scrollToTop()
+				setIsLoading(false)
 			}
 		})
 	}
@@ -200,7 +206,14 @@ export function CustomerInfo(props: CustomerInfoProps) {
 				className='selectCustomerInfo w-full'
 				variant='bluebtn'
 				onClick={goToConfirm}>
-				View Premium
+				{isLoading ? (
+					<ClipLoader
+						color='#FFFFFF'
+						size={20}
+					/>
+				) : (
+					<span>View Premium</span>
+				)}
 			</Button>
 			{/* <div className='flex items-center justify-center'>
 				<div className='relative w-full border-t border-green-50'>

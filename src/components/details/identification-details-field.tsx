@@ -34,11 +34,11 @@ export function IdentificationDetailsField(props: identificationDetailsFieldProp
 	const passportRef = useRef<HTMLInputElement>(null)
 
 	function handleChangeNrc1(e: ChangeEvent<HTMLInputElement>) {
-		if (e.target.value.length <= 8) {
+		if (e.target.value.length <= 6) {
 			setNrc1(e.target.value)
 		}
 
-		if (e.target.value.length === 8 && nrc2Ref.current !== null) {
+		if (e.target.value.length === 6 && nrc2Ref.current !== null) {
 			nrc2Ref.current.focus()
 		}
 	}
