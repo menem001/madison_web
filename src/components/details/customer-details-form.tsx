@@ -57,7 +57,7 @@ export function CustomerDetailsForm() {
 			MobileNo2: customerData.mobile2,
 			MobileNo3: null,
 			Nationality: 'ZMB',
-			Occupation: customerData.occupation,
+			Occupation: '1',
 			OtherOccupation: '',
 			Placeofbirth: customerData.city,
 			PolicyHolderType: '1',

@@ -1,10 +1,10 @@
 import { useForm } from 'react-hook-form'
-import { Button, Input } from '../ui'
+import { Button, Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form'
 import { FormFieldLayout } from './form-field-layout'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useAppDispatch } from '@/redux/hooks'
+import { useAppDispatch, useAppSelector } from '@/redux/hooks'
 import { updateAddressDetails } from '@/redux/slices'
 
 type addressDetailsFieldProps = {
@@ -17,7 +17,7 @@ const addressDetailSchema = z.object({
 	residentialaddress: z.string().min(4, {
 		message: 'Residential Address is required'
 	}),
-	citytown: z.string().min(4, {
+	citytown: z.string().min(1, {
 		message: 'City or Town is required'
 	}),
 	pobox: z.string().min(4, {
@@ -30,13 +30,14 @@ const addressDetailSchema = z.object({
 
 export function AddressDetailsField(props: addressDetailsFieldProps) {
 	const dispatch = useAppDispatch()
+	const customerData = useAppSelector((state) => state.customerDetails)
 	const form = useForm<z.infer<typeof addressDetailSchema>>({
 		resolver: zodResolver(addressDetailSchema),
 		defaultValues: {
-			residentialaddress: '',
-			citytown: '',
-			pobox: '',
-			workaddress: ''
+			residentialaddress: customerData.address,
+			citytown: customerData.city,
+			pobox: customerData.poBox,
+			workaddress: customerData.workAddress
 		}
 	})
 
@@ -78,6 +79,7 @@ export function AddressDetailsField(props: addressDetailsFieldProps) {
 												<FormControl>
 													<Input
 														{...field}
+														autoComplete='address-level1'
 														className='border-2 border-blue-925'
 														id='nrc1'
 														placeholder='Please Enter Residential Address'
@@ -99,12 +101,29 @@ export function AddressDetailsField(props: addressDetailsFieldProps) {
 										<FormItem>
 											<FormLabel>City / Town</FormLabel>
 											<FormControl>
-												<Input
-													{...field}
-													className='border-2 border-blue-925'
-													id='citytown'
-													placeholder='City / Town'
-												/>
+												<Select
+													disabled={field.disabled}
+													name={field.name}
+													value={field.value}
+													onValueChange={field.onChange}>
+													<SelectTrigger
+														ref={field.ref}
+														className='border-2 border-blue-925'>
+														<SelectValue placeholder='City/Town' />
+													</SelectTrigger>
+													<SelectContent>
+														<SelectItem
+															key={1}
+															value='1'>
+															chennai
+														</SelectItem>
+														<SelectItem
+															key={2}
+															value='2'>
+															mumbai
+														</SelectItem>
+													</SelectContent>
+												</Select>
 											</FormControl>
 											<FormMessage />
 										</FormItem>
@@ -147,8 +166,8 @@ export function AddressDetailsField(props: addressDetailsFieldProps) {
 														{...field}
 														autoComplete='address-level1'
 														className='border-2 border-blue-925'
-														id='address'
-														placeholder='Please Enter Residential Address'
+														id='workaddress'
+														placeholder='Please Enter Work Address'
 													/>
 												</FormControl>
 												<FormMessage />

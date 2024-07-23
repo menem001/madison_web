@@ -1,15 +1,12 @@
 'use client'
 
-import { z } from 'zod'
 import { Button, Input } from '../ui'
 import { FormFieldLayout } from './form-field-layout'
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useState } from 'react'
+import { type ChangeEvent, useRef, useState } from 'react'
 import { cn } from '@/lib'
-import { useAppDispatch } from '@/redux/hooks'
+import { useAppDispatch, useAppSelector } from '@/redux/hooks'
 import { updateIdentificationDetails } from '@/redux/slices'
+import { Label } from '../ui/label'
 
 type identificationDetailsFieldProps = {
 	current: number
@@ -18,42 +15,65 @@ type identificationDetailsFieldProps = {
 	goSpecific: (num: number) => void
 }
 
-const identificationformSchema = z.object({
-	nrc1: z.string().min(4, {
-		message: 'Fill the NRC'
-	}),
-	nrc2: z.string().min(4, {
-		message: 'Fill the NRC'
-	}),
-	nrc3: z.string().min(4, {
-		message: 'Fill the NRC'
-	}),
-	passport: z.string().min(8, {
-		message: 'Please enter Passport Number'
-	})
-})
-
 export function IdentificationDetailsField(props: identificationDetailsFieldProps) {
-	const [accountType, setAccountType] = useState<string>('')
-	const [companyNumber, setCompanyNumber] = useState<string>('')
+	const customerData = useAppSelector((state) => state.customerDetails)
+	const [accountType, setAccountType] = useState<string>(customerData.accType)
+	const [companyNumber, setCompanyNumber] = useState<string>(
+		customerData.companyRegistrationNumber !== null
+			? customerData.companyRegistrationNumber
+			: ''
+	)
+	const [nrc1, setNrc1] = useState<string>(customerData.nrc.substring(0, 6))
+	const [nrc2, setNrc2] = useState<string>(customerData.nrc.substring(6, 8))
+	const [nrc3, setNrc3] = useState<string>(customerData.nrc.substring(8))
+	const [passport, setPassport] = useState<string>(customerData.passport)
 
 	const dispatch = useAppDispatch()
+	const nrc2Ref = useRef<HTMLInputElement>(null)
+	const nrc3Ref = useRef<HTMLInputElement>(null)
+	const passportRef = useRef<HTMLInputElement>(null)
 
-	const form = useForm<z.infer<typeof identificationformSchema>>({
-		resolver: zodResolver(identificationformSchema),
-		defaultValues: {
-			nrc1: '',
-			nrc2: '',
-			nrc3: '',
-			passport: ''
+	function handleChangeNrc1(e: ChangeEvent<HTMLInputElement>) {
+		if (e.target.value.length <= 8) {
+			setNrc1(e.target.value)
 		}
-	})
 
-	function onSubmit(values: z.infer<typeof identificationformSchema>) {
+		if (e.target.value.length === 8 && nrc2Ref.current !== null) {
+			nrc2Ref.current.focus()
+		}
+	}
+
+	function handleChangeNrc2(e: ChangeEvent<HTMLInputElement>) {
+		if (e.target.value.length <= 2) {
+			setNrc2(e.target.value)
+		}
+
+		if (e.target.value.length === 2 && nrc3Ref.current !== null) {
+			nrc3Ref.current.focus()
+		}
+	}
+
+	function handleChangeNrc3(e: ChangeEvent<HTMLInputElement>) {
+		if (e.target.value.length <= 1) {
+			setNrc3(e.target.value)
+		}
+
+		if (e.target.value.length === 1 && passportRef.current !== null) {
+			passportRef.current.focus()
+		}
+	}
+
+	function handleChangePassport(e: ChangeEvent<HTMLInputElement>) {
+		if (e.target.value.length <= 9) {
+			setPassport(e.target.value)
+		}
+	}
+
+	function onSubmit() {
 		dispatch(
 			updateIdentificationDetails({
-				nrc: values.nrc1 + values.nrc2 + values.nrc3,
-				passport: values.passport,
+				nrc: nrc1 + nrc2 + nrc3,
+				passport: passport,
 				accountType: accountType,
 				companyNumber: companyNumber
 			})
@@ -71,146 +91,107 @@ export function IdentificationDetailsField(props: identificationDetailsFieldProp
 			subTitle='Additional information around Step 2'
 			title='Step 2 - Identification Details'>
 			<>
-				<Form {...form}>
-					<form
-						className='space-y-8'
-						onSubmit={form.handleSubmit(onSubmit)}>
-						<div className='flex flex-col gap-1'>
-							<FormLabel>NRC (National Registration card)</FormLabel>
-							<div className='flex w-full flex-row gap-4'>
-								<div className='flex-grow flex-col gap-0'>
-									<FormField
-										control={form.control}
-										name='nrc1'
-										render={({ field }) => (
-											<FormItem className='w-full'>
-												<FormControl>
-													<Input
-														{...field}
-														className='border-2 border-blue-925'
-														id='nrc1'
-														placeholder=''
-													/>
-												</FormControl>
-												<FormMessage />
-											</FormItem>
-										)}
-									/>
-								</div>
-								<span className='text-3xl'>/</span>
-								<div className='flex-grow'>
-									<FormField
-										control={form.control}
-										name='nrc2'
-										render={({ field }) => (
-											<FormItem className='w-full'>
-												<FormControl>
-													<Input
-														{...field}
-														className='border-2 border-blue-925'
-														id='nrc2'
-														placeholder=''
-													/>
-												</FormControl>
-												<FormMessage />
-											</FormItem>
-										)}
-									/>
-								</div>
-								<span className='text-3xl'>/</span>
-								<div className='flex-grow'>
-									<FormField
-										control={form.control}
-										name='nrc3'
-										render={({ field }) => (
-											<FormItem className='w-full'>
-												<FormControl>
-													<Input
-														{...field}
-														className='border-2 border-blue-925'
-														id='nrc3'
-														placeholder=''
-													/>
-												</FormControl>
-												<FormMessage />
-											</FormItem>
-										)}
-									/>
-								</div>
+				<div className='flex flex-col gap-1'>
+					<Label>NRC (National Registration card)</Label>
+					<div className='flex w-full flex-row gap-4'>
+						<div className='flex-grow flex-col gap-0'>
+							<Input
+								className='border-2 border-blue-925'
+								id='nrc1'
+								placeholder=''
+								type='number'
+								value={nrc1}
+								onChange={handleChangeNrc1}
+							/>
+						</div>
+						<span className='text-3xl'>/</span>
+						<div className='flex-grow'>
+							<Input
+								ref={nrc2Ref}
+								className='border-2 border-blue-925'
+								id='nrc2'
+								placeholder=''
+								type='number'
+								value={nrc2}
+								onChange={handleChangeNrc2}
+							/>
+						</div>
+						<span className='text-3xl'>/</span>
+						<div className='flex-grow'>
+							<Input
+								ref={nrc3Ref}
+								className='border-2 border-blue-925'
+								id='nrc3'
+								placeholder=''
+								type='number'
+								value={nrc3}
+								onChange={handleChangeNrc3}
+							/>
+						</div>
+					</div>
+				</div>
+				<div className='flex w-full flex-row gap-4'>
+					<div className='w-full flex-grow'>
+						<Label>Passport</Label>
+						<Input
+							ref={passportRef}
+							className='border-2 border-blue-925'
+							id='passport'
+							placeholder='Passport Number'
+							type='number'
+							value={passport}
+							onChange={handleChangePassport}
+						/>
+					</div>
+					<div className='flex-grow'>
+						<Label>Account Type</Label>
+						<div className='flex flex-row gap-2'>
+							<div
+								className={cn(
+									'rounded-2xl border-2 bg-white px-6 py-2 font-roboto text-black',
+									{
+										'bg-blue-300 text-white': accountType === 'Personal'
+									}
+								)}
+								onClick={() => {
+									setAccountType('Personal')
+								}}>
+								Personal
+							</div>
+							<div
+								className={cn(
+									'rounded-2xl border-2 bg-white px-6 py-2 font-roboto text-black',
+									{
+										'bg-blue-300 text-white': accountType === 'Corporate'
+									}
+								)}
+								onClick={() => {
+									setAccountType('Corporate')
+								}}>
+								Corporate
 							</div>
 						</div>
-						<div className='flex w-full flex-row gap-4'>
-							<div className='w-full flex-grow'>
-								<FormField
-									control={form.control}
-									name='passport'
-									render={({ field }) => (
-										<FormItem>
-											<FormLabel>Passport no.</FormLabel>
-											<FormControl>
-												<Input
-													{...field}
-													className='border-2 border-blue-925'
-													id='passport'
-													placeholder='Passport Number'
-												/>
-											</FormControl>
-											<FormMessage />
-										</FormItem>
-									)}
-								/>
-							</div>
-							<div className='flex-grow'>
-								<FormLabel>Account Type</FormLabel>
-								<div className='flex flex-row gap-2'>
-									<div
-										className={cn(
-											'rounded-2xl border-2 bg-white px-6 py-3 font-roboto text-black',
-											{
-												'bg-blue-300 text-white': accountType === 'Personal'
-											}
-										)}
-										onClick={() => {
-											setAccountType('Personal')
-										}}>
-										Personal
-									</div>
-									<div
-										className={cn(
-											'rounded-2xl border-2 bg-white px-6 py-3 font-roboto text-black',
-											{
-												'bg-blue-300 text-white':
-													accountType === 'Corporate'
-											}
-										)}
-										onClick={() => {
-											setAccountType('Corporate')
-										}}>
-										Corporate
-									</div>
-								</div>
-							</div>
-						</div>
-						{accountType === 'Corporate' && (
-							<div className='flex-grow'>
-								<FormLabel>Company Registration number</FormLabel>
-								<Input
-									className='border-2 border-blue-925'
-									placeholder='Company Registration number'
-									value={companyNumber}
-									onChange={(e) => {
-										setCompanyNumber(e.target.value)
-									}}
-								/>
-							</div>
-						)}
-						<Button
-							className='w-32'
-							variant='bluebtn'>
-							Continue
-						</Button>
-					</form>
-				</Form>
+					</div>
+				</div>
+				{accountType === 'Corporate' && (
+					<div className='flex-grow'>
+						<Label>Company Registration number</Label>
+						<Input
+							className='border-2 border-blue-925'
+							placeholder='Company Registration number'
+							value={companyNumber}
+							onChange={(e) => {
+								setCompanyNumber(e.target.value)
+							}}
+						/>
+					</div>
+				)}
+				<Button
+					className='w-32'
+					variant='bluebtn'
+					onClick={onSubmit}>
+					Continue
+				</Button>
 			</>
 		</FormFieldLayout>
 	)

@@ -44,7 +44,7 @@ const formSchema = z.object({
 	gender: z.string().min(1, {
 		message: 'Please Pick a gender'
 	}),
-	occupation: z.string().min(2, {
+	occupation: z.string().min(1, {
 		message: 'Please enter Occupation'
 	}),
 	mobile: z.string().min(2, {
@@ -70,11 +70,12 @@ export function PersonalInformationField(props: personalInformationFieldProps) {
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
-			title: '',
-			firstname: customerData.name,
-			lastname: '',
+			title: customerData.title,
+			firstname: customerData.name.split(' ')[0],
+			lastname: customerData.name.split(' ').slice(1).join(' '),
 			mobile: customerData.mobile,
-			gender: '',
+			gender: customerData.gender,
+			occupation: customerData.occupation,
 			dob:
 				vehicleData.driverOrOwner === 'Owner'
 					? new Date(timestamp)
@@ -220,18 +221,13 @@ export function PersonalInformationField(props: personalInformationFieldProps) {
 													<SelectContent>
 														<SelectItem
 															key={1}
-															value='Male'>
+															value='M'>
 															Male
 														</SelectItem>
 														<SelectItem
 															key={2}
-															value='Female'>
+															value='F'>
 															Female
-														</SelectItem>
-														<SelectItem
-															key={3}
-															value='Prefer not to say'>
-															Prefer not to say
 														</SelectItem>
 													</SelectContent>
 												</Select>
@@ -249,12 +245,29 @@ export function PersonalInformationField(props: personalInformationFieldProps) {
 										<FormItem>
 											<FormLabel>Occupation</FormLabel>
 											<FormControl>
-												<Input
-													{...field}
-													className='border-2 border-blue-925'
-													id='occupation'
-													placeholder='Occupation'
-												/>
+												<Select
+													disabled={field.disabled}
+													name={field.name}
+													value={field.value}
+													onValueChange={field.onChange}>
+													<SelectTrigger
+														ref={field.ref}
+														className='border-2 border-blue-925'>
+														<SelectValue placeholder='Occupation' />
+													</SelectTrigger>
+													<SelectContent>
+														<SelectItem
+															key={1}
+															value='1'>
+															Business
+														</SelectItem>
+														<SelectItem
+															key={2}
+															value='2'>
+															Private Job
+														</SelectItem>
+													</SelectContent>
+												</Select>
 											</FormControl>
 											<FormMessage />
 										</FormItem>

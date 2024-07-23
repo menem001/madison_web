@@ -11,7 +11,8 @@ import {
 	type verifyOTPResponse,
 	type InsuranceClassTypeResponse,
 	type PremiumCalcDataResponse,
-	type ViewPremiumCalDataResponse
+	type ViewPremiumCalDataResponse,
+	type SaveCustomerDetailResponse
 } from '@/services/common.services'
 import {
 	type vehicleUsageRequest,
@@ -24,7 +25,6 @@ import {
 	type InsuranceClassTypeRequest,
 	type PremiumCalcRequest,
 	type ViewPremiumCalcRequest,
-	type SaveCustomerDetailResponse,
 	type SaveCustomerDetailRequest
 } from '@/services/models/common.models'
 

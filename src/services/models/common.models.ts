@@ -846,7 +846,7 @@ export const SaveCustomerDetailsSchema = z.object({
 	BrokerBranchCode: z.string(),
 	CustomerReferenceNo: z.string().nullable(),
 	InsuranceId: z.string(),
-	BranchCode: z.string(),
+	BranchCode: z.string().optional(),
 	ProductId: z.string(),
 	AppointmentDate: z.string(),
 	BusinessType: z.null(),
@@ -906,7 +906,7 @@ export const SaveCustomerDetailsResponseSchema = z.object({
 	Result: z.object({ Response: z.string(), SuccessId: z.string() }),
 	ErroCode: z.number()
 })
-export type SaveCustomerDetailResponse = z.infer<typeof SaveCustomerDetailsResponseSchema>
+export type SaveCustomerDetail = z.infer<typeof SaveCustomerDetailsResponseSchema>
 
 export const SaveVehicleRequestSchema = z.object({
 	Insuranceid: z.string(),
