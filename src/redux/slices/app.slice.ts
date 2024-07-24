@@ -12,7 +12,8 @@ const initialState = {
 	CustomerCode: '',
 	userType: '',
 	subUserType: '',
-	agencyCode: ''
+	agencyCode: '',
+	covers: []
 }
 
 export type AppDetails = {
@@ -28,6 +29,11 @@ export type AppDetails = {
 	userType: string
 	subUserType: string
 	agencyCode: string
+	covers: {
+		CoverId: string
+		SubCoverId: string | null
+		SubCoverYn: string
+	}[]
 }
 
 export const appSlice = createSlice({
@@ -65,11 +71,23 @@ export const appSlice = createSlice({
 		},
 		setOTPToken(state: AppDetails, action: PayloadAction<number>) {
 			state.otpToken = action.payload
+		},
+		setCoversDetails(
+			state: AppDetails,
+			action: PayloadAction<
+				{
+					CoverId: string
+					SubCoverId: string | null
+					SubCoverYn: string
+				}[]
+			>
+		) {
+			state.covers = action.payload
 		}
 	}
 })
 
-export const { setScrollTo, setGuestLoginDetails, setOTPToken } = appSlice.actions
+export const { setScrollTo, setGuestLoginDetails, setOTPToken, setCoversDetails } = appSlice.actions
 
 export function selectCurrentToken(state: AppDetails) {
 	return state.token

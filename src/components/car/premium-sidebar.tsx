@@ -5,10 +5,11 @@ import Image from 'next/image'
 import { Button } from '../ui'
 // import { MobileLinkDetails } from './mobile-link-details'
 import { usePathname, useRouter } from 'next/navigation'
-import { useAppSelector } from '@/redux/hooks'
+import { useAppDispatch, useAppSelector } from '@/redux/hooks'
 import { useEffect, useState } from 'react'
 import { usePremiumCalcMutation, useViewPremiumCalcMutation } from '@/redux/api/commonApi'
 import ClipLoader from 'react-spinners/ClipLoader'
+import { setCoversDetails } from '@/redux/slices'
 
 export function PremiumSideBar() {
 	const route = useRouter()
@@ -37,6 +38,8 @@ export function PremiumSideBar() {
 	const [accessories, setAccessories] = useState({ PremiumExcluedTax: 0, PremiumIncludedTax: 0 })
 
 	const [total, setTotal] = useState<string>('')
+
+	const dispatch = useAppDispatch()
 
 	useEffect(() => {
 		if (motorData.RequestReferenceNo !== '') {
@@ -83,7 +86,22 @@ export function PremiumSideBar() {
 							value.data.data.Result[0].CoverList[0].PremiumIncludedTax
 					}
 
+					const coverList: {
+						CoverId: string
+						SubCoverId: string | null
+						SubCoverYn: string
+					}[] = []
+
+					value.data.data.Result[0].CoverList.map((covers) => {
+						coverList.push({
+							CoverId: covers.CoverId,
+							SubCoverId: covers.SubCoverId,
+							SubCoverYn: 'N'
+						})
+					})
+
 					setBasicDetails(usdVal)
+					dispatch(setCoversDetails(coverList))
 
 					if (value.data.data.Result[0].CoverList.length === 2) {
 						setAccessories({

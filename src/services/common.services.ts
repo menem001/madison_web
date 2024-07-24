@@ -41,7 +41,15 @@ import {
 	ColorListResponseSchema,
 	type DocumentTypeResponse,
 	DocumentTypeResponseSchema,
-	type DocumentTypeRequest
+	type DocumentTypeRequest,
+	type BuyPolicyRequest,
+	type BuyPolicy,
+	buyPolicyResponseSchema,
+	type ViewQuoteRes,
+	type ViewQuoteRequest,
+	viewQuoteResponseSchema,
+	type UploadDocs,
+	uploadDocResSchema
 } from './models/common.models'
 import { MotorMakeSchema, type MotorList, type CommonModalRequest } from './models/common.models'
 import {
@@ -225,10 +233,39 @@ export async function getColorList(data: ColorListRequest, token: string | null)
 	})
 }
 
-export type DocumentType = TResponse<DocumentTypeResponse>
+export type DocumentTypeResp = TResponse<DocumentTypeResponse>
 
 export async function getDocumentTypeList(data: DocumentTypeRequest, token: string | null) {
-	return api.post(endPoints.documentType, data, DocumentTypeResponseSchema, {
+	return api.post<DocumentTypeResponse>(
+		endPoints.documentType,
+		data,
+		DocumentTypeResponseSchema,
+		{
+			headers: { Authorization: token }
+		}
+	)
+}
+
+export type BuyPolicyResponse = TResponse<BuyPolicy>
+
+export async function buyPolicy(data: BuyPolicyRequest, token: string | null) {
+	return api.post<BuyPolicy>(endPoints.buyPolicy, data, buyPolicyResponseSchema, {
+		headers: { Authorization: token }
+	})
+}
+
+export type ViewQuoteResponse = TResponse<ViewQuoteRes>
+
+export async function viewQuote(data: ViewQuoteRequest, token: string | null) {
+	return api.post<BuyPolicy>(endPoints.viewQuote, data, viewQuoteResponseSchema, {
+		headers: { Authorization: token }
+	})
+}
+
+export type UploadDocsResponse = TResponse<UploadDocs>
+
+export async function uploadDocs(data: FormData, token: string | null) {
+	return api.post<UploadDocs>(endPoints.uploadFile, data, uploadDocResSchema, {
 		headers: { Authorization: token }
 	})
 }

@@ -18,6 +18,9 @@ const endPoints = {
 	occupationList: 'EwayCommonApi/master/dropdown/occupation',
 	regionList: 'EwayCommonApi/master/dropdown/region',
 	colorList: 'EwayCommonApi/master/dropdown/color',
-	documentType: 'EwayCommonApi/document/dropdown/doctypes'
+	documentType: 'EwayCommonApi/document/dropdown/doctypes',
+	buyPolicy: 'EwayCommonApi/quote/buypolicy',
+	viewQuote: 'EwayCommonApi/quote/viewquotedetails',
+	uploadFile: 'EwayCommonApi/document/upload'
 }
 export default endPoints

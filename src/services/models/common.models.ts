@@ -26,7 +26,7 @@ export const BodyTypeSchema = z.object({
 	ErrorMessage: z.array(z.unknown()),
 	Result: z.array(
 		z.object({
-			TitleType: z.null(),
+			TitleType: z.string().nullable(),
 			Code: z.string(),
 			CodeDesc: z.string(),
 			Status: z.string(),
@@ -200,7 +200,7 @@ export type policyEndDateList = z.infer<typeof policyEndDatesSchema>
 export const saveMotorDetailsSchema = z.object({
 	Message: z.string(),
 	IsError: z.boolean(),
-	ErrorMessage: z.array(z.any()),
+	ErrorMessage: z.array(z.any()).nullable(),
 	Result: z
 		.array(
 			z.object({
@@ -1092,3 +1092,355 @@ export const DocumentTypeResponseSchema = z.object({
 })
 
 export type DocumentTypeResponse = z.infer<typeof DocumentTypeResponseSchema>
+
+export const buyPolicySchema = z.object({
+	RequestReferenceNo: z.string(),
+	CreatedBy: z.string(),
+	ProductId: z.string(),
+	ManualReferralYn: z.string(),
+	ReferralRemarks: z.string().nullable(),
+	Vehicles: z.array(
+		z.object({
+			Covers: z.array(
+				z.object({
+					CoverId: z.string(),
+					SubCoverId: z.string().nullable(),
+					SubCoverYn: z.string()
+				})
+			),
+			Id: z.string(),
+			SectionId: z.string()
+		})
+	)
+})
+
+export type BuyPolicyRequest = z.infer<typeof buyPolicySchema>
+
+export const buyPolicyResponseSchema = z.object({
+	Message: z.string(),
+	IsError: z.boolean(),
+	ErrorMessage: z.array(z.any()).nullable(),
+	Result: z.object({
+		Response: z.string(),
+		RequestReferenceNo: z.string(),
+		QuoteNo: z.string(),
+		CustomerId: z.string()
+	}),
+	ErroCode: z.number()
+})
+
+export type BuyPolicy = z.infer<typeof buyPolicyResponseSchema>
+
+export const viewQuote = z.object({
+	QuoteNo: z.string()
+})
+
+export type ViewQuoteRequest = z.infer<typeof viewQuote>
+
+export const viewQuoteResponseSchema = z.object({
+	Message: z.string(),
+	IsError: z.boolean(),
+	ErrorMessage: z.array(z.any()).nullable(),
+	Result: z.object({
+		QuoteDetails: z.object({
+			QuoteNo: z.string(),
+			RequestReferenceNo: z.string(),
+			CustomerId: z.string(),
+			CustomerReferenceNo: z.any().nullable(),
+			CompanyId: z.string(),
+			BranchCode: z.string(),
+			ProductId: z.string(),
+			SectionId: z.string(),
+			AmendId: z.string(),
+			LoginId: z.string(),
+			ApplicationId: z.string(),
+			ApplicationNo: z.string(),
+			AgencyCode: z.string(),
+			AcExecutiveId: z.any().nullable(),
+			BrokerCode: z.string(),
+			EffectiveDate: z.string(),
+			ExpiryDate: z.string(),
+			Status: z.string(),
+			QuoteCreatedDate: z.string(),
+			EntryDate: z.string(),
+			InceptionDate: z.string(),
+			LapsedDate: z.any().nullable(),
+			LapsedRemarks: z.any().nullable(),
+			LapsedUpdatedBy: z.any().nullable(),
+			Currency: z.string(),
+			Remarks: z.any().nullable(),
+			AdminRemarks: z.any().nullable(),
+			ReferalRemarks: z.any().nullable(),
+			VehicleNo: z.string(),
+			ExchangeRate: z.string(),
+			NoOfVehicles: z.string(),
+			PremiumFc: z.string(),
+			OverallPremiumFc: z.string(),
+			VatPremiumFc: z.string(),
+			VatPercent: z.string(),
+			PremiumLc: z.string(),
+			OverallPremiumLc: z.string(),
+			VatPremiumLc: z.string(),
+			FinalizeYn: z.string(),
+			Tax1: z.string(),
+			Tax2: z.string(),
+			Tax3: z.string(),
+			EmiYn: z.string(),
+			InstallmentPeriod: z.string(),
+			InstallmentMonth: z.string(),
+			DueAmount: z.any().nullable(),
+			TinyUrl: z.any().nullable(),
+			ManualReferalYn: z.string(),
+			SubUserType: z.string(),
+			ProductName: z.string(),
+			CompanyName: z.string(),
+			HavePromoCode: z.string(),
+			PromoCode: z.any().nullable(),
+			BrokerBranchCode: z.string(),
+			AdminLoginId: z.any().nullable(),
+			UserType: z.string(),
+			BdmCode: z.any().nullable(),
+			SourceType: z.string(),
+			CustomerCode: z.string(),
+			BrokerBranchName: z.string(),
+			BranchName: z.string(),
+			PrevPaymentType: z.any().nullable(),
+			PrevPaymentTypeDesc: z.any().nullable(),
+			EndtStatus: z.string(),
+			EndtTypeId: z.any().nullable(),
+			policyNo: z.string(),
+			Endtcategdesc: z.any().nullable(),
+			Endorsementremarks: z.any().nullable(),
+			Endorsementeffdate: z.any().nullable(),
+			Endtprevpolicyno: z.any().nullable(),
+			Endtprevquoteno: z.any().nullable(),
+			Endtcount: z.number(),
+			EndtTypeDesc: z.string(),
+			IsChargeOrRefund: z.string(),
+			OriginalPolicyNo: z.string(),
+			EndtPremium: z.number(),
+			EndtPremiumTax: z.number(),
+			TotalEndtPremium: z.number(),
+			CommissionPercentage: z.string(),
+			VatCommission: z.string(),
+			MerchantReference: z.any().nullable(),
+			DebitNoteNo: z.any().nullable(),
+			CreditNo: z.any().nullable(),
+			StickerNumber: z.null()
+		}),
+		CustomerDetails: z.object({
+			CustomerId: z.string(),
+			CustomerReferenceNo: z.string(),
+			PolicyHolderTypeid: z.string(),
+			AppointmentDate: z.any().nullable(),
+			PreferredNotification: z.string(),
+			IdType: z.string(),
+			IdNumber: z.string(),
+			Age: z.string(),
+			Gender: z.string(),
+			Occupation: z.string(),
+			BusinessType: z.any().nullable(),
+			RegionCode: z.string(),
+			IsTaxExempted: z.string(),
+			ClientName: z.string(),
+			Address1: z.string(),
+			Address2: z.any().nullable(),
+			Title: z.string(),
+			TitleDesc: z.string(),
+			Clientstatus: z.string(),
+			ClientStatusDesc: z.string(),
+			PolicyHolderType: z.string(),
+			IdTypeDesc: z.string(),
+			DobOrRegDate: z.string(),
+			Nationality: z.string(),
+			Placeofbirth: z.string(),
+			GenderDesc: z.string(),
+			OccupationDesc: z.string(),
+			BusinessTypeDesc: z.any().nullable(),
+			Vrngst: z.any().nullable(),
+			StateCode: z.string(),
+			StateName: z.any().nullable(),
+			CityCode: z.string(),
+			CityName: z.string(),
+			Street: z.any().nullable(),
+			Fax: z.any().nullable(),
+			TelephoneNo1: z.string(),
+			TelephoneNo2: z.any().nullable(),
+			TelephoneNo3: z.any().nullable(),
+			MobileNo1: z.string(),
+			MobileNo2: z.string(),
+			MobileNo3: z.any().nullable(),
+			Email1: z.string(),
+			Email2: z.any().nullable(),
+			Email3: z.any().nullable(),
+			Language: z.string(),
+			LanguageDesc: z.string(),
+			TaxExemptedId: z.any().nullable(),
+			CreatedBy: z.string(),
+			Status: z.string(),
+			UpdatedDate: z.string(),
+			UpdatedBy: z.string(),
+			EntryDate: z.string(),
+			InsuranceId: z.string(),
+			BranchCode: z.string(),
+			BrokerBranchCode: z.string(),
+			ProductId: z.any().nullable(),
+			VrTinNo: z.any().nullable(),
+			PinCode: z.string()
+		}),
+		RiskDetails: z.array(
+			z.object({
+				RiskId: z.string(),
+				Accident: z.string(),
+				Gpstrackinginstalled: z.string(),
+				Windscreencoverrequired: z.string(),
+				Insurancetype: z.string(),
+				InsuranceTypeDesc: z.string(),
+				MotorCategory: z.any().nullable(),
+				MotorCategoryDesc: z.any().nullable(),
+				Motorusage: z.string(),
+				Registrationnumber: z.string(),
+				Chassisnumber: z.string(),
+				Vehiclemake: z.string(),
+				VehiclemakeDesc: z.string(),
+				Vehcilemodel: z.string(),
+				VehcilemodelDesc: z.string(),
+				VehicleType: z.string(),
+				VehicleTypeDesc: z.string(),
+				ModelNumber: z.any().nullable(),
+				EngineNumber: z.string(),
+				FuelType: z.any().nullable(),
+				FuelTypeDesc: z.string(),
+				RegistrationYear: z.any().nullable(),
+				SeatingCapacity: z.number(),
+				CubicCapacity: z.number(),
+				Color: z.any().nullable(),
+				ColorDesc: z.string(),
+				Grossweight: z.number(),
+				Tareweight: z.any().nullable(),
+				Actualpremium: z.any().nullable(),
+				CoverNoteNo: z.any().nullable(),
+				Stickerno: z.any().nullable(),
+				WindScreenSumInsured: z.any().nullable(),
+				AcccessoriesSumInsured: z.number(),
+				AccessoriesInformation: z.any().nullable(),
+				NumberOfAxels: z.any().nullable(),
+				AxelDistance: z.any().nullable(),
+				SumInsured: z.number(),
+				OverRidePercentage: z.any().nullable(),
+				TppdFreeLimit: z.any().nullable(),
+				TppdIncreaeLimit: z.any().nullable(),
+				InsurerSettlement: z.any().nullable(),
+				PolicyType: z.string(),
+				PolicyTypeDesc: z.string(),
+				RadioOrCasseteplayer: z.any().nullable(),
+				RoofRack: z.any().nullable(),
+				SpotFogLamp: z.any().nullable(),
+				TrailerDetails: z.any().nullable(),
+				InsuranceClass: z.string(),
+				OwnerCategory: z.string(),
+				ManufactureAge: z.number(),
+				RegistrationAge: z.any().nullable(),
+				NcdYears: z.number(),
+				NcdYn: z.string(),
+				ManufactureYear: z.string(),
+				CollateralYn: z.any().nullable(),
+				BorrowerType: z.any().nullable(),
+				CollateralName: z.any().nullable(),
+				FirstLossPayee: z.any().nullable(),
+				FleetOwnerYn: z.string(),
+				NoOfComprehensives: z.any().nullable(),
+				ClaimRatio: z.string(),
+				CityLimit: z.any().nullable(),
+				DocumentsTitle: z.string(),
+				SavedFrom: z.string(),
+				DriverDetails: z.array(
+					z.object({
+						DriverId: z.string(),
+						DriverName: z.string(),
+						DriverDob: z.string(),
+						DriverType: z.string(),
+						LicenseNo: z.string(),
+						EntryDate: z.string(),
+						CreatedBy: z.string()
+					})
+				),
+				SectionId: z.string(),
+				SectionName: z.string(),
+				SectionDetails: z.array(
+					z.object({
+						SectionId: z.string(),
+						SectionName: z.string(),
+						PremiumAfterDiscount: z.string(),
+						PremiumAfterDiscountLc: z.string(),
+						PremiumBeforeDiscount: z.string(),
+						PremiumBeforeDiscountLc: z.string(),
+						PremiumExcluedTax: z.string(),
+						PremiumExcluedTaxLc: z.string(),
+						PremiumIncludedTax: z.string(),
+						PremiumIncludedTaxLc: z.string(),
+						Covers: z.array(
+							z.object({
+								CoverId: z.string(),
+								Rate: z.number(),
+								CoverName: z.string(),
+								CoverDesc: z.string(),
+								IsSubCover: z.string(),
+								SumInsured: z.number(),
+								SumInsuredLc: z.number(),
+								SubCovers: z.any().nullable(),
+								DependentCoverYN: z.string(),
+								DependentCoverId: z.string(),
+								CoverageType: z.string(),
+								isSelected: z.string(),
+								PremiumBeforeDiscountLC: z.number(),
+								PremiumAfterDiscountLC: z.number(),
+								PremiumExcluedTaxLC: z.number(),
+								PremiumIncludedTaxLC: z.number(),
+								PremiumBeforeDiscount: z.number(),
+								PremiumAfterDiscount: z.number(),
+								PremiumExcluedTax: z.number(),
+								PremiumIncludedTax: z.number(),
+								RegulatoryCode: z.string(),
+								ExcessAmount: z.string(),
+								ExcessPercent: z.string(),
+								ExcessDesc: z.string(),
+								MultiSelectYn: z.string(),
+								SectionName: z.any().nullable(),
+								MinimumPremiumYn: z.string()
+							})
+						)
+					})
+				),
+				EndorsementYn: z.string(),
+				EndtCount: z.any().nullable(),
+				EffectiveDate: z.any().nullable(),
+				PremiumLc: z.number(),
+				PremiumFc: z.number(),
+				OverAllPremiumFc: z.number(),
+				OverAllPremiumLc: z.number(),
+				CommissionAmount: z.string(),
+				CommissionPercentage: z.string(),
+				VatCommission: z.string(),
+				BorrowerTypeDesc: z.string(),
+				BankCode: z.any().nullable(),
+				BankName: z.any().nullable(),
+				FinalyseYn: z.string()
+			})
+		),
+		DocumentDetails: z.array(
+			z.object({
+				DocumentTitle: z.string(),
+				RiskId: z.string(),
+				SectionId: z.string()
+			})
+		),
+		TotalAccessoriesSumInsured: z.number()
+	}),
+	ErroCode: z.number()
+})
+
+export type ViewQuoteRes = z.infer<typeof viewQuoteResponseSchema>
+
+export const uploadDocResSchema = z.any()
+export type UploadDocs = z.infer<typeof uploadDocResSchema>

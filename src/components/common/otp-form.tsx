@@ -4,9 +4,14 @@ import { Button } from '../ui'
 import { useRouter } from 'next/navigation'
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '../ui/input-otp'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
-import { useGenerateOTPMutation, useVerifyOTPMutation } from '@/redux/api/commonApi'
+import {
+	useBuyPolicyMutation,
+	useGenerateOTPMutation,
+	useVerifyOTPMutation
+} from '@/redux/api/commonApi'
 import { useState } from 'react'
 import { setGuestLoginDetails, setOTPToken } from '@/redux/slices'
+import { updateQuoteDetails } from '@/redux/slices/motor-detail.slice'
 
 export function OtpForm() {
 	const route = useRouter()
@@ -14,6 +19,7 @@ export function OtpForm() {
 	const customerData = useAppSelector((state) => state.customerDetails)
 	const motorData = useAppSelector((state) => state.motor)
 	const appData = useAppSelector((state) => state.apps)
+	const vehicleData = useAppSelector((state) => state.carInsurance)
 
 	const dispatch = useAppDispatch()
 
@@ -23,6 +29,7 @@ export function OtpForm() {
 
 	const [GenerateOTP] = useGenerateOTPMutation()
 	const [verifyOTP] = useVerifyOTPMutation()
+	const [buyPolicies] = useBuyPolicyMutation()
 
 	function generateOtp() {
 		const request = {
@@ -95,9 +102,39 @@ export function OtpForm() {
 							userType: value.data.data.LoginResponse.Result.UserType
 						})
 					)
-					route.push('/car-insurance/details/customer-details')
+					buyPolicy()
 				}
 			}
+		})
+	}
+
+	function buyPolicy() {
+		const req = {
+			RequestReferenceNo: motorData.RequestReferenceNo,
+			CreatedBy: appData.loginId,
+			ProductId: appData.productId,
+			ManualReferralYn: 'N',
+			ReferralRemarks: null,
+			Vehicles: [
+				{
+					Covers: appData.covers,
+					Id: '1',
+					SectionId: vehicleData.classID
+				}
+			]
+		}
+		const res = buyPolicies(req)
+		res.then((value) => {
+			if (value.data?.type === 'success' && value.data.data !== undefined) {
+				dispatch(
+					updateQuoteDetails({
+						CustomerId: value.data.data.Result.CustomerId,
+						QuoteNo: value.data.data.Result.QuoteNo
+					})
+				)
+			}
+
+			route.push('/car-insurance/details/customer-details')
 		})
 	}
 

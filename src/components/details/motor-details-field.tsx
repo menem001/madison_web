@@ -31,7 +31,7 @@ const formSchema = z.object({
 	engineCapacity: z.string().min(1, {
 		message: 'Please enter Engine Capacity'
 	}),
-	color: z.string().min(2, {
+	color: z.string().min(1, {
 		message: 'Please Select Color'
 	})
 })

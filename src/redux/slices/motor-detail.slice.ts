@@ -13,7 +13,9 @@ const initialState = {
 	CreatedBy: '',
 	InsuranceId: '',
 	ProductId: '',
-	SectionId: ''
+	SectionId: '',
+	QuoteNo: '',
+	CustomerId: ''
 }
 
 export type MotorDetails = {
@@ -30,6 +32,8 @@ export type MotorDetails = {
 	InsuranceId: string
 	ProductId: string
 	SectionId: string
+	QuoteNo: string
+	CustomerId: string
 }
 
 export const motorSlice = createSlice({
@@ -50,8 +54,15 @@ export const motorSlice = createSlice({
 			state.SectionId = action.payload.SectionId
 			state.VdRefNo = action.payload.VdRefNo
 			state.VehicleId = action.payload.VehicleId
+		},
+		updateQuoteDetails(
+			state: MotorDetails,
+			action: PayloadAction<{ QuoteNo: string; CustomerId: string }>
+		) {
+			state.QuoteNo = action.payload.QuoteNo
+			state.CustomerId = action.payload.CustomerId
 		}
 	}
 })
 
-export const { updateDetails } = motorSlice.actions
+export const { updateDetails, updateQuoteDetails } = motorSlice.actions

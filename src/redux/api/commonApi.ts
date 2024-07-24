@@ -16,7 +16,11 @@ import {
 	type SaveVehcileDetialResponse,
 	type ColorList,
 	type OccupationList,
-	type RegionList
+	type RegionList,
+	type DocumentTypeResp,
+	type BuyPolicyResponse,
+	type ViewQuoteResponse,
+	type UploadDocsResponse
 } from '@/services/common.services'
 import {
 	type vehicleUsageRequest,
@@ -34,8 +38,9 @@ import {
 	type OccupationListRequest,
 	type RegionListRequest,
 	type ColorListRequest,
-	type DocumentTypeResponse,
-	type DocumentTypeRequest
+	type DocumentTypeRequest,
+	type BuyPolicyRequest,
+	type ViewQuoteRequest
 } from '@/services/models/common.models'
 
 import type { Action, PayloadAction } from '@reduxjs/toolkit'
@@ -335,7 +340,7 @@ export const commonApi = createApi({
 				headers: { Authorization: `Bearer ${store.getState().apps.token}` }
 			})
 		}),
-		getDocumentType: build.mutation<DocumentTypeResponse, DocumentTypeRequest>({
+		getDocumentType: build.mutation<DocumentTypeResp, DocumentTypeRequest>({
 			query: (
 				data
 			): {
@@ -345,6 +350,51 @@ export const commonApi = createApi({
 				headers: { Authorization: string }
 			} => ({
 				url: 'get_document_type',
+				method: 'POST',
+				body: data,
+				headers: { Authorization: `Bearer ${store.getState().apps.token}` }
+			})
+		}),
+		BuyPolicy: build.mutation<BuyPolicyResponse, BuyPolicyRequest>({
+			query: (
+				data
+			): {
+				url: string
+				method: string
+				body: BuyPolicyRequest
+				headers: { Authorization: string }
+			} => ({
+				url: 'buy_policy',
+				method: 'POST',
+				body: data,
+				headers: { Authorization: `Bearer ${store.getState().apps.token}` }
+			})
+		}),
+		viewQuote: build.mutation<ViewQuoteResponse, ViewQuoteRequest>({
+			query: (
+				data
+			): {
+				url: string
+				method: string
+				body: ViewQuoteRequest
+				headers: { Authorization: string }
+			} => ({
+				url: 'view_quote',
+				method: 'POST',
+				body: data,
+				headers: { Authorization: `Bearer ${store.getState().apps.token}` }
+			})
+		}),
+		uploadDocs: build.mutation<UploadDocsResponse, FormData>({
+			query: (
+				data
+			): {
+				url: string
+				method: string
+				body: FormData
+				headers: { Authorization: string }
+			} => ({
+				url: 'upload_docs',
 				method: 'POST',
 				body: data,
 				headers: { Authorization: `Bearer ${store.getState().apps.token}` }
@@ -372,5 +422,8 @@ export const {
 	useGetOccupationListMutation,
 	useGetRegionListMutation,
 	useSaveVehicleInfoMutation,
-	useGetDocumentTypeMutation
+	useGetDocumentTypeMutation,
+	useBuyPolicyMutation,
+	useViewQuoteMutation,
+	useUploadDocsMutation
 } = commonApi
