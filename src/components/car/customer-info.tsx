@@ -12,6 +12,7 @@ import { type SaveMotorDetailRequest } from '@/services/models/common.models'
 import { updateDetails } from '@/redux/slices/motor-detail.slice'
 import { useState } from 'react'
 import ClipLoader from 'react-spinners/ClipLoader'
+import { useToast } from '../ui/use-toast'
 
 type CustomerInfoProps = {
 	scrollToTop: () => void
@@ -23,6 +24,8 @@ export function CustomerInfo(props: CustomerInfoProps) {
 	const appData = useAppSelector((state) => state.apps)
 
 	const [saveMotor] = useSaveMotorDetailsMutation()
+
+	const { toast } = useToast()
 
 	const [isLoading, setIsLoading] = useState<boolean>(false)
 
@@ -100,11 +103,33 @@ export function CustomerInfo(props: CustomerInfoProps) {
 		}
 		const res = saveMotor(req)
 		res.then((value) => {
-			if (value.data?.type === 'success' && value.data.data !== undefined) {
+			if (
+				value.data?.type === 'success' &&
+				value.data.data !== undefined &&
+				value.data.data.IsError !== true &&
+				value.data.data.Result !== null
+			) {
 				dispatch(updatePremium(true))
 				dispatch(updateDetails(value.data.data.Result[0]))
 				props.scrollToTop()
 				setIsLoading(false)
+			} else if (
+				value.data?.type === 'success' &&
+				value.data.data !== undefined &&
+				value.data.data.IsError === true &&
+				value.data.data.ErrorMessage.length !== 0
+			) {
+				toast({
+					variant: 'destructive',
+					title: 'Uh oh! Something went wrong.',
+					description: value.data.data.ErrorMessage[0].Message
+				})
+			} else {
+				toast({
+					variant: 'destructive',
+					title: 'Uh oh! Something went wrong.',
+					description: 'There was a problem with your request.'
+				})
 			}
 		})
 	}

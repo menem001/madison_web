@@ -3,6 +3,7 @@ import { cn, fonts } from '@/lib'
 import { type Metadata } from 'next'
 import { type PropsWithChildren } from 'react'
 import './globals.css'
+import { Toaster } from '@/components/ui/toaster'
 
 const fontVariables = fonts.map((f) => f.variable)
 
@@ -15,7 +16,12 @@ export default function Layout(props: PropsWithChildren) {
 	return (
 		<html lang='en'>
 			<AppProvider>
-				<body className={cn(fontVariables, 'bg-mainBg')}>{props.children}</body>
+				<body className={cn(fontVariables, 'bg-mainBg')}>
+					<>
+						{props.children}
+						<Toaster />
+					</>
+				</body>
 			</AppProvider>
 		</html>
 	)

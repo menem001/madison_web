@@ -17,6 +17,7 @@ const endPoints = {
 	saveVehicle: 'EwayMotorApi/regulatory/savevehicleinfo',
 	occupationList: 'EwayCommonApi/master/dropdown/occupation',
 	regionList: 'EwayCommonApi/master/dropdown/region',
-	colorList: 'EwayCommonApi/master/dropdown/color'
+	colorList: 'EwayCommonApi/master/dropdown/color',
+	documentType: 'EwayCommonApi/document/dropdown/doctypes'
 }
 export default endPoints

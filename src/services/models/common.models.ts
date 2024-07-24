@@ -200,24 +200,26 @@ export type policyEndDateList = z.infer<typeof policyEndDatesSchema>
 export const saveMotorDetailsSchema = z.object({
 	Message: z.string(),
 	IsError: z.boolean(),
-	ErrorMessage: z.array(z.string()),
-	Result: z.array(
-		z.object({
-			CoverList: z.string().nullable(),
-			RequestReferenceNo: z.string(),
-			CustomerReferenceNo: z.string(),
-			VehicleId: z.string(),
-			MSRefNo: z.string(),
-			CdRefNo: z.string(),
-			VdRefNo: z.string(),
-			DdRefNo: z.string(),
-			Response: z.string(),
-			CreatedBy: z.string(),
-			InsuranceId: z.string(),
-			ProductId: z.string(),
-			SectionId: z.string()
-		})
-	),
+	ErrorMessage: z.array(z.any()),
+	Result: z
+		.array(
+			z.object({
+				CoverList: z.string().nullable(),
+				RequestReferenceNo: z.string(),
+				CustomerReferenceNo: z.string(),
+				VehicleId: z.string(),
+				MSRefNo: z.string(),
+				CdRefNo: z.string(),
+				VdRefNo: z.string(),
+				DdRefNo: z.string(),
+				Response: z.string(),
+				CreatedBy: z.string(),
+				InsuranceId: z.string(),
+				ProductId: z.string(),
+				SectionId: z.string()
+			})
+		)
+		.nullable(),
 	ErroCode: z.number()
 })
 
@@ -1072,3 +1074,21 @@ export const ColorListResponseSchema = z.object({
 	ErroCode: z.number()
 })
 export type ColorListResponse = z.infer<typeof ColorListResponseSchema>
+
+export const DocumentTypeRequestSchema = z.object({
+	InsuranceId: z.string(),
+	ProductId: z.string(),
+	SectionId: z.string()
+})
+
+export type DocumentTypeRequest = z.infer<typeof DocumentTypeRequestSchema>
+
+export const DocumentTypeResponseSchema = z.object({
+	Message: z.string(),
+	IsError: z.boolean(),
+	ErrorMessage: z.array(z.unknown()),
+	Result: z.array(z.object({ Code: z.string(), CodeDesc: z.string() })),
+	ErroCode: z.number()
+})
+
+export type DocumentTypeResponse = z.infer<typeof DocumentTypeResponseSchema>

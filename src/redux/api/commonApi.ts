@@ -33,7 +33,9 @@ import {
 	type SaveVehicleRequest,
 	type OccupationListRequest,
 	type RegionListRequest,
-	type ColorListRequest
+	type ColorListRequest,
+	type DocumentTypeResponse,
+	type DocumentTypeRequest
 } from '@/services/models/common.models'
 
 import type { Action, PayloadAction } from '@reduxjs/toolkit'
@@ -332,6 +334,21 @@ export const commonApi = createApi({
 				body: data,
 				headers: { Authorization: `Bearer ${store.getState().apps.token}` }
 			})
+		}),
+		getDocumentType: build.mutation<DocumentTypeResponse, DocumentTypeRequest>({
+			query: (
+				data
+			): {
+				url: string
+				method: string
+				body: DocumentTypeRequest
+				headers: { Authorization: string }
+			} => ({
+				url: 'get_document_type',
+				method: 'POST',
+				body: data,
+				headers: { Authorization: `Bearer ${store.getState().apps.token}` }
+			})
 		})
 	})
 })
@@ -354,5 +371,6 @@ export const {
 	useGetColorListMutation,
 	useGetOccupationListMutation,
 	useGetRegionListMutation,
-	useSaveVehicleInfoMutation
+	useSaveVehicleInfoMutation,
+	useGetDocumentTypeMutation
 } = commonApi

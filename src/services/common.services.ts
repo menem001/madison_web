@@ -38,7 +38,10 @@ import {
 	RegionListResponseSchema,
 	type ColorListResponse,
 	type ColorListRequest,
-	ColorListResponseSchema
+	ColorListResponseSchema,
+	type DocumentTypeResponse,
+	DocumentTypeResponseSchema,
+	type DocumentTypeRequest
 } from './models/common.models'
 import { MotorMakeSchema, type MotorList, type CommonModalRequest } from './models/common.models'
 import {
@@ -218,6 +221,14 @@ export type ColorList = TResponse<ColorListResponse>
 
 export async function getColorList(data: ColorListRequest, token: string | null) {
 	return api.post<ColorListResponse>(endPoints.colorList, data, ColorListResponseSchema, {
+		headers: { Authorization: token }
+	})
+}
+
+export type DocumentType = TResponse<DocumentTypeResponse>
+
+export async function getDocumentTypeList(data: DocumentTypeRequest, token: string | null) {
+	return api.post(endPoints.documentType, data, DocumentTypeResponseSchema, {
 		headers: { Authorization: token }
 	})
 }
