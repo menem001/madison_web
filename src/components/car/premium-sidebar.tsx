@@ -7,9 +7,16 @@ import { Button } from '../ui'
 import { usePathname, useRouter } from 'next/navigation'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
 import { useEffect, useState } from 'react'
-import { usePremiumCalcMutation, useViewPremiumCalcMutation } from '@/redux/api/commonApi'
+import {
+	usePremiumCalcMutation,
+	useSaveMotorDetailsMutation,
+	useViewPremiumCalcMutation
+} from '@/redux/api/commonApi'
 import ClipLoader from 'react-spinners/ClipLoader'
-import { setCoversDetails } from '@/redux/slices'
+import { setCoversDetails, updatePremium } from '@/redux/slices'
+import { type SaveMotorDetailRequest } from '@/services/models/common.models'
+import { updateDetails } from '@/redux/slices/motor-detail.slice'
+import { useToast } from '../ui/use-toast'
 
 export function PremiumSideBar() {
 	const route = useRouter()
@@ -20,11 +27,15 @@ export function PremiumSideBar() {
 
 	const path = usePathname()
 
+	const { toast } = useToast()
+
 	const [isLoading, setIsLoading] = useState<boolean>(false)
+	const [isMotorLoading, setIsMotorLoading] = useState<boolean>(false)
+
+	const [needUpdatedData, setNeedUpdatedData] = useState<boolean>(false)
 
 	const [premiumCalculator] = usePremiumCalcMutation()
 	const [viewPremium] = useViewPremiumCalcMutation()
-	const [premiumCalDone, setPremiumCalDone] = useState<boolean>(false)
 	const [taxList, setTaxList] = useState<{ name: string; amount: number; rate: number }[]>([])
 	const [taxListAccess, setTaxListAccess] = useState<
 		{ name: string; amount: number; rate: number }[]
@@ -38,8 +49,100 @@ export function PremiumSideBar() {
 	const [accessories, setAccessories] = useState({ PremiumExcluedTax: 0, PremiumIncludedTax: 0 })
 
 	const [total, setTotal] = useState<string>('')
+	const [saveMotor] = useSaveMotorDetailsMutation()
 
 	const dispatch = useAppDispatch()
+
+	function doSaveMotorDetails() {
+		setIsMotorLoading(true)
+		const req: SaveMotorDetailRequest = {
+			CustomerName: customerData.name,
+			LoginId: appData.loginId,
+			SubUserType: appData.subUserType,
+			UserType: appData.userType,
+			ApplicationId: '1', //
+			CustomerReferenceNo: null,
+			RequestReferenceNo: null,
+			VehicleId: '1',
+			CreatedBy: appData.loginId,
+			InsuranceId: appData.insuranceID,
+			BranchCode: appData.branchCode,
+			BrokerBranchCode: appData.brokerCode,
+			SectionId: vehicleData.classID,
+			AgencyCode: appData.agencyCode,
+			ProductId: appData.productId,
+			SavedFrom: 'SQ',
+			MobileCode: customerData.code,
+			MobileNumber: customerData.mobile,
+			Chassisnumber: '',
+			Insurancetype: [appData.insuranceID],
+			InsuranceClass: vehicleData.classID,
+			Motorusage: vehicleData.vehicleUsage,
+			MotorusageId: vehicleData.vehicleUsageID,
+			Vehiclemake: vehicleData.mark,
+			VehiclemakeId: vehicleData.makeID,
+			VehicleModel: vehicleData.model,
+			VehcilemodelId: vehicleData.modelID,
+			VehicleValueType: null,
+			DefenceValue: null,
+			PurchaseDate: null,
+			Deductibles: null,
+			Inflation: null,
+			ManufactureYear: vehicleData.year + '',
+			Gpstrackinginstalled: 'N',
+			NcdYn: 'N',
+			VehicleType: vehicleData.bodyType,
+			VehicleTypeId: vehicleData.bodyTypeID,
+			CarAlarmYn: 'N',
+			PolicyStartDate: vehicleData.policyStartDate,
+			PolicyEndDate: vehicleData.policyEndDate,
+			CustomerCode: appData.CustomerCode,
+			BdmCode: appData.CustomerCode,
+			SourceTypeId: appData.userType,
+			SumInsured: vehicleData.value,
+			AcccessoriesSumInsured: vehicleData.AcccessoriesSumInsured,
+			ExchangeRate: vehicleData.exchangeRate,
+			Currency: vehicleData.currency,
+			HavePromoCode: 'N',
+			SearchFromApi: false,
+			SeatingCapacity: vehicleData.seat,
+			CustomerStatus: 'Y',
+			Status: 'Y'
+		}
+		const res = saveMotor(req)
+		res.then((value) => {
+			if (
+				value.data?.type === 'success' &&
+				value.data.data !== undefined &&
+				value.data.data.IsError !== true &&
+				value.data.data.Result !== null
+			) {
+				dispatch(updatePremium(true))
+				dispatch(updateDetails(value.data.data.Result[0]))
+				setIsLoading(false)
+			} else if (
+				value.data?.type === 'success' &&
+				value.data.data !== undefined &&
+				value.data.data.IsError === true &&
+				value.data.data.ErrorMessage !== null &&
+				value.data.data.ErrorMessage.length !== 0
+			) {
+				toast({
+					variant: 'destructive',
+					title: 'Uh oh! Something went wrong.',
+					description: value.data.data.ErrorMessage[0].Message
+				})
+			} else {
+				toast({
+					variant: 'destructive',
+					title: 'Uh oh! Something went wrong.',
+					description: 'There was a problem with your request.'
+				})
+			}
+
+			setIsMotorLoading(false)
+		})
+	}
 
 	useEffect(() => {
 		if (motorData.RequestReferenceNo !== '') {
@@ -64,83 +167,82 @@ export function PremiumSideBar() {
 			setIsLoading(true)
 			const res = premiumCalculator(req)
 			res.then(() => {
-				setPremiumCalDone(true)
+				ViewPremiumData()
 			})
 		}
 	}, [motorData])
 
 	useEffect(() => {
-		if (premiumCalDone) {
-			const req = {
-				ProductId: motorData.ProductId,
-				RequestReferenceNo: motorData.RequestReferenceNo
-			}
-			const res = viewPremium(req)
-			res.then((value) => {
-				setPremiumCalDone(false)
+		setNeedUpdatedData(true)
+	}, [vehicleData])
 
-				if (value.data?.type === 'success' && value.data?.data !== undefined) {
-					const usdVal = {
-						PremiumExcluedTax: value.data.data.Result[0].CoverList[0].PremiumExcluedTax,
+	function ViewPremiumData() {
+		const req = {
+			ProductId: motorData.ProductId,
+			RequestReferenceNo: motorData.RequestReferenceNo
+		}
+		const res = viewPremium(req)
+		res.then((value) => {
+			if (value.data?.type === 'success' && value.data?.data !== undefined) {
+				const usdVal = {
+					PremiumExcluedTax: value.data.data.Result[0].CoverList[0].PremiumExcluedTax,
+					PremiumIncludedTax: value.data.data.Result[0].CoverList[0].PremiumIncludedTax
+				}
+
+				const coverList: {
+					CoverId: string
+					SubCoverId: string | null
+					SubCoverYn: string
+				}[] = []
+
+				value.data.data.Result[0].CoverList.map((covers) => {
+					coverList.push({
+						CoverId: covers.CoverId,
+						SubCoverId: covers.SubCoverId,
+						SubCoverYn: 'N'
+					})
+				})
+
+				setBasicDetails(usdVal)
+				dispatch(setCoversDetails(coverList))
+
+				if (value.data.data.Result[0].CoverList.length === 2) {
+					setAccessories({
+						PremiumExcluedTax: value.data.data.Result[0].CoverList[1].PremiumExcluedTax,
 						PremiumIncludedTax:
-							value.data.data.Result[0].CoverList[0].PremiumIncludedTax
-					}
-
-					const coverList: {
-						CoverId: string
-						SubCoverId: string | null
-						SubCoverYn: string
-					}[] = []
-
-					value.data.data.Result[0].CoverList.map((covers) => {
-						coverList.push({
-							CoverId: covers.CoverId,
-							SubCoverId: covers.SubCoverId,
-							SubCoverYn: 'N'
-						})
+							value.data.data.Result[0].CoverList[1].PremiumIncludedTax
 					})
 
-					setBasicDetails(usdVal)
-					dispatch(setCoversDetails(coverList))
-
-					if (value.data.data.Result[0].CoverList.length === 2) {
-						setAccessories({
-							PremiumExcluedTax:
-								value.data.data.Result[0].CoverList[1].PremiumExcluedTax,
-							PremiumIncludedTax:
-								value.data.data.Result[0].CoverList[1].PremiumIncludedTax
-						})
-
-						if (value.data.data.Result[0].CoverList[1].Taxes.length !== 0) {
-							const taxes: { name: string; amount: number; rate: number }[] = []
-							value.data.data.Result[0].CoverList[1].Taxes.map((tax) => {
-								taxes.push({
-									name: tax.TaxDesc,
-									amount: tax.TaxAmount,
-									rate: tax.TaxRate
-								})
-							})
-							setTaxListAccess(taxes)
-						}
-					}
-
-					if (value.data.data.Result[0].CoverList[0].Taxes.length !== 0) {
+					if (value.data.data.Result[0].CoverList[1].Taxes.length !== 0) {
 						const taxes: { name: string; amount: number; rate: number }[] = []
-						value.data.data.Result[0].CoverList[0].Taxes.map((tax) => {
+						value.data.data.Result[0].CoverList[1].Taxes.map((tax) => {
 							taxes.push({
 								name: tax.TaxDesc,
 								amount: tax.TaxAmount,
 								rate: tax.TaxRate
 							})
 						})
-						setTaxList(taxes)
+						setTaxListAccess(taxes)
 					}
 				}
 
-				setIsLoading(false)
-			})
-		}
-	}, [premiumCalDone, motorData])
+				if (value.data.data.Result[0].CoverList[0].Taxes.length !== 0) {
+					const taxes: { name: string; amount: number; rate: number }[] = []
+					value.data.data.Result[0].CoverList[0].Taxes.map((tax) => {
+						taxes.push({
+							name: tax.TaxDesc,
+							amount: tax.TaxAmount,
+							rate: tax.TaxRate
+						})
+					})
+					setTaxList(taxes)
+				}
+			}
+
+			setNeedUpdatedData(false)
+			setIsLoading(false)
+		})
+	}
 
 	useEffect(() => {
 		const total = basicDetails.PremiumIncludedTax + accessories.PremiumIncludedTax
@@ -202,83 +304,105 @@ export function PremiumSideBar() {
 						</div>
 					) : (
 						<>
-							<div className='flex flex-col gap-4'>
-								<h1 className='font-jakarta text-2xl font-bold text-blue-300'>
-									{vehicleData.insuranceClass}
-								</h1>
-								{vehicleData.insuranceClass !== 'TPO' && (
-									<div className='flex flex-row justify-between'>
-										<span>Sum Insured</span>
-										<span>
-											{vehicleData.value} {vehicleData.currency}
-										</span>
-									</div>
-								)}
-								<div className='flex flex-row justify-between'>
-									<span>Base Fare</span>
-									<span>
-										{basicDetails.PremiumExcluedTax} {vehicleData.currency}
-									</span>
-								</div>
-								{taxList.map((tax, index) => {
-									return (
-										<div
-											key={index}
-											className='flex flex-row justify-between'>
-											<span>{`${tax.name} ${tax.rate ? '(' + tax.rate + '%)' : ''}`}</span>
-											<span>
-												{tax.amount} {vehicleData.currency}
-											</span>
-										</div>
-									)
-								})}
-							</div>
-							<div className='flex flex-row justify-between border-b-[0.5px] border-green-75 border-opacity-25 pb-4 font-semibold'>
-								<span>Premium Included Tax</span>
-								<span>
-									{basicDetails.PremiumIncludedTax} {vehicleData.currency}
-								</span>
-							</div>
-							{accessories.PremiumExcluedTax !== 0 && (
+							{needUpdatedData ? (
 								<>
-									<div className='flex flex-row justify-between'>
-										<span>Electronic Accessories</span>
-										<span>
-											{accessories.PremiumExcluedTax} {vehicleData.currency}
-										</span>
-									</div>
-									{taxListAccess.map((tax, index) => {
-										return (
-											<div
-												key={index}
-												className='flex flex-row justify-between'>
-												<span>{`${tax.name} ${tax.rate ? '(' + tax.rate + '%)' : ''}`}</span>
+									<Button
+										variant='bluebtn'
+										onClick={doSaveMotorDetails}>
+										{isMotorLoading ? (
+											<ClipLoader
+												color='#FFFFFF'
+												size={20}
+											/>
+										) : (
+											<span>Refresh Premium Amount</span>
+										)}
+									</Button>
+								</>
+							) : (
+								<>
+									<div className='flex flex-col gap-4'>
+										<h1 className='font-jakarta text-2xl font-bold text-blue-300'>
+											{vehicleData.insuranceClass}
+										</h1>
+										{vehicleData.insuranceClass !== 'TPO' && (
+											<div className='flex flex-row justify-between'>
+												<span>Sum Insured</span>
 												<span>
-													{tax.amount} {vehicleData.currency}
+													{vehicleData.value} {vehicleData.currency}
 												</span>
 											</div>
-										)
-									})}
+										)}
+										<div className='flex flex-row justify-between'>
+											<span>Base Fare</span>
+											<span>
+												{basicDetails.PremiumExcluedTax}{' '}
+												{vehicleData.currency}
+											</span>
+										</div>
+										{taxList.map((tax, index) => {
+											return (
+												<div
+													key={index}
+													className='flex flex-row justify-between'>
+													<span>{`${tax.name} ${tax.rate ? '(' + tax.rate + '%)' : ''}`}</span>
+													<span>
+														{tax.amount} {vehicleData.currency}
+													</span>
+												</div>
+											)
+										})}
+									</div>
 									<div className='flex flex-row justify-between border-b-[0.5px] border-green-75 border-opacity-25 pb-4 font-semibold'>
 										<span>Premium Included Tax</span>
 										<span>
-											{accessories.PremiumIncludedTax} {vehicleData.currency}
+											{basicDetails.PremiumIncludedTax} {vehicleData.currency}
 										</span>
 									</div>
+									{accessories.PremiumExcluedTax !== 0 && (
+										<>
+											<div className='flex flex-row justify-between'>
+												<span>Electronic Accessories</span>
+												<span>
+													{accessories.PremiumExcluedTax}{' '}
+													{vehicleData.currency}
+												</span>
+											</div>
+											{taxListAccess.map((tax, index) => {
+												return (
+													<div
+														key={index}
+														className='flex flex-row justify-between'>
+														<span>{`${tax.name} ${tax.rate ? '(' + tax.rate + '%)' : ''}`}</span>
+														<span>
+															{tax.amount} {vehicleData.currency}
+														</span>
+													</div>
+												)
+											})}
+											<div className='flex flex-row justify-between border-b-[0.5px] border-green-75 border-opacity-25 pb-4 font-semibold'>
+												<span>Premium Included Tax</span>
+												<span>
+													{accessories.PremiumIncludedTax}{' '}
+													{vehicleData.currency}
+												</span>
+											</div>
+										</>
+									)}
+									<div className='flex flex-row justify-between font-bold'>
+										<span>Grand Total</span>
+										<span>{`${total} ${vehicleData.currency}`}</span>
+									</div>
+									{path === '/car-insurance/2' && (
+										<Button
+											variant='bluebtn'
+											onClick={() => {
+												route.push('/car-insurance/confirm/otp-verify')
+											}}>
+											Buy Policy
+										</Button>
+									)}
 								</>
-							)}
-							<div className='flex flex-row justify-between font-bold'>
-								<span>Grand Total</span>
-								<span>{`${total} ${vehicleData.currency}`}</span>
-							</div>
-							{path === '/car-insurance/2' && (
-								<Button
-									variant='bluebtn'
-									onClick={() => {
-										route.push('/car-insurance/confirm/otp-verify')
-									}}>
-									Buy Policy
-								</Button>
 							)}
 						</>
 					)}
