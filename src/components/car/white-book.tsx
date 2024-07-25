@@ -7,6 +7,7 @@ import Image from 'next/image'
 import { assets } from '@/assets'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
+// import { useGetRegistrationTokenQuery } from '@/redux/api/registrationApi'
 
 export function WhiteBook() {
 	useGSAP(() => {
@@ -17,6 +18,10 @@ export function WhiteBook() {
 			delay: 0.5
 		})
 	})
+
+	// const { data: TokenData } = useGetRegistrationTokenQuery()
+
+	// console.log(TokenData)
 
 	return (
 		<>

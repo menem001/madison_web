@@ -22,6 +22,9 @@ const endPoints = {
 	buyPolicy: 'EwayCommonApi/quote/buypolicy',
 	viewQuote: 'EwayCommonApi/quote/viewquotedetails',
 	uploadFile: 'EwayCommonApi/document/upload',
-	bankList: 'EwayCommonApi/master/dropdown/bankmaster'
+	bankList: 'EwayCommonApi/master/dropdown/bankmaster',
+	registrationToken: 'EwayCommonApi/madison/get/token',
+	registrationDetails: 'EwayCommonApi/madison/get/RegDetails',
+	vehicleList: 'EwayCommonApi/madison/get/Rtsalist'
 }
 export default endPoints
