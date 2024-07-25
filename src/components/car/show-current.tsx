@@ -18,7 +18,8 @@ export function ShowCurrent(props: ShowCurrentProps) {
 	const isIncomplete =
 		props.item.name === '' ||
 		(props.item.field === 'Manufacture Year' && +props.item.name === 0) ||
-		(props.item.field === 'Deductibles' && +props.item.name === 0)
+		(props.item.field === 'Seat Count' && +props.item.name === 0) ||
+		(props.item.field === 'Sum Insured' && +props.item.name === 0)
 
 	const dispatch = useAppDispatch()
 
@@ -36,7 +37,7 @@ export function ShowCurrent(props: ShowCurrentProps) {
 		<div className='flex flex-row rounded-md bg-gray-66 font-inter'>
 			<div className='flex flex-grow flex-row'>
 				<div className='flex items-center justify-center px-4'>
-					<div className='flex h-6 w-6 items-center justify-center rounded-full bg-green-200 text-blue-300'>
+					<div className='flex h-6 w-6 items-center justify-center rounded-full bg-blue-300'>
 						<Check
 							color='white'
 							height={16}
@@ -44,11 +45,11 @@ export function ShowCurrent(props: ShowCurrentProps) {
 						/>
 					</div>
 				</div>
-				<div className='flex flex-col p-2'>
-					<span className='text-sm font-semibold'>
+				<div className='flex flex-col p-1'>
+					<span className='text-[13px] font-semibold'>
 						{props.item.name !== '' ? props.item.name : 'Select ' + props.item.field}
 					</span>
-					<span className='text-xs opacity-70'>{props.item.field}</span>
+					<span className='text-[11px] opacity-70'>{props.item.field}</span>
 				</div>
 			</div>
 			<div className='flex flex-shrink-0 items-center'>

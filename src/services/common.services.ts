@@ -49,7 +49,10 @@ import {
 	type ViewQuoteRequest,
 	viewQuoteResponseSchema,
 	type UploadDocs,
-	uploadDocResSchema
+	uploadDocResSchema,
+	type getBankRes,
+	type GetBankRequest,
+	getBankResSchema
 } from './models/common.models'
 import { MotorMakeSchema, type MotorList, type CommonModalRequest } from './models/common.models'
 import {
@@ -266,6 +269,14 @@ export type UploadDocsResponse = TResponse<UploadDocs>
 
 export async function uploadDocs(data: FormData, token: string | null) {
 	return api.post<UploadDocs>(endPoints.uploadFile, data, uploadDocResSchema, {
+		headers: { Authorization: token }
+	})
+}
+
+export type getBankResponse = TResponse<getBankRes>
+
+export async function getBankDetails(data: GetBankRequest, token: string | null) {
+	return api.post<getBankRes>(endPoints.bankList, data, getBankResSchema, {
 		headers: { Authorization: token }
 	})
 }

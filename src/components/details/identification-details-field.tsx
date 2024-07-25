@@ -138,7 +138,6 @@ export function IdentificationDetailsField(props: identificationDetailsFieldProp
 							className='border-2 border-blue-925'
 							id='passport'
 							placeholder='Passport Number'
-							type='number'
 							value={passport}
 							onChange={handleChangePassport}
 						/>

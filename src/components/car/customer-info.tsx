@@ -99,7 +99,9 @@ export function CustomerInfo(props: CustomerInfoProps) {
 			Currency: vehicleData.currency,
 			HavePromoCode: 'N',
 			SearchFromApi: false,
-			SeatingCapacity: vehicleData.seat
+			SeatingCapacity: vehicleData.seat,
+			CustomerStatus: 'Y',
+			Status: 'Y'
 		}
 		const res = saveMotor(req)
 		res.then((value) => {
@@ -117,6 +119,7 @@ export function CustomerInfo(props: CustomerInfoProps) {
 				value.data?.type === 'success' &&
 				value.data.data !== undefined &&
 				value.data.data.IsError === true &&
+				value.data.data.ErrorMessage !== null &&
 				value.data.data.ErrorMessage.length !== 0
 			) {
 				toast({
@@ -176,11 +179,11 @@ export function CustomerInfo(props: CustomerInfoProps) {
 				</div>
 				<div className='selectCustomerInfo flex flex-row gap-10'>
 					<div className='max-w-20'>
-						<Label htmlFor='code'>Mobile Code</Label>
+						<Label htmlFor='code'>Code</Label>
 						<Input
 							disabled={true}
 							id='mobile'
-							placeholder='Mobile Number'
+							placeholder='Mobile Code'
 							value={customerData.code}
 						/>
 						{/* <Select

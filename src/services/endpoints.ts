@@ -21,6 +21,7 @@ const endPoints = {
 	documentType: 'EwayCommonApi/document/dropdown/doctypes',
 	buyPolicy: 'EwayCommonApi/quote/buypolicy',
 	viewQuote: 'EwayCommonApi/quote/viewquotedetails',
-	uploadFile: 'EwayCommonApi/document/upload'
+	uploadFile: 'EwayCommonApi/document/upload',
+	bankList: 'EwayCommonApi/master/dropdown/bankmaster'
 }
 export default endPoints

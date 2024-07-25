@@ -27,10 +27,8 @@ export function UploadDocumentsForm(props: UploadDocumentsFormProps) {
 
 	const appData = useAppSelector((state) => state.apps)
 	const sectionID = useAppSelector((state) => state.carInsurance.classID)
-	const registrationNumber = useAppSelector((state) => state.carInsurance.registrationNumber)
+	const vehicleData = useAppSelector((state) => state.carInsurance)
 	const QuoteNo = useAppSelector((state) => state.motor.QuoteNo)
-
-	const [riskID, setRiskID] = useState<string>('')
 
 	const [fileDataList, setFileDataList] = useState<
 		{
@@ -45,6 +43,7 @@ export function UploadDocumentsForm(props: UploadDocumentsFormProps) {
 			ProductId: string
 			UploadedBy: string
 			file: File | null
+			isUploaded: boolean
 		}[]
 	>([])
 
@@ -54,19 +53,7 @@ export function UploadDocumentsForm(props: UploadDocumentsFormProps) {
 		setFileDataList(newList)
 	}
 
-	useEffect(() => {
-		const request = {
-			QuoteNo: QuoteNo
-		}
-		const res = viewQuote(request)
-		res.then((value) => {
-			if (value.data?.type === 'success' && value.data.data !== undefined) {
-				setRiskID(value.data.data.Result.RiskDetails[0].RiskId)
-			}
-		})
-	}, [])
-
-	useEffect(() => {
+	function getTheDocumentTypes(riskID: string) {
 		const request = {
 			InsuranceId: appData.insuranceID,
 			ProductId: appData.productId,
@@ -88,6 +75,7 @@ export function UploadDocumentsForm(props: UploadDocumentsFormProps) {
 					ProductId: string
 					UploadedBy: string
 					file: File | null
+					isUploaded: boolean
 				}[] = []
 				value.data.data.Result.map((value) => {
 					tempArr.push({
@@ -97,7 +85,7 @@ export function UploadDocumentsForm(props: UploadDocumentsFormProps) {
 					tempFileArray.push({
 						QuoteNo: QuoteNo,
 						IdType: 'REGISTER_NUMBER',
-						Id: registrationNumber,
+						Id: vehicleData.registrationNumber,
 						SectionId: sectionID,
 						InsuranceId: appData.insuranceID,
 						RiskId: riskID,
@@ -105,34 +93,57 @@ export function UploadDocumentsForm(props: UploadDocumentsFormProps) {
 						LocationName: 'Motor',
 						ProductId: appData.productId,
 						UploadedBy: appData.loginId,
-						file: null
+						file: null,
+						isUploaded: false
 					})
 				})
 				setDocTypesList(tempArr)
 				setFileDataList(tempFileArray)
 			}
 		})
-	}, [documentTypeList])
+	}
 
-	async function uploadDocument(index: number) {
+	useEffect(() => {
+		const request = {
+			QuoteNo: QuoteNo
+		}
+		const res = viewQuote(request)
+		res.then((value) => {
+			if (value.data?.type === 'success' && value.data.data !== undefined) {
+				getTheDocumentTypes(value.data.data.Result.RiskDetails[0].RiskId)
+			}
+		})
+	}, [QuoteNo, vehicleData.registrationNumber])
+
+	function uploadDocument(index: number, docType: string) {
 		const curData = fileDataList[index]
 		const fd = new FormData()
+		const newData = fileDataList
 
 		if (curData.file !== null) {
-			fd.append('QuoteNo', curData.QuoteNo)
-			fd.append('Id', curData.Id)
-			fd.append('IdType', curData.IdType)
-			fd.append('SectionId', curData.SectionId)
-			fd.append('InsuranceId', curData.InsuranceId)
-			fd.append('DocumentId', '')
-			fd.append('RiskId', curData.RiskId)
-			fd.append('LocationId', curData.LocationId)
-			fd.append('LocationName', curData.LocationName)
-			fd.append('ProductId', curData.ProductId)
-			fd.append('FileName', curData.file)
-			fd.append('OriginalFileName', curData.file)
-			fd.append('UploadedBy', curData.UploadedBy)
-			await uploadDocs(fd)
+			const request = {
+				QuoteNo: curData.QuoteNo,
+				Id: curData.Id,
+				IdType: curData.IdType,
+				SectionId: curData.SectionId,
+				InsuranceId: curData.InsuranceId,
+				DocumentId: docType,
+				RiskId: curData.RiskId,
+				LocationId: curData.LocationId,
+				LocationName: curData.LocationName,
+				ProductId: curData.ProductId,
+				FileName: curData.file.name,
+				OriginalFileName: curData.file.name,
+				UploadedBy: curData.UploadedBy
+			}
+			fd.append('File', curData.file)
+			fd.append('Req', JSON.stringify(request))
+
+			const res = uploadDocs(fd)
+			res.then(() => {
+				newData[index].isUploaded = true
+				setFileDataList(newData)
+			})
 		}
 	}
 
@@ -177,14 +188,18 @@ export function UploadDocumentsForm(props: UploadDocumentsFormProps) {
 										</div>
 									</div>
 								</FileUploader>
-								<Button
-									className='p-1 text-sm'
-									variant='whiteBlackOutlined'
-									onClick={() => {
-										uploadDocument(index)
-									}}>
-									Submit
-								</Button>
+								{fileDataList[index].isUploaded ? (
+									<span>Uploaded</span>
+								) : (
+									<Button
+										className='p-1 text-sm'
+										variant='whiteBlackOutlined'
+										onClick={() => {
+											uploadDocument(index, type.value)
+										}}>
+										Submit
+									</Button>
+								)}
 							</div>
 						)
 					})}

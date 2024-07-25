@@ -43,7 +43,7 @@ export function DetailsPage() {
 
 	useEffect(() => {
 		if (appData.scrollTo !== 0) {
-			if (appData.scrollTo === 1 || appData.scrollTo === 4) {
+			if (appData.scrollTo === 1) {
 				specificRef.current?.scrollIntoView({
 					behavior: 'smooth',
 					block: 'end'
@@ -133,7 +133,7 @@ export function DetailsPage() {
 				)}
 				{vehicleData.model !== '' && (
 					<div
-						ref={appData.scrollTo === 2 ? specificRef : undefined}
+						ref={appData.scrollTo === 3 ? specificRef : undefined}
 						className='flex flex-col gap-6'>
 						<VehicleUsage />
 					</div>
@@ -141,33 +141,33 @@ export function DetailsPage() {
 
 				{vehicleData.vehicleUsage !== '' && (
 					<div
-						ref={appData.scrollTo === 3 ? specificRef : undefined}
+						ref={appData.scrollTo === 4 ? specificRef : undefined}
 						className='flex flex-col gap-6'>
 						<BodyType />
 					</div>
 				)}
 				{vehicleData.bodyType !== '' && (
 					<div
-						ref={appData.scrollTo === 4 ? specificRef : undefined}
+						ref={appData.scrollTo === 5 ? specificRef : undefined}
 						className='flex flex-col gap-6'>
 						<CarSeating />
 					</div>
 				)}
 				{vehicleData.seat !== 0 && (
-					<div ref={appData.scrollTo === 5 ? specificRef : undefined}>
+					<div ref={appData.scrollTo === 6 ? specificRef : undefined}>
 						<VehicleValue />
 					</div>
 				)}
 				{vehicleData.value !== 0 && (
 					<div
-						ref={appData.scrollTo === 4 ? specificRef : undefined}
+						ref={appData.scrollTo === 7 ? specificRef : undefined}
 						className='flex flex-col gap-6'>
 						<ManufactureYear />
 					</div>
 				)}
 				{vehicleData.year !== 0 && vehicleData.excessLimit !== 0 && (
 					<div
-						ref={appData.scrollTo === 5 ? specificRef : undefined}
+						ref={appData.scrollTo === 8 ? specificRef : undefined}
 						className='flex flex-col gap-6'>
 						<DriverDetails />
 					</div>

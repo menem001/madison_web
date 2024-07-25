@@ -40,7 +40,24 @@ export const motorSlice = createSlice({
 	name: 'motor',
 	initialState: initialState,
 	reducers: {
-		updateDetails(state: MotorDetails, action: PayloadAction<MotorDetails>) {
+		updateDetails(
+			state: MotorDetails,
+			action: PayloadAction<{
+				CoverList: string | null
+				RequestReferenceNo: string
+				CustomerReferenceNo: string
+				VehicleId: string
+				MSRefNo: string
+				CdRefNo: string
+				VdRefNo: string
+				DdRefNo: string
+				Response: string
+				CreatedBy: string
+				InsuranceId: string
+				ProductId: string
+				SectionId: string
+			}>
+		) {
 			state.CdRefNo = action.payload.CdRefNo
 			state.CoverList = action.payload.CoverList
 			state.CreatedBy = action.payload.CreatedBy

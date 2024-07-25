@@ -7,8 +7,9 @@ import { AddressDetailsField } from './address-details-field'
 import { ContactInformationField } from './contact-information-field'
 import { Button } from '../ui'
 import { useRouter } from 'next/navigation'
-import { useSaveCustomerDetailsMutation } from '@/redux/api/commonApi'
-import { useAppSelector } from '@/redux/hooks'
+import { useBuyPolicyMutation, useSaveCustomerDetailsMutation } from '@/redux/api/commonApi'
+import { useAppDispatch, useAppSelector } from '@/redux/hooks'
+import { updateQuoteDetails } from '@/redux/slices/motor-detail.slice'
 
 export function CustomerDetailsForm() {
 	const [current, setCurrent] = useState(1)
@@ -17,9 +18,14 @@ export function CustomerDetailsForm() {
 
 	const customerData = useAppSelector((state) => state.customerDetails)
 	const appData = useAppSelector((state) => state.apps)
-	const customerRef = useAppSelector((state) => state.motor.CustomerReferenceNo)
+	const motorData = useAppSelector((state) => state.motor)
+	const classID = useAppSelector((state) => state.carInsurance.classID)
+
+	const [buyPolicies] = useBuyPolicyMutation()
 
 	const route = useRouter()
+
+	const dispatch = useAppDispatch()
 
 	function goNext() {
 		setCurrent((pre) => pre + 1)
@@ -32,7 +38,7 @@ export function CustomerDetailsForm() {
 	function navigateToVehicle() {
 		const req = {
 			BrokerBranchCode: appData.brokerCode,
-			CustomerReferenceNo: customerRef,
+			CustomerReferenceNo: motorData.CustomerReferenceNo,
 			InsuranceId: appData.insuranceID,
 			BranchCode: appData.branchCode,
 			ProductId: appData.productId,
@@ -86,7 +92,40 @@ export function CustomerDetailsForm() {
 		}
 		const res = saveCustomerDetails(req)
 		res.then(() => {
-			route.push('/car-insurance/details/vehicle-details')
+			buyPolicy()
+		})
+	}
+
+	function buyPolicy() {
+		const req = {
+			RequestReferenceNo: motorData.RequestReferenceNo,
+			CreatedBy: appData.loginId,
+			ProductId: appData.productId,
+			ManualReferralYn: 'N',
+			ReferralRemarks: null,
+			Vehicles: [
+				{
+					Covers: appData.covers,
+					Id: '1',
+					SectionId: classID
+				}
+			]
+		}
+		const res = buyPolicies(req)
+		res.then((value) => {
+			if (
+				value.data?.type === 'success' &&
+				value.data.data !== undefined &&
+				value.data.data.Result !== null
+			) {
+				dispatch(
+					updateQuoteDetails({
+						CustomerId: value.data.data.Result.CustomerId,
+						QuoteNo: value.data.data.Result.QuoteNo
+					})
+				)
+				route.push('/car-insurance/details/vehicle-details')
+			}
 		})
 	}
 

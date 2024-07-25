@@ -1,10 +1,11 @@
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
-import { Button, Input } from '../ui'
+import { Button, Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui'
 import { Label } from '../ui/label'
 import { FormFieldLayout } from './form-field-layout'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { cn } from '@/lib'
 import { updateAdditionalDetails } from '@/redux/slices'
+import { useGetBankListMutation } from '@/redux/api/commonApi'
 
 type additionalVehicleInfoProps = {
 	current: number
@@ -18,14 +19,22 @@ export function AdditionalVehicleInfo(props: additionalVehicleInfoProps) {
 	const [driverName, setDeiverName] = useState<string>(vehicleData.DriverName)
 	const [driverLicense, setDriverLicense] = useState<string>(vehicleData.DriverID)
 	const [isLeased, setIsLeased] = useState<boolean>(vehicleData.leased)
-	const [bankofFinance, setBankOfFinance] = useState<string>(vehicleData.bankOfFinance)
+	const [bankName, setBankName] = useState<string>(vehicleData.bankName)
+	const [borrowerType, setBorrowerType] = useState<string>('')
+	const [firstLossPayeeName, setFirstLossPayeeName] = useState<string>('')
+
+	const [bankList, setBankList] = useState<{ value: string; label: string }[]>([])
+
+	const insuranceID = useAppSelector((state) => state.apps.insuranceID)
+	const branchCode = useAppSelector((state) => state.apps.branchCode)
 
 	const dispatch = useAppDispatch()
+	const [getBankList] = useGetBankListMutation()
 
 	function onSubmit() {
 		dispatch(
 			updateAdditionalDetails({
-				bankOfFinance: bankofFinance,
+				bankName: bankName,
 				leased: isLeased,
 				driverName: driverName,
 				driverID: driverLicense
@@ -33,6 +42,27 @@ export function AdditionalVehicleInfo(props: additionalVehicleInfoProps) {
 		)
 		props.goNext()
 	}
+
+	useEffect(() => {
+		const req = { InsuranceId: insuranceID, BranchCode: branchCode }
+		const res = getBankList(req)
+		const tempArr: { value: string; label: string }[] = []
+		res.then((value) => {
+			if (
+				value.data?.type === 'success' &&
+				value.data.data &&
+				value.data.data.Result.length !== 0
+			) {
+				value.data.data.Result.map((value) => {
+					tempArr.push({
+						value: value.Code,
+						label: value.CodeDesc
+					})
+				})
+				setBankList(tempArr)
+			}
+		})
+	}, [])
 
 	return (
 		<FormFieldLayout
@@ -103,18 +133,101 @@ export function AdditionalVehicleInfo(props: additionalVehicleInfoProps) {
 					{isLeased && (
 						<div className='w-1/2 flex-grow'>
 							<Label htmlFor='zone'>Bank of finance</Label>
-							<Input
-								className='border-2 border-blue-925'
-								id='zone'
-								placeholder='Bank of finance'
-								value={bankofFinance}
-								onChange={(e) => {
-									setBankOfFinance(e.target.value)
-								}}
-							/>
+							<Select
+								value={borrowerType}
+								onValueChange={(string) => {
+									setBorrowerType(string)
+								}}>
+								<SelectTrigger
+									className='border-2 border-blue-925'
+									value={borrowerType}>
+									<SelectValue placeholder='Bank/Individual' />
+								</SelectTrigger>
+								<SelectContent>
+									<SelectItem
+										key='1'
+										value='Individual'>
+										Individual
+									</SelectItem>
+									<SelectItem
+										key='2'
+										value='Bank'>
+										Bank
+									</SelectItem>
+								</SelectContent>
+							</Select>
 						</div>
 					)}
 				</div>
+				{isLeased && borrowerType === 'Individual' && (
+					<div className='flex w-full flex-row gap-8'>
+						<div className='w-1/2 flex-grow'>
+							<Label htmlFor='zone'>Collateral Bank Name</Label>
+							<Input
+								className='border-2 border-blue-925'
+								id='zone'
+								placeholder='Collateral Bank Name'
+								value={bankName}
+								onChange={(e) => {
+									setBankName(e.target.value)
+								}}
+							/>
+						</div>
+						<div className='w-1/2 flex-grow'>
+							<Label htmlFor='zone'>First Loss Payee Name</Label>
+							<Input
+								className='border-2 border-blue-925'
+								id='zone'
+								placeholder='First Loss Payee Name'
+								value={firstLossPayeeName}
+								onChange={(e) => {
+									setFirstLossPayeeName(e.target.value)
+								}}
+							/>
+						</div>
+					</div>
+				)}
+				{isLeased && borrowerType === 'Bank' && (
+					<div className='flex w-full flex-row gap-8'>
+						<div className='w-1/2 flex-grow'>
+							<Label htmlFor='zone'>Collateral Bank Name</Label>
+							<Select
+								value={bankName}
+								onValueChange={(string) => {
+									setBankName(string)
+								}}>
+								<SelectTrigger
+									className='border-2 border-blue-925'
+									value={bankName}>
+									<SelectValue placeholder='Bank Name' />
+								</SelectTrigger>
+								<SelectContent>
+									{bankList.map((item, index) => {
+										return (
+											<SelectItem
+												key={index}
+												value={item.value}>
+												{item.label}
+											</SelectItem>
+										)
+									})}
+								</SelectContent>
+							</Select>
+						</div>
+						<div className='w-1/2 flex-grow'>
+							<Label htmlFor='zone'>First Loss Payee Name</Label>
+							<Input
+								className='border-2 border-blue-925'
+								id='zone'
+								placeholder='First Loss Payee Name'
+								value={firstLossPayeeName}
+								onChange={(e) => {
+									setFirstLossPayeeName(e.target.value)
+								}}
+							/>
+						</div>
+					</div>
+				)}
 				<Button
 					className='w-32'
 					variant='bluebtn'

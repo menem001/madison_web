@@ -34,7 +34,7 @@ const initialState = {
 	engineNumber: '',
 	engineCapacity: '',
 	color: '',
-	bankOfFinance: ''
+	bankName: ''
 }
 
 export type CarDetails = {
@@ -71,7 +71,7 @@ export type CarDetails = {
 	engineNumber: string
 	engineCapacity: string
 	color: string
-	bankOfFinance: string
+	bankName: string
 }
 
 export const carInsuranceSlice = createSlice({
@@ -212,13 +212,13 @@ export const carInsuranceSlice = createSlice({
 				driverName: string
 				driverID: string
 				leased: boolean
-				bankOfFinance: string
+				bankName: string
 			}>
 		) {
 			state.DriverName = action.payload.driverName
 			state.DriverID = action.payload.driverID
 			state.leased = action.payload.leased
-			state.bankOfFinance = action.payload.bankOfFinance
+			state.bankName = action.payload.bankName
 		}
 	}
 })

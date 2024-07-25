@@ -20,7 +20,8 @@ import {
 	type DocumentTypeResp,
 	type BuyPolicyResponse,
 	type ViewQuoteResponse,
-	type UploadDocsResponse
+	type UploadDocsResponse,
+	type getBankResponse
 } from '@/services/common.services'
 import {
 	type vehicleUsageRequest,
@@ -40,7 +41,8 @@ import {
 	type ColorListRequest,
 	type DocumentTypeRequest,
 	type BuyPolicyRequest,
-	type ViewQuoteRequest
+	type ViewQuoteRequest,
+	type GetBankRequest
 } from '@/services/models/common.models'
 
 import type { Action, PayloadAction } from '@reduxjs/toolkit'
@@ -399,6 +401,21 @@ export const commonApi = createApi({
 				body: data,
 				headers: { Authorization: `Bearer ${store.getState().apps.token}` }
 			})
+		}),
+		getBankList: build.mutation<getBankResponse, GetBankRequest>({
+			query: (
+				data
+			): {
+				url: string
+				method: string
+				body: GetBankRequest
+				headers: { Authorization: string }
+			} => ({
+				url: 'get_bank_list',
+				method: 'POST',
+				body: data,
+				headers: { Authorization: `Bearer ${store.getState().apps.token}` }
+			})
 		})
 	})
 })
@@ -425,5 +442,6 @@ export const {
 	useGetDocumentTypeMutation,
 	useBuyPolicyMutation,
 	useViewQuoteMutation,
-	useUploadDocsMutation
+	useUploadDocsMutation,
+	useGetBankListMutation
 } = commonApi

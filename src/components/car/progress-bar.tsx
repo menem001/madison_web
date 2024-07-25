@@ -17,6 +17,16 @@ export function ProgressBar() {
 	const displayDataPage1 = useMemo(() => {
 		return [
 			{
+				id: 'Car Brand',
+				field: 'Car Brand',
+				name: vehicleData.mark
+			},
+			{
+				id: 'Car Model',
+				field: 'Car Model',
+				name: vehicleData.model
+			},
+			{
 				id: 'Vehicle Usage',
 				field: 'Vehicle Usage',
 				name: vehicleData.vehicleUsage
@@ -27,9 +37,14 @@ export function ProgressBar() {
 				name: vehicleData.bodyType
 			},
 			{
-				id: 'Car Brand',
-				field: 'Car Brand',
-				name: vehicleData.mark
+				id: 'Seat Count',
+				field: 'Seat Count',
+				name: vehicleData.seat
+			},
+			{
+				id: 'Sum Insured',
+				field: 'Sum Insured',
+				name: vehicleData.value
 			},
 			{
 				id: 'Manufacture Year',
@@ -37,17 +52,20 @@ export function ProgressBar() {
 				name: vehicleData.year
 			},
 			{
-				id: 'Vehicle Description',
-				field: 'Vehicle Description',
-				name: vehicleData.description
+				id: 'Driver DOB',
+				field: 'Driver DOB',
+				name: vehicleData.DriverDOB
 			}
 		]
 	}, [
 		vehicleData.bodyType,
-		vehicleData.description,
 		vehicleData.mark,
+		vehicleData.model,
+		vehicleData.seat,
+		vehicleData.value,
 		vehicleData.vehicleUsage,
-		vehicleData.year
+		vehicleData.year,
+		vehicleData.DriverDOB
 	])
 
 	useEffect(() => {
@@ -56,14 +74,18 @@ export function ProgressBar() {
 		displayDataPage1.forEach((data) => {
 			if (data.field === 'Manufacture Year' && vehicleData.year === 0) {
 				value += 0
+			} else if (data.field === 'Seat Count' && vehicleData.seat === 0) {
+				value += 0
+			} else if (data.field === 'Sum Insured' && vehicleData.seat === 0) {
+				value += 0
 			} else {
 				if (data.name !== '') {
-					value += 20
+					value += 12.5
 				}
 			}
 		})
 		setCurrentPageRate(value)
-	}, [displayDataPage1, path, vehicleData.year])
+	}, [displayDataPage1, path, vehicleData.seat, vehicleData.year])
 
 	return (
 		<div className='flex flex-col items-start'>

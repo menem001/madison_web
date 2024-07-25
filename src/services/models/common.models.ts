@@ -315,7 +315,9 @@ export const SaveMotorDetailRequestSchema = z.object({
 	Currency: z.string(),
 	HavePromoCode: z.string(),
 	SearchFromApi: z.boolean(),
-	SeatingCapacity: z.number()
+	SeatingCapacity: z.number(),
+	CustomerStatus: z.string(),
+	Status: z.string()
 })
 
 export type SaveMotorDetailRequest = z.infer<typeof SaveMotorDetailRequestSchema>
@@ -1120,12 +1122,14 @@ export const buyPolicyResponseSchema = z.object({
 	Message: z.string(),
 	IsError: z.boolean(),
 	ErrorMessage: z.array(z.any()).nullable(),
-	Result: z.object({
-		Response: z.string(),
-		RequestReferenceNo: z.string(),
-		QuoteNo: z.string(),
-		CustomerId: z.string()
-	}),
+	Result: z
+		.object({
+			Response: z.string(),
+			RequestReferenceNo: z.string(),
+			QuoteNo: z.string(),
+			CustomerId: z.string()
+		})
+		.nullable(),
 	ErroCode: z.number()
 })
 
@@ -1442,5 +1446,34 @@ export const viewQuoteResponseSchema = z.object({
 
 export type ViewQuoteRes = z.infer<typeof viewQuoteResponseSchema>
 
-export const uploadDocResSchema = z.any()
+export const uploadDocResSchema = z.object({
+	Message: z.string().nullable(),
+	IsError: z.boolean(),
+	ErrorMessage: z.any().nullable(),
+	Result: z.string(),
+	ErroCode: z.number()
+})
 export type UploadDocs = z.infer<typeof uploadDocResSchema>
+
+export const getBankReqSchema = z.object({ InsuranceId: z.string(), BranchCode: z.string() })
+
+export type GetBankRequest = z.infer<typeof getBankReqSchema>
+
+export const getBankResSchema = z.object({
+	Message: z.string(),
+	IsError: z.boolean(),
+	ErrorMessage: z.any().nullable(),
+	Result: z.array(
+		z.object({
+			TitleType: z.string().nullable(),
+			Code: z.string(),
+			CodeDesc: z.string(),
+			Status: z.string(),
+			BodyType: z.string().nullable(),
+			RiskId: z.string().nullable()
+		})
+	),
+	ErroCode: z.number()
+})
+
+export type getBankRes = z.infer<typeof getBankResSchema>
