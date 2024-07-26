@@ -1481,3 +1481,30 @@ export const getBankResSchema = z.object({
 })
 
 export type getBankRes = z.infer<typeof getBankResSchema>
+
+export const paymentTypesRequestSchema = z.object({
+	BranchCode: z.string(),
+	InsuranceId: z.string(),
+	UserType: z.string(),
+	SubUserType: z.string(),
+	ProductId: z.string(),
+	CreatedBy: z.string(),
+	AgencyCode: z.string()
+})
+
+export type PaymentTypeRequest = z.infer<typeof paymentTypesRequestSchema>
+
+export const paymentTypesResSchema = z.object({
+	Message: z.string(),
+	IsError: z.boolean(),
+	ErrorMessage: z.any().nullable(),
+	Result: z.array(
+		z.object({
+			Code: z.string(),
+			CodeDesc: z.string()
+		})
+	),
+	ErroCode: z.number()
+})
+
+export type PaymentTypeRes = z.infer<typeof paymentTypesResSchema>

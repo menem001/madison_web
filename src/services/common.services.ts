@@ -52,7 +52,10 @@ import {
 	uploadDocResSchema,
 	type getBankRes,
 	type GetBankRequest,
-	getBankResSchema
+	getBankResSchema,
+	type PaymentTypeRes,
+	paymentTypesResSchema,
+	type PaymentTypeRequest
 } from './models/common.models'
 import { MotorMakeSchema, type MotorList, type CommonModalRequest } from './models/common.models'
 import {
@@ -277,6 +280,14 @@ export type getBankResponse = TResponse<getBankRes>
 
 export async function getBankDetails(data: GetBankRequest, token: string | null) {
 	return api.post<getBankRes>(endPoints.bankList, data, getBankResSchema, {
+		headers: { Authorization: token }
+	})
+}
+
+export type PaymentTypeResponse = TResponse<PaymentTypeRes>
+
+export async function getPaymentTypes(data: PaymentTypeRequest, token: string | null) {
+	return api.post<PaymentTypeRes>(endPoints.paymentTypes, data, paymentTypesResSchema, {
 		headers: { Authorization: token }
 	})
 }
