@@ -140,9 +140,16 @@ export function UploadDocumentsForm(props: UploadDocumentsFormProps) {
 			fd.append('Req', JSON.stringify(request))
 
 			const res = uploadDocs(fd)
-			res.then(() => {
-				newData[index].isUploaded = true
-				setFileDataList(newData)
+			res.then((value) => {
+				if (
+					value.data?.type === 'success' &&
+					value.data.data?.Result === 'File Upload Sucessfully'
+				) {
+					newData[index].isUploaded = true
+					setFileDataList(newData)
+				} else {
+					alert('Upload has failed. Please try again')
+				}
 			})
 		}
 	}

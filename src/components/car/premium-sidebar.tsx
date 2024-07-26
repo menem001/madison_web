@@ -268,6 +268,11 @@ export function PremiumSideBar() {
 								<h4 className='text-sm font-bold text-green-75 opacity-75'>
 									RefNumber No: {motorData.RequestReferenceNo}
 								</h4>
+								{motorData.QuoteNo !== '' && (
+									<h4 className='text-sm font-bold text-green-75 opacity-75'>
+										Quote No: {motorData.QuoteNo}
+									</h4>
+								)}
 								<h4 className='font-bold text-green-75'>
 									{vehicleData.mark} - {vehicleData.model}
 								</h4>

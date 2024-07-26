@@ -4,8 +4,11 @@ import { Label } from '../ui/label'
 import { FormFieldLayout } from './form-field-layout'
 import { useEffect, useState } from 'react'
 import { cn } from '@/lib'
-import { updateAdditionalDetails } from '@/redux/slices'
-import { useGetBankListMutation } from '@/redux/api/commonApi'
+import { updateAdditionalDetails, updatePremium } from '@/redux/slices'
+import { useGetBankListMutation, useSaveMotorDetailsMutation } from '@/redux/api/commonApi'
+import { useToast } from '../ui/use-toast'
+import { type SaveMotorDetailRequest } from '@/services/models/common.models'
+import { updateDetails } from '@/redux/slices/motor-detail.slice'
 
 type additionalVehicleInfoProps = {
 	current: number
@@ -27,11 +30,21 @@ export function AdditionalVehicleInfo(props: additionalVehicleInfoProps) {
 
 	const insuranceID = useAppSelector((state) => state.apps.insuranceID)
 	const branchCode = useAppSelector((state) => state.apps.branchCode)
+	const appData = useAppSelector((state) => state.apps)
+	const customerData = useAppSelector((state) => state.customerDetails)
+
+	const { toast } = useToast()
+
+	const [saveMotor] = useSaveMotorDetailsMutation()
 
 	const dispatch = useAppDispatch()
 	const [getBankList] = useGetBankListMutation()
 
 	function onSubmit() {
+		if (isLeased) {
+			doSaveMotorDetails()
+		}
+
 		dispatch(
 			updateAdditionalDetails({
 				bankName: bankName,
@@ -41,6 +54,97 @@ export function AdditionalVehicleInfo(props: additionalVehicleInfoProps) {
 			})
 		)
 		props.goNext()
+	}
+
+	function doSaveMotorDetails() {
+		const req: SaveMotorDetailRequest = {
+			CustomerName: customerData.name,
+			LoginId: appData.loginId,
+			SubUserType: appData.subUserType,
+			UserType: appData.userType,
+			ApplicationId: '1', //
+			CustomerReferenceNo: null,
+			RequestReferenceNo: null,
+			VehicleId: '1',
+			CreatedBy: appData.loginId,
+			InsuranceId: appData.insuranceID,
+			BranchCode: appData.branchCode,
+			BrokerBranchCode: appData.brokerCode,
+			SectionId: vehicleData.classID,
+			AgencyCode: appData.agencyCode,
+			ProductId: appData.productId,
+			SavedFrom: 'SQ',
+			MobileCode: customerData.code,
+			MobileNumber: customerData.mobile,
+			Chassisnumber: '',
+			Insurancetype: [appData.insuranceID],
+			InsuranceClass: vehicleData.classID,
+			Motorusage: vehicleData.vehicleUsage,
+			MotorusageId: vehicleData.vehicleUsageID,
+			Vehiclemake: vehicleData.mark,
+			VehiclemakeId: vehicleData.makeID,
+			VehicleModel: vehicleData.model,
+			VehcilemodelId: vehicleData.modelID,
+			VehicleValueType: null,
+			DefenceValue: null,
+			PurchaseDate: null,
+			Deductibles: null,
+			Inflation: null,
+			ManufactureYear: vehicleData.year + '',
+			Gpstrackinginstalled: 'N',
+			NcdYn: 'N',
+			VehicleType: vehicleData.bodyType,
+			VehicleTypeId: vehicleData.bodyTypeID,
+			CarAlarmYn: 'N',
+			PolicyStartDate: vehicleData.policyStartDate,
+			PolicyEndDate: vehicleData.policyEndDate,
+			CustomerCode: appData.CustomerCode,
+			BdmCode: appData.CustomerCode,
+			SourceTypeId: appData.userType,
+			SumInsured: vehicleData.value,
+			AcccessoriesSumInsured: vehicleData.AcccessoriesSumInsured,
+			ExchangeRate: vehicleData.exchangeRate,
+			Currency: vehicleData.currency,
+			HavePromoCode: 'N',
+			SearchFromApi: false,
+			SeatingCapacity: vehicleData.seat,
+			CustomerStatus: 'Y',
+			Status: 'Y',
+			CollateralYn: isLeased ? 'Y' : 'N',
+			BorrowerType: borrowerType === 'Bank' ? '1' : '2', //NeedToCheck
+			CollateralName: bankName,
+			FirstLossPayee: firstLossPayeeName
+		}
+		const res = saveMotor(req)
+		res.then((value) => {
+			if (
+				value.data?.type === 'success' &&
+				value.data.data !== undefined &&
+				value.data.data.IsError !== true &&
+				value.data.data.Result !== null
+			) {
+				dispatch(updatePremium(true))
+				dispatch(updateDetails(value.data.data.Result[0]))
+			} else if (
+				value.data?.type === 'success' &&
+				value.data.data !== undefined &&
+				value.data.data.IsError === true &&
+				value.data.data.ErrorMessage !== null &&
+				value.data.data.ErrorMessage.length !== 0
+			) {
+				toast({
+					variant: 'destructive',
+					title: 'Uh oh! Something went wrong.',
+					description: value.data.data.ErrorMessage[0].Message
+				})
+			} else {
+				toast({
+					variant: 'destructive',
+					title: 'Uh oh! Something went wrong.',
+					description: 'There was a problem with your request.'
+				})
+			}
+		})
 	}
 
 	useEffect(() => {

@@ -317,7 +317,11 @@ export const SaveMotorDetailRequestSchema = z.object({
 	SearchFromApi: z.boolean(),
 	SeatingCapacity: z.number(),
 	CustomerStatus: z.string(),
-	Status: z.string()
+	Status: z.string(),
+	CollateralYn: z.string().nullable().optional(),
+	BorrowerType: z.string().nullable().optional(),
+	CollateralName: z.string().nullable().optional(),
+	FirstLossPayee: z.string().nullable().optional()
 })
 
 export type SaveMotorDetailRequest = z.infer<typeof SaveMotorDetailRequestSchema>
