@@ -86,3 +86,18 @@ export const createAccountOptions = [
 			'You can get everything you want if you work hard, trust the process, and stick to the plan.'
 	}
 ]
+
+export const onBoardingOptions = [
+	{
+		id: 1,
+		optionName: 'Setup your account Manually',
+		optionDescription:
+			'You can get everything you want if you work hard, trust the process, and stick to the plan.'
+	},
+	{
+		id: 2,
+		optionName: 'Set up your account quickly with AI',
+		optionDescription:
+			'You can get everything you want if you work hard, trust the process, and stick to the plan.'
+	}
+]

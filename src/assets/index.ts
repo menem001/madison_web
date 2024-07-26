@@ -35,6 +35,7 @@ export const assets = {
 		qr: '/images/qrcode.png',
 		appStore: '/images/appStore.png',
 		googlePlay: '/images/googlePlay.png',
-		imageFace: '/images/madisonImage.jpg'
+		imageFace: '/images/madisonImage.jpg',
+		family: '/images/family.png'
 	}
 }

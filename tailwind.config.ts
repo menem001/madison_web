@@ -21,7 +21,11 @@ const config = {
 					100: '#FAFAFA', // white
 					200: '#F8F8FA', // lightGray
 					300: '#E2E8F0', // lightestGray
+					350: '#EDEDED',
 					400: '#656565', // gray
+					425: '#6B6B6B',
+					435: '#6D6D6D',
+					450: '#B3B3B3',
 					500: '#6E6D7A', // slate
 					550: '#3D3D3D',
 					600: '#221F1F', // dark
@@ -33,7 +37,9 @@ const config = {
 					100: '#D8E4FC', // lightBlue
 					200: '#E5E5FE', // lavender
 					300: '#0C7BC4', // blue
+					350: '#03C3FF',
 					400: '#485AFF', // brightBlue
+					450: '#1849D6',
 					500: '#5452F6', // indigo
 					600: '#1E293B', // gunmetal
 					700: '#4285F4', // vibrantBlue

@@ -111,7 +111,7 @@ export function AdditionalVehicleInfo(props: additionalVehicleInfoProps) {
 			CustomerStatus: 'Y',
 			Status: 'Y',
 			CollateralYn: isLeased ? 'Y' : 'N',
-			BorrowerType: borrowerType === 'Bank' ? '1' : '2', //NeedToCheck
+			BorrowerType: borrowerType === 'Individual' ? '1' : '2',
 			CollateralName: bankName,
 			FirstLossPayee: firstLossPayeeName
 		}

@@ -1,5 +1,5 @@
 import { redirect } from 'next/navigation'
 
 export default function Page() {
-	redirect('/car-insurance/1')
+	redirect('/car-insurance/onboard')
 }
