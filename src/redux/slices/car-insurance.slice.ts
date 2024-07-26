@@ -1,6 +1,6 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
 
-const initialState = {
+const initialState: CarDetails = {
 	mark: '',
 	makeID: '',
 	model: '',

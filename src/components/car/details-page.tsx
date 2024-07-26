@@ -14,7 +14,7 @@ import { CarSeating } from './car-seating'
 import { DriverDetails } from './driver-details'
 import { useGuestLoginMutation } from '@/redux/api/commonApi'
 import ClipLoader from 'react-spinners/ClipLoader'
-import { WhiteBook } from './white-book'
+// import { WhiteBook } from './white-book'
 import { SelectMark } from './select-mark'
 
 export function DetailsPage() {
@@ -116,7 +116,7 @@ export function DetailsPage() {
 				)}
 				{token !== '' && (
 					<div className='flex flex-col gap-6'>
-						<WhiteBook />
+						{/* <WhiteBook /> */}
 						<div
 							ref={appData.scrollTo === 1 ? specificRef : undefined}
 							className='flex flex-col gap-6'>

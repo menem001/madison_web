@@ -17,6 +17,7 @@ import { setCoversDetails, updatePremium } from '@/redux/slices'
 import { type SaveMotorDetailRequest } from '@/services/models/common.models'
 import { updateDetails } from '@/redux/slices/motor-detail.slice'
 import { useToast } from '../ui/use-toast'
+import { storePremiumData } from '@/redux/slices/premium-motor-slice'
 
 export function PremiumSideBar() {
 	const route = useRouter()
@@ -189,6 +190,9 @@ export function PremiumSideBar() {
 					PremiumIncludedTax: value.data.data.Result[0].CoverList[0].PremiumIncludedTax
 				}
 
+				const taxes: { name: string; amount: number; rate: number }[] = []
+				const taxesEA: { name: string; amount: number; rate: number }[] = []
+
 				const coverList: {
 					CoverId: string
 					SubCoverId: string | null
@@ -214,20 +218,18 @@ export function PremiumSideBar() {
 					})
 
 					if (value.data.data.Result[0].CoverList[1].Taxes.length !== 0) {
-						const taxes: { name: string; amount: number; rate: number }[] = []
 						value.data.data.Result[0].CoverList[1].Taxes.map((tax) => {
-							taxes.push({
+							taxesEA.push({
 								name: tax.TaxDesc,
 								amount: tax.TaxAmount,
 								rate: tax.TaxRate
 							})
 						})
-						setTaxListAccess(taxes)
+						setTaxListAccess(taxesEA)
 					}
 				}
 
 				if (value.data.data.Result[0].CoverList[0].Taxes.length !== 0) {
-					const taxes: { name: string; amount: number; rate: number }[] = []
 					value.data.data.Result[0].CoverList[0].Taxes.map((tax) => {
 						taxes.push({
 							name: tax.TaxDesc,
@@ -237,6 +239,24 @@ export function PremiumSideBar() {
 					})
 					setTaxList(taxes)
 				}
+
+				dispatch(
+					storePremiumData({
+						baseFare: value.data.data.Result[0].CoverList[0].PremiumExcluedTax,
+						tax: taxes,
+						premiumIncludedTax:
+							value.data.data.Result[0].CoverList[0].PremiumIncludedTax,
+						EABase:
+							value.data.data.Result[0].CoverList.length === 2
+								? value.data.data.Result[0].CoverList[1].PremiumExcluedTax
+								: 0,
+						EAPremiumIncluedTax:
+							value.data.data.Result[0].CoverList.length === 2
+								? value.data.data.Result[0].CoverList[1].PremiumIncludedTax
+								: 0,
+						EATax: value.data.data.Result[0].CoverList.length === 2 ? taxesEA : []
+					})
+				)
 			}
 
 			setNeedUpdatedData(false)

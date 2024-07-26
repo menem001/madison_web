@@ -4,6 +4,7 @@ import { appSlice, carInsuranceSlice, customerDetailsSlice } from './slices'
 import { commonApi } from './api/commonApi'
 import { motorSlice } from './slices/motor-detail.slice'
 import { registrationApi } from './api/registrationApi'
+import { premiumMotorSlice } from './slices/premium-motor-slice'
 
 const reducer = combineReducers({
 	[carInsuranceSlice.reducerPath]: carInsuranceSlice.reducer,
@@ -11,7 +12,8 @@ const reducer = combineReducers({
 	[appSlice.reducerPath]: appSlice.reducer,
 	[motorSlice.reducerPath]: motorSlice.reducer,
 	[commonApi.reducerPath]: commonApi.reducer,
-	[registrationApi.reducerPath]: registrationApi.reducer
+	[registrationApi.reducerPath]: registrationApi.reducer,
+	[premiumMotorSlice.reducerPath]: premiumMotorSlice.reducer
 })
 
 export const store = configureStore({

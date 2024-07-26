@@ -1,6 +1,6 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
 
-const initialState = {
+const initialState: AppDetails = {
 	scrollTo: 0,
 	token: '',
 	brokerCode: '',

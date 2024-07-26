@@ -1,5 +1,5 @@
 import { ConfirmationTab } from '../car'
-import { PremiumSideBar } from '../car/premium-sidebar'
+import { ConfirmRightSideBar } from '../car/confirm-right-side-bar'
 import { VehicleDetailsForm } from '../details/vehicles-details-form'
 
 export function VehicleDetailsPage() {
@@ -11,7 +11,7 @@ export function VehicleDetailsPage() {
 					<VehicleDetailsForm />
 				</div>
 				<div className='col-span-2 flex h-fit justify-center'>
-					<PremiumSideBar />
+					<ConfirmRightSideBar />
 				</div>
 			</section>
 		</section>

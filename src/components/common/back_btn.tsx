@@ -12,7 +12,7 @@ export function BackButton() {
 
 	return (
 		<div
-			className='flex flex-row gap-2 font-roboto'
+			className='flex cursor-pointer flex-row gap-2 font-roboto'
 			onClick={goBack}>
 			<ChevronLeft
 				height={20}

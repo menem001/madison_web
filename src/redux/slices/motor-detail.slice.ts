@@ -1,6 +1,6 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
 
-const initialState = {
+const initialState: MotorDetails = {
 	CoverList: null,
 	RequestReferenceNo: '',
 	CustomerReferenceNo: '',
