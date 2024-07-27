@@ -10,6 +10,7 @@ import { useRouter } from 'next/navigation'
 import { useBuyPolicyMutation, useSaveCustomerDetailsMutation } from '@/redux/api/commonApi'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
 import { updateQuoteDetails } from '@/redux/slices/motor-detail.slice'
+import { useToast } from '../ui/use-toast'
 
 export function CustomerDetailsForm() {
 	const [current, setCurrent] = useState(1)
@@ -26,6 +27,8 @@ export function CustomerDetailsForm() {
 	const route = useRouter()
 
 	const dispatch = useAppDispatch()
+
+	const { toast } = useToast()
 
 	function goNext() {
 		setCurrent((pre) => pre + 1)
@@ -50,6 +53,7 @@ export function CustomerDetailsForm() {
 			Clientstatus: 'Y',
 			CreatedBy: appData.loginId,
 			DobOrRegDate: customerData.dob,
+			District: customerData.cityName,
 			Email1: customerData.email,
 			Email2: null,
 			Email3: null,
@@ -91,8 +95,33 @@ export function CustomerDetailsForm() {
 			Zone: '1'
 		}
 		const res = saveCustomerDetails(req)
-		res.then(() => {
-			buyPolicy()
+		res.then((value) => {
+			if (
+				value.data?.type === 'success' &&
+				value.data.data !== undefined &&
+				value.data.data.IsError !== true &&
+				value.data.data.Result !== null
+			) {
+				buyPolicy()
+			} else if (
+				value.data?.type === 'success' &&
+				value.data.data !== undefined &&
+				value.data.data.IsError === true &&
+				value.data.data.ErrorMessage !== null &&
+				value.data.data.ErrorMessage.length !== 0
+			) {
+				toast({
+					variant: 'destructive',
+					title: 'Uh oh! Something went wrong.',
+					description: value.data.data.ErrorMessage[0].Message
+				})
+			} else {
+				toast({
+					variant: 'destructive',
+					title: 'Uh oh! Something went wrong.',
+					description: 'There was a problem with your request.'
+				})
+			}
 		})
 	}
 
@@ -125,6 +154,24 @@ export function CustomerDetailsForm() {
 					})
 				)
 				route.push('/car-insurance/details/vehicle-details')
+			} else if (
+				value.data?.type === 'success' &&
+				value.data.data !== undefined &&
+				value.data.data.IsError === true &&
+				value.data.data.ErrorMessage !== null &&
+				value.data.data.ErrorMessage.length !== 0
+			) {
+				toast({
+					variant: 'destructive',
+					title: 'Uh oh! Something went wrong.',
+					description: value.data.data.ErrorMessage[0].Message
+				})
+			} else {
+				toast({
+					variant: 'destructive',
+					title: 'Uh oh! Something went wrong.',
+					description: 'There was a problem with your request.'
+				})
 			}
 		})
 	}

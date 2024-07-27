@@ -8,6 +8,7 @@ import { AdditionalVehicleInfo } from './additional-vehicle-info'
 import { Button } from '../ui'
 import { useSaveVehicleInfoMutation } from '@/redux/api/commonApi'
 import { useAppSelector } from '@/redux/hooks'
+import { useToast } from '../ui/use-toast'
 
 export function VehicleDetailsForm() {
 	const [current, setCurrent] = useState(1)
@@ -20,6 +21,8 @@ export function VehicleDetailsForm() {
 	function goNext() {
 		setCurrent((pre) => pre + 1)
 	}
+
+	const { toast } = useToast()
 
 	function goSpecific(num: number) {
 		setCurrent(num)
@@ -52,8 +55,32 @@ export function VehicleDetailsForm() {
 			Vehiclemake: vehicleData.mark
 		}
 		const res = saveCustomerData(req)
-		res.then(() => {
-			route.push('/car-insurance/payment')
+		res.then((value) => {
+			if (
+				value.data?.type === 'success' &&
+				value.data.data !== undefined &&
+				value.data.data.Result !== null
+			) {
+				route.push('/car-insurance/payment')
+			} else if (
+				value.data?.type === 'success' &&
+				value.data.data !== undefined &&
+				value.data.data.IsError === true &&
+				value.data.data.ErrorMessage !== null &&
+				value.data.data.ErrorMessage.length !== 0
+			) {
+				toast({
+					variant: 'destructive',
+					title: 'Uh oh! Something went wrong.',
+					description: value.data.data.ErrorMessage[0].Message
+				})
+			} else {
+				toast({
+					variant: 'destructive',
+					title: 'Uh oh! Something went wrong.',
+					description: 'There was a problem with your request.'
+				})
+			}
 		})
 	}
 

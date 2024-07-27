@@ -23,7 +23,7 @@ export type CurrencyList = z.infer<typeof CurrencyListAPISchema>
 export const BodyTypeSchema = z.object({
 	Message: z.string(),
 	IsError: z.boolean(),
-	ErrorMessage: z.array(z.unknown()),
+	ErrorMessage: z.array(z.any()).nullable(),
 	Result: z.array(
 		z.object({
 			TitleType: z.string().nullable(),
@@ -44,7 +44,7 @@ export const GuestLoginSchema = z.object({
 	Message: z.string(),
 	IsError: z.boolean(),
 	ChangePasswordYn: z.null(),
-	ErrorMessage: z.array(z.unknown()),
+	ErrorMessage: z.array(z.any()).nullable(),
 	Result: z.object({
 		Token: z.string(),
 		LoginId: z.string(),
@@ -146,7 +146,7 @@ export const ResultItemSchema = z.object({
 export const MotorModelListSchema = z.object({
 	Message: z.string(),
 	IsError: z.boolean(),
-	ErrorMessage: z.array(z.unknown()),
+	ErrorMessage: z.array(z.any()).nullable(),
 	Result: z.array(ResultItemSchema),
 	ErroCode: z.number()
 })
@@ -158,7 +158,7 @@ export type MotorModelList = z.infer<typeof MotorModelListSchema>
 export const vehicleUsageSchema = z.object({
 	Message: z.string(),
 	IsError: z.boolean(),
-	ErrorMessage: z.array(z.unknown()),
+	ErrorMessage: z.array(z.any()).nullable(),
 	Result: z.array(
 		z.object({
 			TitleType: z.null(),
@@ -179,7 +179,7 @@ export type vehicleUsageList = z.infer<typeof vehicleUsageSchema>
 export const policyEndDatesSchema = z.object({
 	Message: z.string(),
 	IsError: z.boolean(),
-	ErrorMessage: z.array(z.unknown()),
+	ErrorMessage: z.array(z.any()).nullable(),
 	Result: z.array(
 		z.object({
 			TitleType: z.string().nullable(),
@@ -373,14 +373,14 @@ export type ValidateOTPRequest = z.infer<typeof validateOTPRequestSchema>
 export const validateOTPResponseSchema = z.object({
 	isError: z.boolean(),
 	OtpToken: z.number(),
-	Errors: z.array(z.unknown()).nullable(),
+	Errors: z.array(z.any()).nullable(),
 	OTP: z.null(),
 	LoginResponse: z
 		.object({
 			Message: z.string(),
 			IsError: z.boolean(),
 			ChangePasswordYn: z.null(),
-			ErrorMessage: z.array(z.unknown()),
+			ErrorMessage: z.array(z.any()).nullable(),
 			Result: z.object({
 				Token: z.string(),
 				LoginId: z.string(),
@@ -451,7 +451,7 @@ export type InsuranceClassTypeRequest = z.infer<typeof insuranceTypeSchema>
 export const insuranceTypeListSchema = z.object({
 	Message: z.string(),
 	IsError: z.boolean(),
-	ErrorMessage: z.array(z.unknown()),
+	ErrorMessage: z.array(z.any()).nullable(),
 	Result: z.array(
 		z.object({
 			Code: z.string(),
@@ -611,7 +611,7 @@ export type ViewPremiumCalcRequest = z.infer<typeof viewPremiumCalcSchema>
 export const ViewPremiumCalDataSchema = z.object({
 	Message: z.string(),
 	IsError: z.boolean(),
-	ErrorMessage: z.array(z.unknown()),
+	ErrorMessage: z.array(z.any()).nullable(),
 	Result: z.array(
 		z.object({
 			VehicleId: z.string(),
@@ -732,8 +732,8 @@ export const ViewPremiumCalDataSchema = z.object({
 					FreeCoverLimit: z.number()
 				})
 			),
-			UWReferral: z.array(z.unknown()),
-			MasterReferral: z.array(z.unknown()),
+			UWReferral: z.array(z.any()).nullable(),
+			MasterReferral: z.array(z.any()).nullable(),
 			Status: z.string(),
 			AdminRemarks: z.string().nullable(),
 			RejectReason: z.string().nullable(),
@@ -910,8 +910,8 @@ export type SaveCustomerDetailRequest = z.infer<typeof SaveCustomerDetailsSchema
 export const SaveCustomerDetailsResponseSchema = z.object({
 	Message: z.string(),
 	IsError: z.boolean(),
-	ErrorMessage: z.array(z.unknown()),
-	Result: z.object({ Response: z.string(), SuccessId: z.string() }),
+	ErrorMessage: z.array(z.any()).nullable(),
+	Result: z.object({ Response: z.string(), SuccessId: z.string() }).nullable(),
 	ErroCode: z.number()
 })
 export type SaveCustomerDetail = z.infer<typeof SaveCustomerDetailsResponseSchema>
@@ -945,7 +945,7 @@ export type SaveVehicleRequest = z.infer<typeof SaveVehicleRequestSchema>
 export const SaveVehicleResponseSchema = z.object({
 	Message: z.string(),
 	IsError: z.boolean(),
-	ErrorMessage: z.array(z.unknown()),
+	ErrorMessage: z.array(z.any()).nullable(),
 	Result: z.object({
 		Response: z.string(),
 		RequestReferenceNo: z.string().nullable(),
@@ -1020,7 +1020,7 @@ export type OccupationListRequest = z.infer<typeof OccupationListRequestSchema>
 export const OccupationListResponseSchema = z.object({
 	Message: z.string(),
 	IsError: z.boolean(),
-	ErrorMessage: z.array(z.unknown()),
+	ErrorMessage: z.array(z.any()).nullable(),
 	Result: z.array(
 		z.object({
 			Code: z.string(),
@@ -1042,7 +1042,7 @@ export type RegionListRequest = z.infer<typeof RegionListRequestSchema>
 export const RegionListResponseSchema = z.object({
 	Message: z.string(),
 	IsError: z.boolean(),
-	ErrorMessage: z.array(z.unknown()),
+	ErrorMessage: z.array(z.any()).nullable(),
 	Result: z.array(
 		z.object({
 			TitleType: z.string().nullable(),
@@ -1066,7 +1066,7 @@ export type ColorListRequest = z.infer<typeof ColorListRequestSchema>
 export const ColorListResponseSchema = z.object({
 	Message: z.string(),
 	IsError: z.boolean(),
-	ErrorMessage: z.array(z.unknown()),
+	ErrorMessage: z.array(z.any()).nullable(),
 	Result: z.array(
 		z.object({
 			TitleType: z.null(),
@@ -1092,7 +1092,7 @@ export type DocumentTypeRequest = z.infer<typeof DocumentTypeRequestSchema>
 export const DocumentTypeResponseSchema = z.object({
 	Message: z.string(),
 	IsError: z.boolean(),
-	ErrorMessage: z.array(z.unknown()),
+	ErrorMessage: z.array(z.any()).nullable(),
 	Result: z.array(z.object({ Code: z.string(), CodeDesc: z.string() })),
 	ErroCode: z.number()
 })

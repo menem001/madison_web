@@ -168,155 +168,162 @@ export function SelectInsuranceClass() {
 					/>
 				</div>
 				<div className='flex flex-col gap-2'>
-					<h1 className='Policytitle font-jakarta text-xl font-bold text-blue-300'></h1>
-					<span className='Policysubtitle font-roboto text-sm font-medium text-gray-500'></span>
+					<h1 className='InsClasstitle font-jakarta text-xl font-bold text-blue-300'></h1>
+					<span className='InsClasssubtitle font-roboto text-sm font-medium text-gray-500'></span>
 				</div>
 			</div>
-			<div className='mt-4'>
-				<div className='selectInsClass flex flex-col gap-10 md:w-full md:flex-row'>
-					<div className='flex w-full flex-grow flex-col'>
-						<Label htmlFor='start'>Policy Start Date</Label>
-						<Popover>
-							<PopoverTrigger asChild>
-								<Button
-									id='start'
-									variant='outline'
-									className={cn(
-										'w-full pl-3 text-left font-normal text-muted-foreground',
-										!startDate && 'text-muted-foreground'
-									)}>
-									{vehicleData.policyStartDate ? (
-										<span>{vehicleData.policyStartDate}</span>
-									) : (
-										<span>Pick a date</span>
-									)}
-									<CalendarDays className='ml-auto h-4 w-4 opacity-50' />
-								</Button>
-							</PopoverTrigger>
-							<PopoverContent
-								align='start'
-								className='w-auto p-0'>
-								<>
-									<Calendar
-										initialFocus
-										captionLayout='dropdown-buttons'
-										className='p-0'
-										disabled={(date) => date < new Date()}
-										fromYear={year}
-										id='DOB'
-										mode='single'
-										selected={startDate}
-										toYear={year + 20}
-										classNames={{
-											day_hidden: 'invisible',
-											dropdown:
-												'px-2 py-1.5 rounded-md bg-popover text-popover-foreground text-sm  focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ring-offset-background',
-											caption_dropdowns: 'flex gap-3',
-											vhidden: 'hidden',
-											caption_label: 'hidden'
-										}}
-										onSelect={(e) => {
-											if (e) {
-												setStartDate(e)
-												dispatch(
-													updatePolicyStartDate(formatDateDDMMYYYY(e))
-												)
-											}
-										}}
-									/>
-								</>
-							</PopoverContent>
-						</Popover>
-					</div>
+			<div className='selectInsClass flex flex-row gap-10'>
+				{classTypeList.map((insClass) => {
+					return (
+						<div
+							key={insClass.value}
+							className={cn(
+								'cursor-pointer rounded-lg border border-gray-700 bg-white px-7 py-2 font-inter font-semibold text-gray-700',
+								{
+									'border-none bg-blue-300 text-white': iclass === +insClass.value
+								}
+							)}
+							onClick={() => {
+								setIclass(+insClass.value)
+								setIclassName(insClass.label)
+							}}>
+							{insClass.label}
+						</div>
+					)
+				})}
+			</div>
 
-					<div className='flex w-full flex-grow flex-col'>
-						<Label htmlFor='end'>Policy End Date</Label>
-						{endDateLists.length === 0 ? (
-							<Skeleton className='h-10' />
+			{classTypeList && (
+				<>
+					<div className='flex flex-col gap-2'>
+						<h1 className='Policytitle font-jakarta text-xl font-bold text-blue-300'></h1>
+						<span className='Policysubtitle font-roboto text-sm font-medium text-gray-500'></span>
+					</div>
+					<div className=''>
+						<div className='selectInsClass flex flex-col gap-10 md:w-full md:flex-row'>
+							<div className='flex w-full flex-grow flex-col'>
+								<Label htmlFor='start'>Policy Start Date</Label>
+								<Popover>
+									<PopoverTrigger asChild>
+										<Button
+											id='start'
+											variant='outline'
+											className={cn(
+												'w-full pl-3 text-left font-normal text-muted-foreground',
+												!startDate && 'text-muted-foreground'
+											)}>
+											{vehicleData.policyStartDate ? (
+												<span>{vehicleData.policyStartDate}</span>
+											) : (
+												<span>Pick a date</span>
+											)}
+											<CalendarDays className='ml-auto h-4 w-4 opacity-50' />
+										</Button>
+									</PopoverTrigger>
+									<PopoverContent
+										align='start'
+										className='w-auto p-0'>
+										<>
+											<Calendar
+												initialFocus
+												captionLayout='dropdown-buttons'
+												className='p-0'
+												disabled={(date) => date < new Date()}
+												fromYear={year}
+												id='DOB'
+												mode='single'
+												selected={startDate}
+												toYear={year + 20}
+												classNames={{
+													day_hidden: 'invisible',
+													dropdown:
+														'px-2 py-1.5 rounded-md bg-popover text-popover-foreground text-sm  focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ring-offset-background',
+													caption_dropdowns: 'flex gap-3',
+													vhidden: 'hidden',
+													caption_label: 'hidden'
+												}}
+												onSelect={(e) => {
+													if (e) {
+														setStartDate(e)
+														dispatch(
+															updatePolicyStartDate(
+																formatDateDDMMYYYY(e)
+															)
+														)
+													}
+												}}
+											/>
+										</>
+									</PopoverContent>
+								</Popover>
+							</div>
+
+							<div className='flex w-full flex-grow flex-col'>
+								<Label htmlFor='end'>Policy End Date</Label>
+								{endDateLists.length === 0 ? (
+									<Skeleton className='h-10' />
+								) : (
+									<Select
+										value={vehicleData.policyEndDate}
+										onValueChange={(e) => {
+											dispatch(updatePolicyEndDate(e))
+										}}>
+										<SelectTrigger
+											id='end'
+											value={vehicleData.policyEndDate}>
+											<SelectValue placeholder='Select Policy End Date' />
+										</SelectTrigger>
+										<SelectContent>
+											{endDateLists.map((item, index) => {
+												return (
+													<SelectItem
+														key={index}
+														value={item.value}>
+														{item.label}
+													</SelectItem>
+												)
+											})}
+										</SelectContent>
+									</Select>
+								)}
+							</div>
+						</div>
+					</div>
+					<div className='selectInsClass flex w-full flex-grow flex-col'>
+						<Label htmlFor='currency'>Select Currency</Label>
+						{currencyList.length === 0 ? (
+							<Skeleton className='h-10 w-3/4' />
 						) : (
 							<Select
-								value={vehicleData.policyEndDate}
+								value={vehicleData.currency + '~' + vehicleData.exchangeRate}
 								onValueChange={(e) => {
-									dispatch(updatePolicyEndDate(e))
+									const values = e.split('~')
+									dispatch(
+										updateCurrency({ currency: values[0], rate: values[1] })
+									)
 								}}>
 								<SelectTrigger
-									id='end'
-									value={vehicleData.policyEndDate}>
-									<SelectValue placeholder='Select Policy End Date' />
+									className='w-3/4'
+									id='currency'
+									value={vehicleData.currency + '~' + vehicleData.exchangeRate}>
+									<SelectValue placeholder='Select Currency' />
 								</SelectTrigger>
 								<SelectContent>
-									{endDateLists.map((item, index) => {
+									{currencyList.map((item, index) => {
 										return (
 											<SelectItem
 												key={index}
-												value={item.value}>
-												{item.label}
+												value={item.value + '~' + item.rate}>
+												{item.label +
+													' - (Exchange Rate: ' +
+													item.rate +
+													' ZWM)'}
 											</SelectItem>
 										)
 									})}
 								</SelectContent>
 							</Select>
 						)}
-					</div>
-				</div>
-			</div>
-			<div className='selectInsClass flex w-full flex-grow flex-col'>
-				<Label htmlFor='currency'>Select Currency</Label>
-				{currencyList.length === 0 ? (
-					<Skeleton className='h-10 w-3/4' />
-				) : (
-					<Select
-						value={vehicleData.currency + '~' + vehicleData.exchangeRate}
-						onValueChange={(e) => {
-							const values = e.split('~')
-							dispatch(updateCurrency({ currency: values[0], rate: values[1] }))
-						}}>
-						<SelectTrigger
-							className='w-3/4'
-							id='currency'
-							value={vehicleData.currency + '~' + vehicleData.exchangeRate}>
-							<SelectValue placeholder='Select Currency' />
-						</SelectTrigger>
-						<SelectContent>
-							{currencyList.map((item, index) => {
-								return (
-									<SelectItem
-										key={index}
-										value={item.value + '~' + item.rate}>
-										{item.label + ' - (Exchange Rate: ' + item.rate + ' ZWM)'}
-									</SelectItem>
-								)
-							})}
-						</SelectContent>
-					</Select>
-				)}
-			</div>
-			{classTypeList && (
-				<>
-					<div className='flex flex-col gap-2'>
-						<h1 className='InsClasstitle font-jakarta text-xl font-bold text-blue-300'></h1>
-						<span className='InsClasssubtitle font-roboto text-sm font-medium text-gray-500'></span>
-					</div>
-					<div className='selectInsClass flex flex-row gap-10'>
-						{classTypeList.map((insClass) => {
-							return (
-								<div
-									key={insClass.value}
-									className={cn(
-										'cursor-pointer rounded-lg border border-gray-700 bg-white px-7 py-2 font-inter font-semibold text-gray-700',
-										{
-											'border-none bg-blue-300 text-white':
-												iclass === +insClass.value
-										}
-									)}
-									onClick={() => {
-										setIclass(+insClass.value)
-										setIclassName(insClass.label)
-									}}>
-									{insClass.label}
-								</div>
-							)
-						})}
 					</div>
 				</>
 			)}
