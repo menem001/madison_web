@@ -35,7 +35,7 @@ export default function OnboardingMainPage() {
 								<div
 									key={option.id}
 									className={cn(
-										'border-gray-450 flex cursor-pointer flex-col gap-3 rounded-lg border-2 bg-[#FFFFFF14] px-3 py-2 backdrop-blur-md lg:px-6 lg:py-5',
+										'flex cursor-pointer flex-col gap-3 rounded-lg border-2 border-gray-450 bg-[#FFFFFF14] px-3 py-2 backdrop-blur-md lg:px-6 lg:py-5',
 										{
 											'border-blue-700 bg-white': method === option.id
 										}
@@ -45,7 +45,7 @@ export default function OnboardingMainPage() {
 									}}>
 									<div
 										className={cn(
-											'bg-gray-350 flex h-6 w-6 items-center justify-center rounded-full text-sm text-black lg:text-base',
+											'flex h-6 w-6 items-center justify-center rounded-full bg-gray-350 text-sm text-black lg:text-base',
 											{
 												'bg-black text-white': method === option.id
 											}
@@ -58,7 +58,7 @@ export default function OnboardingMainPage() {
 										})}>
 										{option.optionName}
 									</span>
-									<span className='text-textplaceholder text-gray-425 text-xs lg:text-sm'>
+									<span className='text-textplaceholder text-xs text-gray-425 lg:text-sm'>
 										{option.optionDescription}
 									</span>
 								</div>

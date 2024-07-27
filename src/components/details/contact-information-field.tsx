@@ -70,7 +70,9 @@ export function ContactInformationField(props: contactInformationFieldProps) {
 						className='space-y-8'
 						onSubmit={form.handleSubmit(onSubmit)}>
 						<div className='flex flex-col gap-1'>
-							<FormLabel>Mail Id</FormLabel>
+							<FormLabel>
+								Mail Id<span className='text-red-500'>*</span>
+							</FormLabel>
 							<div className='flex w-full flex-row gap-4'>
 								<div className='flex-grow flex-col gap-0'>
 									<FormField
@@ -99,7 +101,9 @@ export function ContactInformationField(props: contactInformationFieldProps) {
 									name='contact1Code'
 									render={({ field }) => (
 										<FormItem>
-											<FormLabel>Contact Code</FormLabel>
+											<FormLabel>
+												Contact Code<span className='text-red-500'>*</span>
+											</FormLabel>
 											<FormControl>
 												<Input
 													{...field}
@@ -120,7 +124,9 @@ export function ContactInformationField(props: contactInformationFieldProps) {
 									name='contact1'
 									render={({ field }) => (
 										<FormItem>
-											<FormLabel>Contact</FormLabel>
+											<FormLabel>
+												Contact<span className='text-red-500'>*</span>
+											</FormLabel>
 											<FormControl>
 												<Input
 													{...field}

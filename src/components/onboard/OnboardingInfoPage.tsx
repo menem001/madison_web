@@ -44,7 +44,7 @@ export default function OnboardingInfoPage() {
 									Drag your file(s) or{' '}
 									<span className='text-blue-450'>browse</span>
 								</h3>
-								<h4 className='text-gray-435 text-sm'>Upload your Whitebook</h4>
+								<h4 className='text-sm text-gray-435'>Upload your Whitebook</h4>
 							</FileUploader>
 							<div className='flex flex-row items-center gap-2'>
 								<Info

@@ -130,4 +130,3 @@ export {
 	ToastClose,
 	ToastAction
 }
-

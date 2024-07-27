@@ -18,6 +18,7 @@ import { type SaveMotorDetailRequest } from '@/services/models/common.models'
 import { updateDetails } from '@/redux/slices/motor-detail.slice'
 import { useToast } from '../ui/use-toast'
 import { storePremiumData } from '@/redux/slices/premium-motor-slice'
+import { Skeleton } from '../ui/skeleton'
 
 export function PremiumSideBar() {
 	const route = useRouter()
@@ -324,8 +325,13 @@ export function PremiumSideBar() {
 						<span className='font-bold'>Madison Insurance</span>
 					</div>
 					{isLoading ? (
-						<div className='flex w-full flex-row items-center'>
-							<ClipLoader color='#0C7BC4' />
+						<div className='flex w-full flex-col gap-4'>
+							<Skeleton className='h-10 w-3/4' />
+							<Skeleton className='h-10 w-full' />
+							<Skeleton className='h-10 w-full' />
+							<Skeleton className='h-10 w-full' />
+							<Skeleton className='h-10 w-full' />
+							<Skeleton className='h-10 w-full' />
 						</div>
 					) : (
 						<>

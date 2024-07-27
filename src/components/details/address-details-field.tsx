@@ -10,6 +10,7 @@ import { useAppDispatch, useAppSelector } from '@/redux/hooks'
 import { updateAddressDetails } from '@/redux/slices'
 import { useGetRegionListMutation } from '@/redux/api/commonApi'
 import { useEffect, useState } from 'react'
+import { Skeleton } from '../ui/skeleton'
 
 type addressDetailsFieldProps = {
 	current: number
@@ -95,7 +96,9 @@ export function AddressDetailsField(props: addressDetailsFieldProps) {
 						className='space-y-8'
 						onSubmit={form.handleSubmit(onSubmit)}>
 						<div className='flex flex-col gap-1'>
-							<FormLabel>Residential Address</FormLabel>
+							<FormLabel>
+								Residential Address<span className='text-red-500'>*</span>
+							</FormLabel>
 							<div className='flex w-full flex-row gap-4'>
 								<div className='flex-grow flex-col gap-0'>
 									<FormField
@@ -126,36 +129,44 @@ export function AddressDetailsField(props: addressDetailsFieldProps) {
 									name='citytown'
 									render={({ field }) => (
 										<FormItem>
-											<FormLabel>City / Town</FormLabel>
+											<FormLabel>
+												City / Town<span className='text-red-500'>*</span>
+											</FormLabel>
 											<FormControl>
-												<Select
-													disabled={field.disabled}
-													name={field.name}
-													value={field.value}
-													onValueChange={(e) => {
-														field.onChange(e)
-														const pos = cityList.findIndex((item) => {
-															return item.value === e
-														})
-														setCityName(cityList[pos].label)
-													}}>
-													<SelectTrigger
-														ref={field.ref}
-														className='border-2 border-blue-925'>
-														<SelectValue placeholder='City/Town' />
-													</SelectTrigger>
-													<SelectContent>
-														{cityList.map((city, index) => {
-															return (
-																<SelectItem
-																	key={index}
-																	value={city.value}>
-																	{city.label}
-																</SelectItem>
+												{cityList.length === 0 ? (
+													<Skeleton className='h-10 w-full' />
+												) : (
+													<Select
+														disabled={field.disabled}
+														name={field.name}
+														value={field.value}
+														onValueChange={(e) => {
+															field.onChange(e)
+															const pos = cityList.findIndex(
+																(item) => {
+																	return item.value === e
+																}
 															)
-														})}
-													</SelectContent>
-												</Select>
+															setCityName(cityList[pos].label)
+														}}>
+														<SelectTrigger
+															ref={field.ref}
+															className='border-2 border-blue-925'>
+															<SelectValue placeholder='City/Town' />
+														</SelectTrigger>
+														<SelectContent>
+															{cityList.map((city, index) => {
+																return (
+																	<SelectItem
+																		key={index}
+																		value={city.value}>
+																		{city.label}
+																	</SelectItem>
+																)
+															})}
+														</SelectContent>
+													</Select>
+												)}
 											</FormControl>
 											<FormMessage />
 										</FormItem>
@@ -168,7 +179,9 @@ export function AddressDetailsField(props: addressDetailsFieldProps) {
 									name='pobox'
 									render={({ field }) => (
 										<FormItem>
-											<FormLabel>PO Box</FormLabel>
+											<FormLabel>
+												PO Box<span className='text-red-500'>*</span>
+											</FormLabel>
 											<FormControl>
 												<Input
 													{...field}
@@ -185,7 +198,9 @@ export function AddressDetailsField(props: addressDetailsFieldProps) {
 							</div>
 						</div>
 						<div className='flex flex-col gap-1'>
-							<FormLabel>Work Address</FormLabel>
+							<FormLabel>
+								Work Address<span className='text-red-500'>*</span>
+							</FormLabel>
 							<div className='flex w-full flex-row gap-4'>
 								<div className='flex-grow flex-col gap-0'>
 									<FormField

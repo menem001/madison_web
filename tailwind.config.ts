@@ -31,6 +31,7 @@ const config = {
 					600: '#221F1F', // dark
 					700: '#1A1A1A', // almostBlack
 					800: '#818181', // mediumGray
+					850: '#908E8E',
 					900: '#AFAFAF'
 				},
 				blue: {

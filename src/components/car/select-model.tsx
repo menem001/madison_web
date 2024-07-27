@@ -10,6 +10,7 @@ import { useGetMotorModelListMutation } from '@/redux/api/commonApi'
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { assets } from '@/assets'
+import { Skeleton } from '../ui/skeleton'
 
 export function SelectModel() {
 	const vehicleData = useAppSelector((state) => state.carInsurance)
@@ -116,27 +117,31 @@ export function SelectModel() {
 				</div>
 			</div>
 			<div className='selectModel'>
-				<Select
-					value={vehicleData.modelID}
-					onValueChange={updateModel}>
-					<SelectTrigger
-						className='w-1/2'
-						title='Select the Model'
-						value={vehicleData.modelID}>
-						<SelectValue />
-					</SelectTrigger>
-					<SelectContent>
-						{modelsList.map((item, index) => {
-							return (
-								<SelectItem
-									key={index}
-									value={item.value}>
-									{item.label}
-								</SelectItem>
-							)
-						})}
-					</SelectContent>
-				</Select>
+				{modelsList.length === 0 ? (
+					<Skeleton className='h-16 w-3/4' />
+				) : (
+					<Select
+						value={vehicleData.modelID}
+						onValueChange={updateModel}>
+						<SelectTrigger
+							className='w-3/4'
+							title='Select the Model'
+							value={vehicleData.modelID}>
+							<SelectValue />
+						</SelectTrigger>
+						<SelectContent>
+							{modelsList.map((item, index) => {
+								return (
+									<SelectItem
+										key={index}
+										value={item.value}>
+										{item.label}
+									</SelectItem>
+								)
+							})}
+						</SelectContent>
+					</Select>
+				)}
 			</div>
 			<h2 className='modelSuggest font-jakarta text-lg font-bold'></h2>
 			<div className='suggestedGridModel grid grid-cols-5 gap-4'>

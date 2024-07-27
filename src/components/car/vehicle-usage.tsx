@@ -10,6 +10,7 @@ import { useGetVehicleUsageListMutation } from '@/redux/api/commonApi'
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { assets } from '@/assets'
+import { Skeleton } from '../ui/skeleton'
 
 export function VehicleUsage() {
 	const vehicleData = useAppSelector((state) => state.carInsurance)
@@ -107,27 +108,31 @@ export function VehicleUsage() {
 				</div>
 			</div>
 			<div className='selectUsage'>
-				<Select
-					value={vehicleData.vehicleUsageID}
-					onValueChange={updateUsage}>
-					<SelectTrigger
-						className='w-3/4'
-						title='Usage'
-						value={vehicleData.vehicleUsageID}>
-						<SelectValue />
-					</SelectTrigger>
-					<SelectContent>
-						{vehicleUsageList.map((item, index) => {
-							return (
-								<SelectItem
-									key={index}
-									value={item.value}>
-									{item.label}
-								</SelectItem>
-							)
-						})}
-					</SelectContent>
-				</Select>
+				{vehicleUsageList.length === 0 ? (
+					<Skeleton className='h-16 w-3/4' />
+				) : (
+					<Select
+						value={vehicleData.vehicleUsageID}
+						onValueChange={updateUsage}>
+						<SelectTrigger
+							className='w-3/4'
+							title='Usage'
+							value={vehicleData.vehicleUsageID}>
+							<SelectValue />
+						</SelectTrigger>
+						<SelectContent>
+							{vehicleUsageList.map((item, index) => {
+								return (
+									<SelectItem
+										key={index}
+										value={item.value}>
+										{item.label}
+									</SelectItem>
+								)
+							})}
+						</SelectContent>
+					</Select>
+				)}
 			</div>
 			{/* {vehicleUsageList.length !== 0 && (
 				<>

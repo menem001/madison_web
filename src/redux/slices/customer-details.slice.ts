@@ -12,7 +12,7 @@ const initialState: CustomerDetails = {
 	dob: '',
 	nrc: '',
 	passport: '',
-	accType: '',
+	accType: 'Personal',
 	companyRegistrationNumber: null,
 	address: '',
 	city: '',

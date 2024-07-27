@@ -9,6 +9,7 @@ import { useGetBankListMutation, useSaveMotorDetailsMutation } from '@/redux/api
 import { useToast } from '../ui/use-toast'
 import { type SaveMotorDetailRequest } from '@/services/models/common.models'
 import { updateDetails } from '@/redux/slices/motor-detail.slice'
+import { Skeleton } from '../ui/skeleton'
 
 type additionalVehicleInfoProps = {
 	current: number
@@ -266,11 +267,11 @@ export function AdditionalVehicleInfo(props: additionalVehicleInfoProps) {
 				{isLeased && borrowerType === 'Individual' && (
 					<div className='flex w-full flex-row gap-8'>
 						<div className='w-1/2 flex-grow'>
-							<Label htmlFor='zone'>Collateral Bank Name</Label>
+							<Label htmlFor='zone'>Collateral Name</Label>
 							<Input
 								className='border-2 border-blue-925'
 								id='zone'
-								placeholder='Collateral Bank Name'
+								placeholder='Collateral Name'
 								value={bankName}
 								onChange={(e) => {
 									setBankName(e.target.value)
@@ -295,28 +296,32 @@ export function AdditionalVehicleInfo(props: additionalVehicleInfoProps) {
 					<div className='flex w-full flex-row gap-8'>
 						<div className='w-1/2 flex-grow'>
 							<Label htmlFor='zone'>Collateral Bank Name</Label>
-							<Select
-								value={bankName}
-								onValueChange={(string) => {
-									setBankName(string)
-								}}>
-								<SelectTrigger
-									className='border-2 border-blue-925'
-									value={bankName}>
-									<SelectValue placeholder='Bank Name' />
-								</SelectTrigger>
-								<SelectContent>
-									{bankList.map((item, index) => {
-										return (
-											<SelectItem
-												key={index}
-												value={item.value}>
-												{item.label}
-											</SelectItem>
-										)
-									})}
-								</SelectContent>
-							</Select>
+							{bankList.length === 0 ? (
+								<Skeleton className='h-10 w-full' />
+							) : (
+								<Select
+									value={bankName}
+									onValueChange={(string) => {
+										setBankName(string)
+									}}>
+									<SelectTrigger
+										className='border-2 border-blue-925'
+										value={bankName}>
+										<SelectValue placeholder='Bank Name' />
+									</SelectTrigger>
+									<SelectContent>
+										{bankList.map((item, index) => {
+											return (
+												<SelectItem
+													key={index}
+													value={item.value}>
+													{item.label}
+												</SelectItem>
+											)
+										})}
+									</SelectContent>
+								</Select>
+							)}
 						</div>
 						<div className='w-1/2 flex-grow'>
 							<Label htmlFor='zone'>First Loss Payee Name</Label>

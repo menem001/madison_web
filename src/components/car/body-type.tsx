@@ -10,6 +10,7 @@ import { useGetBodyTypeListMutation } from '@/redux/api/commonApi'
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { assets } from '@/assets'
+import { Skeleton } from '../ui/skeleton'
 
 export function BodyType() {
 	const vehicleData = useAppSelector((state) => state.carInsurance)
@@ -117,27 +118,31 @@ export function BodyType() {
 				</div>
 			</div>
 			<div className='selectBody'>
-				<Select
-					value={vehicleData.bodyTypeID}
-					onValueChange={updateBody}>
-					<SelectTrigger
-						className='w-3/4'
-						title='Body Type'
-						value={vehicleData.bodyTypeID}>
-						<SelectValue />
-					</SelectTrigger>
-					<SelectContent>
-						{bodyTypeList.map((item, index) => {
-							return (
-								<SelectItem
-									key={index}
-									value={item.value}>
-									{item.label}
-								</SelectItem>
-							)
-						})}
-					</SelectContent>
-				</Select>
+				{bodyTypeList.length === 0 ? (
+					<Skeleton className='h-16 w-3/4' />
+				) : (
+					<Select
+						value={vehicleData.bodyTypeID}
+						onValueChange={updateBody}>
+						<SelectTrigger
+							className='w-3/4'
+							title='Body Type'
+							value={vehicleData.bodyTypeID}>
+							<SelectValue />
+						</SelectTrigger>
+						<SelectContent>
+							{bodyTypeList.map((item, index) => {
+								return (
+									<SelectItem
+										key={index}
+										value={item.value}>
+										{item.label}
+									</SelectItem>
+								)
+							})}
+						</SelectContent>
+					</Select>
+				)}
 			</div>
 			{/* <div className='grid grid-cols-3 gap-4'>
 				{bodyTypes.slice(0, 3).map((body) => {

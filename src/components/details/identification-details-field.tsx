@@ -92,7 +92,9 @@ export function IdentificationDetailsField(props: identificationDetailsFieldProp
 			title='Step 2 - Identification Details'>
 			<>
 				<div className='flex flex-col gap-1'>
-					<Label>NRC (National Registration card)</Label>
+					<Label>
+						NRC (National Registration card)<span className='text-red-500'>*</span>
+					</Label>
 					<div className='flex w-full flex-row gap-4'>
 						<div className='flex-grow flex-col gap-0'>
 							<Input
@@ -132,7 +134,9 @@ export function IdentificationDetailsField(props: identificationDetailsFieldProp
 				</div>
 				<div className='flex w-full flex-row gap-4'>
 					<div className='w-full flex-grow'>
-						<Label>Passport</Label>
+						<Label>
+							Passport<span className='text-red-500'>*</span>
+						</Label>
 						<Input
 							ref={passportRef}
 							className='border-2 border-blue-925'
@@ -143,7 +147,9 @@ export function IdentificationDetailsField(props: identificationDetailsFieldProp
 						/>
 					</div>
 					<div className='flex-grow'>
-						<Label>Account Type</Label>
+						<Label>
+							Account Type<span className='text-red-500'>*</span>
+						</Label>
 						<div className='flex flex-row gap-2'>
 							<div
 								className={cn(

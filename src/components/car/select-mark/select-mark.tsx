@@ -12,6 +12,7 @@ import { MarkCard } from './mark-card'
 import { useGetMotorMakeListMutation } from '@/redux/api/commonApi'
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
+import { Skeleton } from '@/components/ui/skeleton'
 
 const brands = [
 	{
@@ -129,27 +130,31 @@ export function SelectMark() {
 				</div>
 			</div>
 			<div className='select'>
-				<Select
-					value={vehicleData.makeID}
-					onValueChange={updateMark}>
-					<SelectTrigger
-						className='w-3/4'
-						title='Select the Mark'
-						value={vehicleData.makeID}>
-						<SelectValue />
-					</SelectTrigger>
-					<SelectContent>
-						{motorListArr.map((item, index) => {
-							return (
-								<SelectItem
-									key={index}
-									value={item.value}>
-									{item.label}
-								</SelectItem>
-							)
-						})}
-					</SelectContent>
-				</Select>
+				{motorListArr.length === 0 ? (
+					<Skeleton className='h-16 w-3/4' />
+				) : (
+					<Select
+						value={vehicleData.makeID}
+						onValueChange={updateMark}>
+						<SelectTrigger
+							className='w-3/4'
+							title='Select the Mark'
+							value={vehicleData.makeID}>
+							<SelectValue />
+						</SelectTrigger>
+						<SelectContent>
+							{motorListArr.map((item, index) => {
+								return (
+									<SelectItem
+										key={index}
+										value={item.value}>
+										{item.label}
+									</SelectItem>
+								)
+							})}
+						</SelectContent>
+					</Select>
+				)}
 			</div>
 			<h2 className='popular font-Diesel text-lg font-bold'></h2>
 			<div className='grid grid-cols-5 gap-4'>

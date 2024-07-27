@@ -13,7 +13,7 @@ import { SelectInsuranceClass } from './select-insurance-class'
 export function MoreDetailsPage() {
 	const dispatch = useAppDispatch()
 
-	// const vehicleData = useAppSelector((state) => state.carInsurance)
+	const vehicleData = useAppSelector((state) => state.carInsurance)
 	const appData = useAppSelector((state) => state.apps)
 
 	// const [current, setCurrent] = useState<number>(0)
@@ -27,6 +27,11 @@ export function MoreDetailsPage() {
 		pageStart.current?.scrollIntoView({ behavior: 'smooth' })
 	}
 
+	const isFilled =
+		vehicleData.policyStartDate !== '' &&
+		vehicleData.policyEndDate !== '' &&
+		vehicleData.currency
+
 	// function addCount() {
 	// 	setCurrent((pre) => pre + 1)
 	// }
@@ -35,13 +40,9 @@ export function MoreDetailsPage() {
 	// 	setCurrent(num)
 	// }
 
-	// useEffect(() => {
-	// 	if (current !== 2) {
-	// 		scrollToBottom()
-	// 	} else {
-	// 		customerRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' })
-	// 	}
-	// }, [vehicleData, current])
+	useEffect(() => {
+		pageEnd.current?.scrollIntoView({ behavior: 'smooth', block: 'end' })
+	}, [vehicleData])
 
 	useEffect(() => {
 		if (appData.scrollTo !== 0) {
@@ -119,7 +120,7 @@ export function MoreDetailsPage() {
 					</div>
 				)} */}
 
-				{true && (
+				{isFilled && (
 					<div ref={customerRef}>
 						<CustomerInfo scrollToTop={scrollToTop} />
 					</div>

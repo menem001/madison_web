@@ -10,6 +10,7 @@ import { updateVehicleDetails } from '@/redux/slices'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form'
 import { useGetColorListMutation } from '@/redux/api/commonApi'
 import { useEffect, useState } from 'react'
+import { Skeleton } from '../ui/skeleton'
 
 type motorDetailsFieldProps = {
 	current: number
@@ -109,7 +110,10 @@ export function MotorDetailsField(props: motorDetailsFieldProps) {
 									name='regNo'
 									render={({ field }) => (
 										<FormItem className='w-full'>
-											<FormLabel>Registration Number</FormLabel>
+											<FormLabel>
+												Registration Number
+												<span className='text-red-500'>*</span>
+											</FormLabel>
 											<FormControl>
 												<Input
 													{...field}
@@ -129,7 +133,10 @@ export function MotorDetailsField(props: motorDetailsFieldProps) {
 									name='chassisNo'
 									render={({ field }) => (
 										<FormItem className='w-full'>
-											<FormLabel>Chassis number</FormLabel>
+											<FormLabel>
+												Chassis number
+												<span className='text-red-500'>*</span>
+											</FormLabel>
 											<FormControl>
 												<Input
 													{...field}
@@ -151,7 +158,9 @@ export function MotorDetailsField(props: motorDetailsFieldProps) {
 									name='engineNo'
 									render={({ field }) => (
 										<FormItem className='w-full'>
-											<FormLabel>Engine Number</FormLabel>
+											<FormLabel>
+												Engine Number<span className='text-red-500'>*</span>
+											</FormLabel>
 											<FormControl>
 												<Input
 													{...field}
@@ -171,7 +180,10 @@ export function MotorDetailsField(props: motorDetailsFieldProps) {
 									name='engineCapacity'
 									render={({ field }) => (
 										<FormItem className='w-full'>
-											<FormLabel>Engine Capacity</FormLabel>
+											<FormLabel>
+												Engine Capacity
+												<span className='text-red-500'>*</span>
+											</FormLabel>
 											<FormControl>
 												<Input
 													{...field}
@@ -192,30 +204,36 @@ export function MotorDetailsField(props: motorDetailsFieldProps) {
 								name='color'
 								render={({ field }) => (
 									<FormItem className='w-full'>
-										<FormLabel>Color</FormLabel>
+										<FormLabel>
+											Color<span className='text-red-500'>*</span>
+										</FormLabel>
 										<FormControl>
-											<Select
-												disabled={field.disabled}
-												name={field.name}
-												value={field.value}
-												onValueChange={field.onChange}>
-												<SelectTrigger
-													ref={field.ref}
-													className='border-2 border-blue-925'>
-													<SelectValue placeholder='Colors' />
-												</SelectTrigger>
-												<SelectContent>
-													{colors.map((color, index) => {
-														return (
-															<SelectItem
-																key={index}
-																value={color.value}>
-																{color.label}
-															</SelectItem>
-														)
-													})}
-												</SelectContent>
-											</Select>
+											{colors.length === 0 ? (
+												<Skeleton className='h-10 w-full' />
+											) : (
+												<Select
+													disabled={field.disabled}
+													name={field.name}
+													value={field.value}
+													onValueChange={field.onChange}>
+													<SelectTrigger
+														ref={field.ref}
+														className='border-2 border-blue-925'>
+														<SelectValue placeholder='Colors' />
+													</SelectTrigger>
+													<SelectContent>
+														{colors.map((color, index) => {
+															return (
+																<SelectItem
+																	key={index}
+																	value={color.value}>
+																	{color.label}
+																</SelectItem>
+															)
+														})}
+													</SelectContent>
+												</Select>
+											)}
 										</FormControl>
 										<FormMessage />
 									</FormItem>

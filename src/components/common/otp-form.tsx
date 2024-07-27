@@ -1,6 +1,6 @@
 'use client'
 
-import { Button } from '../ui'
+import { Button, Input } from '../ui'
 import { useRouter } from 'next/navigation'
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '../ui/input-otp'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
@@ -20,6 +20,7 @@ export function OtpForm() {
 	const [otpDisplay, setOtpDisplay] = useState<string>('')
 	const [otp, setOtp] = useState<number>(0)
 	const [otpGenerated, setOtpGenerated] = useState<boolean>(false)
+	const [editNumber, setEditNumber] = useState<boolean>(false)
 
 	const [GenerateOTP] = useGenerateOTPMutation()
 	const [verifyOTP] = useVerifyOTPMutation()
@@ -109,9 +110,23 @@ export function OtpForm() {
 					To buy the policy, Please enter the OTP here from SMS
 				</h3>
 			</div>
-			<div className='text-gray-400'>
-				Enter OTP sent to <span className='text-blue-300'>{customerData.mobile}</span>{' '}
-				<span className='text-xs underline'>edit</span>
+			<div className='flex flex-row items-center gap-2 text-gray-400'>
+				Enter OTP sent to{' '}
+				{editNumber ? (
+					<Input
+						placeholder='Enter Mobile Number'
+						value={customerData.mobile}
+					/>
+				) : (
+					<span className='text-blue-300'>{customerData.mobile}</span>
+				)}{' '}
+				<span
+					className='cursor-pointer text-xs underline'
+					onClick={() => {
+						setEditNumber(true)
+					}}>
+					edit
+				</span>
 			</div>
 			{otpDisplay && (
 				<h3>

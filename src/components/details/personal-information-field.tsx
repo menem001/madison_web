@@ -25,6 +25,7 @@ import { useAppDispatch, useAppSelector } from '@/redux/hooks'
 import { updatePersonalDetails } from '@/redux/slices'
 import { useGetOccupationListMutation } from '@/redux/api/commonApi'
 import { useEffect, useState } from 'react'
+import { Skeleton } from '../ui/skeleton'
 
 type personalInformationFieldProps = {
 	current: number
@@ -150,7 +151,9 @@ export function PersonalInformationField(props: personalInformationFieldProps) {
 									name='title'
 									render={({ field }) => (
 										<FormItem>
-											<FormLabel>Title</FormLabel>
+											<FormLabel>
+												Title<span className='text-red-500'>*</span>
+											</FormLabel>
 											<FormControl>
 												<div className='w-20'>
 													<Select
@@ -189,7 +192,9 @@ export function PersonalInformationField(props: personalInformationFieldProps) {
 									name='name'
 									render={({ field }) => (
 										<FormItem className='w-full'>
-											<FormLabel>Customer Name</FormLabel>
+											<FormLabel>
+												Customer Name<span className='text-red-500'>*</span>
+											</FormLabel>
 											<FormControl>
 												<Input
 													{...field}
@@ -211,7 +216,9 @@ export function PersonalInformationField(props: personalInformationFieldProps) {
 									name='gender'
 									render={({ field }) => (
 										<FormItem>
-											<FormLabel>Gender</FormLabel>
+											<FormLabel>
+												Gender<span className='text-red-500'>*</span>
+											</FormLabel>
 											<FormControl>
 												<Select
 													disabled={field.disabled}
@@ -248,30 +255,40 @@ export function PersonalInformationField(props: personalInformationFieldProps) {
 									name='occupation'
 									render={({ field }) => (
 										<FormItem>
-											<FormLabel>Occupation</FormLabel>
+											<FormLabel>
+												Occupation<span className='text-red-500'>*</span>
+											</FormLabel>
 											<FormControl>
-												<Select
-													disabled={field.disabled}
-													name={field.name}
-													value={field.value}
-													onValueChange={field.onChange}>
-													<SelectTrigger
-														ref={field.ref}
-														className='border-2 border-blue-925'>
-														<SelectValue placeholder='Occupation' />
-													</SelectTrigger>
-													<SelectContent>
-														{OccupationList.map((occupation, index) => {
-															return (
-																<SelectItem
-																	key={index}
-																	value={occupation.value}>
-																	{occupation.label}
-																</SelectItem>
-															)
-														})}
-													</SelectContent>
-												</Select>
+												{OccupationList.length === 0 ? (
+													<Skeleton className='h-10 w-full' />
+												) : (
+													<Select
+														disabled={field.disabled}
+														name={field.name}
+														value={field.value}
+														onValueChange={field.onChange}>
+														<SelectTrigger
+															ref={field.ref}
+															className='border-2 border-blue-925'>
+															<SelectValue placeholder='Occupation' />
+														</SelectTrigger>
+														<SelectContent>
+															{OccupationList.map(
+																(occupation, index) => {
+																	return (
+																		<SelectItem
+																			key={index}
+																			value={
+																				occupation.value
+																			}>
+																			{occupation.label}
+																		</SelectItem>
+																	)
+																}
+															)}
+														</SelectContent>
+													</Select>
+												)}
 											</FormControl>
 											<FormMessage />
 										</FormItem>
@@ -286,7 +303,9 @@ export function PersonalInformationField(props: personalInformationFieldProps) {
 									name='mobile'
 									render={({ field }) => (
 										<FormItem>
-											<FormLabel>Mobile Number</FormLabel>
+											<FormLabel>
+												Mobile Number<span className='text-red-500'>*</span>
+											</FormLabel>
 											<FormControl>
 												<Input
 													{...field}
@@ -306,7 +325,9 @@ export function PersonalInformationField(props: personalInformationFieldProps) {
 									name='dob'
 									render={({ field }) => (
 										<FormItem>
-											<FormLabel>Date of Birth</FormLabel>
+											<FormLabel>
+												Date of Birth<span className='text-red-500'>*</span>
+											</FormLabel>
 											<Popover>
 												<PopoverTrigger asChild>
 													<FormControl>

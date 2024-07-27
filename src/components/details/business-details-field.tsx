@@ -29,7 +29,7 @@ export function BusinessDetailsField(props: businessDetailsFieldProps) {
 					<div className='flex-grow'>
 						<Label htmlFor='source'>Business Source</Label>
 						<Input
-							className='border-blue-925 border-2'
+							className='border-2 border-blue-925'
 							id='source'
 							placeholder='Source of Business '
 						/>

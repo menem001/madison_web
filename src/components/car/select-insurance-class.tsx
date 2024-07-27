@@ -31,6 +31,7 @@ import {
 } from '@/redux/api/commonApi'
 import Image from 'next/image'
 import { assets } from '@/assets'
+import { Skeleton } from '../ui/skeleton'
 // import { useGetPolicyEndDateQuery } from '@/redux/api/commonApi'
 
 type CurrencyRateList = { value: string; label: string; rate: string }
@@ -230,57 +231,65 @@ export function SelectInsuranceClass() {
 
 					<div className='flex w-full flex-grow flex-col'>
 						<Label htmlFor='end'>Policy End Date</Label>
-						<Select
-							value={vehicleData.policyEndDate}
-							onValueChange={(e) => {
-								dispatch(updatePolicyEndDate(e))
-							}}>
-							<SelectTrigger
-								id='end'
-								value={vehicleData.policyEndDate}>
-								<SelectValue placeholder='Select Policy End Date' />
-							</SelectTrigger>
-							<SelectContent>
-								{endDateLists.map((item, index) => {
-									return (
-										<SelectItem
-											key={index}
-											value={item.value}>
-											{item.label}
-										</SelectItem>
-									)
-								})}
-							</SelectContent>
-						</Select>
+						{endDateLists.length === 0 ? (
+							<Skeleton className='h-10' />
+						) : (
+							<Select
+								value={vehicleData.policyEndDate}
+								onValueChange={(e) => {
+									dispatch(updatePolicyEndDate(e))
+								}}>
+								<SelectTrigger
+									id='end'
+									value={vehicleData.policyEndDate}>
+									<SelectValue placeholder='Select Policy End Date' />
+								</SelectTrigger>
+								<SelectContent>
+									{endDateLists.map((item, index) => {
+										return (
+											<SelectItem
+												key={index}
+												value={item.value}>
+												{item.label}
+											</SelectItem>
+										)
+									})}
+								</SelectContent>
+							</Select>
+						)}
 					</div>
 				</div>
 			</div>
-			<div className='mt-4'>
-				<p>Select Currency</p>
-				<Select
-					value={vehicleData.currency + '~' + vehicleData.exchangeRate}
-					onValueChange={(e) => {
-						const values = e.split('~')
-						dispatch(updateCurrency({ currency: values[0], rate: values[1] }))
-					}}>
-					<SelectTrigger
-						className='mt-2 w-3/4'
-						title='Select Currency'
-						value={vehicleData.currency + '~' + vehicleData.exchangeRate}>
-						<SelectValue />
-					</SelectTrigger>
-					<SelectContent>
-						{currencyList.map((item, index) => {
-							return (
-								<SelectItem
-									key={index}
-									value={item.value + '~' + item.rate}>
-									{item.label + ' - (Exchange Rate: ' + item.rate + ' ZWM)'}
-								</SelectItem>
-							)
-						})}
-					</SelectContent>
-				</Select>
+			<div className='selectInsClass flex w-full flex-grow flex-col'>
+				<Label htmlFor='currency'>Select Currency</Label>
+				{currencyList.length === 0 ? (
+					<Skeleton className='h-10 w-3/4' />
+				) : (
+					<Select
+						value={vehicleData.currency + '~' + vehicleData.exchangeRate}
+						onValueChange={(e) => {
+							const values = e.split('~')
+							dispatch(updateCurrency({ currency: values[0], rate: values[1] }))
+						}}>
+						<SelectTrigger
+							className='w-3/4'
+							id='currency'
+							value={vehicleData.currency + '~' + vehicleData.exchangeRate}>
+							<SelectValue placeholder='Select Currency' />
+						</SelectTrigger>
+						<SelectContent>
+							{currencyList.map((item, index) => {
+								return (
+									<SelectItem
+										key={index}
+										value={item.value + '~' + item.rate}>
+										{item.label + ' - (Exchange Rate: ' + item.rate + ' ZWM)'}
+									</SelectItem>
+								)
+							})}
+						</SelectContent>
+					</Select>
+				)}
 			</div>
 			{classTypeList && (
 				<>
@@ -308,36 +317,6 @@ export function SelectInsuranceClass() {
 								</div>
 							)
 						})}
-						{/* <div
-					className={cn(
-						'cursor-pointer rounded-lg border border-gray-700 bg-white px-7 py-2 font-inter font-semibold text-gray-700',
-						{ 'border-none bg-blue-300 text-white': iclass === 1 }
-					)}
-					onClick={() => {
-						setIclass(1)
-					}}>
-					Comprehensive
-				</div>
-				<div
-					className={cn(
-						'cursor-pointer rounded-lg border border-gray-700 bg-white px-7 py-2 font-inter font-semibold text-gray-700',
-						{ 'border-none bg-blue-300 text-white': iclass === 2 }
-					)}
-					onClick={() => {
-						setIclass(2)
-					}}>
-					TPFT
-				</div>
-				<div
-					className={cn(
-						'cursor-pointer rounded-lg border border-gray-700 bg-white px-7 py-2 font-inter font-semibold text-gray-700',
-						{ 'border-none bg-blue-300 text-white': iclass === 3 }
-					)}
-					onClick={() => {
-						setIclass(3)
-					}}>
-					TPO
-				</div> */}
 					</div>
 				</>
 			)}

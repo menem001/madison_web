@@ -10,4 +10,3 @@ export async function POST(req: NextRequest) {
 		status: res.status
 	})
 }
-
