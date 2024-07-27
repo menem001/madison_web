@@ -1,5 +1,7 @@
+'use client'
 import { assets } from '@/assets'
 import Image from 'next/image'
+import { usePathname, useRouter } from 'next/navigation'
 import React from 'react'
 
 type OnboardingLayoutProps = {
@@ -7,6 +9,10 @@ type OnboardingLayoutProps = {
 }
 
 export default function OnboardingLayout(props: OnboardingLayoutProps) {
+	const path = usePathname()
+	const route = useRouter()
+
+	const isLogin = path === '/login'
 	return (
 		<section className='flex h-screen w-full flex-col font-jakarta lg:flex-row'>
 			<div className='flex max-h-screen basis-7/12 items-center justify-center overflow-hidden rounded-b-2xl bg-cover bg-center'>
@@ -18,9 +24,18 @@ export default function OnboardingLayout(props: OnboardingLayoutProps) {
 						src={assets.images.family}
 						width={1000}
 					/>
-					<h4 className='absolute right-2 top-2 text-base font-semibold text-white'>
-						Did you Account? <span className='text-blue-350'>Login Here</span>
-					</h4>
+					{!isLogin && (
+						<h4 className='absolute right-2 top-2 text-base font-semibold text-white'>
+							Do you have an Account?{' '}
+							<span
+								className='cursor-pointer text-blue-350'
+								onClick={() => {
+									route.push('/login')
+								}}>
+								Login Here
+							</span>
+						</h4>
+					)}
 				</div>
 				<div className='flex overflow-hidden rounded-2xl lg:hidden'>
 					<Image

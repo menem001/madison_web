@@ -172,26 +172,35 @@ export function SelectInsuranceClass() {
 					<span className='InsClasssubtitle font-roboto text-sm font-medium text-gray-500'></span>
 				</div>
 			</div>
-			<div className='selectInsClass flex flex-row gap-10'>
-				{classTypeList.map((insClass) => {
-					return (
-						<div
-							key={insClass.value}
-							className={cn(
-								'cursor-pointer rounded-lg border border-gray-700 bg-white px-7 py-2 font-inter font-semibold text-gray-700',
-								{
-									'border-none bg-blue-300 text-white': iclass === +insClass.value
-								}
-							)}
-							onClick={() => {
-								setIclass(+insClass.value)
-								setIclassName(insClass.label)
-							}}>
-							{insClass.label}
-						</div>
-					)
-				})}
-			</div>
+			{classTypeList.length === 0 ? (
+				<div className='flex w-full flex-row gap-4'>
+					<Skeleton className='h-10 w-full' />
+					<Skeleton className='h-10 w-full' />
+					<Skeleton className='h-10 w-full' />
+				</div>
+			) : (
+				<div className='selectInsClass flex flex-row gap-10'>
+					{classTypeList.map((insClass) => {
+						return (
+							<div
+								key={insClass.value}
+								className={cn(
+									'cursor-pointer rounded-lg border border-gray-700 bg-white px-7 py-2 font-inter font-semibold text-gray-700',
+									{
+										'border-none bg-blue-300 text-white':
+											iclass === +insClass.value
+									}
+								)}
+								onClick={() => {
+									setIclass(+insClass.value)
+									setIclassName(insClass.label)
+								}}>
+								{insClass.label}
+							</div>
+						)
+					})}
+				</div>
+			)}
 
 			{classTypeList && (
 				<>
@@ -261,7 +270,7 @@ export function SelectInsuranceClass() {
 							<div className='flex w-full flex-grow flex-col'>
 								<Label htmlFor='end'>Policy End Date</Label>
 								{endDateLists.length === 0 ? (
-									<Skeleton className='h-10' />
+									<Skeleton className='h-10 w-full' />
 								) : (
 									<Select
 										value={vehicleData.policyEndDate}
@@ -305,6 +314,7 @@ export function SelectInsuranceClass() {
 								<SelectTrigger
 									className='w-3/4'
 									id='currency'
+									title='Select Currency'
 									value={vehicleData.currency + '~' + vehicleData.exchangeRate}>
 									<SelectValue placeholder='Select Currency' />
 								</SelectTrigger>

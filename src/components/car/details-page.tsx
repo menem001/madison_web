@@ -116,8 +116,8 @@ export function DetailsPage() {
 					</div>
 				)}
 				{token !== '' && (
-					<div className='flex flex-col gap-6'>
-						<div>
+					<div className='flex flex-col gap-10'>
+						<div className='-ml-16'>
 							<BackButton />
 						</div>
 						<div
