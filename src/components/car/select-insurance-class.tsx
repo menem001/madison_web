@@ -218,7 +218,7 @@ export function SelectInsuranceClass() {
 											id='start'
 											variant='outline'
 											className={cn(
-												'w-full pl-3 text-left font-normal text-muted-foreground',
+												'w-full pl-3 text-left font-normal text-black',
 												!startDate && 'text-muted-foreground'
 											)}>
 											{vehicleData.policyStartDate ? (

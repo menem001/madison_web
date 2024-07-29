@@ -61,7 +61,7 @@ export function VehicleDetailsForm() {
 				value.data.data !== undefined &&
 				value.data.data.Result !== null
 			) {
-				route.push('/car-insurance/payment')
+				route.push('/car-insurance/payment/confirm')
 			} else if (
 				value.data?.type === 'success' &&
 				value.data.data !== undefined &&

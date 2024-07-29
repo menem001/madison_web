@@ -22,11 +22,13 @@ const config = {
 					200: '#F8F8FA', // lightGray
 					300: '#E2E8F0', // lightestGray
 					350: '#EDEDED',
+					375: '#E0E2E7',
 					400: '#656565', // gray
 					425: '#6B6B6B',
 					435: '#6D6D6D',
 					450: '#B3B3B3',
 					500: '#6E6D7A', // slate
+					525: '#4D5464',
 					550: '#3D3D3D',
 					600: '#221F1F', // dark
 					700: '#1A1A1A', // almostBlack
@@ -116,7 +118,8 @@ const config = {
 				'accordion-up': 'accordion-up 0.2s ease-out'
 			},
 			boxShadow: {
-				confirmContainerShadow: '0px 4px 16px 0px rgba(17, 34, 17, 0.05)'
+				confirmContainerShadow: '0px 4px 16px 0px rgba(17, 34, 17, 0.05)',
+				detailsContainerShadow: '0px 1.5px 2px 0px rgba(16, 24, 40, 0.1)'
 			},
 			fontFamily: {
 				inter: ['var(--font-inter)'],

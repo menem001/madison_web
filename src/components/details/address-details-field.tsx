@@ -25,12 +25,8 @@ const addressDetailSchema = z.object({
 	citytown: z.string().min(1, {
 		message: 'City or Town is required'
 	}),
-	pobox: z.string().min(4, {
-		message: 'Fill the PO Box number'
-	}),
-	workaddress: z.string().min(8, {
-		message: 'Please Enter your work address'
-	})
+	pobox: z.string().optional(),
+	workaddress: z.string().optional()
 })
 
 export function AddressDetailsField(props: addressDetailsFieldProps) {
@@ -71,10 +67,10 @@ export function AddressDetailsField(props: addressDetailsFieldProps) {
 	function onSubmit(values: z.infer<typeof addressDetailSchema>) {
 		dispatch(
 			updateAddressDetails({
-				address: values.workaddress,
+				address: values.residentialaddress,
 				city: values.citytown,
-				poBox: values.pobox,
-				workAddress: values.workaddress,
+				poBox: values.pobox !== undefined ? values.pobox : '',
+				workAddress: values.workaddress !== undefined ? values.workaddress : '',
 				cityName: cityName
 			})
 		)
@@ -179,9 +175,7 @@ export function AddressDetailsField(props: addressDetailsFieldProps) {
 									name='pobox'
 									render={({ field }) => (
 										<FormItem>
-											<FormLabel>
-												PO Box<span className='text-red-500'>*</span>
-											</FormLabel>
+											<FormLabel>PO Box</FormLabel>
 											<FormControl>
 												<Input
 													{...field}
@@ -198,9 +192,7 @@ export function AddressDetailsField(props: addressDetailsFieldProps) {
 							</div>
 						</div>
 						<div className='flex flex-col gap-1'>
-							<FormLabel>
-								Work Address<span className='text-red-500'>*</span>
-							</FormLabel>
+							<FormLabel>Work Address</FormLabel>
 							<div className='flex w-full flex-row gap-4'>
 								<div className='flex-grow flex-col gap-0'>
 									<FormField

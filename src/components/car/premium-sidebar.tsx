@@ -247,6 +247,8 @@ export function PremiumSideBar() {
 						tax: taxes,
 						premiumIncludedTax:
 							value.data.data.Result[0].CoverList[0].PremiumIncludedTax,
+						premiumIncludedTaxLC:
+							value.data.data.Result[0].CoverList[0].PremiumIncludedTaxLC,
 						EABase:
 							value.data.data.Result[0].CoverList.length === 2
 								? value.data.data.Result[0].CoverList[1].PremiumExcluedTax
@@ -254,6 +256,10 @@ export function PremiumSideBar() {
 						EAPremiumIncluedTax:
 							value.data.data.Result[0].CoverList.length === 2
 								? value.data.data.Result[0].CoverList[1].PremiumIncludedTax
+								: 0,
+						EAPremiumIncluedTaxLC:
+							value.data.data.Result[0].CoverList.length === 2
+								? value.data.data.Result[0].CoverList[1].PremiumIncludedTaxLC
 								: 0,
 						EATax: value.data.data.Result[0].CoverList.length === 2 ? taxesEA : []
 					})

@@ -2,7 +2,7 @@
 
 import { Button, Input } from '../ui'
 import { FormFieldLayout } from './form-field-layout'
-import { type ChangeEvent, useRef, useState } from 'react'
+import { type ChangeEvent, useEffect, useRef, useState } from 'react'
 import { cn } from '@/lib'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
 import { updateIdentificationDetails } from '@/redux/slices'
@@ -32,6 +32,8 @@ export function IdentificationDetailsField(props: identificationDetailsFieldProp
 	const nrc2Ref = useRef<HTMLInputElement>(null)
 	const nrc3Ref = useRef<HTMLInputElement>(null)
 	const passportRef = useRef<HTMLInputElement>(null)
+
+	const [isDisabled, setIsDisabled] = useState<boolean>(false)
 
 	function handleChangeNrc1(e: ChangeEvent<HTMLInputElement>) {
 		if (e.target.value.length <= 6) {
@@ -80,6 +82,19 @@ export function IdentificationDetailsField(props: identificationDetailsFieldProp
 		)
 		props.goNext()
 	}
+
+	useEffect(() => {
+		const nrcIsFilled = nrc1 !== '' && nrc2 !== '' && nrc3 !== ''
+		const passportFilled = passport !== '' && passport.length === 9
+		const companyFilled = companyNumber !== ''
+
+		const Filled =
+			nrcIsFilled &&
+			passportFilled &&
+			((accountType === 'Corporate' && companyFilled) || accountType === 'Personal')
+
+		setIsDisabled(Filled)
+	}, [accountType, companyNumber, nrc1, nrc2, nrc3, passport])
 
 	return (
 		<FormFieldLayout
@@ -193,6 +208,7 @@ export function IdentificationDetailsField(props: identificationDetailsFieldProp
 				)}
 				<Button
 					className='w-32'
+					disabled={!isDisabled}
 					variant='bluebtn'
 					onClick={onSubmit}>
 					Continue

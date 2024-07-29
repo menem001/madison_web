@@ -104,7 +104,7 @@ export function DriverDetails() {
 								id='start'
 								variant='outline'
 								className={cn(
-									'w-full pl-3 text-left font-normal text-muted-foreground',
+									'w-full pl-3 text-left font-normal text-black',
 									!driverDOB && 'text-muted-foreground'
 								)}>
 								{driverDOB ? (

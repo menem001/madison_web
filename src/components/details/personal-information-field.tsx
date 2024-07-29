@@ -335,7 +335,7 @@ export function PersonalInformationField(props: personalInformationFieldProps) {
 															id='start'
 															variant='outline'
 															className={cn(
-																'w-full border-2 border-blue-925 pl-3 text-left font-normal text-muted-foreground',
+																'w-full border-2 border-blue-925 pl-3 text-left font-normal text-black',
 																!field.value &&
 																	'text-muted-foreground'
 															)}>

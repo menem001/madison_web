@@ -1268,7 +1268,7 @@ export const viewQuoteResponseSchema = z.object({
 			Vrngst: z.any().nullable(),
 			StateCode: z.string(),
 			StateName: z.any().nullable(),
-			CityCode: z.string(),
+			CityCode: z.string().nullable(),
 			CityName: z.string(),
 			Street: z.any().nullable(),
 			Fax: z.any().nullable(),
