@@ -11,7 +11,7 @@ import axios from 'axios'
 import { type WhiteBookResponse } from '@/services/models/common.models'
 import ClipLoader from 'react-spinners/ClipLoader'
 import { useAppDispatch } from '@/redux/hooks'
-import { storeWhiteBookData } from '@/redux/slices/whitebook-details'
+import { storeWhiteBookData } from '@/redux/slices/whitebook-details-slice'
 
 export default function OnboardingInfoPage() {
 	const route = useRouter()
@@ -57,7 +57,10 @@ export default function OnboardingInfoPage() {
 										? ''
 										: response.data['Seating Capacity'],
 								VehicleCategory: response.data['Vehicle Category'],
-								VINChassisNumber: response.data['VIN/Chassis Number'],
+								VINChassisNumber: response.data['VIN/Chassis Number'].replace(
+									' ',
+									''
+								),
 								YearOfMake: response.data['Year Of Make']
 							})
 						)

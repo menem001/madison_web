@@ -41,6 +41,7 @@ export function MotorDetailsField(props: motorDetailsFieldProps) {
 	const vehicleData = useAppSelector((state) => state.carInsurance)
 	const insuranceID = useAppSelector((state) => state.apps.insuranceID)
 	const branchCode = useAppSelector((state) => state.apps.branchCode)
+	const whitebookData = useAppSelector((state) => state.whitebookdetails)
 
 	const [colors, setColors] = useState<{ value: string; label: string }[]>([])
 
@@ -49,11 +50,23 @@ export function MotorDetailsField(props: motorDetailsFieldProps) {
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
-			regNo: vehicleData.registrationNumber,
-			chassisNo: vehicleData.chassisNumber,
-			engineNo: vehicleData.engineNumber,
-			engineCapacity: vehicleData.engineCapacity,
-			color: vehicleData.color
+			regNo:
+				vehicleData.registrationNumber !== ''
+					? vehicleData.registrationNumber
+					: whitebookData.RegistrationMark,
+			chassisNo:
+				vehicleData.chassisNumber !== ''
+					? vehicleData.chassisNumber
+					: whitebookData.VINChassisNumber,
+			engineNo:
+				vehicleData.engineNumber !== ''
+					? vehicleData.engineNumber
+					: whitebookData.EngineNumber,
+			engineCapacity:
+				vehicleData.engineCapacity !== ''
+					? vehicleData.engineCapacity
+					: whitebookData.EngineCapacity,
+			color: vehicleData.color !== '' ? vehicleData.color : whitebookData.Colour
 		}
 	})
 
@@ -88,6 +101,22 @@ export function MotorDetailsField(props: motorDetailsFieldProps) {
 			}
 		})
 	}, [])
+
+	function updateColorByName(color: string) {
+		const pos = colors.findIndex((item) => {
+			return item.label.toLowerCase() === color.toLowerCase()
+		})
+
+		if (pos !== -1) {
+			form.setValue('color', colors[pos].value)
+		}
+	}
+
+	useEffect(() => {
+		if (colors.length !== 0) {
+			updateColorByName(whitebookData.Colour)
+		}
+	}, [colors, whitebookData.Colour])
 
 	return (
 		<FormFieldLayout

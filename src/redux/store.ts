@@ -5,7 +5,7 @@ import { commonApi } from './api/commonApi'
 import { motorSlice } from './slices/motor-detail.slice'
 import { registrationApi } from './api/registrationApi'
 import { premiumMotorSlice } from './slices/premium-motor-slice'
-import { whiteBookDetailsSlice } from './slices/whitebook-details'
+import { whiteBookDetailsSlice } from './slices/whitebook-details-slice'
 import { paymentApi } from './api/paymentApi'
 
 const reducer = combineReducers({
