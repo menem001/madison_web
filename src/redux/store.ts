@@ -5,6 +5,8 @@ import { commonApi } from './api/commonApi'
 import { motorSlice } from './slices/motor-detail.slice'
 import { registrationApi } from './api/registrationApi'
 import { premiumMotorSlice } from './slices/premium-motor-slice'
+import { whiteBookDetailsSlice } from './slices/whitebook-details'
+import { paymentApi } from './api/paymentApi'
 
 const reducer = combineReducers({
 	[carInsuranceSlice.reducerPath]: carInsuranceSlice.reducer,
@@ -13,13 +15,19 @@ const reducer = combineReducers({
 	[motorSlice.reducerPath]: motorSlice.reducer,
 	[commonApi.reducerPath]: commonApi.reducer,
 	[registrationApi.reducerPath]: registrationApi.reducer,
-	[premiumMotorSlice.reducerPath]: premiumMotorSlice.reducer
+	[premiumMotorSlice.reducerPath]: premiumMotorSlice.reducer,
+	[whiteBookDetailsSlice.reducerPath]: whiteBookDetailsSlice.reducer,
+	[paymentApi.reducerPath]: paymentApi.reducer
 })
 
 export const store = configureStore({
 	reducer,
 	middleware: (getDefaultMiddleware) =>
-		getDefaultMiddleware().concat(commonApi.middleware, registrationApi.middleware)
+		getDefaultMiddleware().concat(
+			commonApi.middleware,
+			registrationApi.middleware,
+			paymentApi.middleware
+		)
 })
 
 setupListeners(store.dispatch)

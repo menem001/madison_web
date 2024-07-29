@@ -6,9 +6,11 @@ import { Input } from '../ui'
 import { updateSeats } from '@/redux/slices'
 import Image from 'next/image'
 import { assets } from '@/assets'
+import { useEffect } from 'react'
 
 export function CarSeating() {
 	const vehicleData = useAppSelector((state) => state.carInsurance)
+	const seat = useAppSelector((state) => state.whitebookdetails.SeatingCapacity)
 
 	const dispatch = useAppDispatch()
 
@@ -30,6 +32,12 @@ export function CarSeating() {
 			})
 		}
 	})
+
+	useEffect(() => {
+		if (seat !== '') {
+			dispatch(updateSeats(+seat))
+		}
+	}, [])
 
 	return (
 		<div className={cn('flex flex-col gap-7', { 'min-h-[65vh]': vehicleData.seat === 0 })}>

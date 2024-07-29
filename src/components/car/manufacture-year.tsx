@@ -7,9 +7,11 @@ import { updateExcessLimit, updateVehicleManufactureYear } from '@/redux/slices'
 import { Label } from '../ui/label'
 import Image from 'next/image'
 import { assets } from '@/assets'
+import { useEffect } from 'react'
 
 export function ManufactureYear() {
 	const vehicleData = useAppSelector((state) => state.carInsurance)
+	const year = useAppSelector((state) => state.whitebookdetails.YearOfMake)
 
 	const dispatch = useAppDispatch()
 
@@ -20,6 +22,12 @@ export function ManufactureYear() {
 	for (let i = currentYear; i > currentYear - 30; i--) {
 		years.push(i + '')
 	}
+
+	useEffect(() => {
+		if (+year > currentYear - 30 && +year < currentYear) {
+			dispatch(updateVehicleManufactureYear(year))
+		}
+	}, [year])
 
 	useGSAP(() => {
 		if (vehicleData.year === 0) {

@@ -4,7 +4,7 @@ import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { Button, Input } from '../ui'
 import { updateValue } from '@/redux/slices'
-import { useState } from 'react'
+import { type ChangeEvent, useState } from 'react'
 import Image from 'next/image'
 import { assets } from '@/assets'
 
@@ -14,9 +14,15 @@ export function VehicleValue() {
 	const dispatch = useAppDispatch()
 
 	const [value, setValue] = useState<number>(vehicleData.value)
+	const [formattedValue, setFormattedValue] = useState<string>(vehicleData.value.toLocaleString())
+
 	const [accessoriesSumInsured, setAccessoriesSumInsured] = useState<number>(
 		+vehicleData.AcccessoriesSumInsured
 	)
+	const [formattedSum, setFormattedSum] = useState<string>(
+		vehicleData.AcccessoriesSumInsured.toLocaleString()
+	)
+
 	const [isSent, setIsSent] = useState<boolean>(false)
 
 	useGSAP(() => {
@@ -44,6 +50,36 @@ export function VehicleValue() {
 		}
 	})
 
+	function handleChange(e: ChangeEvent<HTMLInputElement>) {
+		let inputValue = e.target.value
+
+		// Remove any non-numeric characters
+		inputValue = inputValue.replace(/[^0-9]/g, '')
+
+		// Convert to number and format with commas
+		const numericValue = Number(inputValue)
+		const formattedValue = numericValue.toLocaleString()
+
+		setValue(numericValue)
+		setFormattedValue(formattedValue)
+		setIsSent(false) // Ensure you define and manage setIsSent accordingly
+	}
+
+	function handleEAChange(e: ChangeEvent<HTMLInputElement>) {
+		let inputValue = e.target.value
+
+		// Remove any non-numeric characters
+		inputValue = inputValue.replace(/[^0-9]/g, '')
+
+		// Convert to number and format with commas
+		const numericValue = Number(inputValue)
+		const formattedValue = numericValue.toLocaleString()
+
+		setAccessoriesSumInsured(numericValue)
+		setFormattedSum(formattedValue)
+		setIsSent(false) // Ensure you define and manage setIsSent accordingly
+	}
+
 	return (
 		<div
 			className={cn('flex flex-col gap-7', {
@@ -67,22 +103,21 @@ export function VehicleValue() {
 				<div className='flex-grow'>
 					<Input
 						placeholder='Vehicle Value'
-						type='number'
-						value={value !== 0 ? value : undefined}
-						onChange={(e) => {
-							setValue(+e.target.value)
-							setIsSent(false)
-						}}
+						value={
+							formattedValue !== '' && formattedValue !== '0'
+								? formattedValue
+								: undefined
+						}
+						onChange={handleChange}
 					/>
 				</div>
 				<div className='flex-grow'>
 					<Input
 						placeholder='Electrical Accessories'
-						value={accessoriesSumInsured !== 0 ? accessoriesSumInsured : undefined}
-						onChange={(e) => {
-							setAccessoriesSumInsured(+e.target.value)
-							setIsSent(false)
-						}}
+						value={
+							formattedSum !== '' && formattedSum !== '0' ? formattedSum : undefined
+						}
+						onChange={handleEAChange}
 					/>
 				</div>
 			</div>

@@ -18,7 +18,7 @@ export default function ConfirmPremiumDetails() {
 	const dateObject = new Date(+parts[2], +parts[1] - 1, +parts[0])
 	const startDatetimestamp = dateObject.getTime()
 
-	const endParts = vehicleData.policyStartDate.split('/')
+	const endParts = vehicleData.policyEndDate.split('/')
 	const endDateObject = new Date(+endParts[2], +endParts[1] - 1, +endParts[0])
 	const endDatetimestamp = endDateObject.getTime()
 

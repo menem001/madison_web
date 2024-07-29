@@ -6,12 +6,71 @@ import { CloudUpload, Info } from 'lucide-react'
 import { Label } from '../ui/label'
 import { Button, Input } from '../ui'
 import { useRouter } from 'next/navigation'
+import { useState } from 'react'
+import axios from 'axios'
+import { type WhiteBookResponse } from '@/services/models/common.models'
+import ClipLoader from 'react-spinners/ClipLoader'
+import { useAppDispatch } from '@/redux/hooks'
+import { storeWhiteBookData } from '@/redux/slices/whitebook-details'
 
 export default function OnboardingInfoPage() {
 	const route = useRouter()
 
+	const dispatch = useAppDispatch()
+
+	const [file, setFile] = useState<File | null>(null)
+	const [isLoading, setIsLoading] = useState<boolean>(false)
+
 	function getMotorDetails() {
-		route.push('/car-insurance/1')
+		if (file === null) {
+			alert('Upload your WhiteBook to autoFill')
+		} else if (file !== null) {
+			setIsLoading(true)
+			const request = new FormData()
+			request.append('file', file)
+			axios
+				.post<WhiteBookResponse>(
+					'http://13.201.115.50/api/V1/whitebook_parser/parse_user_vehicle_info/',
+					request
+				)
+				.then((response) => {
+					if (response.data) {
+						dispatch(
+							storeWhiteBookData({
+								Class: response.data.Class,
+								Colour: response.data.Colour,
+								CustomsClearanceNumber: response.data['Customs Clearance Number'],
+								EngineCapacity: response.data['Engine Capacity'],
+								EngineNumber: response.data['Engine Number'],
+								FirstRegistrationDate: response.data['First Registration Date'],
+								GVMkg: response.data['GVM kg'],
+								InterpolNumber: response.data['Interpol Number'],
+								Make: response.data.Make,
+								Model: response.data.Model,
+								ModelNumber: response.data['Model Number'],
+								NetWeight: response.data['Net Weight'],
+								PropelledBy: response.data['Propelled By'],
+								RegistrationAuthority: response.data['Registration Authority'],
+								RegistrationMark: response.data['Registration Mark'],
+								SeatingCapacity:
+									response.data['Seating Capacity'] === null
+										? ''
+										: response.data['Seating Capacity'],
+								VehicleCategory: response.data['Vehicle Category'],
+								VINChassisNumber: response.data['VIN/Chassis Number'],
+								YearOfMake: response.data['Year Of Make']
+							})
+						)
+						setIsLoading(false)
+						route.push('/car-insurance/1')
+					}
+				})
+				.catch((err) => {
+					alert(err)
+					setIsLoading(false)
+				})
+			// route.push('/car-insurance/1')
+		}
 	}
 
 	return (
@@ -33,17 +92,26 @@ export default function OnboardingInfoPage() {
 								classes='w-full rounded-md border-blue-450 border-dashed border-2 flex flex-col gap-2 items-center justify-center font-jakarta py-6'
 								id='fileUpload'
 								label='Drag and Drop Files Here'
-								name='file'>
+								name='file'
+								handleChange={(file: File) => {
+									setFile(file)
+								}}>
 								<CloudUpload
 									color='#1849D6'
 									height={36}
 									strokeWidth={2}
 									width={36}
 								/>
-								<h3 className='text-sm font-semibold'>
-									Drag your file(s) or{' '}
-									<span className='text-blue-450'>browse</span>
-								</h3>
+								{file === null ? (
+									<h3 className='text-sm font-semibold'>
+										Drag your file(s) or{' '}
+										<span className='text-blue-450'>browse</span>
+									</h3>
+								) : (
+									<h3 className='text-sm font-semibold'>
+										<span className='text-blue-450'>{file.name}</span>
+									</h3>
+								)}
 								<h4 className='text-sm text-gray-435'>Upload your Whitebook</h4>
 							</FileUploader>
 							<div className='flex flex-row items-center gap-2'>
@@ -91,7 +159,14 @@ export default function OnboardingInfoPage() {
 						className='w-full'
 						variant='bluebtn'
 						onClick={getMotorDetails}>
-						Submit
+						{isLoading ? (
+							<ClipLoader
+								color='#FFFFFF'
+								size={20}
+							/>
+						) : (
+							<span>Submit</span>
+						)}
 					</Button>
 				</div>
 			</div>

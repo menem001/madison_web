@@ -52,6 +52,7 @@ gsap.registerPlugin(TextPlugin)
 export function SelectMark() {
 	const vehicleData = useAppSelector((state) => state.carInsurance)
 	const appsData = useAppSelector((state) => state.apps)
+	const make = useAppSelector((state) => state.whitebookdetails.Make)
 
 	const dispatch = useAppDispatch()
 
@@ -63,7 +64,6 @@ export function SelectMark() {
 			gsap.from('.select', { y: 80, opacity: 0, duration: 0.5, delay: 1 })
 			gsap.to('.popular', { duration: 0.5, text: 'Popular Brands', delay: 1.5 })
 			gsap.from('.suggestedGrid1', { y: 80, opacity: 0, duration: 0.5, delay: 2 })
-			gsap.from('.suggestedGrid2', { y: 80, opacity: 0, duration: 0.5, delay: 2.5 })
 			gsap.to('.marktitle', { duration: 0.5, text: 'Select the Mark' })
 			gsap.to('.marksubtitle', {
 				duration: 0.5,
@@ -74,7 +74,6 @@ export function SelectMark() {
 			gsap.from('.select', { y: 80, opacity: 0, duration: 0.5 })
 			gsap.to('.popular', { duration: 0.5, text: 'Popular Brands' })
 			gsap.from('.suggestedGrid1', { y: 80, opacity: 0, duration: 0.5 })
-			gsap.from('.suggestedGrid2', { y: 80, opacity: 0, duration: 0.5 })
 			gsap.to('.marktitle', { duration: 0.5, text: 'Select the Mark' })
 			gsap.to('.marksubtitle', {
 				duration: 0.5,
@@ -90,6 +89,21 @@ export function SelectMark() {
 
 		if (markpos !== -1) {
 			dispatch(updateVehicleMark({ mark: motorListArr[markpos].label, makeID: makeID }))
+		}
+	}
+
+	function updateMarkFromName(make: string) {
+		const markpos = motorListArr.findIndex((item) => {
+			return item.label.toLowerCase() === make.toLowerCase()
+		})
+
+		if (markpos !== -1) {
+			dispatch(
+				updateVehicleMark({
+					mark: motorListArr[markpos].label,
+					makeID: motorListArr[markpos].value
+				})
+			)
 		}
 	}
 
@@ -109,6 +123,12 @@ export function SelectMark() {
 			}
 		})
 	}, [MotorMakeList, appsData.branchCode, appsData.insuranceID])
+
+	useEffect(() => {
+		if (motorListArr.length !== 0) {
+			updateMarkFromName(make)
+		}
+	}, [make, motorListArr])
 
 	return (
 		<div

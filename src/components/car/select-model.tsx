@@ -15,6 +15,7 @@ import { Skeleton } from '../ui/skeleton'
 export function SelectModel() {
 	const vehicleData = useAppSelector((state) => state.carInsurance)
 	const appsData = useAppSelector((state) => state.apps)
+	const model = useAppSelector((state) => state.whitebookdetails.Model)
 
 	const [getModel] = useGetMotorModelListMutation()
 
@@ -79,6 +80,18 @@ export function SelectModel() {
 		}
 	}
 
+	function updateModelByName(model: string) {
+		const pos = modelsList.findIndex((item) => {
+			return item.label.toLowerCase() === model.toLowerCase()
+		})
+
+		if (pos !== -1) {
+			dispatch(
+				updateVehicleModel({ model: modelsList[pos].label, modelID: modelsList[pos].value })
+			)
+		}
+	}
+
 	useEffect(() => {
 		const request = {
 			InsuranceId: appsData.insuranceID,
@@ -99,6 +112,12 @@ export function SelectModel() {
 			}
 		})
 	}, [appsData.branchCode, appsData.insuranceID, getModel, vehicleData.makeID])
+
+	useEffect(() => {
+		if (modelsList.length !== 0) {
+			updateModelByName(model)
+		}
+	}, [model, modelsList])
 
 	return (
 		<div className={cn('flex flex-col gap-7', { 'min-h-[65vh]': vehicleData.model === '' })}>

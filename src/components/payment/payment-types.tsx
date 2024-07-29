@@ -4,11 +4,42 @@ import { useGetPaymentTypesMutation } from '@/redux/api/commonApi'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs'
 import { CardDetails } from './card-details'
 import { useEffect, useState } from 'react'
+import { useMakePaymentMutation } from '@/redux/api/paymentApi'
+import { useAppSelector } from '@/redux/hooks'
 // import { QRDetails } from './qr-details'
 
 export function PaymentTypes() {
 	const [getPayment] = useGetPaymentTypesMutation()
 	const [paymentTypes, setPaymentTypes] = useState<{ value: string; label: string }[]>([])
+	const [makePayment] = useMakePaymentMutation()
+
+	const appData = useAppSelector((state) => state.apps)
+	const QuoteNo = useAppSelector((state) => state.motor.QuoteNo)
+	const Premium = useAppSelector((state) => state.premiummotor.premiumIncludedTaxLC)
+	const PremiumEA = useAppSelector((state) => state.premiummotor.EAPremiumIncluedTaxLC)
+
+	function getMakePaymentDetails() {
+		const total = Premium + PremiumEA
+		const fixedTotal = total.toFixed(2)
+		const request = {
+			CreatedBy: appData.loginId,
+			EmiYn: 'N',
+			InstallmentMonth: null,
+			InstallmentPeriod: null,
+			InsuranceId: appData.insuranceID,
+			Premium: fixedTotal,
+			QuoteNo: QuoteNo,
+			Remarks: 'Testing',
+			SubUserType: 'b2c',
+			UserType: 'User'
+		}
+		makePayment(request)
+		// response.then((value) => {
+		// 	if (value.data?.type === 'success' && value.data.data?.Result !== null) {
+		// 		console.log(value.data.data?.Result.PaymentId)
+		// 	}
+		// })
+	}
 
 	useEffect(() => {
 		const tempArr: { value: string; label: string }[] = []
@@ -32,6 +63,7 @@ export function PaymentTypes() {
 					})
 				})
 				setPaymentTypes(tempArr)
+				getMakePaymentDetails()
 			}
 		})
 	}, [])

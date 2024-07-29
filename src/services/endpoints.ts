@@ -26,6 +26,7 @@ const endPoints = {
 	registrationToken: 'EwayCommonApi/madison/get/token',
 	registrationDetails: 'EwayCommonApi/madison/get/RegDetails',
 	vehicleList: 'EwayCommonApi/madison/get/Rtsalist',
-	paymentTypes: 'EwayCommonApi/master/dropdown/paymenttypes'
+	paymentTypes: 'EwayCommonApi/master/dropdown/paymenttypes',
+	makePayment: 'EwayCommonApi/payment/makepayment'
 }
 export default endPoints

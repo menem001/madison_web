@@ -1508,3 +1508,27 @@ export const paymentTypesResSchema = z.object({
 })
 
 export type PaymentTypeRes = z.infer<typeof paymentTypesResSchema>
+
+export const whiteBookResponseSchema = z.object({
+	'VIN/Chassis Number': z.string(),
+	'Registration Mark': z.string(),
+	'Engine Number': z.string(),
+	Make: z.string(),
+	Model: z.string(),
+	'Model Number': z.string(),
+	Colour: z.string(),
+	'Vehicle Category': z.string(),
+	'Propelled By': z.string(),
+	'Net Weight': z.string(),
+	'GVM kg': z.string(),
+	Class: z.string(),
+	'Engine Capacity': z.string(),
+	'Seating Capacity': z.string().nullable(),
+	'Registration Authority': z.string(),
+	'Year Of Make': z.string(),
+	'First Registration Date': z.string(),
+	'Customs Clearance Number': z.string(),
+	'Interpol Number': z.string()
+})
+
+export type WhiteBookResponse = z.infer<typeof whiteBookResponseSchema>
