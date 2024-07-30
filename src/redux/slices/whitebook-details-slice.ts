@@ -19,7 +19,8 @@ const initialState: WhiteBookDetails = {
 	YearOfMake: '',
 	FirstRegistrationDate: '',
 	CustomsClearanceNumber: '',
-	InterpolNumber: ''
+	InterpolNumber: '',
+	CurrentLinenseExpDate: ''
 }
 
 export type WhiteBookDetails = {
@@ -42,6 +43,7 @@ export type WhiteBookDetails = {
 	FirstRegistrationDate: string
 	CustomsClearanceNumber: string
 	InterpolNumber: string
+	CurrentLinenseExpDate: string
 }
 
 export const whiteBookDetailsSlice = createSlice({
@@ -68,6 +70,7 @@ export const whiteBookDetailsSlice = createSlice({
 			state.FirstRegistrationDate = action.payload.FirstRegistrationDate
 			state.CustomsClearanceNumber = action.payload.CustomsClearanceNumber
 			state.InterpolNumber = action.payload.InterpolNumber
+			state.CurrentLinenseExpDate = action.payload.CurrentLinenseExpDate
 		}
 	}
 })

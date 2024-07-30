@@ -39,6 +39,12 @@ export function DetailsPage() {
 	}
 
 	useEffect(() => {
+		if (appData.token !== '') {
+			setToken(appData.token)
+		}
+	}, [appData.token])
+
+	useEffect(() => {
 		scrollToBottom()
 	}, [vehicleData])
 
@@ -83,7 +89,9 @@ export function DetailsPage() {
 	}
 
 	useEffect(() => {
-		loginAsGuest()
+		if (appData.token === '') {
+			loginAsGuest()
+		}
 	}, [])
 
 	return (

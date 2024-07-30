@@ -32,9 +32,7 @@ const formSchema = z.object({
 	engineCapacity: z.string().min(1, {
 		message: 'Please enter Engine Capacity'
 	}),
-	color: z.string().min(1, {
-		message: 'Please Select Color'
-	})
+	color: z.string().optional()
 })
 
 export function MotorDetailsField(props: motorDetailsFieldProps) {
@@ -79,7 +77,7 @@ export function MotorDetailsField(props: motorDetailsFieldProps) {
 				chassisNumber: values.chassisNo,
 				engineNumber: values.engineNo,
 				engineCapacity: values.engineCapacity,
-				color: values.color
+				color: values.color ? values.color : ''
 			})
 		)
 		props.goNext()
@@ -233,9 +231,7 @@ export function MotorDetailsField(props: motorDetailsFieldProps) {
 								name='color'
 								render={({ field }) => (
 									<FormItem className='w-full'>
-										<FormLabel>
-											Color<span className='text-red-500'>*</span>
-										</FormLabel>
+										<FormLabel>Color</FormLabel>
 										<FormControl>
 											{colors.length === 0 ? (
 												<Skeleton className='h-10 w-full' />

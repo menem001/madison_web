@@ -35,6 +35,12 @@ export const RegistrationDetailResponseSchema = z.object({
 
 export type RegistrationDetailResponse = z.infer<typeof RegistrationDetailResponseSchema>
 
+export const vehicleDataRequestSchema = z.object({
+	RegNo: z.string()
+})
+
+export type VehicleDetailRequest = z.infer<typeof vehicleDataRequestSchema>
+
 export const VehicleListResponseSchema = z.object({
 	Message: z.string(),
 	IsError: z.boolean(),

@@ -1,5 +1,6 @@
 import api, { type TResponse } from '@/lib/api'
 import {
+	type RegistrationDetailRequest,
 	type RegistrationDetailResponse,
 	RegistrationDetailResponseSchema,
 	RegistrationResponseSchema,
@@ -8,7 +9,6 @@ import {
 	VehicleListResponseSchema
 } from './models/registration.models'
 import endPoints from './endpoints'
-import { type DocumentTypeRequest } from './models/common.models'
 
 export type RegistrationToken = TResponse<RegistrationTokenResponse>
 
@@ -20,16 +20,28 @@ export async function getRegistrationToken(token: string | null) {
 
 export type RegistrationDetail = TResponse<RegistrationDetailResponse>
 
-export async function getRegistrationDetails(data: DocumentTypeRequest, token: string | null) {
-	return api.post(endPoints.registrationDetails, data, RegistrationDetailResponseSchema, {
-		headers: { Authorization: token }
-	})
+export async function getRegistrationDetails(
+	data: RegistrationDetailRequest,
+	token: string | null
+) {
+	return api.post<RegistrationDetailResponse>(
+		endPoints.registrationDetails,
+		data,
+		RegistrationDetailResponseSchema,
+		{
+			headers: { Authorization: token }
+		}
+	)
 }
 
 export type VehicleList = TResponse<VehicleListResponse>
 
-export async function getVehicleLists(token: string | null) {
-	return api.get(endPoints.vehicleList, VehicleListResponseSchema, {
+export type RegReq = {
+	RegNo: string
+}
+
+export async function getVehicleLists(data: RegReq, token: string | null) {
+	return api.get(endPoints.vehicleList + '?RegNo=' + data.RegNo, VehicleListResponseSchema, {
 		headers: { Authorization: token }
 	})
 }

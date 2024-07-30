@@ -1,7 +1,8 @@
 import {
 	type VehicleList,
 	type RegistrationDetail,
-	type RegistrationToken
+	type RegistrationToken,
+	type RegReq
 } from '@/services/registration.services'
 import type { Action, PayloadAction } from '@reduxjs/toolkit'
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
@@ -54,18 +55,26 @@ export const registrationApi = createApi({
 				headers: { Authorization: `Bearer ${store.getState().apps.token}` }
 			})
 		}),
-		getVehicleList: build.query<VehicleList, void>({
-			query: (): {
+		getVehicleList: build.query<VehicleList, RegReq>({
+			query: (
+				data
+			): {
 				url: string
 				method: string
+				body: RegReq
 				headers: { Authorization: string }
 			} => ({
 				url: 'get_vehicle_List',
 				method: 'POST',
+				body: data,
 				headers: { Authorization: `Bearer ${store.getState().apps.token}` }
 			})
 		})
 	})
 })
 
-export const { useGetRegistrationDetailsMutation, useGetRegistrationTokenQuery } = registrationApi
+export const {
+	useGetRegistrationDetailsMutation,
+	useGetRegistrationTokenQuery,
+	useGetVehicleListQuery
+} = registrationApi

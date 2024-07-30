@@ -2,8 +2,8 @@ import type { Action, PayloadAction } from '@reduxjs/toolkit'
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { HYDRATE } from 'next-redux-wrapper'
 import { store } from '../store'
-import { type MakePaymentResponse } from '@/services/payment.services'
-import { type MakePaymentReq } from '@/services/models/payment.models'
+import { type InsertPaymentResponse, type MakePaymentResponse } from '@/services/payment.services'
+import { type InsertPaymentReq, type MakePaymentReq } from '@/services/models/payment.models'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type RootState = any // normally inferred from state
@@ -38,8 +38,23 @@ export const paymentApi = createApi({
 				body: data,
 				headers: { Authorization: `Bearer ${store.getState().apps.token}` }
 			})
+		}),
+		insertPayment: build.mutation<InsertPaymentResponse, InsertPaymentReq>({
+			query: (
+				data
+			): {
+				url: string
+				method: string
+				body: InsertPaymentReq
+				headers: { Authorization: string }
+			} => ({
+				url: 'insert_payment',
+				method: 'POST',
+				body: data,
+				headers: { Authorization: `Bearer ${store.getState().apps.token}` }
+			})
 		})
 	})
 })
 
-export const { useMakePaymentMutation } = paymentApi
+export const { useMakePaymentMutation, useInsertPaymentMutation } = paymentApi

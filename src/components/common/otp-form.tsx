@@ -6,7 +6,8 @@ import { InputOTP, InputOTPGroup, InputOTPSlot } from '../ui/input-otp'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
 import { useGenerateOTPMutation, useVerifyOTPMutation } from '@/redux/api/commonApi'
 import { useState } from 'react'
-import { setGuestLoginDetails, setOTPToken } from '@/redux/slices'
+import { setGuestLoginDetails, setOTPToken, updateMobile } from '@/redux/slices'
+import { cn } from '@/lib'
 
 export function OtpForm() {
 	const route = useRouter()
@@ -16,6 +17,8 @@ export function OtpForm() {
 	const appData = useAppSelector((state) => state.apps)
 
 	const dispatch = useAppDispatch()
+
+	const [curMobile, setCurMobile] = useState<string>(customerData.mobile)
 
 	const [otpDisplay, setOtpDisplay] = useState<string>('')
 	const [otp, setOtp] = useState<number>(0)
@@ -110,23 +113,45 @@ export function OtpForm() {
 					To buy the policy, Please enter the OTP here from SMS
 				</h3>
 			</div>
-			<div className='flex flex-row items-center gap-2 text-gray-400'>
+			<div
+				className={cn('flex flex-row items-center gap-2 text-gray-400', {
+					'flex-col': editNumber
+				})}>
 				Enter OTP sent to{' '}
 				{editNumber ? (
-					<Input
-						placeholder='Enter Mobile Number'
-						value={customerData.mobile}
-					/>
+					<>
+						<Input
+							placeholder='Enter Mobile Number'
+							type='number'
+							value={curMobile}
+							onChange={(e) => {
+								setCurMobile(e.target.value)
+							}}
+						/>
+						<Button
+							disabled={curMobile.length !== 10}
+							variant='bluebtn'
+							onClick={() => {
+								if (curMobile.length === 10) {
+									dispatch(updateMobile(curMobile))
+									setEditNumber(false)
+								}
+							}}>
+							Save
+						</Button>
+					</>
 				) : (
 					<span className='text-blue-300'>{customerData.mobile}</span>
 				)}{' '}
-				<span
-					className='cursor-pointer text-xs underline'
-					onClick={() => {
-						setEditNumber(true)
-					}}>
-					edit
-				</span>
+				{!editNumber && (
+					<span
+						className='cursor-pointer text-xs underline'
+						onClick={() => {
+							setEditNumber(true)
+						}}>
+						edit
+					</span>
+				)}
 			</div>
 			{otpDisplay && (
 				<h3>

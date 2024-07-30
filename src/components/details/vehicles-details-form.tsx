@@ -35,7 +35,7 @@ export function VehicleDetailsForm() {
 			Insuranceid: appsData.insuranceID,
 			BranchCode: appsData.branchCode,
 			Chassisnumber: vehicleData.chassisNumber,
-			Color: vehicleData.color,
+			Color: vehicleData.color !== '' ? vehicleData.color : 'Orange',
 			CreatedBy: appsData.loginId,
 			EngineNumber: vehicleData.engineNumber,
 			Grossweight: null,

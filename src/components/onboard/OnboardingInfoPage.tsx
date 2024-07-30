@@ -6,12 +6,20 @@ import { CloudUpload, Info } from 'lucide-react'
 import { Label } from '../ui/label'
 import { Button, Input } from '../ui'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { type WhiteBookResponse } from '@/services/models/common.models'
 import ClipLoader from 'react-spinners/ClipLoader'
 import { useAppDispatch } from '@/redux/hooks'
 import { storeWhiteBookData } from '@/redux/slices/whitebook-details-slice'
+import {
+	useGetRegistrationDetailsMutation,
+	useGetRegistrationTokenQuery,
+	useGetVehicleListQuery
+} from '@/redux/api/registrationApi'
+import { useGuestLoginMutation } from '@/redux/api/commonApi'
+import { setGuestLoginDetails } from '@/redux/slices'
+import { skipToken } from '@reduxjs/toolkit/query'
 
 export default function OnboardingInfoPage() {
 	const route = useRouter()
@@ -21,9 +29,137 @@ export default function OnboardingInfoPage() {
 	const [file, setFile] = useState<File | null>(null)
 	const [isLoading, setIsLoading] = useState<boolean>(false)
 
+	const [registrationNumber, setRegistrationNumber] = useState<string>('')
+
+	const [shouldFetch, setShouldFetch] = useState(false)
+
+	const [guestLogin] = useGuestLoginMutation()
+
+	const { data: TokenData, refetch } = useGetRegistrationTokenQuery()
+
+	const [token, setToken] = useState<string>('')
+
+	const [getRegistrationDetails] = useGetRegistrationDetailsMutation()
+	const [req, setReq] = useState<{ RegNo: string }>({
+		RegNo: ''
+	})
+	const { data: vehicleDetails } = useGetVehicleListQuery(shouldFetch ? req : skipToken)
+
+	const [showError, setShowError] = useState<boolean>(false)
+
+	function loginAsGuest() {
+		const res = guestLogin()
+		res.then((value) => {
+			if (value.data?.type === 'success' && value.data?.data !== undefined) {
+				const details = {
+					token: value.data.data.Result.Token,
+					loginId: value.data.data.Result.LoginId,
+					userType: value.data.data.Result.UserType,
+					subUserType: value.data.data.Result.SubUserType,
+					brokerCode: value.data.data.Result.LoginBranchDetails[0].BrokerBranchCode,
+					insuranceID: value.data.data.Result.LoginBranchDetails[0].InsuranceId,
+					branchCode: value.data.data.Result.LoginBranchDetails[0].BranchCode,
+					productId: value.data.data.Result.BrokerCompanyProducts[0].ProductId,
+					CustomerCode: value.data.data.Result.CustomerCode,
+					agencyCode: value.data.data.Result.OaCode
+				}
+				dispatch(setGuestLoginDetails(details))
+			}
+		}).then(() => {
+			if (!TokenData) {
+				refetch()
+			}
+		})
+	}
+
+	useEffect(() => {
+		loginAsGuest()
+	}, [])
+
+	useEffect(() => {
+		setReq({
+			RegNo: registrationNumber
+		})
+	}, [registrationNumber])
+
+	useEffect(() => {
+		if (
+			TokenData?.type === 'success' &&
+			TokenData.data &&
+			TokenData.data?.Result.length !== 0
+		) {
+			const tokenid = TokenData.data?.Result[0].token
+			setToken(tokenid)
+		}
+	}, [TokenData])
+
+	function getDataInserted() {
+		if (token !== '' && registrationNumber.length === 9) {
+			const request = {
+				RegNo: registrationNumber,
+				RequestToken: token
+			}
+			const res = getRegistrationDetails(request)
+			res.then((value) => {
+				if (
+					value.data?.type === 'success' &&
+					value.data?.data !== undefined &&
+					value.data.data.Result === 'Inserted Successfully......'
+				) {
+					setShouldFetch(true)
+				} else if (
+					value.data?.type === 'success' &&
+					value.data?.data !== undefined &&
+					value.data.data.Result ===
+						'Vehicle record was not found. Please contact the RTSA Call Centre to resolve this.'
+				) {
+					setShowError(true)
+				}
+			})
+		}
+	}
+
+	useEffect(() => {
+		if (
+			vehicleDetails?.type === 'success' &&
+			vehicleDetails.data &&
+			vehicleDetails.data.Result.length !== 0
+		) {
+			const result = vehicleDetails.data.Result[0]
+			dispatch(
+				storeWhiteBookData({
+					Class: '',
+					Colour: result.Color,
+					CustomsClearanceNumber: '',
+					EngineCapacity: '',
+					EngineNumber: result.EngineNo,
+					FirstRegistrationDate: result.FirstRegDate,
+					GVMkg: '',
+					InterpolNumber: '',
+					Make: result.MakeName,
+					Model: result.ModelName,
+					ModelNumber: '',
+					NetWeight: '',
+					PropelledBy: '',
+					RegistrationAuthority: '',
+					RegistrationMark: result.Registration_No,
+					SeatingCapacity: result.NumberOfSeats === null ? '' : result.NumberOfSeats,
+					VehicleCategory: result.BodyType,
+					VINChassisNumber: result.ChassisNo,
+					YearOfMake: result.YearMake,
+					CurrentLinenseExpDate: result.CurrentLinenseExpDate
+				})
+			)
+			setShouldFetch(false)
+			route.push('/car-insurance/1')
+		}
+	}, [vehicleDetails])
+
 	function getMotorDetails() {
-		if (file === null) {
-			alert('Upload your WhiteBook to autoFill')
+		if (file === null && registrationNumber === '') {
+			alert('Upload your WhiteBook or registrationNumber to autoFill')
+		} else if (file === null && registrationNumber.length === 9) {
+			getDataInserted()
 		} else if (file !== null) {
 			setIsLoading(true)
 			const request = new FormData()
@@ -61,7 +197,8 @@ export default function OnboardingInfoPage() {
 									' ',
 									''
 								),
-								YearOfMake: response.data['Year Of Make']
+								YearOfMake: response.data['Year Of Make'],
+								CurrentLinenseExpDate: ''
 							})
 						)
 						setIsLoading(false)
@@ -72,7 +209,6 @@ export default function OnboardingInfoPage() {
 					alert(err)
 					setIsLoading(false)
 				})
-			// route.push('/car-insurance/1')
 		}
 	}
 
@@ -142,9 +278,23 @@ export default function OnboardingInfoPage() {
 							<Label htmlFor='registrationNo'>Registration number</Label>
 							<Input
 								className='w-full'
+								disabled={file !== null}
 								id='registrationNo'
 								placeholder='Enter your registration number'
+								onChange={(e) => {
+									setRegistrationNumber(e.target.value)
+
+									if (showError) {
+										setShowError(false)
+									}
+								}}
 							/>
+							{showError && (
+								<div className='font-roboto text-xs text-red-500'>
+									Vehicle record was not found. Please contact the RTSA Call
+									Centre to resolve this. Enter a valid RegistrationID
+								</div>
+							)}
 							<div className='flex flex-row items-center gap-2'>
 								<Info
 									color='#337AB7'
