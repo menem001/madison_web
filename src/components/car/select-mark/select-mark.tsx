@@ -122,7 +122,7 @@ export function SelectMark() {
 				setmotorListArr(tempArr)
 			}
 		})
-	}, [MotorMakeList, appsData.branchCode, appsData.insuranceID])
+	}, [])
 
 	useEffect(() => {
 		if (motorListArr.length !== 0) {

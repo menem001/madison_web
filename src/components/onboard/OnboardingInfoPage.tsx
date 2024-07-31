@@ -2,7 +2,7 @@
 
 import { FileUploader } from 'react-drag-drop-files'
 import OnboardingLayout from './OnboardingLayout'
-import { CloudUpload, Info } from 'lucide-react'
+import { CloudUpload, Info, X } from 'lucide-react'
 import { Label } from '../ui/label'
 import { Button, Input } from '../ui'
 import { useRouter } from 'next/navigation'
@@ -247,8 +247,18 @@ export default function OnboardingInfoPage() {
 										<span className='text-blue-450'>browse</span>
 									</h3>
 								) : (
-									<h3 className='text-sm font-semibold'>
+									<h3 className='flex items-center gap-2 text-sm font-semibold'>
 										<span className='text-blue-450'>{file.name}</span>
+										<div
+											className='cursor-pointer'
+											onClick={() => {
+												setFile(null)
+											}}>
+											<X
+												height={14}
+												width={14}
+											/>
+										</div>
 									</h3>
 								)}
 								<h4 className='text-sm text-gray-435'>Upload your Whitebook</h4>
