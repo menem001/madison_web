@@ -41,7 +41,7 @@ export function AddressDetailsField(props: addressDetailsFieldProps) {
 			workaddress: customerData.workAddress
 		}
 	})
-	const [cityName, setCityName] = useState<string>('')
+	const [cityName, setCityName] = useState<string>(customerData.cityName)
 
 	const [cityList, setCityList] = useState<{ value: string; label: string }[]>([])
 

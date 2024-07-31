@@ -9,9 +9,11 @@ import { Button } from '../ui'
 import { useSaveVehicleInfoMutation } from '@/redux/api/commonApi'
 import { useAppSelector } from '@/redux/hooks'
 import { useToast } from '../ui/use-toast'
+import ClipLoader from 'react-spinners/ClipLoader'
 
 export function VehicleDetailsForm() {
 	const [current, setCurrent] = useState(1)
+	const [isLoading, setIsLoading] = useState(false)
 	const customerData = useAppSelector((state) => state.customerDetails)
 	const vehicleData = useAppSelector((state) => state.carInsurance)
 	const appsData = useAppSelector((state) => state.apps)
@@ -31,6 +33,7 @@ export function VehicleDetailsForm() {
 	const [saveCustomerData] = useSaveVehicleInfoMutation()
 
 	function navigateToPay() {
+		setIsLoading(true)
 		const req = {
 			Insuranceid: appsData.insuranceID,
 			BranchCode: appsData.branchCode,
@@ -61,6 +64,7 @@ export function VehicleDetailsForm() {
 				value.data.data !== undefined &&
 				value.data.data.Result !== null
 			) {
+				setIsLoading(false)
 				route.push('/car-insurance/payment/confirm')
 			} else if (
 				value.data?.type === 'success' &&
@@ -69,12 +73,14 @@ export function VehicleDetailsForm() {
 				value.data.data.ErrorMessage !== null &&
 				value.data.data.ErrorMessage.length !== 0
 			) {
+				setIsLoading(false)
 				toast({
 					variant: 'destructive',
 					title: 'Uh oh! Something went wrong.',
 					description: value.data.data.ErrorMessage[0].Message
 				})
 			} else {
+				setIsLoading(false)
 				toast({
 					variant: 'destructive',
 					title: 'Uh oh! Something went wrong.',
@@ -124,7 +130,14 @@ export function VehicleDetailsForm() {
 				<Button
 					variant='bluebtn'
 					onClick={navigateToPay}>
-					Submit
+					{isLoading ? (
+						<ClipLoader
+							color='#FFFFFF'
+							size={20}
+						/>
+					) : (
+						<span>Submit</span>
+					)}
 				</Button>
 			)}
 		</section>

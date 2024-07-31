@@ -11,11 +11,13 @@ import { useBuyPolicyMutation, useSaveCustomerDetailsMutation } from '@/redux/ap
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
 import { updateQuoteDetails } from '@/redux/slices/motor-detail.slice'
 import { useToast } from '../ui/use-toast'
+import ClipLoader from 'react-spinners/ClipLoader'
 
 export function CustomerDetailsForm() {
 	const [current, setCurrent] = useState(1)
 
 	const [saveCustomerDetails] = useSaveCustomerDetailsMutation()
+	const [isLoading, setIsLoading] = useState(false)
 
 	const customerData = useAppSelector((state) => state.customerDetails)
 	const appData = useAppSelector((state) => state.apps)
@@ -39,6 +41,7 @@ export function CustomerDetailsForm() {
 	}
 
 	function navigateToVehicle() {
+		setIsLoading(true)
 		const req = {
 			BrokerBranchCode: appData.brokerCode,
 			CustomerReferenceNo: motorData.CustomerReferenceNo,
@@ -110,12 +113,14 @@ export function CustomerDetailsForm() {
 				value.data.data.ErrorMessage !== null &&
 				value.data.data.ErrorMessage.length !== 0
 			) {
+				setIsLoading(false)
 				toast({
 					variant: 'destructive',
 					title: 'Uh oh! Something went wrong.',
 					description: value.data.data.ErrorMessage[0].Message
 				})
 			} else {
+				setIsLoading(false)
 				toast({
 					variant: 'destructive',
 					title: 'Uh oh! Something went wrong.',
@@ -153,6 +158,7 @@ export function CustomerDetailsForm() {
 						QuoteNo: value.data.data.Result.QuoteNo
 					})
 				)
+				setIsLoading(false)
 				route.push('/car-insurance/details/vehicle-details')
 			} else if (
 				value.data?.type === 'success' &&
@@ -161,12 +167,14 @@ export function CustomerDetailsForm() {
 				value.data.data.ErrorMessage !== null &&
 				value.data.data.ErrorMessage.length !== 0
 			) {
+				setIsLoading(false)
 				toast({
 					variant: 'destructive',
 					title: 'Uh oh! Something went wrong.',
 					description: value.data.data.ErrorMessage[0].Message
 				})
 			} else {
+				setIsLoading(false)
 				toast({
 					variant: 'destructive',
 					title: 'Uh oh! Something went wrong.',
@@ -222,7 +230,14 @@ export function CustomerDetailsForm() {
 				<Button
 					variant='bluebtn'
 					onClick={navigateToVehicle}>
-					Submit
+					{isLoading ? (
+						<ClipLoader
+							color='#FFFFFF'
+							size={20}
+						/>
+					) : (
+						<span>Submit</span>
+					)}
 				</Button>
 			)}
 		</section>

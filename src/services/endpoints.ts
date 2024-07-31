@@ -28,6 +28,7 @@ const endPoints = {
 	vehicleList: 'EwayCommonApi/madison/get/Rtsalist',
 	paymentTypes: 'EwayCommonApi/master/dropdown/paymenttypes',
 	makePayment: 'EwayCommonApi/payment/makepayment',
-	insertPayment: 'EwayCommonApi/payment/insertpaymentdetails'
+	insertPayment: 'EwayCommonApi/payment/insertpaymentdetails',
+	saveDriver: 'EwayMotorApi/api/savemotordrivers'
 }
 export default endPoints

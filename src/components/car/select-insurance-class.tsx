@@ -85,6 +85,10 @@ export function SelectInsuranceClass() {
 	useEffect(() => {
 		setIclass(+vehicleData.classID)
 		setIclassName(vehicleData.insuranceClass)
+
+		if (!vehicleData.policyStartDate) {
+			dispatch(updatePolicyStartDate(formatDateDDMMYYYY(date)))
+		}
 	}, [])
 
 	useEffect(() => {

@@ -5,9 +5,16 @@ import { FormFieldLayout } from './form-field-layout'
 import { useEffect, useState } from 'react'
 import { cn } from '@/lib'
 import { updateAdditionalDetails, updatePremium } from '@/redux/slices'
-import { useGetBankListMutation, useSaveMotorDetailsMutation } from '@/redux/api/commonApi'
+import {
+	useGetBankListMutation,
+	useSaveDriverMutation,
+	useSaveMotorDetailsMutation
+} from '@/redux/api/commonApi'
 import { useToast } from '../ui/use-toast'
-import { type SaveMotorDetailRequest } from '@/services/models/common.models'
+import {
+	type SaveDriverRequest,
+	type SaveMotorDetailRequest
+} from '@/services/models/common.models'
 import { updateDetails } from '@/redux/slices/motor-detail.slice'
 import { Skeleton } from '../ui/skeleton'
 
@@ -20,6 +27,8 @@ type additionalVehicleInfoProps = {
 
 export function AdditionalVehicleInfo(props: additionalVehicleInfoProps) {
 	const vehicleData = useAppSelector((state) => state.carInsurance)
+	const QuoteNo = useAppSelector((state) => state.motor.QuoteNo)
+	const reqRefNo = useAppSelector((state) => state.motor.RequestReferenceNo)
 	const [driverName, setDeiverName] = useState<string>(vehicleData.DriverName)
 	const [driverLicense, setDriverLicense] = useState<string>(vehicleData.DriverID)
 	const [isLeased, setIsLeased] = useState<boolean>(vehicleData.leased)
@@ -37,11 +46,14 @@ export function AdditionalVehicleInfo(props: additionalVehicleInfoProps) {
 	const { toast } = useToast()
 
 	const [saveMotor] = useSaveMotorDetailsMutation()
+	const [saveDriver] = useSaveDriverMutation()
 
 	const dispatch = useAppDispatch()
 	const [getBankList] = useGetBankListMutation()
 
 	function onSubmit() {
+		saveDriverDetails()
+
 		if (isLeased) {
 			doSaveMotorDetails()
 		}
@@ -55,6 +67,55 @@ export function AdditionalVehicleInfo(props: additionalVehicleInfoProps) {
 			})
 		)
 		props.goNext()
+	}
+
+	function saveDriverDetails() {
+		const req: SaveDriverRequest = [
+			{
+				CreatedBy: customerData.name,
+				DriverDob: '09/07/2006',
+				DriverName: driverName,
+				DriverType: '1',
+				LicenseNo: driverLicense,
+				QuoteNo: QuoteNo,
+				RiskId: '1',
+				RequestReferenceNo: reqRefNo,
+				MaritalStatus: null,
+				CountryId: null,
+				StateId: null,
+				CityId: null,
+				AreaGroup: null,
+				DriverExperience: null,
+				LicenseIssueDt: null,
+				Gender: null
+			}
+		]
+		const res = saveDriver(req)
+		res.then((value) => {
+			if (
+				value.data?.type === 'success' &&
+				value.data.data !== undefined &&
+				value.data.data.IsError !== true &&
+				value.data.data.Result !== null
+			) {
+				toast({
+					variant: 'default',
+					title: 'Driver Details Updated'
+				})
+			} else if (
+				value.data?.type === 'success' &&
+				value.data.data !== undefined &&
+				value.data.data.IsError === true &&
+				value.data.data.ErrorMessage !== null &&
+				value.data.data.ErrorMessage.length !== 0
+			) {
+				toast({
+					variant: 'destructive',
+					title: 'Uh oh! Something went wrong.',
+					description: value.data.data.ErrorMessage[0].Message
+				})
+			}
+		})
 	}
 
 	function doSaveMotorDetails() {

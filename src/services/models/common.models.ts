@@ -1534,3 +1534,38 @@ export const whiteBookResponseSchema = z.object({
 })
 
 export type WhiteBookResponse = z.infer<typeof whiteBookResponseSchema>
+
+export const saveDriverRequestSchema = z.array(
+	z.object({
+		CreatedBy: z.string(),
+		DriverDob: z.string(),
+		DriverName: z.string(),
+		DriverType: z.string(),
+		LicenseNo: z.string(),
+		QuoteNo: z.string(),
+		RiskId: z.string(),
+		RequestReferenceNo: z.string(),
+		MaritalStatus: z.string().nullable(),
+		CountryId: z.string().nullable(),
+		StateId: z.string().nullable(),
+		CityId: z.string().nullable(),
+		AreaGroup: z.string().nullable(),
+		DriverExperience: z.string().nullable(),
+		LicenseIssueDt: z.string().nullable(),
+		Gender: z.string().nullable()
+	})
+)
+
+export type SaveDriverRequest = z.infer<typeof saveDriverRequestSchema>
+
+export const saveDriverResSchema = z.object({
+	Message: z.string(),
+	IsError: z.boolean(),
+	ErrorMessage: z.any().nullable(),
+	Result: z.object({
+		Response: z.string()
+	}),
+	ErroCode: z.number()
+})
+
+export type SaveDriverRes = z.infer<typeof saveDriverResSchema>
