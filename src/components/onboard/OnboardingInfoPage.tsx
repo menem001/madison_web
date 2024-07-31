@@ -168,7 +168,7 @@ export default function OnboardingInfoPage() {
 			request.append('file', file)
 			axios
 				.post<WhiteBookResponse>(
-					'http://13.201.115.50/api/V1/whitebook_parser/parse_user_vehicle_info/',
+					'https://whitebook.arunkarthik.pro/api/V1/whitebook_parser/parse_user_vehicle_info/',
 					request
 				)
 				.then((response) => {
