@@ -99,6 +99,7 @@ export default function OnboardingInfoPage() {
 				RegNo: registrationNumber,
 				RequestToken: token
 			}
+			setIsLoading(true)
 			const res = getRegistrationDetails(request)
 			res.then((value) => {
 				if (
@@ -151,6 +152,7 @@ export default function OnboardingInfoPage() {
 				})
 			)
 			setShouldFetch(false)
+			setIsLoading(false)
 			route.push('/car-insurance/1')
 		}
 	}, [vehicleDetails])
