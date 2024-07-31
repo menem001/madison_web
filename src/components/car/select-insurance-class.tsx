@@ -2,6 +2,7 @@ import { useAppDispatch, useAppSelector } from '@/redux/hooks'
 import {
 	updateClass,
 	updateCurrency,
+	updatePolicyDaysCount,
 	updatePolicyEndDate,
 	updatePolicyStartDate
 } from '@/redux/slices'
@@ -20,7 +21,7 @@ import {
 	SelectValue
 } from '../ui'
 import 'react-datepicker/dist/react-datepicker.css'
-import { cn, formatDateDDMMYYYY, removeParenthesis } from '@/lib'
+import { cn, formatDateDDMMYYYY, getDataWithinParenthesis, removeParenthesis } from '@/lib'
 import { Calendar } from '../ui/calendar'
 import { CalendarDays } from 'lucide-react'
 import { Label } from '../ui/label'
@@ -58,7 +59,9 @@ export function SelectInsuranceClass() {
 	const [getCurrencies] = useGetCurrencyListMutation()
 	const [SelectInsuranceClass] = useGetInsuranceClassMutation()
 
-	const [endDateLists, setEndDateLists] = useState<{ value: string; label: string }[]>([])
+	const [endDateLists, setEndDateLists] = useState<
+		{ value: string; label: string; daysApart: string }[]
+	>([])
 	const [currencyList, setCurrenctList] = useState<CurrencyRateList[]>([])
 	const [classTypeList, setClassTypeList] = useState<{ value: string; label: string }[]>([])
 
@@ -96,13 +99,14 @@ export function SelectInsuranceClass() {
 	}, [refetch, startDate])
 
 	useEffect(() => {
-		const tempArr: { value: string; label: string }[] = []
+		const tempArr: { value: string; label: string; daysApart: string }[] = []
 
 		if (EndDateReply && EndDateReply.type === 'success' && EndDateReply.data !== undefined) {
 			EndDateReply.data!.Result.map((value) => {
 				tempArr.push({
 					value: removeParenthesis(value.Code),
-					label: value.CodeDesc
+					label: value.CodeDesc,
+					daysApart: getDataWithinParenthesis(value.Code)
 				})
 			})
 			setEndDateLists(tempArr)
@@ -159,6 +163,17 @@ export function SelectInsuranceClass() {
 	}, [])
 
 	const year = new Date().getFullYear()
+
+	function updateEndDateWithDaysCount(e: string) {
+		dispatch(updatePolicyEndDate(e))
+		const pos = endDateLists.findIndex((item) => {
+			return item.value === e
+		})
+
+		if (pos !== -1) {
+			dispatch(updatePolicyDaysCount(endDateLists[pos].daysApart))
+		}
+	}
 
 	return (
 		<div className='flex flex-col gap-7'>
@@ -278,9 +293,7 @@ export function SelectInsuranceClass() {
 								) : (
 									<Select
 										value={vehicleData.policyEndDate}
-										onValueChange={(e) => {
-											dispatch(updatePolicyEndDate(e))
-										}}>
+										onValueChange={updateEndDateWithDaysCount}>
 										<SelectTrigger
 											id='end'
 											value={vehicleData.policyEndDate}>

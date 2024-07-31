@@ -34,7 +34,8 @@ const initialState: CarDetails = {
 	engineNumber: '',
 	engineCapacity: '',
 	color: '',
-	bankName: ''
+	bankName: '',
+	policyDaysCount: ''
 }
 
 export type CarDetails = {
@@ -72,6 +73,7 @@ export type CarDetails = {
 	engineCapacity: string
 	color: string
 	bankName: string
+	policyDaysCount: string
 }
 
 export const carInsuranceSlice = createSlice({
@@ -183,6 +185,9 @@ export const carInsuranceSlice = createSlice({
 		updatePolicyEndDate(state: CarDetails, action: PayloadAction<string>) {
 			state.policyEndDate = action.payload
 		},
+		updatePolicyDaysCount(state: CarDetails, action: PayloadAction<string>) {
+			state.policyDaysCount = action.payload
+		},
 		updateCurrency(
 			state: CarDetails,
 			action: PayloadAction<{ currency: string; rate: string }>
@@ -242,5 +247,6 @@ export const {
 	updatePolicyEndDate,
 	updateCurrency,
 	updateVehicleDetails,
-	updateAdditionalDetails
+	updateAdditionalDetails,
+	updatePolicyDaysCount
 } = carInsuranceSlice.actions

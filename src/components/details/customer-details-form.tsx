@@ -43,6 +43,12 @@ export function CustomerDetailsForm() {
 
 	function navigateToVehicle() {
 		setIsLoading(true)
+		const idNumber =
+			customerData.accType === 'Personal'
+				? customerData.isResident
+					? customerData.nrc
+					: customerData.passport
+				: customerData.companyRegistrationNumber
 		const req = {
 			BrokerBranchCode: appData.brokerCode,
 			CustomerReferenceNo: motorData.CustomerReferenceNo,
@@ -63,7 +69,7 @@ export function CustomerDetailsForm() {
 			Email3: null,
 			Fax: null,
 			Gender: customerData.gender,
-			IdNumber: customerData.nrc,
+			IdNumber: idNumber,
 			IdType: '1',
 			IsTaxExempted: 'N',
 			Language: '1',

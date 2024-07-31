@@ -26,6 +26,7 @@ import { updatePersonalDetails } from '@/redux/slices'
 import { useGetOccupationListMutation } from '@/redux/api/commonApi'
 import { useEffect, useState } from 'react'
 import { Skeleton } from '../ui/skeleton'
+import { Label } from '../ui/label'
 
 type personalInformationFieldProps = {
 	current: number
@@ -35,22 +36,18 @@ type personalInformationFieldProps = {
 }
 
 const formSchema = z.object({
-	title: z.string().min(1, {
-		message: 'Title'
-	}),
+	title: z.string(),
 	name: z.string().min(2, {
 		message: 'Please enter Name'
 	}),
-	gender: z.string().min(1, {
-		message: 'Please Pick a gender'
-	}),
+	gender: z.string(),
 	occupation: z.string().min(1, {
 		message: 'Please enter Occupation'
 	}),
 	mobile: z.string().min(2, {
 		message: 'Please enter Mobile number'
 	}),
-	dob: z.date()
+	dob: z.date().optional()
 })
 
 export function PersonalInformationField(props: personalInformationFieldProps) {
@@ -58,6 +55,11 @@ export function PersonalInformationField(props: personalInformationFieldProps) {
 	const vehicleData = useAppSelector((state) => state.carInsurance)
 	const insuranceID = useAppSelector((state) => state.apps.insuranceID)
 	const branchCode = useAppSelector((state) => state.apps.branchCode)
+
+	const [accountType, setAccountType] = useState<string>(customerData.accType)
+	const [isTitleEmpty, setIsTitleEmpty] = useState<boolean>(false)
+	const [isGenderEmpty, setIsGenderEmpty] = useState<boolean>(false)
+	const [isDOBEmpty, setIsDOBEmpty] = useState<boolean>(false)
 
 	const parts = vehicleData.DriverDOB.split('/')
 	const dateObject = new Date(+parts[2], +parts[1] - 1, +parts[0])
@@ -117,17 +119,43 @@ export function PersonalInformationField(props: personalInformationFieldProps) {
 	years18.setFullYear(years18.getFullYear() - 18)
 
 	function onSubmit(values: z.infer<typeof formSchema>) {
-		dispatch(
-			updatePersonalDetails({
-				title: values.title,
-				gender: values.gender,
-				occupation: values.occupation,
-				dob: formatDateDDMMYYYY(values.dob),
-				name: values.name,
-				mobile: values.mobile
-			})
-		)
-		props.goNext()
+		if (accountType === 'Personal') {
+			if (values.title === '') {
+				setIsTitleEmpty(true)
+			} else if (values.gender === '') {
+				setIsGenderEmpty(true)
+			} else if (!values.dob) {
+				setIsDOBEmpty(true)
+			} else {
+				dispatch(
+					updatePersonalDetails({
+						title: values.title,
+						gender: values.gender,
+						occupation: values.occupation,
+						dob: formatDateDDMMYYYY(values.dob),
+						name: values.name,
+						mobile: values.mobile,
+						accountType: accountType
+					})
+				)
+
+				props.goNext()
+			}
+		} else {
+			dispatch(
+				updatePersonalDetails({
+					title: values.title,
+					gender: values.gender,
+					occupation: values.occupation,
+					dob: values.dob !== undefined ? formatDateDDMMYYYY(values.dob) : '',
+					name: values.name,
+					mobile: values.mobile,
+					accountType: accountType
+				})
+			)
+
+			props.goNext()
+		}
 	}
 
 	return (
@@ -144,6 +172,37 @@ export function PersonalInformationField(props: personalInformationFieldProps) {
 					<form
 						className='space-y-8'
 						onSubmit={form.handleSubmit(onSubmit)}>
+						<div className='flex-grow'>
+							<Label>
+								Account Type<span className='text-red-500'>*</span>
+							</Label>
+							<div className='flex flex-row gap-2'>
+								<div
+									className={cn(
+										'rounded-2xl border-2 bg-white px-12 py-2 font-roboto text-black',
+										{
+											'bg-blue-300 text-white': accountType === 'Personal'
+										}
+									)}
+									onClick={() => {
+										setAccountType('Personal')
+									}}>
+									Personal
+								</div>
+								<div
+									className={cn(
+										'rounded-2xl border-2 bg-white px-12 py-2 font-roboto text-black',
+										{
+											'bg-blue-300 text-white': accountType === 'Corporate'
+										}
+									)}
+									onClick={() => {
+										setAccountType('Corporate')
+									}}>
+									Corporate
+								</div>
+							</div>
+						</div>
 						<div className='flex w-full flex-row gap-8'>
 							<div>
 								<FormField
@@ -160,7 +219,10 @@ export function PersonalInformationField(props: personalInformationFieldProps) {
 														disabled={field.disabled}
 														name={field.name}
 														value={field.value}
-														onValueChange={field.onChange}>
+														onValueChange={(e) => {
+															field.onChange(e)
+															setIsTitleEmpty(false)
+														}}>
 														<SelectTrigger
 															ref={field.ref}
 															className='border-2 border-blue-925'>
@@ -181,7 +243,9 @@ export function PersonalInformationField(props: personalInformationFieldProps) {
 													</Select>
 												</div>
 											</FormControl>
-											<FormMessage />
+											{isTitleEmpty && (
+												<span className='text-xs text-red-500'>select</span>
+											)}
 										</FormItem>
 									)}
 								/>
@@ -210,46 +274,55 @@ export function PersonalInformationField(props: personalInformationFieldProps) {
 							</div>
 						</div>
 						<div className='flex w-full flex-row gap-8'>
-							<div className='w-1/2'>
-								<FormField
-									control={form.control}
-									name='gender'
-									render={({ field }) => (
-										<FormItem>
-											<FormLabel>
-												Gender<span className='text-red-500'>*</span>
-											</FormLabel>
-											<FormControl>
-												<Select
-													disabled={field.disabled}
-													name={field.name}
-													value={field.value}
-													onValueChange={field.onChange}>
-													<SelectTrigger
-														ref={field.ref}
-														className='border-2 border-blue-925'>
-														<SelectValue placeholder='Gender' />
-													</SelectTrigger>
-													<SelectContent>
-														<SelectItem
-															key={1}
-															value='M'>
-															Male
-														</SelectItem>
-														<SelectItem
-															key={2}
-															value='F'>
-															Female
-														</SelectItem>
-													</SelectContent>
-												</Select>
-											</FormControl>
-											<FormMessage />
-										</FormItem>
-									)}
-								/>
-							</div>
-							<div className='w-1/2'>
+							{accountType === 'Personal' && (
+								<div className='flex-grow'>
+									<FormField
+										control={form.control}
+										name='gender'
+										render={({ field }) => (
+											<FormItem>
+												<FormLabel>
+													Gender<span className='text-red-500'>*</span>
+												</FormLabel>
+												<FormControl>
+													<Select
+														disabled={field.disabled}
+														name={field.name}
+														value={field.value}
+														onValueChange={(e) => {
+															field.onChange(e)
+															setIsGenderEmpty(false)
+														}}>
+														<SelectTrigger
+															ref={field.ref}
+															className='border-2 border-blue-925'>
+															<SelectValue placeholder='Gender' />
+														</SelectTrigger>
+														<SelectContent>
+															<SelectItem
+																key={1}
+																value='M'>
+																Male
+															</SelectItem>
+															<SelectItem
+																key={2}
+																value='F'>
+																Female
+															</SelectItem>
+														</SelectContent>
+													</Select>
+												</FormControl>
+												{isGenderEmpty && (
+													<span className='text-xs text-red-500'>
+														select a gender
+													</span>
+												)}
+											</FormItem>
+										)}
+									/>
+								</div>
+							)}
+							<div className='flex-grow'>
 								<FormField
 									control={form.control}
 									name='occupation'
@@ -297,7 +370,7 @@ export function PersonalInformationField(props: personalInformationFieldProps) {
 							</div>
 						</div>
 						<div className='flex w-full flex-row gap-8'>
-							<div className='w-1/2'>
+							<div className='flex-grow'>
 								<FormField
 									control={form.control}
 									name='mobile'
@@ -319,72 +392,81 @@ export function PersonalInformationField(props: personalInformationFieldProps) {
 									)}
 								/>
 							</div>
-							<div className='w-1/2'>
-								<FormField
-									control={form.control}
-									name='dob'
-									render={({ field }) => (
-										<FormItem>
-											<FormLabel>
-												Date of Birth<span className='text-red-500'>*</span>
-											</FormLabel>
-											<Popover>
-												<PopoverTrigger asChild>
-													<FormControl>
-														<Button
-															id='start'
-															variant='outline'
-															className={cn(
-																'w-full border-2 border-blue-925 pl-3 text-left font-normal text-black',
-																!field.value &&
-																	'text-muted-foreground'
-															)}>
-															{field.value ? (
-																format(field.value, 'PPP')
-															) : (
-																<span>Pick a date</span>
-															)}
-															<CalendarDays className='ml-auto h-4 w-4 opacity-50' />
-														</Button>
-													</FormControl>
-												</PopoverTrigger>
-												<PopoverContent
-													align='start'
-													className='w-auto p-0'>
-													<>
-														<Calendar
-															initialFocus
-															captionLayout='dropdown-buttons'
-															className='p-0'
-															fromYear={1900}
-															id='DOB'
-															mode='single'
-															selected={field.value}
-															toMonth={years18}
-															toYear={years18.getFullYear()}
-															classNames={{
-																day_hidden: 'invisible',
-																dropdown:
-																	'px-2 py-1.5 rounded-md bg-popover text-popover-foreground text-sm  focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ring-offset-background',
-																caption_dropdowns: 'flex gap-3',
-																vhidden: 'hidden',
-																caption_label: 'hidden'
-															}}
-															disabled={(date) =>
-																date > years18 ||
-																date < new Date('1900-01-01')
-															}
-															onSelect={field.onChange}
-														/>
-													</>
-												</PopoverContent>
-											</Popover>
-
-											<FormMessage />
-										</FormItem>
-									)}
-								/>
-							</div>
+							{accountType === 'Personal' && (
+								<div className='flex-grow'>
+									<FormField
+										control={form.control}
+										name='dob'
+										render={({ field }) => (
+											<FormItem>
+												<FormLabel>
+													Date of Birth
+													<span className='text-red-500'>*</span>
+												</FormLabel>
+												<Popover>
+													<PopoverTrigger asChild>
+														<FormControl>
+															<Button
+																id='start'
+																variant='outline'
+																className={cn(
+																	'w-full border-2 border-blue-925 pl-3 text-left font-normal text-black',
+																	!field.value &&
+																		'text-muted-foreground'
+																)}>
+																{field.value ? (
+																	format(field.value, 'PPP')
+																) : (
+																	<span>Pick a date</span>
+																)}
+																<CalendarDays className='ml-auto h-4 w-4 opacity-50' />
+															</Button>
+														</FormControl>
+													</PopoverTrigger>
+													<PopoverContent
+														align='start'
+														className='w-auto p-0'>
+														<>
+															<Calendar
+																initialFocus
+																captionLayout='dropdown-buttons'
+																className='p-0'
+																fromYear={1900}
+																id='DOB'
+																mode='single'
+																selected={field.value}
+																toMonth={years18}
+																toYear={years18.getFullYear()}
+																classNames={{
+																	day_hidden: 'invisible',
+																	dropdown:
+																		'px-2 py-1.5 rounded-md bg-popover text-popover-foreground text-sm  focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ring-offset-background',
+																	caption_dropdowns: 'flex gap-3',
+																	vhidden: 'hidden',
+																	caption_label: 'hidden'
+																}}
+																disabled={(date) =>
+																	date > years18 ||
+																	date < new Date('1900-01-01')
+																}
+																onSelect={(e) => {
+																	field.onChange(e)
+																	setIsDOBEmpty(false)
+																}}
+															/>
+														</>
+													</PopoverContent>
+												</Popover>
+												{isDOBEmpty && (
+													<span className='text-xs text-red-500'>
+														select a date
+													</span>
+												)}
+											</FormItem>
+										)}
+									/>
+								</div>
+							)}
 						</div>
 						<Button
 							className='w-32'

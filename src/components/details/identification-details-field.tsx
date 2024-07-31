@@ -17,7 +17,8 @@ type identificationDetailsFieldProps = {
 
 export function IdentificationDetailsField(props: identificationDetailsFieldProps) {
 	const customerData = useAppSelector((state) => state.customerDetails)
-	const [accountType, setAccountType] = useState<string>(customerData.accType)
+	const accountType = customerData.accType
+	const [isResident, setIsResident] = useState<boolean>(true)
 	const [companyNumber, setCompanyNumber] = useState<string>(
 		customerData.companyRegistrationNumber !== null
 			? customerData.companyRegistrationNumber
@@ -59,10 +60,6 @@ export function IdentificationDetailsField(props: identificationDetailsFieldProp
 		if (e.target.value.length <= 1) {
 			setNrc3(e.target.value)
 		}
-
-		if (e.target.value.length === 1 && passportRef.current !== null) {
-			passportRef.current.focus()
-		}
 	}
 
 	function handleChangePassport(e: ChangeEvent<HTMLInputElement>) {
@@ -76,7 +73,7 @@ export function IdentificationDetailsField(props: identificationDetailsFieldProp
 			updateIdentificationDetails({
 				nrc: nrc1 + nrc2 + nrc3,
 				passport: passport,
-				accountType: accountType,
+				isResident: isResident,
 				companyNumber: companyNumber
 			})
 		)
@@ -89,12 +86,12 @@ export function IdentificationDetailsField(props: identificationDetailsFieldProp
 		const companyFilled = companyNumber !== ''
 
 		const Filled =
-			nrcIsFilled &&
-			passportFilled &&
-			((accountType === 'Corporate' && companyFilled) || accountType === 'Personal')
+			(accountType === 'Corporate' && companyFilled) ||
+			(accountType === 'Personal' && isResident && nrcIsFilled) ||
+			(accountType === 'Personal' && isResident && passportFilled)
 
 		setIsDisabled(Filled)
-	}, [accountType, companyNumber, nrc1, nrc2, nrc3, passport])
+	}, [accountType, companyNumber, nrc1, nrc2, nrc3, passport, isResident])
 
 	return (
 		<FormFieldLayout
@@ -106,93 +103,102 @@ export function IdentificationDetailsField(props: identificationDetailsFieldProp
 			subTitle='Additional information around Step 2'
 			title='Step 2 - Identification Details'>
 			<>
-				<div className='flex flex-col gap-1'>
-					<Label>
-						NRC (National Registration card)<span className='text-red-500'>*</span>
-					</Label>
-					<div className='flex w-full flex-row gap-4'>
-						<div className='flex-grow flex-col gap-0'>
-							<Input
-								className='border-2 border-blue-925'
-								id='nrc1'
-								placeholder=''
-								type='number'
-								value={nrc1}
-								onChange={handleChangeNrc1}
-							/>
-						</div>
-						<span className='text-3xl'>/</span>
+				{accountType === 'Personal' && (
+					<>
 						<div className='flex-grow'>
-							<Input
-								ref={nrc2Ref}
-								className='border-2 border-blue-925'
-								id='nrc2'
-								placeholder=''
-								type='number'
-								value={nrc2}
-								onChange={handleChangeNrc2}
-							/>
-						</div>
-						<span className='text-3xl'>/</span>
-						<div className='flex-grow'>
-							<Input
-								ref={nrc3Ref}
-								className='border-2 border-blue-925'
-								id='nrc3'
-								placeholder=''
-								type='number'
-								value={nrc3}
-								onChange={handleChangeNrc3}
-							/>
-						</div>
-					</div>
-				</div>
-				<div className='flex w-full flex-row gap-4'>
-					<div className='w-full flex-grow'>
-						<Label>
-							Passport<span className='text-red-500'>*</span>
-						</Label>
-						<Input
-							ref={passportRef}
-							className='border-2 border-blue-925'
-							id='passport'
-							placeholder='Passport Number'
-							value={passport}
-							onChange={handleChangePassport}
-						/>
-					</div>
-					<div className='flex-grow'>
-						<Label>
-							Account Type<span className='text-red-500'>*</span>
-						</Label>
-						<div className='flex flex-row gap-2'>
-							<div
-								className={cn(
-									'rounded-2xl border-2 bg-white px-6 py-2 font-roboto text-black',
-									{
-										'bg-blue-300 text-white': accountType === 'Personal'
-									}
-								)}
-								onClick={() => {
-									setAccountType('Personal')
-								}}>
-								Personal
-							</div>
-							<div
-								className={cn(
-									'rounded-2xl border-2 bg-white px-6 py-2 font-roboto text-black',
-									{
-										'bg-blue-300 text-white': accountType === 'Corporate'
-									}
-								)}
-								onClick={() => {
-									setAccountType('Corporate')
-								}}>
-								Corporate
+							<Label>
+								Are you a resident of Zambia<span className='text-red-500'>*</span>
+							</Label>
+							<div className='flex flex-row gap-2'>
+								<div
+									className={cn(
+										'rounded-2xl border-2 bg-white px-12 py-2 font-roboto text-black',
+										{
+											'bg-blue-300 text-white': isResident === true
+										}
+									)}
+									onClick={() => {
+										setIsResident(true)
+									}}>
+									Yes
+								</div>
+								<div
+									className={cn(
+										'rounded-2xl border-2 bg-white px-12 py-2 font-roboto text-black',
+										{
+											'bg-blue-300 text-white': isResident === false
+										}
+									)}
+									onClick={() => {
+										setIsResident(false)
+									}}>
+									No
+								</div>
 							</div>
 						</div>
-					</div>
-				</div>
+						{isResident && (
+							<div className='flex flex-col gap-1'>
+								<Label>
+									NRC (National Registration card)
+									<span className='text-red-500'>*</span>
+								</Label>
+								<div className='flex w-full flex-row gap-4'>
+									<div className='flex-grow flex-col gap-0'>
+										<Input
+											className='border-2 border-blue-925'
+											id='nrc1'
+											placeholder=''
+											type='number'
+											value={nrc1}
+											onChange={handleChangeNrc1}
+										/>
+									</div>
+									<span className='text-3xl'>/</span>
+									<div className='flex-grow'>
+										<Input
+											ref={nrc2Ref}
+											className='border-2 border-blue-925'
+											id='nrc2'
+											placeholder=''
+											type='number'
+											value={nrc2}
+											onChange={handleChangeNrc2}
+										/>
+									</div>
+									<span className='text-3xl'>/</span>
+									<div className='flex-grow'>
+										<Input
+											ref={nrc3Ref}
+											className='border-2 border-blue-925'
+											id='nrc3'
+											placeholder=''
+											type='number'
+											value={nrc3}
+											onChange={handleChangeNrc3}
+										/>
+									</div>
+								</div>
+							</div>
+						)}
+						{!isResident && (
+							<div className='flex w-full flex-row gap-4'>
+								<div className='w-full flex-grow'>
+									<Label>
+										Passport<span className='text-red-500'>*</span>
+									</Label>
+									<Input
+										ref={passportRef}
+										className='border-2 border-blue-925'
+										id='passport'
+										placeholder='Passport Number'
+										value={passport}
+										onChange={handleChangePassport}
+									/>
+								</div>
+							</div>
+						)}
+					</>
+				)}
 				{accountType === 'Corporate' && (
 					<div className='flex-grow'>
 						<Label>Company Registration number</Label>
