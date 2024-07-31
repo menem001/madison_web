@@ -1,3 +1,4 @@
+import { Header } from '../header'
 import {
 	Breadcrumb,
 	BreadcrumbItem,
@@ -7,13 +8,12 @@ import {
 	BreadcrumbSeparator
 } from '../ui'
 import { ConfirmDetails } from './confirm-details'
-import { ConfirmationTab } from './confirmation-tab'
 import { QuoteDetails } from './quote-details'
 
 export function ConfirmationPage() {
 	return (
 		<section className='flex h-full w-full flex-col gap-6 bg-gray-100'>
-			<ConfirmationTab />
+			<Header />
 			<section className='flex flex-col gap-6 px-20 font-inter'>
 				<Breadcrumb>
 					<BreadcrumbList>

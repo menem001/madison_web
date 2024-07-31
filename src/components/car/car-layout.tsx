@@ -18,13 +18,13 @@ export function CarLayout(props: PropsWithChildren) {
 				<section className='grid flex-grow grid-cols-3 px-12'>
 					<div className='col-span-3 lg:col-span-2'>{props.children}</div>
 					<div
-						className={cn('sticky right-0 top-10 hidden max-h-[80svh] lg:flex', {
+						className={cn('sticky right-0 top-6 hidden max-h-[80svh] lg:flex', {
 							'lg:hidden': path === '/car-insurance/2'
 						})}>
 						<CarRightSideBar />
 					</div>
 					<div
-						className={cn('right-0 top-10 hidden lg:flex', {
+						className={cn('right-0 top-6 hidden lg:flex', {
 							'lg:hidden': path === '/car-insurance/1'
 						})}>
 						<PremiumSideBar />

@@ -24,7 +24,7 @@ export function EnergySpecificationField(props: energySpecificationFieldProps) {
 					<div className='flex-grow'>
 						<Label htmlFor='displacement'>Displacement in cm3</Label>
 						<Input
-							className='border-blue-925 border-2'
+							className='border-2 border-blue-925'
 							id='displacement'
 							placeholder='Displacement in cm3'
 						/>
@@ -32,7 +32,7 @@ export function EnergySpecificationField(props: energySpecificationFieldProps) {
 					<div className='flex-grow'>
 						<Label htmlFor='cylinder'>Cylinder number</Label>
 						<Input
-							className='border-blue-925 border-2'
+							className='border-2 border-blue-925'
 							id='cylinder'
 							placeholder='Cylinder number'
 						/>
@@ -42,7 +42,7 @@ export function EnergySpecificationField(props: energySpecificationFieldProps) {
 					<div className='w-1/2 flex-grow'>
 						<Label htmlFor='energy'>Energy</Label>
 						<Input
-							className='border-blue-925 border-2'
+							className='border-2 border-blue-925'
 							id='energy'
 							placeholder='Select your energy'
 						/>

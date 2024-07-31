@@ -1,23 +1,33 @@
 'use client'
 
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
-import { updateCode, updateMobile, updateName, updatePremium } from '@/redux/slices'
+import { updateEmail, updateMobile, updateName, updatePremium } from '@/redux/slices'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 // import { useRouter } from 'next/navigation'
 import { Button, Input } from '../ui'
-import { type SaveMotorDetailRequest } from '@/services/models/common.models'
 import { useSaveMotorDetailsMutation } from '@/redux/api/commonApi'
+import { Label } from '../ui/label'
+import { type SaveMotorDetailRequest } from '@/services/models/common.models'
+import { updateDetails } from '@/redux/slices/motor-detail.slice'
+import { useState } from 'react'
+import ClipLoader from 'react-spinners/ClipLoader'
+import { useToast } from '../ui/use-toast'
 
 type CustomerInfoProps = {
 	scrollToTop: () => void
 }
 
 export function CustomerInfo(props: CustomerInfoProps) {
-	// const vehicleData = useAppSelector((state) => state.carInsurance)
+	const vehicleData = useAppSelector((state) => state.carInsurance)
 	const customerData = useAppSelector((state) => state.customerDetails)
+	const appData = useAppSelector((state) => state.apps)
 
 	const [saveMotor] = useSaveMotorDetailsMutation()
+
+	const { toast } = useToast()
+
+	const [isLoading, setIsLoading] = useState<boolean>(false)
 
 	const dispatch = useAppDispatch()
 	// const router = useRouter()
@@ -33,122 +43,97 @@ export function CustomerInfo(props: CustomerInfoProps) {
 	})
 
 	function goToConfirm() {
+		setIsLoading(true)
 		doSaveMotorDetails()
 		// router.push('/car-insurance/confirm')
 	}
 
 	function doSaveMotorDetails() {
 		const req: SaveMotorDetailRequest = {
-			BrokerBranchCode: '2',
-			CustomerCode: null,
-			CustomerName: 'Bhuvanesh',
-			BdmCode: null,
-			BrokerCode: '13090',
-			LoginId: 'madison_broker',
-			SubUserType: 'Broker',
-			ApplicationId: '1',
-			CustomerReferenceNo: 'MIC-CUST-12279',
+			CustomerName: customerData.name,
+			LoginId: appData.loginId,
+			SubUserType: appData.subUserType,
+			UserType: appData.userType,
+			ApplicationId: '1', //
+			CustomerReferenceNo: null,
 			RequestReferenceNo: null,
-			Idnumber: '7485963250',
 			VehicleId: '1',
-			AcccessoriesSumInsured: null,
-			AccessoriesInformation: null,
-			AdditionalCircumstances: null,
-			Chassisnumber: '6563456365',
-			CityLimit: null,
-			CoverNoteNo: null,
-			CubicCapacity: null,
-			CreatedBy: 'madison_broker',
-			DrivenByDesc: 'D',
-			MobileCode: '260',
-			MobileNumber: '7485965210',
+			CreatedBy: appData.loginId,
+			InsuranceId: appData.insuranceID,
+			BranchCode: appData.branchCode,
+			BrokerBranchCode: appData.brokerCode,
+			SectionId: vehicleData.classID,
+			AgencyCode: appData.agencyCode,
+			ProductId: appData.productId,
+			SavedFrom: 'SQ',
+			MobileCode: customerData.code,
+			MobileNumber: customerData.mobile,
+			Chassisnumber: '',
+			Insurancetype: [appData.insuranceID],
+			InsuranceClass: vehicleData.classID,
+			Motorusage: vehicleData.vehicleUsage,
+			MotorusageId: vehicleData.vehicleUsageID,
+			Vehiclemake: vehicleData.mark,
+			VehiclemakeId: vehicleData.makeID,
+			VehicleModel: vehicleData.model,
+			VehcilemodelId: vehicleData.modelID,
+			VehicleValueType: null,
+			DefenceValue: null,
+			PurchaseDate: null,
+			Deductibles: null,
+			Inflation: null,
+			ManufactureYear: vehicleData.year + '',
 			Gpstrackinginstalled: 'N',
-			Grossweight: null,
-			HoldInsurancePolicy: 'N',
-			Insurancetype: null,
-			InsuranceId: '100004',
-			InsuranceClass: null,
-			InsurerSettlement: '',
-			InterestedCompanyDetails: '',
-			ModelNumber: null,
-			MotorCategory: null,
-			MotorusageId: null,
-			NcdYn: null,
-			PolicyRenewalYn: 'N',
-			NoOfClaims: null,
-			BranchCode: '46',
-			AgencyCode: '13090',
-			ProductId: '5',
-			SectionId: null,
-			PolicyType: null,
-			RadioOrCasseteplayer: null,
-			RegistrationYear: '09/07/2006',
-			Registrationnumber: '54353546546',
-			RoofRack: null,
-			SeatingCapacity: '2',
-			SpotFogLamp: null,
-			Stickerno: null,
-			SumInsured: null,
-			Tareweight: null,
-			TppdFreeLimit: null,
-			TppdIncreaeLimit: null,
-			TrailerDetails: null,
-			VehcilemodelId: 'ENCORE',
-			VehicleType: '2',
-			VehicleTypeId: '2',
-			Vehiclemake: 'BUICK',
-			VehiclemakeId: '92',
-			WindScreenSumInsured: null,
-			Windscreencoverrequired: null,
-			accident: null,
-			periodOfInsurance: null,
-			PolicyStartDate: '17/07/2024',
-			PolicyEndDate: '11/07/2025',
-			Currency: 'ZMW',
-			ExchangeRate: '1.0',
+			NcdYn: 'N',
+			VehicleType: vehicleData.bodyType,
+			VehicleTypeId: vehicleData.bodyTypeID,
+			CarAlarmYn: 'N',
+			PolicyStartDate: vehicleData.policyStartDate,
+			PolicyEndDate: vehicleData.policyEndDate,
+			CustomerCode: appData.CustomerCode,
+			BdmCode: appData.CustomerCode,
+			SourceTypeId: appData.userType,
+			SumInsured: vehicleData.value,
+			AcccessoriesSumInsured: vehicleData.AcccessoriesSumInsured,
+			ExchangeRate: vehicleData.exchangeRate,
+			Currency: vehicleData.currency,
 			HavePromoCode: 'N',
-			PromoCode: null,
-			CollateralYn: null,
-			CollateralName: null,
-			FirstLossPayee: null,
-			FleetOwnerYn: 'N',
-			NoOfVehicles: null,
-			NoOfComprehensives: null,
-			ClaimRatio: null,
-			SavedFrom: null,
-			UserType: 'Broker',
-			TiraCoverNoteNo: null,
-			EndorsementYn: 'N',
-			SaveOrSubmit: 'Save',
-			EndorsementDate: null,
-			EndorsementEffectiveDate: null,
-			EndorsementRemarks: null,
-			EndorsementType: null,
-			EndorsementTypeDesc: null,
-			EndtCategoryDesc: null,
-			EndtCount: null,
-			EndtPrevPolicyNo: null,
-			EndtPrevQuoteNo: null,
-			EndtStatus: null,
-			IsFinanceEndt: null,
-			OrginalPolicyNo: null,
-			HorsePower: null,
-			Scenarios: {
-				ExchangeRateScenario: {
-					OldAcccessoriesSumInsured: null,
-					OldCurrency: 'ZMW',
-					OldExchangeRate: '1.0',
-					OldSumInsured: null,
-					OldTppdIncreaeLimit: null,
-					OldWindScreenSumInsured: null
-				}
-			},
+			SearchFromApi: false,
+			SeatingCapacity: vehicleData.seat,
+			CustomerStatus: 'Y',
 			Status: 'Y'
 		}
 		const res = saveMotor(req)
-		res.then(() => {
-			dispatch(updatePremium(true))
-			props.scrollToTop()
+		res.then((value) => {
+			if (
+				value.data?.type === 'success' &&
+				value.data.data !== undefined &&
+				value.data.data.IsError !== true &&
+				value.data.data.Result !== null
+			) {
+				dispatch(updatePremium(true))
+				dispatch(updateDetails(value.data.data.Result[0]))
+				props.scrollToTop()
+				setIsLoading(false)
+			} else if (
+				value.data?.type === 'success' &&
+				value.data.data !== undefined &&
+				value.data.data.IsError === true &&
+				value.data.data.ErrorMessage !== null &&
+				value.data.data.ErrorMessage.length !== 0
+			) {
+				toast({
+					variant: 'destructive',
+					title: 'Uh oh! Something went wrong.',
+					description: value.data.data.ErrorMessage[0].Message
+				})
+			} else {
+				toast({
+					variant: 'destructive',
+					title: 'Uh oh! Something went wrong.',
+					description: 'There was a problem with your request.'
+				})
+			}
 		})
 	}
 
@@ -167,30 +152,78 @@ export function CustomerInfo(props: CustomerInfoProps) {
 					<span className='CustomerInfosubtitle font-roboto text-sm font-medium text-gray-500'></span>
 				</div>
 				<div className='selectCustomerInfo flex flex-row gap-10'>
-					<Input
-						placeholder='Customer Name'
-						value={customerData.name}
-						onChange={(e) => {
-							dispatch(updateName(e.target.value))
-						}}
-					/>
+					<div className='flex-grow'>
+						<Label htmlFor='name'>Customer Name</Label>
+						<Input
+							id='name'
+							placeholder='Customer Name'
+							value={customerData.name}
+							onChange={(e) => {
+								dispatch(updateName(e.target.value))
+							}}
+						/>
+					</div>
 				</div>
 				<div className='selectCustomerInfo flex flex-row gap-10'>
-					<Input
-						className='max-w-20'
-						placeholder='Code'
-						value={customerData.code}
-						onChange={(e) => {
-							dispatch(updateCode(e.target.value))
-						}}
-					/>
-					<Input
-						placeholder='Mobile Number'
-						value={customerData.mobile}
-						onChange={(e) => {
-							dispatch(updateMobile(e.target.value))
-						}}
-					/>
+					<div className='flex-grow'>
+						<Label htmlFor='email'>Mail Address</Label>
+						<Input
+							id='email'
+							placeholder='Mail Address'
+							value={customerData.email}
+							onChange={(e) => {
+								dispatch(updateEmail(e.target.value))
+							}}
+						/>
+					</div>
+				</div>
+				<div className='selectCustomerInfo flex flex-row gap-10'>
+					<div className='max-w-20'>
+						<Label htmlFor='code'>Code</Label>
+						<Input
+							disabled={true}
+							id='mobile'
+							placeholder='Mobile Code'
+							value={customerData.code}
+						/>
+						{/* <Select
+							value={customerData.code}
+							// onValueChange={(e) => {
+							// 	dispatch(updateVehicleManufactureYear(e + ''))
+							// }}
+						>
+							<SelectTrigger
+								id='year'
+								value={customerData.code}>
+								<SelectValue />
+							</SelectTrigger>
+							<SelectContent className='max-h-64'>
+								 {years.map((year) => {
+								return (
+									<SelectItem
+										key={year}
+										value={year}>
+										{year}
+									</SelectItem>
+								)
+							})} 
+								<SelectItem value='+211'>+211</SelectItem>
+								<SelectItem value='+167'>+167</SelectItem>
+								<SelectItem value='+260'>+260</SelectItem>
+							</SelectContent>
+						</Select> */}
+					</div>
+					<div className='flex-grow'>
+						<Label htmlFor='mobile'>Mobile Number</Label>
+						<Input
+							id='mobile'
+							placeholder='Mobile Number'
+							value={customerData.mobile}
+							onChange={(e) => {
+								dispatch(updateMobile(e.target.value))
+							}}
+						/>
+					</div>
 				</div>
 			</div>
 			<span className='selectCustomerInfo -mt-6 font-jakarta text-xs text-gray-500'>
@@ -201,7 +234,14 @@ export function CustomerInfo(props: CustomerInfoProps) {
 				className='selectCustomerInfo w-full'
 				variant='bluebtn'
 				onClick={goToConfirm}>
-				View Premium
+				{isLoading ? (
+					<ClipLoader
+						color='#FFFFFF'
+						size={20}
+					/>
+				) : (
+					<span>View Premium</span>
+				)}
 			</Button>
 			{/* <div className='flex items-center justify-center'>
 				<div className='relative w-full border-t border-green-50'>

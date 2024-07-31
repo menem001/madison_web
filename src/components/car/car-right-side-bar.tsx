@@ -1,6 +1,5 @@
 import { RightSideBarList } from './right-side-bar-list'
 import { ProgressBar } from './progress-bar'
-import { MobileLinkDetails } from './mobile-link-details'
 
 export function CarRightSideBar() {
 	return (
@@ -14,7 +13,7 @@ export function CarRightSideBar() {
 
 			<div className='flex w-3/4 flex-col gap-4'>
 				<RightSideBarList />
-				<MobileLinkDetails />
+				{/* <MobileLinkDetails /> */}
 			</div>
 		</div>
 	)

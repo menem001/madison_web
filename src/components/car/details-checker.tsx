@@ -12,14 +12,14 @@ export function DetailsChecker(props: PropsWithChildren) {
 	useEffect(() => {
 		if (
 			currentPath === '/car-insurance/2' &&
-			(vehicleData.bodyType.length === 0 ||
+			(vehicleData.bodyType === '' ||
 				vehicleData.mark === '' ||
 				vehicleData.vehicleUsage === '')
 		) {
 			redirect('/car-insurance/1')
 		} else if (
 			currentPath === '/car-insurance/confirm' &&
-			(vehicleData.bodyType.length === 0 ||
+			(vehicleData.bodyType === '' ||
 				vehicleData.mark === '' ||
 				vehicleData.vehicleUsage === '')
 		) {

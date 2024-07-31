@@ -2,24 +2,37 @@ import { cn } from '@/lib'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui'
-import { updateVehicleManufactureYear } from '@/redux/slices'
+import { Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui'
+import { updateExcessLimit, updateVehicleManufactureYear } from '@/redux/slices'
+import { Label } from '../ui/label'
+import Image from 'next/image'
+import { assets } from '@/assets'
+import { useEffect } from 'react'
 
 export function ManufactureYear() {
 	const vehicleData = useAppSelector((state) => state.carInsurance)
+	const year = useAppSelector((state) => state.whitebookdetails.YearOfMake)
 
 	const dispatch = useAppDispatch()
 
 	const years = []
 
-	for (let i = 1950; i < 2500; i++) {
+	const currentYear = new Date(Date.now()).getFullYear()
+
+	for (let i = currentYear; i > currentYear - 30; i--) {
 		years.push(i + '')
 	}
+
+	useEffect(() => {
+		if (+year > currentYear - 30 && +year < currentYear) {
+			dispatch(updateVehicleManufactureYear(year))
+		}
+	}, [year])
 
 	useGSAP(() => {
 		if (vehicleData.year === 0) {
 			gsap.from('.selectManufacture', { y: 80, opacity: 0, duration: 0.5, delay: 1 })
-			gsap.to('.Yeartitle', { duration: 0.5, text: 'Manufacture Year' })
+			gsap.to('.Yeartitle', { duration: 0.5, text: 'Manufacture Year & Excess Limit' })
 			gsap.to('.Yearsubtitle', {
 				duration: 0.5,
 				text: 'How the vehicle is used, such as for personal, business, or commercial purposes',
@@ -27,7 +40,7 @@ export function ManufactureYear() {
 			})
 		} else {
 			gsap.from('.selectManufacture', { y: 80, opacity: 0, duration: 0.5 })
-			gsap.to('.Yeartitle', { duration: 0.5, text: 'Manufacture Year' })
+			gsap.to('.Yeartitle', { duration: 0.5, text: 'Manufacture Year & Excess Limit' })
 			gsap.to('.Yearsubtitle', {
 				duration: 0.5,
 				text: 'How the vehicle is used, such as for personal, business, or commercial purposes'
@@ -38,43 +51,62 @@ export function ManufactureYear() {
 	return (
 		<div
 			className={cn('flex flex-col gap-7', {
-				'min-h-[56vh]': vehicleData.year === 0
+				'min-h-[68vh]': vehicleData.year === 0 || vehicleData.excessLimit === 0
 			})}>
-			<div className='flex flex-col gap-2'>
-				<h1 className='Yeartitle font-jakarta text-xl font-bold text-blue-300'></h1>
-				<span className='Yearsubtitle font-roboto text-sm font-medium text-gray-500'></span>
+			<div className='-ml-16 flex flex-row items-center gap-4'>
+				<div className='min-h-12 min-w-12 overflow-hidden rounded-full'>
+					<Image
+						alt='face'
+						height={60}
+						src={assets.images.imageFace}
+						width={60}
+					/>
+				</div>
+				<div className='flex flex-col gap-2'>
+					<h1 className='Yeartitle font-jakarta text-xl font-bold text-blue-300'></h1>
+					<span className='Yearsubtitle font-roboto text-sm font-medium text-gray-500'></span>
+				</div>
 			</div>
-			<div className='selectManufacture flex w-3/4 flex-row gap-10'>
-				<Select
-					value={vehicleData.year + ''}
-					onValueChange={(e) => {
-						dispatch(updateVehicleManufactureYear(e + ''))
-					}}>
-					<SelectTrigger
-						className='w-3/4'
-						title='Manufacture Year'
-						value={vehicleData.year}>
-						<SelectValue />
-					</SelectTrigger>
-					<SelectContent>
-						{years.map((year) => {
-							return (
-								<SelectItem
-									key={year}
-									value={year}>
-									{year}
-								</SelectItem>
-							)
-						})}
-					</SelectContent>
-				</Select>
-				{/* <Input
-					placeholder='Manufacture'
-					value={vehicleData.year}
-					onChange={(e) => {
-						dispatch(updateVehicleManufactureYear(e.target.value))
-					}}
-				/> */}
+			<div className='selectManufacture flex flex-row gap-10'>
+				<div className='flex flex-grow flex-col'>
+					<Label htmlFor='year'>Manufacture Year</Label>
+					<Select
+						value={vehicleData.year + ''}
+						onValueChange={(e) => {
+							dispatch(updateVehicleManufactureYear(e + ''))
+						}}>
+						<SelectTrigger
+							id='year'
+							title='Manufacture Year'
+							value={vehicleData.year}>
+							<SelectValue />
+						</SelectTrigger>
+						<SelectContent className='max-h-64'>
+							{years.map((year) => {
+								return (
+									<SelectItem
+										key={year}
+										value={year}>
+										{year}
+									</SelectItem>
+								)
+							})}
+						</SelectContent>
+					</Select>
+				</div>
+				<div className='flex flex-grow flex-col'>
+					<Label htmlFor='excess'>Excess Limit</Label>
+					<Input
+						className='h-16'
+						id='excess'
+						placeholder='Excess Limit'
+						type='number'
+						value={vehicleData.excessLimit !== 0 ? vehicleData.excessLimit : undefined}
+						onChange={(e) => {
+							dispatch(updateExcessLimit(+e.target.value))
+						}}
+					/>
+				</div>
 			</div>
 		</div>
 	)

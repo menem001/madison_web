@@ -5,7 +5,14 @@ export const assets = {
 		carIcon: '/icons/ion-car-sport.svg',
 		between: '/icons/between.svg',
 		google: '/icons/google-icon.svg',
-		apple: '/icons/apple-icon.svg'
+		apple: '/icons/apple-icon.svg',
+		circleLocation: '/icons/CircleIconLocation.svg',
+		circleMail: '/icons/CircleIconMail.svg',
+		circlePaper: '/icons/CircleIconPaper.svg',
+		circlePerson: '/icons/CircleIconPerson.svg',
+		circlePhone: '/icons/CircleIconPhone.svg',
+		circleTruck: '/icons/CircleIconTruck.svg',
+		circleVerify: '/icons/CircleIconVerify.svg'
 	},
 	images: {
 		bike: '/images/bike.png',
@@ -34,6 +41,8 @@ export const assets = {
 		trip: '/images/trip.jpeg',
 		qr: '/images/qrcode.png',
 		appStore: '/images/appStore.png',
-		googlePlay: '/images/googlePlay.png'
+		googlePlay: '/images/googlePlay.png',
+		imageFace: '/images/madisonImage.jpg',
+		family: '/images/family.png'
 	}
 }

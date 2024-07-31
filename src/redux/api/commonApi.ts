@@ -4,14 +4,49 @@ import {
 	type MotorListResponse,
 	type BodyTypeListResponse,
 	type VehicleUsageListResponse,
-	type GuestLoginResponse
+	type GuestLoginResponse,
+	type policyEndDateResponse,
+	type SaveMotorDetailResponse,
+	type OTPResponse,
+	type verifyOTPResponse,
+	type InsuranceClassTypeResponse,
+	type PremiumCalcDataResponse,
+	type ViewPremiumCalDataResponse,
+	type SaveCustomerDetailResponse,
+	type SaveVehcileDetialResponse,
+	type ColorList,
+	type OccupationList,
+	type RegionList,
+	type DocumentTypeResp,
+	type BuyPolicyResponse,
+	type ViewQuoteResponse,
+	type UploadDocsResponse,
+	type getBankResponse,
+	type PaymentTypeResponse,
+	type SaveDriverResponse
 } from '@/services/common.services'
 import {
 	type vehicleUsageRequest,
 	type CommonModalRequest,
 	type CurrencyRequest,
 	type MotorModalRequest,
-	type SaveMotorDetailRequest
+	type SaveMotorDetailRequest,
+	type GenerateOTPRequest,
+	type ValidateOTPRequest,
+	type InsuranceClassTypeRequest,
+	type PremiumCalcRequest,
+	type ViewPremiumCalcRequest,
+	type SaveCustomerDetailRequest,
+	type SaveVehicleRequest,
+	type OccupationListRequest,
+	type RegionListRequest,
+	type ColorListRequest,
+	type DocumentTypeRequest,
+	type BuyPolicyRequest,
+	type ViewQuoteRequest,
+	type GetBankRequest,
+	type PaymentTypeRequest,
+	type SaveDriverRequest
 } from '@/services/models/common.models'
 
 import type { Action, PayloadAction } from '@reduxjs/toolkit'
@@ -57,10 +92,18 @@ export const commonApi = createApi({
 			})
 		}),
 		getCurrencyList: build.mutation<CurrencyListResponse, CurrencyRequest>({
-			query: (data) => ({
+			query: (
+				data
+			): {
+				url: string
+				method: string
+				body: vehicleUsageRequest
+				headers: { Authorization: string }
+			} => ({
 				url: 'get_currency_list',
 				method: 'POST',
-				body: data
+				body: data,
+				headers: { Authorization: `Bearer ${store.getState().apps.token}` }
 			})
 		}),
 		getMotorMakeList: build.mutation<MotorListResponse, CommonModalRequest>({
@@ -79,17 +122,33 @@ export const commonApi = createApi({
 			})
 		}),
 		getMotorModelList: build.mutation<MotorModelListResponse, MotorModalRequest>({
-			query: (data) => ({
+			query: (
+				data
+			): {
+				url: string
+				method: string
+				body: vehicleUsageRequest
+				headers: { Authorization: string }
+			} => ({
 				url: 'get_motor_model',
 				method: 'POST',
-				body: data
+				body: data,
+				headers: { Authorization: `Bearer ${store.getState().apps.token}` }
 			})
 		}),
 		getBodyTypeList: build.mutation<BodyTypeListResponse, vehicleUsageRequest>({
-			query: (data) => ({
+			query: (
+				data
+			): {
+				url: string
+				method: string
+				body: vehicleUsageRequest
+				headers: { Authorization: string }
+			} => ({
 				url: 'get_body_type',
 				method: 'POST',
-				body: data
+				body: data,
+				headers: { Authorization: `Bearer ${store.getState().apps.token}` }
 			})
 		}),
 		getVehicleUsageList: build.mutation<VehicleUsageListResponse, vehicleUsageRequest>({
@@ -107,11 +166,289 @@ export const commonApi = createApi({
 				headers: { Authorization: `Bearer ${store.getState().apps.token}` }
 			})
 		}),
-		saveMotorDetails: build.mutation<VehicleUsageListResponse, SaveMotorDetailRequest>({
-			query: (data) => ({
+		saveMotorDetails: build.mutation<SaveMotorDetailResponse, SaveMotorDetailRequest>({
+			query: (
+				data
+			): {
+				url: string
+				method: string
+				body: SaveMotorDetailRequest
+				headers: { Authorization: string }
+			} => ({
 				url: 'save_motor_details',
 				method: 'POST',
-				body: data
+				body: data,
+				headers: { Authorization: `Bearer ${store.getState().apps.token}` }
+			})
+		}),
+		getPolicyEndDate: build.query<policyEndDateResponse, string>({
+			query: (
+				date
+			): {
+				url: string
+				method: string
+				body: { date: string }
+				headers: { Authorization: string }
+			} => ({
+				url: 'get_policy_date',
+				method: 'POST',
+				body: { date },
+				headers: { Authorization: `Bearer ${store.getState().apps.token}` }
+			})
+		}),
+		generateOTP: build.mutation<OTPResponse, GenerateOTPRequest>({
+			query: (
+				data
+			): {
+				url: string
+				method: string
+				body: GenerateOTPRequest
+				headers: { Authorization: string }
+			} => ({
+				url: 'generate_otp',
+				method: 'POST',
+				body: data,
+				headers: { Authorization: `Bearer ${store.getState().apps.token}` }
+			})
+		}),
+		verifyOTP: build.mutation<verifyOTPResponse, ValidateOTPRequest>({
+			query: (
+				data
+			): {
+				url: string
+				method: string
+				body: ValidateOTPRequest
+				headers: { Authorization: string }
+			} => ({
+				url: 'verify_otp',
+				method: 'POST',
+				body: data,
+				headers: { Authorization: `Bearer ${store.getState().apps.token}` }
+			})
+		}),
+		getInsuranceClass: build.mutation<InsuranceClassTypeResponse, InsuranceClassTypeRequest>({
+			query: (
+				data
+			): {
+				url: string
+				method: string
+				body: InsuranceClassTypeRequest
+				headers: { Authorization: string }
+			} => ({
+				url: 'get_insurance_class',
+				method: 'POST',
+				body: data,
+				headers: { Authorization: `Bearer ${store.getState().apps.token}` }
+			})
+		}),
+		premiumCalc: build.mutation<PremiumCalcDataResponse, PremiumCalcRequest>({
+			query: (
+				data
+			): {
+				url: string
+				method: string
+				body: PremiumCalcRequest
+				headers: { Authorization: string }
+			} => ({
+				url: 'get_premium_calc',
+				method: 'POST',
+				body: data,
+				headers: { Authorization: `Bearer ${store.getState().apps.token}` }
+			})
+		}),
+		viewPremiumCalc: build.mutation<ViewPremiumCalDataResponse, ViewPremiumCalcRequest>({
+			query: (
+				data
+			): {
+				url: string
+				method: string
+				body: ViewPremiumCalcRequest
+				headers: { Authorization: string }
+			} => ({
+				url: 'view_premium_calc',
+				method: 'POST',
+				body: data,
+				headers: { Authorization: `Bearer ${store.getState().apps.token}` }
+			})
+		}),
+		saveCustomerDetails: build.mutation<SaveCustomerDetailResponse, SaveCustomerDetailRequest>({
+			query: (
+				data
+			): {
+				url: string
+				method: string
+				body: SaveCustomerDetailRequest
+				headers: { Authorization: string }
+			} => ({
+				url: 'save_customer_details',
+				method: 'POST',
+				body: data,
+				headers: { Authorization: `Bearer ${store.getState().apps.token}` }
+			})
+		}),
+		saveVehicleInfo: build.mutation<SaveVehcileDetialResponse, SaveVehicleRequest>({
+			query: (
+				data
+			): {
+				url: string
+				method: string
+				body: SaveVehicleRequest
+				headers: { Authorization: string }
+			} => ({
+				url: 'save_vehicle_info',
+				method: 'POST',
+				body: data,
+				headers: { Authorization: `Bearer ${store.getState().apps.token}` }
+			})
+		}),
+		getOccupationList: build.mutation<OccupationList, OccupationListRequest>({
+			query: (
+				data
+			): {
+				url: string
+				method: string
+				body: OccupationListRequest
+				headers: { Authorization: string }
+			} => ({
+				url: 'get_occupation_list',
+				method: 'POST',
+				body: data,
+				headers: { Authorization: `Bearer ${store.getState().apps.token}` }
+			})
+		}),
+		getRegionList: build.mutation<RegionList, RegionListRequest>({
+			query: (
+				data
+			): {
+				url: string
+				method: string
+				body: RegionListRequest
+				headers: { Authorization: string }
+			} => ({
+				url: 'get_region_list',
+				method: 'POST',
+				body: data,
+				headers: { Authorization: `Bearer ${store.getState().apps.token}` }
+			})
+		}),
+		getColorList: build.mutation<ColorList, ColorListRequest>({
+			query: (
+				data
+			): {
+				url: string
+				method: string
+				body: ColorListRequest
+				headers: { Authorization: string }
+			} => ({
+				url: 'get_color_list',
+				method: 'POST',
+				body: data,
+				headers: { Authorization: `Bearer ${store.getState().apps.token}` }
+			})
+		}),
+		getDocumentType: build.mutation<DocumentTypeResp, DocumentTypeRequest>({
+			query: (
+				data
+			): {
+				url: string
+				method: string
+				body: DocumentTypeRequest
+				headers: { Authorization: string }
+			} => ({
+				url: 'get_document_type',
+				method: 'POST',
+				body: data,
+				headers: { Authorization: `Bearer ${store.getState().apps.token}` }
+			})
+		}),
+		BuyPolicy: build.mutation<BuyPolicyResponse, BuyPolicyRequest>({
+			query: (
+				data
+			): {
+				url: string
+				method: string
+				body: BuyPolicyRequest
+				headers: { Authorization: string }
+			} => ({
+				url: 'buy_policy',
+				method: 'POST',
+				body: data,
+				headers: { Authorization: `Bearer ${store.getState().apps.token}` }
+			})
+		}),
+		viewQuote: build.mutation<ViewQuoteResponse, ViewQuoteRequest>({
+			query: (
+				data
+			): {
+				url: string
+				method: string
+				body: ViewQuoteRequest
+				headers: { Authorization: string }
+			} => ({
+				url: 'view_quote',
+				method: 'POST',
+				body: data,
+				headers: { Authorization: `Bearer ${store.getState().apps.token}` }
+			})
+		}),
+		uploadDocs: build.mutation<UploadDocsResponse, FormData>({
+			query: (
+				data
+			): {
+				url: string
+				method: string
+				body: FormData
+				headers: { Authorization: string }
+			} => ({
+				url: 'upload_docs',
+				method: 'POST',
+				body: data,
+				headers: { Authorization: `Bearer ${store.getState().apps.token}` }
+			})
+		}),
+		getBankList: build.mutation<getBankResponse, GetBankRequest>({
+			query: (
+				data
+			): {
+				url: string
+				method: string
+				body: GetBankRequest
+				headers: { Authorization: string }
+			} => ({
+				url: 'get_bank_list',
+				method: 'POST',
+				body: data,
+				headers: { Authorization: `Bearer ${store.getState().apps.token}` }
+			})
+		}),
+		getPaymentTypes: build.mutation<PaymentTypeResponse, PaymentTypeRequest>({
+			query: (
+				data
+			): {
+				url: string
+				method: string
+				body: PaymentTypeRequest
+				headers: { Authorization: string }
+			} => ({
+				url: 'get_payment_types',
+				method: 'POST',
+				body: data,
+				headers: { Authorization: `Bearer ${store.getState().apps.token}` }
+			})
+		}),
+		saveDriver: build.mutation<SaveDriverResponse, SaveDriverRequest>({
+			query: (
+				data
+			): {
+				url: string
+				method: string
+				body: SaveDriverRequest
+				headers: { Authorization: string }
+			} => ({
+				url: 'save_driver_details',
+				method: 'POST',
+				body: data,
+				headers: { Authorization: `Bearer ${store.getState().apps.token}` }
 			})
 		})
 	})
@@ -124,5 +461,23 @@ export const {
 	useGetMotorModelListMutation,
 	useGetBodyTypeListMutation,
 	useGetVehicleUsageListMutation,
-	useSaveMotorDetailsMutation
+	useSaveMotorDetailsMutation,
+	useGetPolicyEndDateQuery,
+	useGenerateOTPMutation,
+	useVerifyOTPMutation,
+	useGetInsuranceClassMutation,
+	usePremiumCalcMutation,
+	useViewPremiumCalcMutation,
+	useSaveCustomerDetailsMutation,
+	useGetColorListMutation,
+	useGetOccupationListMutation,
+	useGetRegionListMutation,
+	useSaveVehicleInfoMutation,
+	useGetDocumentTypeMutation,
+	useBuyPolicyMutation,
+	useViewQuoteMutation,
+	useUploadDocsMutation,
+	useGetBankListMutation,
+	useGetPaymentTypesMutation,
+	useSaveDriverMutation
 } = commonApi

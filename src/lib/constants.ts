@@ -15,7 +15,7 @@ export const months = [
 
 export const pricingData = [
 	{
-		name:'Basic',
+		name: 'Basic',
 		price: 0,
 		WorkSpace: {
 			seats: 'Up to 3',
@@ -29,7 +29,7 @@ export const pricingData = [
 		}
 	},
 	{
-		name:'Evolution',
+		name: 'Evolution',
 		price: 39,
 		WorkSpace: {
 			seats: 'Unlimited',
@@ -43,7 +43,7 @@ export const pricingData = [
 		}
 	},
 	{
-		name:'Evolution +',
+		name: 'Evolution +',
 		price: 59,
 		WorkSpace: {
 			seats: 'Unlimited',
@@ -57,7 +57,7 @@ export const pricingData = [
 		}
 	},
 	{
-		name:'Enterprise',
+		name: 'Enterprise',
 		price: 129,
 		WorkSpace: {
 			seats: 'Unlimited',
@@ -69,20 +69,35 @@ export const pricingData = [
 		EmailCalendar: {
 			storage: 'Price per use'
 		}
-	},
+	}
 ]
 
 export const createAccountOptions = [
 	{
-	  id: 1,
-	  optionName: 'Setup your account Manually',
-	  optionDescription:
-		'You can get everything you want if you work hard, trust the process, and stick to the plan.',
+		id: 1,
+		optionName: 'Setup your account Manually',
+		optionDescription:
+			'You can get everything you want if you work hard, trust the process, and stick to the plan.'
 	},
 	{
-	  id: 2,
-	  optionName: 'Set up your account quickly with AI',
-	  optionDescription:
-		'You can get everything you want if you work hard, trust the process, and stick to the plan.',
+		id: 2,
+		optionName: 'Set up your account quickly with AI',
+		optionDescription:
+			'You can get everything you want if you work hard, trust the process, and stick to the plan.'
+	}
+]
+
+export const onBoardingOptions = [
+	{
+		id: 1,
+		optionName: 'Setup your account Manually',
+		optionDescription:
+			'You can get everything you want if you work hard, trust the process, and stick to the plan.'
 	},
+	{
+		id: 2,
+		optionName: 'Set up your account quickly with AI',
+		optionDescription:
+			'You can get everything you want if you work hard, trust the process, and stick to the plan.'
+	}
 ]

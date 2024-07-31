@@ -72,4 +72,3 @@ const InputOTPSeparator = forwardRef<ElementRef<'div'>, ComponentPropsWithoutRef
 InputOTPSeparator.displayName = 'InputOTPSeparator'
 
 export { InputOTP, InputOTPGroup, InputOTPSlot, InputOTPSeparator }
-

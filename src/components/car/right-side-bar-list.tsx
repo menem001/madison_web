@@ -12,6 +12,16 @@ export function RightSideBarList() {
 
 	const displayDataPage1 = [
 		{
+			id: 'Car Brand',
+			field: 'Car Brand',
+			name: vehicleData.mark
+		},
+		{
+			id: 'Car Model',
+			field: 'Car Model',
+			name: vehicleData.model
+		},
+		{
 			id: 'Vehicle Usage',
 			field: 'Vehicle Usage',
 			name: vehicleData.vehicleUsage
@@ -19,12 +29,17 @@ export function RightSideBarList() {
 		{
 			id: 'Body Type',
 			field: 'Body Type',
-			name: vehicleData.bodyType.join(',')
+			name: vehicleData.bodyType
 		},
 		{
-			id: 'Car Brand',
-			field: 'Car Brand',
-			name: vehicleData.mark
+			id: 'Seat Count',
+			field: 'Seat Count',
+			name: vehicleData.seat
+		},
+		{
+			id: 'Sum Insured',
+			field: 'Sum Insured',
+			name: vehicleData.value
 		},
 		{
 			id: 'Manufacture Year',
@@ -32,9 +47,9 @@ export function RightSideBarList() {
 			name: vehicleData.year
 		},
 		{
-			id: 'Vehicle Description',
-			field: 'Vehicle Description',
-			name: vehicleData.description
+			id: 'Driver DOB',
+			field: 'Driver DOB',
+			name: vehicleData.DriverDOB
 		}
 	]
 
@@ -47,9 +62,9 @@ export function RightSideBarList() {
 						<span>{isPage1 ? 'A' : 'B'}</span>
 					</div>
 				</div>
-				<div className='flex flex-col p-2'>
-					<span className='text-sm font-semibold'>Vehicle Details</span>
-					<span className='text-xs opacity-70'>
+				<div className='flex flex-col p-1'>
+					<span className='text-[13px] font-semibold'>Vehicle Details</span>
+					<span className='text-[11px] opacity-70'>
 						{isPage1
 							? 'Usage, Body, Mark, Year, Description'
 							: 'Horse Power, Tonnage, Sum Insured, Deductibles'}
