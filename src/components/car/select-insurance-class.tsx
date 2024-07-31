@@ -163,7 +163,7 @@ export function SelectInsuranceClass() {
 	return (
 		<div className='flex flex-col gap-7'>
 			<div className='-ml-16 flex flex-row items-center gap-4'>
-				<div className='h-12 w-12 overflow-hidden rounded-full'>
+				<div className='min-h-12 min-w-12 overflow-hidden rounded-full'>
 					<Image
 						alt='face'
 						height={60}

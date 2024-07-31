@@ -4,6 +4,7 @@ import { assets } from '@/assets'
 import { getPolicyDateFormatFromDate } from '@/lib'
 import { useAppSelector } from '@/redux/hooks'
 import Image from 'next/image'
+import { BackButton } from '../common/back_btn'
 
 export default function ConfirmPremiumDetails() {
 	const vehicleData = useAppSelector((state) => state.carInsurance)
@@ -27,6 +28,7 @@ export default function ConfirmPremiumDetails() {
 
 	return (
 		<section className='flex flex-col gap-5'>
+			<BackButton />
 			<div className='flex flex-row items-end justify-between font-inter'>
 				<div className='text-2xl font-bold'>Premium Details</div>
 				<div className='flex flex-row items-end gap-8 font-jakarta'>
