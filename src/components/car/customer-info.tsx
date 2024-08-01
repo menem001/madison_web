@@ -175,7 +175,9 @@ export function CustomerInfo(props: CustomerInfoProps) {
 							}}
 						/>
 						{isNameNotValid && (
-							<span className='text-sm text-red-500'>Enter a valid Name</span>
+							<span className='text-sm text-red-500'>
+								Name should be atlease 4 letters
+							</span>
 						)}
 					</div>
 				</div>
