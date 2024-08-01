@@ -114,6 +114,7 @@ export default function OnboardingInfoPage() {
 					value.data.data.Result ===
 						'Vehicle record was not found. Please contact the RTSA Call Centre to resolve this.'
 				) {
+					setIsLoading(false)
 					setShowError(true)
 				}
 			})
