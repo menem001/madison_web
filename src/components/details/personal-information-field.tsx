@@ -238,32 +238,36 @@ export function PersonalInformationField(props: personalInformationFieldProps) {
 												Title<span className='text-red-500'>*</span>
 											</FormLabel>
 											<FormControl>
-												<div className='w-20'>
-													<Select
-														disabled={field.disabled}
-														name={field.name}
-														value={field.value}
-														onValueChange={(e) => {
-															field.onChange(e)
-														}}>
-														<SelectTrigger
-															ref={field.ref}
-															className='border-2 border-blue-925'>
-															<SelectValue placeholder='Title' />
-														</SelectTrigger>
-														<SelectContent>
-															{titleList.map((title, index) => {
-																return (
-																	<SelectItem
-																		key={index}
-																		value={title.value}>
-																		{title.label}
-																	</SelectItem>
-																)
-															})}
-														</SelectContent>
-													</Select>
-												</div>
+												{titleList.length === 0 ? (
+													<Skeleton className='h-10 w-full' />
+												) : (
+													<div className='w-20'>
+														<Select
+															disabled={field.disabled}
+															name={field.name}
+															value={field.value}
+															onValueChange={(e) => {
+																field.onChange(e)
+															}}>
+															<SelectTrigger
+																ref={field.ref}
+																className='border-2 border-blue-925'>
+																<SelectValue placeholder='Title' />
+															</SelectTrigger>
+															<SelectContent>
+																{titleList.map((title, index) => {
+																	return (
+																		<SelectItem
+																			key={index}
+																			value={title.value}>
+																			{title.label}
+																		</SelectItem>
+																	)
+																})}
+															</SelectContent>
+														</Select>
+													</div>
+												)}
 											</FormControl>
 											<FormMessage />
 										</FormItem>
@@ -295,7 +299,7 @@ export function PersonalInformationField(props: personalInformationFieldProps) {
 						</div>
 						<div className='flex w-full flex-row gap-8'>
 							{accountType === 'Personal' && (
-								<div className='flex-grow'>
+								<div className='min-w-32'>
 									<FormField
 										control={form.control}
 										name='gender'
