@@ -25,41 +25,41 @@ export function SelectModel() {
 
 	useGSAP(() => {
 		if (vehicleData.model === '') {
-			gsap.from('.selectModel', { y: 80, opacity: 0, duration: 1, delay: 2 })
-			gsap.to('.modeltitle', { duration: 1, text: 'Select the Model' })
+			gsap.from('.selectModel', { y: 80, opacity: 0, duration: 0.5, delay: 1 })
+			gsap.to('.modeltitle', { duration: 0.5, text: 'Select the Model' })
 			gsap.to('.modelsubtitle', {
-				duration: 1,
+				duration: 0.5,
 				// eslint-disable-next-line quotes
 				text: "The specific design or type of vehicle within the manufacturer's lineup (e.g. Corolla, Civic, Mustang)",
-				delay: 1
+				delay: 0.5
 			})
 			gsap.to('.modelSuggest', {
-				duration: 1,
+				duration: 0.5,
 				text: 'Suggested Models',
-				delay: 3
+				delay: 1.5
 			})
 			gsap.from('.suggestedGridModel', {
 				y: 80,
 				opacity: 0,
-				duration: 1,
-				delay: 4
+				duration: 0.5,
+				delay: 2
 			})
 		} else {
-			gsap.from('.selectModel', { y: 80, opacity: 0, duration: 1 })
-			gsap.to('.modeltitle', { duration: 1, text: 'Select the Model' })
+			gsap.from('.selectModel', { y: 80, opacity: 0, duration: 0.5 })
+			gsap.to('.modeltitle', { duration: 0.5, text: 'Select the Model' })
 			gsap.to('.modelsubtitle', {
-				duration: 1,
+				duration: 0.5,
 				// eslint-disable-next-line quotes
 				text: "The specific design or type of vehicle within the manufacturer's lineup (e.g. Corolla, Civic, Mustang)"
 			})
 			gsap.to('.modelSuggest', {
-				duration: 1,
+				duration: 0.5,
 				text: 'Suggested Models'
 			})
 			gsap.from('.suggestedGridModel', {
 				y: 80,
 				opacity: 0,
-				duration: 1
+				duration: 0.5
 			})
 		}
 	})
