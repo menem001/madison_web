@@ -135,10 +135,10 @@ export function OtpForm() {
 							}}
 						/>
 						<Button
-							disabled={curMobile.length !== 10}
+							disabled={curMobile.length !== 9}
 							variant='bluebtn'
 							onClick={() => {
-								if (curMobile.length === 10) {
+								if (curMobile.length === 9) {
 									dispatch(updateMobile(curMobile))
 									setEditNumber(false)
 								}
