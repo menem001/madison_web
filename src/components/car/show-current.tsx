@@ -46,10 +46,10 @@ export function ShowCurrent(props: ShowCurrentProps) {
 					</div>
 				</div>
 				<div className='flex flex-col p-1'>
-					<span className='text-[13px] font-semibold'>
+					<span className='line-clamp-1 text-[13px] font-semibold'>
 						{props.item.name !== '' ? props.item.name : 'Select ' + props.item.field}
 					</span>
-					<span className='text-[11px] opacity-70'>{props.item.field}</span>
+					<span className='line-clamp-1 text-[11px] opacity-70'>{props.item.field}</span>
 				</div>
 			</div>
 			<div className='flex flex-shrink-0 items-center'>

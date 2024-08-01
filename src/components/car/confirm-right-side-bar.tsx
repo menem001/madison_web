@@ -47,17 +47,21 @@ export function ConfirmRightSideBar() {
 								{vehicleData.year} - {vehicleData.vehicleUsage}
 							</span>
 						</div>
-						<div className='flex w-full flex-row justify-between gap-6'>
-							<span className='flex flex-col text-sm font-bold text-green-75'>
-								Policy Start Date
-								<span className='font-normal'>{vehicleData.policyStartDate}</span>
-							</span>
-							<span className='flex flex-col text-sm font-bold text-green-75'>
-								Policy End Date
-								<span className='font-normal'>{vehicleData.policyEndDate}</span>
-							</span>
-						</div>
 					</div>
+				</div>
+				<div className='flex w-full flex-row justify-between gap-6'>
+					<span className='flex flex-col items-center text-sm font-bold text-green-75'>
+						Policy Start Date
+						<span className='font-normal'>{vehicleData.policyStartDate}</span>
+					</span>
+					<span className='flex flex-col items-center text-sm font-bold text-green-75'>
+						Policy End Date
+						<span className='font-normal'>{vehicleData.policyEndDate}</span>
+					</span>
+					<span className='flex flex-col items-center text-sm font-bold text-green-75'>
+						Days Count
+						<span className='font-normal'>{vehicleData.policyDaysCount}</span>
+					</span>
 				</div>
 				<div className='border-y-[0.5px] border-green-75 border-opacity-25 py-4'>
 					Your Insurance is protected by{' '}

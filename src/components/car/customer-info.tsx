@@ -186,41 +186,19 @@ export function CustomerInfo(props: CustomerInfoProps) {
 							placeholder='Mobile Code'
 							value={customerData.code}
 						/>
-						{/* <Select
-							value={customerData.code}
-							// onValueChange={(e) => {
-							// 	dispatch(updateVehicleManufactureYear(e + ''))
-							// }}
-						>
-							<SelectTrigger
-								id='year'
-								value={customerData.code}>
-								<SelectValue />
-							</SelectTrigger>
-							<SelectContent className='max-h-64'>
-								 {years.map((year) => {
-								return (
-									<SelectItem
-										key={year}
-										value={year}>
-										{year}
-									</SelectItem>
-								)
-							})} 
-								<SelectItem value='+211'>+211</SelectItem>
-								<SelectItem value='+167'>+167</SelectItem>
-								<SelectItem value='+260'>+260</SelectItem>
-							</SelectContent>
-						</Select> */}
 					</div>
 					<div className='flex-grow'>
 						<Label htmlFor='mobile'>Mobile Number</Label>
 						<Input
 							id='mobile'
+							maxLength={10}
 							placeholder='Mobile Number'
+							type='number'
 							value={customerData.mobile}
 							onChange={(e) => {
-								dispatch(updateMobile(e.target.value))
+								if (e.target.value.length <= 10) {
+									dispatch(updateMobile(e.target.value))
+								}
 							}}
 						/>
 					</div>

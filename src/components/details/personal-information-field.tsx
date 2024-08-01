@@ -23,7 +23,7 @@ import { format } from 'date-fns'
 import { cn, formatDateDDMMYYYY } from '@/lib'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
 import { updatePersonalDetails } from '@/redux/slices'
-import { useGetOccupationListMutation } from '@/redux/api/commonApi'
+import { useGetOccupationListMutation, useTitleTypeMutation } from '@/redux/api/commonApi'
 import { useEffect, useState } from 'react'
 import { Skeleton } from '../ui/skeleton'
 import { Label } from '../ui/label'
@@ -36,7 +36,9 @@ type personalInformationFieldProps = {
 }
 
 const formSchema = z.object({
-	title: z.string(),
+	title: z.string().min(1, {
+		message: 'Select a title'
+	}),
 	name: z.string().min(2, {
 		message: 'Please enter Name'
 	}),
@@ -57,7 +59,6 @@ export function PersonalInformationField(props: personalInformationFieldProps) {
 	const branchCode = useAppSelector((state) => state.apps.branchCode)
 
 	const [accountType, setAccountType] = useState<string>(customerData.accType)
-	const [isTitleEmpty, setIsTitleEmpty] = useState<boolean>(false)
 	const [isGenderEmpty, setIsGenderEmpty] = useState<boolean>(false)
 	const [isDOBEmpty, setIsDOBEmpty] = useState<boolean>(false)
 
@@ -72,8 +73,10 @@ export function PersonalInformationField(props: personalInformationFieldProps) {
 	const dispatch = useAppDispatch()
 
 	const [getOccupation] = useGetOccupationListMutation()
+	const [getTitleTypes] = useTitleTypeMutation()
 
 	const [OccupationList, setOccupation] = useState<{ value: string; label: string }[]>([])
+	const [titleList, setTitleList] = useState<{ value: string; label: string }[]>([])
 
 	useEffect(() => {
 		const request = {
@@ -96,6 +99,29 @@ export function PersonalInformationField(props: personalInformationFieldProps) {
 			}
 		})
 	}, [])
+
+	useEffect(() => {
+		const request = {
+			InsuranceId: insuranceID,
+			ItemType: 'NAME_TITLE',
+			BranchCode: '99999',
+			ItemCode: 'null',
+			TitleType: accountType === 'Personal' ? 'I' : 'C'
+		}
+		const tempArr: { value: string; label: string }[] = []
+		const res = getTitleTypes(request)
+		res.then((value) => {
+			if (value.data?.type === 'success' && value.data?.data !== undefined) {
+				value.data.data!.Result.map((value) => {
+					tempArr.push({
+						value: value.Code,
+						label: value.CodeDesc
+					})
+				})
+				setTitleList(tempArr)
+			}
+		})
+	}, [accountType])
 
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
@@ -120,9 +146,7 @@ export function PersonalInformationField(props: personalInformationFieldProps) {
 
 	function onSubmit(values: z.infer<typeof formSchema>) {
 		if (accountType === 'Personal') {
-			if (values.title === '') {
-				setIsTitleEmpty(true)
-			} else if (values.gender === '') {
+			if (values.gender === '') {
 				setIsGenderEmpty(true)
 			} else if (!values.dob) {
 				setIsDOBEmpty(true)
@@ -221,7 +245,6 @@ export function PersonalInformationField(props: personalInformationFieldProps) {
 														value={field.value}
 														onValueChange={(e) => {
 															field.onChange(e)
-															setIsTitleEmpty(false)
 														}}>
 														<SelectTrigger
 															ref={field.ref}
@@ -229,23 +252,20 @@ export function PersonalInformationField(props: personalInformationFieldProps) {
 															<SelectValue placeholder='Title' />
 														</SelectTrigger>
 														<SelectContent>
-															<SelectItem
-																key={1}
-																value='1'>
-																Mr.
-															</SelectItem>
-															<SelectItem
-																key={2}
-																value='2'>
-																Mrs.
-															</SelectItem>
+															{titleList.map((title, index) => {
+																return (
+																	<SelectItem
+																		key={index}
+																		value={title.value}>
+																		{title.label}
+																	</SelectItem>
+																)
+															})}
 														</SelectContent>
 													</Select>
 												</div>
 											</FormControl>
-											{isTitleEmpty && (
-												<span className='text-xs text-red-500'>select</span>
-											)}
+											<FormMessage />
 										</FormItem>
 									)}
 								/>
