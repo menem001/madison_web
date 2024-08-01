@@ -58,7 +58,10 @@ import {
 	type PaymentTypeRequest,
 	type SaveDriverRes,
 	type SaveDriverRequest,
-	saveDriverResSchema
+	saveDriverResSchema,
+	type TypeRes,
+	type TypeRequest,
+	titletypeResSchema
 } from './models/common.models'
 import { MotorMakeSchema, type MotorList, type CommonModalRequest } from './models/common.models'
 import {
@@ -299,6 +302,14 @@ export type SaveDriverResponse = TResponse<SaveDriverRes>
 
 export async function saveDriverDetails(data: SaveDriverRequest, token: string | null) {
 	return api.post<PaymentTypeRes>(endPoints.saveDriver, data, saveDriverResSchema, {
+		headers: { Authorization: token }
+	})
+}
+
+export type TitleTypeResponse = TResponse<TypeRes>
+
+export async function getTitleTypes(data: TypeRequest, token: string | null) {
+	return api.post<PaymentTypeRes>(endPoints.titleType, data, titletypeResSchema, {
 		headers: { Authorization: token }
 	})
 }

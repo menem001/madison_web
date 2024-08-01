@@ -13,14 +13,15 @@ const initialState: CustomerDetails = {
 	nrc: '',
 	passport: '',
 	accType: 'Personal',
-	companyRegistrationNumber: null,
+	companyRegistrationNumber: '',
 	address: '',
 	city: '',
 	poBox: '',
 	workAddress: '',
 	code2: '',
 	mobile2: '',
-	cityName: ''
+	cityName: '',
+	isResident: true
 }
 
 export type CustomerDetails = {
@@ -36,7 +37,7 @@ export type CustomerDetails = {
 	nrc: string
 	passport: string
 	accType: string
-	companyRegistrationNumber: string | null
+	companyRegistrationNumber: string
 	address: string
 	city: string
 	poBox: string
@@ -44,6 +45,7 @@ export type CustomerDetails = {
 	code2: string
 	mobile2: string
 	cityName: string
+	isResident: boolean
 }
 
 export const customerDetailsSlice = createSlice({
@@ -74,6 +76,7 @@ export const customerDetailsSlice = createSlice({
 				dob: string
 				name: string
 				mobile: string
+				accountType: string
 			}>
 		) {
 			state.title = action.payload.title
@@ -82,20 +85,21 @@ export const customerDetailsSlice = createSlice({
 			state.dob = action.payload.dob
 			state.name = action.payload.name
 			state.mobile = action.payload.mobile
+			state.accType = action.payload.accountType
 		},
 		updateIdentificationDetails(
 			state: CustomerDetails,
 			action: PayloadAction<{
 				nrc: string
 				passport: string
-				accountType: string
 				companyNumber: string
+				isResident: boolean
 			}>
 		) {
 			state.nrc = action.payload.nrc
 			state.passport = action.payload.passport
-			state.accType = action.payload.accountType
 			state.companyRegistrationNumber = action.payload.companyNumber
+			state.isResident = action.payload.isResident
 		},
 		updateAddressDetails(
 			state: CustomerDetails,

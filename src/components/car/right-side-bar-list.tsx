@@ -1,13 +1,10 @@
 'use client'
 
 import { useAppSelector } from '@/redux/hooks'
-import { usePathname } from 'next/navigation'
 import { Fragment } from 'react'
 import { ShowList } from './show-list'
 
 export function RightSideBarList() {
-	const path = usePathname()
-
 	const vehicleData = useAppSelector((state) => state.carInsurance)
 
 	const displayDataPage1 = [
@@ -52,22 +49,18 @@ export function RightSideBarList() {
 			name: vehicleData.DriverDOB
 		}
 	]
-
-	const isPage1 = path === '/car-insurance/1'
 	return (
 		<Fragment>
 			<div className='flex flex-row rounded-md bg-gray-66 font-inter'>
 				<div className='flex items-center justify-center px-4'>
 					<div className='flex h-6 w-6 items-center justify-center rounded-full bg-white text-blue-300'>
-						<span>{isPage1 ? 'A' : 'B'}</span>
+						<span>A</span>
 					</div>
 				</div>
 				<div className='flex flex-col p-1'>
-					<span className='text-[13px] font-semibold'>Vehicle Details</span>
-					<span className='text-[11px] opacity-70'>
-						{isPage1
-							? 'Usage, Body, Mark, Year, Description'
-							: 'Horse Power, Tonnage, Sum Insured, Deductibles'}
+					<span className='line-clamp-1 text-[13px] font-semibold'>Vehicle Details</span>
+					<span className='line-clamp-1 text-[11px] opacity-70'>
+						Usage, Body, Mark, Year, Description
 					</span>
 				</div>
 			</div>

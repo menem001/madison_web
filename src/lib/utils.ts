@@ -42,3 +42,14 @@ export function removeParenthesis(str: string) {
 	const result = str.replace(regex, '')
 	return result
 }
+
+export function getDataWithinParenthesis(str: string) {
+	const regex = /\((.*?)\)/
+	const match = str.match(regex)
+	return match ? match[1] : ''
+}
+
+export function isValidEmail(email: string) {
+	const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+	return regex.test(email)
+}

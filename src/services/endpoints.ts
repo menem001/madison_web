@@ -29,6 +29,7 @@ const endPoints = {
 	paymentTypes: 'EwayCommonApi/master/dropdown/paymenttypes',
 	makePayment: 'EwayCommonApi/payment/makepayment',
 	insertPayment: 'EwayCommonApi/payment/insertpaymentdetails',
-	saveDriver: 'EwayMotorApi/api/savemotordrivers'
+	saveDriver: 'EwayMotorApi/api/savemotordrivers',
+	titleType: 'EwayCommonApi/master/getbyitemvalue'
 }
 export default endPoints

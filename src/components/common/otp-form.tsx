@@ -8,6 +8,7 @@ import { useGenerateOTPMutation, useVerifyOTPMutation } from '@/redux/api/common
 import { useState } from 'react'
 import { setGuestLoginDetails, setOTPToken, updateMobile } from '@/redux/slices'
 import { cn } from '@/lib'
+import { BackButton } from './back_btn'
 
 export function OtpForm() {
 	const route = useRouter()
@@ -107,6 +108,11 @@ export function OtpForm() {
 
 	return (
 		<section className='flex h-full w-full flex-col items-center justify-center gap-10'>
+			<div className='w-3/4'>
+				<div className='self-start'>
+					<BackButton />
+				</div>
+			</div>
 			<div className='flex flex-col items-center justify-center gap-4 font-jakarta'>
 				<h1 className='text-[28px] font-semibold text-blue-300'>OTP Verification</h1>
 				<h3 className='w-3/4 text-center'>
@@ -129,10 +135,10 @@ export function OtpForm() {
 							}}
 						/>
 						<Button
-							disabled={curMobile.length !== 10}
+							disabled={curMobile.length !== 9}
 							variant='bluebtn'
 							onClick={() => {
-								if (curMobile.length === 10) {
+								if (curMobile.length === 9) {
 									dispatch(updateMobile(curMobile))
 									setEditNumber(false)
 								}

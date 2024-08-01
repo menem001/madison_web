@@ -23,7 +23,8 @@ import {
 	type UploadDocsResponse,
 	type getBankResponse,
 	type PaymentTypeResponse,
-	type SaveDriverResponse
+	type SaveDriverResponse,
+	type TitleTypeResponse
 } from '@/services/common.services'
 import {
 	type vehicleUsageRequest,
@@ -46,7 +47,8 @@ import {
 	type ViewQuoteRequest,
 	type GetBankRequest,
 	type PaymentTypeRequest,
-	type SaveDriverRequest
+	type SaveDriverRequest,
+	type TypeRequest
 } from '@/services/models/common.models'
 
 import type { Action, PayloadAction } from '@reduxjs/toolkit'
@@ -450,6 +452,21 @@ export const commonApi = createApi({
 				body: data,
 				headers: { Authorization: `Bearer ${store.getState().apps.token}` }
 			})
+		}),
+		titleType: build.mutation<TitleTypeResponse, TypeRequest>({
+			query: (
+				data
+			): {
+				url: string
+				method: string
+				body: TypeRequest
+				headers: { Authorization: string }
+			} => ({
+				url: 'get_title_types',
+				method: 'POST',
+				body: data,
+				headers: { Authorization: `Bearer ${store.getState().apps.token}` }
+			})
 		})
 	})
 })
@@ -479,5 +496,6 @@ export const {
 	useUploadDocsMutation,
 	useGetBankListMutation,
 	useGetPaymentTypesMutation,
-	useSaveDriverMutation
+	useSaveDriverMutation,
+	useTitleTypeMutation
 } = commonApi

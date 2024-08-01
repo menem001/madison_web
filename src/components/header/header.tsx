@@ -1,11 +1,16 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { Button } from '../ui'
 import { Logo } from './logo'
 
 export function Header() {
 	const route = useRouter()
+	const path = usePathname()
+	const beforeLogin =
+		path === '/car-insurance/1' ||
+		path === '/car-insurance/2' ||
+		path === '/car-insurance/confirm/otp-verify'
 	return (
 		<section className='sticky top-0 z-20 flex h-full max-h-20 w-full flex-row items-center justify-between bg-white shadow'>
 			<div className='flex h-full flex-row items-center gap-8 p-3 font-jakarta text-xs font-medium text-gray-500 md:text-sm'>
@@ -25,7 +30,7 @@ export function Header() {
 					onClick={() => {
 						route.push('/login')
 					}}>
-					Sign In
+					{beforeLogin ? <span>Sign In</span> : <span>Log out</span>}
 				</Button>
 			</div>
 		</section>

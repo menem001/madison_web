@@ -12,6 +12,7 @@ import { useAppDispatch, useAppSelector } from '@/redux/hooks'
 import { updateQuoteDetails } from '@/redux/slices/motor-detail.slice'
 import { useToast } from '../ui/use-toast'
 import ClipLoader from 'react-spinners/ClipLoader'
+import { BackButton } from '../common/back_btn'
 
 export function CustomerDetailsForm() {
 	const [current, setCurrent] = useState(1)
@@ -42,6 +43,12 @@ export function CustomerDetailsForm() {
 
 	function navigateToVehicle() {
 		setIsLoading(true)
+		const idNumber =
+			customerData.accType === 'Personal'
+				? customerData.isResident
+					? customerData.nrc
+					: customerData.passport
+				: customerData.companyRegistrationNumber
 		const req = {
 			BrokerBranchCode: appData.brokerCode,
 			CustomerReferenceNo: motorData.CustomerReferenceNo,
@@ -62,7 +69,7 @@ export function CustomerDetailsForm() {
 			Email3: null,
 			Fax: null,
 			Gender: customerData.gender,
-			IdNumber: customerData.nrc,
+			IdNumber: idNumber,
 			IdType: '1',
 			IsTaxExempted: 'N',
 			Language: '1',
@@ -186,6 +193,7 @@ export function CustomerDetailsForm() {
 
 	return (
 		<section className='flex h-full w-full flex-col gap-10'>
+			<BackButton />
 			<div className='flex flex-col gap-5'>
 				<h1 className='font-roboto text-5xl font-semibold text-blue-300'>
 					Customer Details
