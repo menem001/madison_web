@@ -13,6 +13,7 @@ import { updateDetails } from '@/redux/slices/motor-detail.slice'
 import { useState } from 'react'
 import ClipLoader from 'react-spinners/ClipLoader'
 import { useToast } from '../ui/use-toast'
+import { isValidEmail } from '@/lib'
 
 type CustomerInfoProps = {
 	scrollToTop: () => void
@@ -30,7 +31,10 @@ export function CustomerInfo(props: CustomerInfoProps) {
 	const [isLoading, setIsLoading] = useState<boolean>(false)
 
 	const dispatch = useAppDispatch()
-	// const router = useRouter()
+
+	const [isNameNotValid, setIssNameNotValid] = useState<boolean>(false)
+	const [isEmailNotValid, setIsEmailNotValid] = useState<boolean>(false)
+	const [isMobileNotValid, setIsMobileNotValid] = useState<boolean>(false)
 
 	useGSAP(() => {
 		gsap.from('.selectCustomerInfo', { y: 80, opacity: 0, duration: 0.5, delay: 1 })
@@ -43,9 +47,16 @@ export function CustomerInfo(props: CustomerInfoProps) {
 	})
 
 	function goToConfirm() {
-		setIsLoading(true)
-		doSaveMotorDetails()
-		// router.push('/car-insurance/confirm')
+		if (customerData.name.length < 4) {
+			setIssNameNotValid(true)
+		} else if (!isValidEmail(customerData.email)) {
+			setIsEmailNotValid(true)
+		} else if (customerData.mobile.length !== 9) {
+			setIsMobileNotValid(true)
+		} else {
+			setIsLoading(true)
+			doSaveMotorDetails()
+		}
 	}
 
 	function doSaveMotorDetails() {
@@ -160,8 +171,12 @@ export function CustomerInfo(props: CustomerInfoProps) {
 							value={customerData.name}
 							onChange={(e) => {
 								dispatch(updateName(e.target.value))
+								setIssNameNotValid(false)
 							}}
 						/>
+						{isNameNotValid && (
+							<span className='text-sm text-red-500'>Enter a valid Name</span>
+						)}
 					</div>
 				</div>
 				<div className='selectCustomerInfo flex flex-row gap-10'>
@@ -170,11 +185,16 @@ export function CustomerInfo(props: CustomerInfoProps) {
 						<Input
 							id='email'
 							placeholder='Mail Address'
+							type='email'
 							value={customerData.email}
 							onChange={(e) => {
 								dispatch(updateEmail(e.target.value))
+								setIsEmailNotValid(false)
 							}}
 						/>
+						{isEmailNotValid && (
+							<span className='text-sm text-red-500'>Enter a valid Email</span>
+						)}
 					</div>
 				</div>
 				<div className='selectCustomerInfo flex flex-row gap-10'>
@@ -196,11 +216,17 @@ export function CustomerInfo(props: CustomerInfoProps) {
 							type='number'
 							value={customerData.mobile}
 							onChange={(e) => {
-								if (e.target.value.length <= 10) {
+								if (e.target.value.length <= 9) {
 									dispatch(updateMobile(e.target.value))
+									setIsMobileNotValid(false)
 								}
 							}}
 						/>
+						{isMobileNotValid && (
+							<span className='text-sm text-red-500'>
+								Enter a valid Mobile Number
+							</span>
+						)}
 					</div>
 				</div>
 			</div>
