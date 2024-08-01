@@ -21,6 +21,7 @@ type UploadFieldProps = {
 		ProductId: string
 		UploadedBy: string
 		file: File | null
+		MandatoryStatus: string
 		isUploaded: boolean
 	}[]
 	uploadDocument: (index: number, docType: string) => void
@@ -63,7 +64,12 @@ export default function UploadField(props: UploadFieldProps) {
 				)}
 				<div className='flex flex-col'>
 					<h3 className='font-bold'>
-						<span>{fileName}</span>
+						<h3>
+							{fileName}
+							{props.fileDataList[props.index].MandatoryStatus === 'Y' && (
+								<span className='text-red-500'>*</span>
+							)}
+						</h3>
 					</h3>
 					<h3 className='text-xs'>Upload or Drag/Drop a files (within Limit 10 MB)</h3>
 				</div>

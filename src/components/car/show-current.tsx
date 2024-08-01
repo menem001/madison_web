@@ -37,7 +37,7 @@ export function ShowCurrent(props: ShowCurrentProps) {
 		<div className='flex flex-row rounded-md bg-gray-66 font-inter'>
 			<div className='flex flex-grow flex-row'>
 				<div className='flex items-center justify-center px-4'>
-					<div className='flex h-6 w-6 items-center justify-center rounded-full bg-blue-300'>
+					<div className='flex h-6 w-6 items-center justify-center rounded-full bg-green-200'>
 						<Check
 							color='white'
 							height={16}

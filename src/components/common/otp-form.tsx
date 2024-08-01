@@ -22,7 +22,7 @@ export function OtpForm() {
 	const [curMobile, setCurMobile] = useState<string>(customerData.mobile)
 
 	const [otpDisplay, setOtpDisplay] = useState<string>('')
-	const [otp, setOtp] = useState<number>(0)
+	const [otp, setOtp] = useState<string>('')
 	const [otpGenerated, setOtpGenerated] = useState<boolean>(false)
 	const [editNumber, setEditNumber] = useState<boolean>(false)
 
@@ -170,9 +170,9 @@ export function OtpForm() {
 						<InputOTP
 							maxLength={6}
 							size={70}
-							value={otp !== 0 ? otp + '' : undefined}
+							value={otp !== '' ? otp + '' : undefined}
 							onChange={(value) => {
-								setOtp(+value)
+								setOtp(value)
 							}}>
 							<InputOTPGroup>
 								<InputOTPSlot index={0} />

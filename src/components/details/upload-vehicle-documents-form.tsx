@@ -1,6 +1,10 @@
 'use client'
 
-import { useGetDocumentTypeMutation, useUploadDocsMutation } from '@/redux/api/commonApi'
+import {
+	useGetDocumentTypeMutation,
+	useUploadDocsMutation,
+	useViewQuoteMutation
+} from '@/redux/api/commonApi'
 import { Button } from '../ui'
 import { FormFieldLayout } from './form-field-layout'
 import { useEffect, useState } from 'react'
@@ -30,13 +34,16 @@ type FileDataListType = {
 	isUploaded: boolean
 }[]
 
-export function UploadDocumentsForm(props: UploadDocumentsFormProps) {
+export function UploadVehileDocumentsForm(props: UploadDocumentsFormProps) {
 	const [documentTypeList] = useGetDocumentTypeMutation()
+	const [viewQuote] = useViewQuoteMutation()
 	const [uploadDocs] = useUploadDocsMutation()
 
 	const [docTypesList, setDocTypesList] = useState<{ value: string; label: string }[]>([])
 
 	const appData = useAppSelector((state) => state.apps)
+	const sectionID = useAppSelector((state) => state.carInsurance.classID)
+	const vehicleData = useAppSelector((state) => state.carInsurance)
 	const QuoteNo = useAppSelector((state) => state.motor.QuoteNo)
 
 	const [fileDataList, setFileDataList] = useState<FileDataListType>([])
@@ -48,11 +55,11 @@ export function UploadDocumentsForm(props: UploadDocumentsFormProps) {
 		setFileDataList(newList)
 	}
 
-	function getTheDocumentTypes() {
+	function getTheDocumentTypes(riskID: string) {
 		const request = {
 			InsuranceId: appData.insuranceID,
 			ProductId: appData.productId,
-			SectionId: '99999'
+			SectionId: sectionID
 		}
 		const res = documentTypeList(request)
 		res.then((value) => {
@@ -67,10 +74,10 @@ export function UploadDocumentsForm(props: UploadDocumentsFormProps) {
 					tempFileArray.push({
 						QuoteNo: QuoteNo,
 						IdType: 'REGISTER_NUMBER',
-						Id: 'ALL',
-						SectionId: '99999',
+						Id: vehicleData.registrationNumber,
+						SectionId: sectionID,
 						InsuranceId: appData.insuranceID,
-						RiskId: '99999',
+						RiskId: riskID,
 						LocationId: '1',
 						LocationName: 'Motor',
 						ProductId: appData.productId,
@@ -87,8 +94,16 @@ export function UploadDocumentsForm(props: UploadDocumentsFormProps) {
 	}
 
 	useEffect(() => {
-		getTheDocumentTypes()
-	}, [QuoteNo])
+		const request = {
+			QuoteNo: QuoteNo
+		}
+		const res = viewQuote(request)
+		res.then((value) => {
+			if (value.data?.type === 'success' && value.data.data !== undefined) {
+				getTheDocumentTypes(value.data.data.Result.RiskDetails[0].RiskId)
+			}
+		})
+	}, [QuoteNo, vehicleData.registrationNumber])
 
 	function uploadDocument(index: number, docType: string) {
 		const curData = fileDataList[index]
@@ -143,12 +158,12 @@ export function UploadDocumentsForm(props: UploadDocumentsFormProps) {
 	return (
 		<FormFieldLayout
 			current={props.current}
-			done={props.current > 3}
+			done={props.current > 4}
 			goSpecific={props.goSpecific}
 			pos={props.pos}
-			show={props.current === 3}
-			subTitle='Additional information around Step 3'
-			title='Step 3 - Upload Document'>
+			show={props.current === 4}
+			subTitle='Additional information around Step 4'
+			title='Step 4 - Upload Vehicle Document'>
 			<>
 				<div className='flex flex-col gap-3 font-inter'>
 					{docTypesList.map((type, index) => {

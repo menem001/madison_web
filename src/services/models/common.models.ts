@@ -1095,7 +1095,9 @@ export const DocumentTypeResponseSchema = z.object({
 	Message: z.string(),
 	IsError: z.boolean(),
 	ErrorMessage: z.array(z.any()).nullable(),
-	Result: z.array(z.object({ Code: z.string(), CodeDesc: z.string() })),
+	Result: z.array(
+		z.object({ Code: z.string(), CodeDesc: z.string(), MandatoryStatus: z.string() })
+	),
 	ErroCode: z.number()
 })
 

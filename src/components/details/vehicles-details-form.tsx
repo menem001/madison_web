@@ -11,6 +11,7 @@ import { useAppSelector } from '@/redux/hooks'
 import { useToast } from '../ui/use-toast'
 import ClipLoader from 'react-spinners/ClipLoader'
 import { BackButton } from '../common/back_btn'
+import { UploadVehileDocumentsForm } from './upload-vehicle-documents-form'
 
 export function VehicleDetailsForm() {
 	const [current, setCurrent] = useState(1)
@@ -121,14 +122,14 @@ export function VehicleDetailsForm() {
 					goSpecific={goSpecific}
 					pos={3}
 				/>
-				{/* <EnergySpecificationField
+				<UploadVehileDocumentsForm
 					current={current}
 					goNext={goNext}
 					goSpecific={goSpecific}
-					pos={3}
-				/> */}
+					pos={4}
+				/>
 			</section>
-			{current === 4 && (
+			{current === 5 && (
 				<Button
 					variant='bluebtn'
 					onClick={navigateToPay}>
