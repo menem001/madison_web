@@ -41,7 +41,7 @@ export function CarSeating() {
 
 	return (
 		<div className={cn('flex flex-col gap-7', { 'min-h-[65vh]': vehicleData.seat === 0 })}>
-			<div className='-ml-16 flex flex-row items-center gap-4'>
+			<div className='-ml-14 flex flex-row items-center gap-4 lg:-ml-16'>
 				<div className='min-h-12 min-w-12 overflow-hidden rounded-full'>
 					<Image
 						alt='face'
@@ -55,7 +55,7 @@ export function CarSeating() {
 					<span className='seatsubtitle font-inter text-sm font-medium text-gray-500'></span>
 				</div>
 			</div>
-			<div className='selectseat flex w-3/4 flex-row gap-10'>
+			<div className='selectseat flex w-full flex-row gap-10 lg:w-3/4'>
 				<Input
 					placeholder='Number of Seats'
 					type='number'
@@ -65,7 +65,7 @@ export function CarSeating() {
 					}}
 				/>
 			</div>
-			<div className='selectseat grid grid-cols-5 gap-6'>
+			<div className='selectseat grid grid-cols-3 gap-6 lg:grid-cols-5'>
 				<div
 					key={2}
 					className='flex cursor-pointer items-center justify-center rounded-md py-3 font-inter text-sm shadow-md hover:shadow-xl'

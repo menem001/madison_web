@@ -149,10 +149,10 @@ export function CustomerInfo(props: CustomerInfoProps) {
 	}
 
 	return (
-		<section className='flex w-4/5 flex-col gap-10'>
+		<section className='flex w-full flex-col gap-10 lg:w-4/5'>
 			<div className='flex flex-col gap-4'>
 				<h1 className='font-jakarta text-[40px] font-semibold'>Customer Info</h1>
-				<p className='w-4/5 text-sm font-medium text-gray-500'>
+				<p className='w-full text-sm font-medium text-gray-500 lg:w-4/5'>
 					Please fill out the form with accurate details about your customer. Ensure all
 					information provided is correct and up-to-date.
 				</p>
@@ -176,7 +176,7 @@ export function CustomerInfo(props: CustomerInfoProps) {
 						/>
 						{isNameNotValid && (
 							<span className='text-sm text-red-500'>
-								Name should be atlease 4 letters
+								Name should be atleast 4 letters
 							</span>
 						)}
 					</div>

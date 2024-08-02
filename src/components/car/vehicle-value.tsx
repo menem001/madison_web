@@ -85,7 +85,7 @@ export function VehicleValue() {
 			className={cn('flex flex-col gap-7', {
 				'min-h-[65vh]': vehicleData.value === 0
 			})}>
-			<div className='-ml-16 flex flex-row items-center gap-4'>
+			<div className='-ml-14 flex flex-row items-center gap-4 lg:-ml-16'>
 				<div className='min-h-12 min-w-12 overflow-hidden rounded-full'>
 					<Image
 						alt='face'
@@ -99,7 +99,7 @@ export function VehicleValue() {
 					<span className='Valuesubtitle font-roboto text-sm font-medium text-gray-500'></span>
 				</div>
 			</div>
-			<div className='selectVehicleDesciption flex flex-row gap-10'>
+			<div className='selectVehicleDesciption flex flex-col gap-10 lg:flex-row'>
 				<div className='flex-grow'>
 					<Input
 						placeholder='Vehicle Value'

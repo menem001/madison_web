@@ -198,13 +198,13 @@ export function SelectInsuranceClass() {
 					<Skeleton className='h-10 w-full' />
 				</div>
 			) : (
-				<div className='selectInsClass flex flex-row gap-10'>
+				<div className='selectInsClass flex flex-col gap-10 lg:flex-row'>
 					{classTypeList.map((insClass) => {
 						return (
 							<div
 								key={insClass.value}
 								className={cn(
-									'cursor-pointer rounded-lg border border-gray-700 bg-white px-7 py-2 font-inter font-semibold text-gray-700',
+									'cursor-pointer rounded-lg border border-gray-700 bg-white px-7 py-2 text-center font-inter font-semibold text-gray-700',
 									{
 										'border-none bg-blue-300 text-white':
 											iclass === +insClass.value
@@ -318,7 +318,7 @@ export function SelectInsuranceClass() {
 					<div className='selectInsClass flex w-full flex-grow flex-col'>
 						<Label htmlFor='currency'>Select Currency</Label>
 						{currencyList.length === 0 ? (
-							<Skeleton className='h-10 w-3/4' />
+							<Skeleton className='h-10 w-full lg:w-3/4' />
 						) : (
 							<Select
 								value={vehicleData.currency + '~' + vehicleData.exchangeRate}
@@ -329,7 +329,7 @@ export function SelectInsuranceClass() {
 									)
 								}}>
 								<SelectTrigger
-									className='w-3/4'
+									className='w-full lg:w-3/4'
 									id='currency'
 									title='Select Currency'
 									value={vehicleData.currency + '~' + vehicleData.exchangeRate}>

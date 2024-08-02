@@ -203,7 +203,7 @@ export function PersonalInformationField(props: personalInformationFieldProps) {
 							<div className='flex flex-row gap-2'>
 								<div
 									className={cn(
-										'rounded-2xl border-2 bg-white px-12 py-2 font-roboto text-black',
+										'rounded-2xl border-2 bg-white px-4 py-2 font-roboto text-black md:px-12',
 										{
 											'bg-blue-300 text-white': accountType === 'Personal'
 										}
@@ -215,7 +215,7 @@ export function PersonalInformationField(props: personalInformationFieldProps) {
 								</div>
 								<div
 									className={cn(
-										'rounded-2xl border-2 bg-white px-12 py-2 font-roboto text-black',
+										'rounded-2xl border-2 bg-white px-4 py-2 font-roboto text-black md:px-12',
 										{
 											'bg-blue-300 text-white': accountType === 'Corporate'
 										}
@@ -227,7 +227,7 @@ export function PersonalInformationField(props: personalInformationFieldProps) {
 								</div>
 							</div>
 						</div>
-						<div className='flex w-full flex-row gap-8'>
+						<div className='flex w-full flex-row gap-2 lg:gap-8'>
 							<div>
 								<FormField
 									control={form.control}
@@ -297,7 +297,7 @@ export function PersonalInformationField(props: personalInformationFieldProps) {
 								/>
 							</div>
 						</div>
-						<div className='flex w-full flex-row gap-8'>
+						<div className='flex w-full flex-row gap-2 lg:gap-8'>
 							{accountType === 'Personal' && (
 								<div className='min-w-32'>
 									<FormField
@@ -393,7 +393,7 @@ export function PersonalInformationField(props: personalInformationFieldProps) {
 								/>
 							</div>
 						</div>
-						<div className='flex w-full flex-row gap-8'>
+						<div className='flex w-full flex-row gap-2 lg:gap-8'>
 							<div className='flex-grow'>
 								<FormField
 									control={form.control}
@@ -401,7 +401,7 @@ export function PersonalInformationField(props: personalInformationFieldProps) {
 									render={({ field }) => (
 										<FormItem>
 											<FormLabel>
-												Mobile Number<span className='text-red-500'>*</span>
+												Mobile<span className='text-red-500'>*</span>
 											</FormLabel>
 											<FormControl>
 												<Input

@@ -14,7 +14,7 @@ export function ConfirmRightSideBar() {
 
 	return (
 		<section className='flex'>
-			<div className='flex flex-col gap-4 rounded-lg p-6 shadow-md'>
+			<div className='flex flex-col gap-4 rounded-lg p-6 lg:shadow-md'>
 				<div className='flex flex-row gap-6'>
 					<div className='h-32 w-32'>
 						<Image

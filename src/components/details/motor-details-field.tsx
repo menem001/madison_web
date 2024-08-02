@@ -130,14 +130,14 @@ export function MotorDetailsField(props: motorDetailsFieldProps) {
 					<form
 						className='space-y-8'
 						onSubmit={form.handleSubmit(onSubmit)}>
-						<div className='flex w-full flex-row gap-8'>
+						<div className='flex w-full flex-row gap-2 md:gap-8'>
 							<div className='flex-grow'>
 								<FormField
 									control={form.control}
 									name='regNo'
 									render={({ field }) => (
 										<FormItem className='w-full'>
-											<FormLabel>
+											<FormLabel className='line-clamp-1'>
 												Registration Number
 												<span className='text-red-500'>*</span>
 											</FormLabel>
@@ -160,7 +160,7 @@ export function MotorDetailsField(props: motorDetailsFieldProps) {
 									name='chassisNo'
 									render={({ field }) => (
 										<FormItem className='w-full'>
-											<FormLabel>
+											<FormLabel className='line-clamp-1'>
 												Chassis number
 												<span className='text-red-500'>*</span>
 											</FormLabel>
@@ -178,7 +178,7 @@ export function MotorDetailsField(props: motorDetailsFieldProps) {
 								/>
 							</div>
 						</div>
-						<div className='flex w-full flex-row gap-8'>
+						<div className='flex w-full flex-row gap-2 md:gap-8'>
 							<div className='flex-grow'>
 								<FormField
 									control={form.control}

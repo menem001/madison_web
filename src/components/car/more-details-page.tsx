@@ -28,6 +28,10 @@ export function MoreDetailsPage() {
 		pageStart.current?.scrollIntoView({ behavior: 'smooth' })
 	}
 
+	function scrollToBottom() {
+		pageEnd.current?.scrollIntoView({ behavior: 'smooth' })
+	}
+
 	const isFilled =
 		vehicleData.policyStartDate !== '' &&
 		vehicleData.policyEndDate !== '' &&
@@ -67,7 +71,12 @@ export function MoreDetailsPage() {
 				<SelectInsuranceClass />
 				{isFilled && (
 					<div ref={customerRef}>
-						<CustomerInfo scrollToTop={scrollToTop} />
+						<div className='hidden lg:flex'>
+							<CustomerInfo scrollToTop={scrollToTop} />
+						</div>
+						<div className='flex lg:hidden'>
+							<CustomerInfo scrollToTop={scrollToBottom} />
+						</div>
 					</div>
 				)}
 				<div ref={pageEnd}></div>

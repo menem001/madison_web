@@ -39,8 +39,10 @@ export function FormFieldLayout(props: formFieldLayoutProps) {
 					</div>
 				)}
 				<div className='flex flex-col gap-2 font-roboto'>
-					<h3 className='text-xl font-semibold text-gray-700'>{props.title}</h3>
-					<h5 className='font-roboto text-sm'>{props.subTitle}</h5>
+					<h3 className='text-lg font-semibold text-gray-700 md:text-xl'>
+						{props.title}
+					</h3>
+					<h5 className='font-roboto text-xs md:text-sm'>{props.subTitle}</h5>
 				</div>
 			</div>
 			<div
