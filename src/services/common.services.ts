@@ -104,7 +104,7 @@ export async function getMotorList(data: CommonModalRequest, token: string | nul
 export type MotorModelListResponse = TResponse<MotorModelList>
 
 export async function getMotorModelList(data: MotorModalRequest, token: string | null) {
-	return api.post<MotorList>(endPoints.modelList, data, MotorModelListSchema, {
+	return api.post<MotorModelList>(endPoints.modelList, data, MotorModelListSchema, {
 		headers: { Authorization: token }
 	})
 }
@@ -112,7 +112,7 @@ export async function getMotorModelList(data: MotorModalRequest, token: string |
 export type BodyTypeListResponse = TResponse<BodyTypeList>
 
 export async function getBodyTypeList(data: vehicleUsageRequest, token: string | null) {
-	return api.post<MotorList>(endPoints.bodyTypeList, data, BodyTypeSchema, {
+	return api.post<BodyTypeList>(endPoints.bodyTypeList, data, BodyTypeSchema, {
 		headers: { Authorization: token }
 	})
 }
@@ -153,7 +153,7 @@ export async function getPolicyEndDates(data: { date: string }, token: string | 
 export type OTPResponse = TResponse<GenerateOTPResponse>
 
 export async function generateOTP(data: GenerateOTPRequest, token: string | null) {
-	return api.post<MotorList>(endPoints.generateOTP, data, GenerateOTPResponseSchema, {
+	return api.post<GenerateOTPResponse>(endPoints.generateOTP, data, GenerateOTPResponseSchema, {
 		headers: { Authorization: token }
 	})
 }
@@ -161,7 +161,7 @@ export async function generateOTP(data: GenerateOTPRequest, token: string | null
 export type verifyOTPResponse = TResponse<ValidateOTPResponse>
 
 export async function verifyOTP(data: GenerateOTPRequest, token: string | null) {
-	return api.post<MotorList>(endPoints.verifyOTP, data, validateOTPResponseSchema, {
+	return api.post<ValidateOTPResponse>(endPoints.verifyOTP, data, validateOTPResponseSchema, {
 		headers: { Authorization: token }
 	})
 }

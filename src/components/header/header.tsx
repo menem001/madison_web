@@ -8,6 +8,7 @@ export function Header() {
 	const route = useRouter()
 	const path = usePathname()
 	const beforeLogin =
+		path === '/' ||
 		path === '/car-insurance/1' ||
 		path === '/car-insurance/2' ||
 		path === '/car-insurance/confirm/otp-verify'
