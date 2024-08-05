@@ -93,7 +93,7 @@ export function VehicleUsage() {
 			className={cn('flex flex-col gap-7', {
 				'min-h-[65vh]': vehicleData.vehicleUsage === ''
 			})}>
-			<div className='-ml-16 flex flex-row items-center gap-4'>
+			<div className='-ml-14 flex flex-row items-center gap-4 lg:-ml-16'>
 				<div className='min-h-12 min-w-12 overflow-hidden rounded-full'>
 					<Image
 						alt='face'
@@ -109,13 +109,13 @@ export function VehicleUsage() {
 			</div>
 			<div className='selectUsage'>
 				{vehicleUsageList.length === 0 ? (
-					<Skeleton className='h-16 w-3/4' />
+					<Skeleton className='h-16 w-full lg:w-3/4' />
 				) : (
 					<Select
 						value={vehicleData.vehicleUsageID}
 						onValueChange={updateUsage}>
 						<SelectTrigger
-							className='w-3/4'
+							className='w-full lg:w-3/4'
 							title='Usage'
 							value={vehicleData.vehicleUsageID}>
 							<SelectValue />

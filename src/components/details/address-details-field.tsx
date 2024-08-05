@@ -118,7 +118,7 @@ export function AddressDetailsField(props: addressDetailsFieldProps) {
 								</div>
 							</div>
 						</div>
-						<div className='flex w-full flex-row gap-4'>
+						<div className='flex w-full flex-row gap-2 lg:gap-4'>
 							<div className='w-full flex-grow'>
 								<FormField
 									control={form.control}

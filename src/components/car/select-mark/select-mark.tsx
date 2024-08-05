@@ -135,7 +135,7 @@ export function SelectMark() {
 			className={cn('flex flex-col gap-7', {
 				'min-h-[60svh]': vehicleData.mark === ''
 			})}>
-			<div className='-ml-16 flex flex-row items-center gap-4'>
+			<div className='-ml-14 flex flex-row items-center gap-4 lg:-ml-16'>
 				<div className='min-h-12 min-w-12 overflow-hidden rounded-full'>
 					<Image
 						alt='face'
@@ -151,13 +151,13 @@ export function SelectMark() {
 			</div>
 			<div className='select'>
 				{motorListArr.length === 0 ? (
-					<Skeleton className='h-16 w-3/4' />
+					<Skeleton className='w-full lg:w-3/4' />
 				) : (
 					<Select
 						value={vehicleData.makeID}
 						onValueChange={updateMark}>
 						<SelectTrigger
-							className='w-3/4'
+							className='w-full lg:w-3/4'
 							title='Select the Mark'
 							value={vehicleData.makeID}>
 							<SelectValue />
@@ -177,7 +177,7 @@ export function SelectMark() {
 				)}
 			</div>
 			<h2 className='popular font-Diesel text-lg font-bold'></h2>
-			<div className='grid grid-cols-5 gap-4'>
+			<div className='grid grid-cols-3 gap-2 lg:grid-cols-5 lg:gap-4'>
 				{brands.slice(0, 5).map((brand) => {
 					return (
 						<MarkCard

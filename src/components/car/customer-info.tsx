@@ -13,6 +13,7 @@ import { updateDetails } from '@/redux/slices/motor-detail.slice'
 import { useState } from 'react'
 import ClipLoader from 'react-spinners/ClipLoader'
 import { useToast } from '../ui/use-toast'
+import { isValidEmail } from '@/lib'
 
 type CustomerInfoProps = {
 	scrollToTop: () => void
@@ -30,7 +31,10 @@ export function CustomerInfo(props: CustomerInfoProps) {
 	const [isLoading, setIsLoading] = useState<boolean>(false)
 
 	const dispatch = useAppDispatch()
-	// const router = useRouter()
+
+	const [isNameNotValid, setIssNameNotValid] = useState<boolean>(false)
+	const [isEmailNotValid, setIsEmailNotValid] = useState<boolean>(false)
+	const [isMobileNotValid, setIsMobileNotValid] = useState<boolean>(false)
 
 	useGSAP(() => {
 		gsap.from('.selectCustomerInfo', { y: 80, opacity: 0, duration: 0.5, delay: 1 })
@@ -43,9 +47,16 @@ export function CustomerInfo(props: CustomerInfoProps) {
 	})
 
 	function goToConfirm() {
-		setIsLoading(true)
-		doSaveMotorDetails()
-		// router.push('/car-insurance/confirm')
+		if (customerData.name.length < 4) {
+			setIssNameNotValid(true)
+		} else if (!isValidEmail(customerData.email)) {
+			setIsEmailNotValid(true)
+		} else if (customerData.mobile.length !== 9) {
+			setIsMobileNotValid(true)
+		} else {
+			setIsLoading(true)
+			doSaveMotorDetails()
+		}
 	}
 
 	function doSaveMotorDetails() {
@@ -138,10 +149,10 @@ export function CustomerInfo(props: CustomerInfoProps) {
 	}
 
 	return (
-		<section className='flex w-4/5 flex-col gap-10'>
+		<section className='flex w-full flex-col gap-10 lg:w-4/5'>
 			<div className='flex flex-col gap-4'>
 				<h1 className='font-jakarta text-[40px] font-semibold'>Customer Info</h1>
-				<p className='w-4/5 text-sm font-medium text-gray-500'>
+				<p className='w-full text-sm font-medium text-gray-500 lg:w-4/5'>
 					Please fill out the form with accurate details about your customer. Ensure all
 					information provided is correct and up-to-date.
 				</p>
@@ -160,8 +171,14 @@ export function CustomerInfo(props: CustomerInfoProps) {
 							value={customerData.name}
 							onChange={(e) => {
 								dispatch(updateName(e.target.value))
+								setIssNameNotValid(false)
 							}}
 						/>
+						{isNameNotValid && (
+							<span className='text-sm text-red-500'>
+								Name should be atleast 4 letters
+							</span>
+						)}
 					</div>
 				</div>
 				<div className='selectCustomerInfo flex flex-row gap-10'>
@@ -170,11 +187,16 @@ export function CustomerInfo(props: CustomerInfoProps) {
 						<Input
 							id='email'
 							placeholder='Mail Address'
+							type='email'
 							value={customerData.email}
 							onChange={(e) => {
 								dispatch(updateEmail(e.target.value))
+								setIsEmailNotValid(false)
 							}}
 						/>
+						{isEmailNotValid && (
+							<span className='text-sm text-red-500'>Enter a valid Email</span>
+						)}
 					</div>
 				</div>
 				<div className='selectCustomerInfo flex flex-row gap-10'>
@@ -186,43 +208,27 @@ export function CustomerInfo(props: CustomerInfoProps) {
 							placeholder='Mobile Code'
 							value={customerData.code}
 						/>
-						{/* <Select
-							value={customerData.code}
-							// onValueChange={(e) => {
-							// 	dispatch(updateVehicleManufactureYear(e + ''))
-							// }}
-						>
-							<SelectTrigger
-								id='year'
-								value={customerData.code}>
-								<SelectValue />
-							</SelectTrigger>
-							<SelectContent className='max-h-64'>
-								 {years.map((year) => {
-								return (
-									<SelectItem
-										key={year}
-										value={year}>
-										{year}
-									</SelectItem>
-								)
-							})} 
-								<SelectItem value='+211'>+211</SelectItem>
-								<SelectItem value='+167'>+167</SelectItem>
-								<SelectItem value='+260'>+260</SelectItem>
-							</SelectContent>
-						</Select> */}
 					</div>
 					<div className='flex-grow'>
 						<Label htmlFor='mobile'>Mobile Number</Label>
 						<Input
 							id='mobile'
+							maxLength={10}
 							placeholder='Mobile Number'
+							type='number'
 							value={customerData.mobile}
 							onChange={(e) => {
-								dispatch(updateMobile(e.target.value))
+								if (e.target.value.length <= 9) {
+									dispatch(updateMobile(e.target.value))
+									setIsMobileNotValid(false)
+								}
 							}}
 						/>
+						{isMobileNotValid && (
+							<span className='text-sm text-red-500'>
+								Enter a valid Mobile Number
+							</span>
+						)}
 					</div>
 				</div>
 			</div>

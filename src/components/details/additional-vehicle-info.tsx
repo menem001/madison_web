@@ -240,9 +240,13 @@ export function AdditionalVehicleInfo(props: additionalVehicleInfoProps) {
 			subTitle='Additional information around Step 2'
 			title='Step 2 - Additional details'>
 			<>
-				<div className='flex w-full flex-row gap-8'>
+				<div className='flex w-full flex-row gap-2 md:gap-8'>
 					<div className='flex-grow'>
-						<Label htmlFor='number'>Driver name</Label>
+						<Label
+							className='line-clamp-1'
+							htmlFor='number'>
+							Driver name
+						</Label>
 						<Input
 							className='border-2 border-blue-925'
 							id='number'
@@ -254,7 +258,11 @@ export function AdditionalVehicleInfo(props: additionalVehicleInfoProps) {
 						/>
 					</div>
 					<div className='flex-grow'>
-						<Label htmlFor='card'>Driving license number</Label>
+						<Label
+							className='line-clamp-1'
+							htmlFor='card'>
+							Driving license number
+						</Label>
 						<Input
 							className='border-2 border-blue-925'
 							id='card'
@@ -266,8 +274,8 @@ export function AdditionalVehicleInfo(props: additionalVehicleInfoProps) {
 						/>
 					</div>
 				</div>
-				<div className='flex w-full flex-row gap-8'>
-					<div className='w-1/2 flex-grow'>
+				<div className='flex w-full flex-col gap-8 md:flex-row'>
+					<div className='w-full flex-grow md:w-1/2'>
 						<Label htmlFor='circulation'>Leased</Label>
 						<div className='flex flex-row gap-2'>
 							<div
@@ -297,7 +305,7 @@ export function AdditionalVehicleInfo(props: additionalVehicleInfoProps) {
 						</div>
 					</div>
 					{isLeased && (
-						<div className='w-1/2 flex-grow'>
+						<div className='w-full flex-grow md:w-1/2'>
 							<Label htmlFor='zone'>Bank of finance</Label>
 							<Select
 								value={borrowerType}
@@ -326,9 +334,13 @@ export function AdditionalVehicleInfo(props: additionalVehicleInfoProps) {
 					)}
 				</div>
 				{isLeased && borrowerType === 'Individual' && (
-					<div className='flex w-full flex-row gap-8'>
-						<div className='w-1/2 flex-grow'>
-							<Label htmlFor='zone'>Collateral Name</Label>
+					<div className='flex w-full flex-row gap-2 md:gap-8'>
+						<div className='w-full flex-grow md:w-1/2'>
+							<Label
+								className='line-clamp-1'
+								htmlFor='zone'>
+								Collateral Name
+							</Label>
 							<Input
 								className='border-2 border-blue-925'
 								id='zone'
@@ -339,8 +351,12 @@ export function AdditionalVehicleInfo(props: additionalVehicleInfoProps) {
 								}}
 							/>
 						</div>
-						<div className='w-1/2 flex-grow'>
-							<Label htmlFor='zone'>First Loss Payee Name</Label>
+						<div className='w-full flex-grow md:w-1/2'>
+							<Label
+								className='line-clamp-1'
+								htmlFor='zone'>
+								First Loss Payee Name
+							</Label>
 							<Input
 								className='border-2 border-blue-925'
 								id='zone'
@@ -354,7 +370,7 @@ export function AdditionalVehicleInfo(props: additionalVehicleInfoProps) {
 					</div>
 				)}
 				{isLeased && borrowerType === 'Bank' && (
-					<div className='flex w-full flex-row gap-8'>
+					<div className='flex w-full flex-row gap-2 md:gap-8'>
 						<div className='w-1/2 flex-grow'>
 							<Label htmlFor='zone'>Collateral Bank Name</Label>
 							{bankList.length === 0 ? (

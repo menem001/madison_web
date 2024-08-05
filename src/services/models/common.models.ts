@@ -1095,7 +1095,9 @@ export const DocumentTypeResponseSchema = z.object({
 	Message: z.string(),
 	IsError: z.boolean(),
 	ErrorMessage: z.array(z.any()).nullable(),
-	Result: z.array(z.object({ Code: z.string(), CodeDesc: z.string() })),
+	Result: z.array(
+		z.object({ Code: z.string(), CodeDesc: z.string(), MandatoryStatus: z.string() })
+	),
 	ErroCode: z.number()
 })
 
@@ -1569,3 +1571,32 @@ export const saveDriverResSchema = z.object({
 })
 
 export type SaveDriverRes = z.infer<typeof saveDriverResSchema>
+
+export const typeRequestSchema = z.object({
+	InsuranceId: z.string(),
+	ItemType: z.string(),
+	BranchCode: z.string(),
+	ItemCode: z.string(),
+	TitleType: z.string()
+})
+
+export type TypeRequest = z.infer<typeof typeRequestSchema>
+
+export const titletypeResSchema = z.object({
+	Message: z.string(),
+	IsError: z.boolean(),
+	ErrorMessage: z.any().nullable(),
+	Result: z.array(
+		z.object({
+			TitleType: z.string(),
+			Code: z.string(),
+			CodeDesc: z.string(),
+			Status: z.string(),
+			BodyType: z.string().nullable(),
+			RiskId: z.string().nullable()
+		})
+	),
+	ErroCode: z.number()
+})
+
+export type TypeRes = z.infer<typeof titletypeResSchema>

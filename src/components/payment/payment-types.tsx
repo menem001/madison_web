@@ -10,6 +10,7 @@ import { Button, Input } from '../ui'
 import { Label } from '../ui/label'
 import { Dialog, DialogContent } from '../ui/dialog'
 import { Check } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 // import { QRDetails } from './qr-details'
 
 export function PaymentTypes() {
@@ -18,6 +19,8 @@ export function PaymentTypes() {
 	const [makePayment] = useMakePaymentMutation()
 
 	const [insertPayment] = useInsertPaymentMutation()
+
+	const route = useRouter()
 
 	const [paymentId, setPaymentId] = useState<string>('')
 
@@ -194,8 +197,11 @@ export function PaymentTypes() {
 														<Button
 															className='w-full'
 															size='lg'
-															variant='bluebtn'>
-															Share Receipt
+															variant='bluebtn'
+															onClick={() => {
+																route.push('/dashboard')
+															}}>
+															Go to Dashboard
 														</Button>
 														<Button
 															className='w-full'

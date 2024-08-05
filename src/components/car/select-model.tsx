@@ -25,41 +25,41 @@ export function SelectModel() {
 
 	useGSAP(() => {
 		if (vehicleData.model === '') {
-			gsap.from('.selectModel', { y: 80, opacity: 0, duration: 1, delay: 2 })
-			gsap.to('.modeltitle', { duration: 1, text: 'Select the Model' })
+			gsap.from('.selectModel', { y: 80, opacity: 0, duration: 0.5, delay: 1 })
+			gsap.to('.modeltitle', { duration: 0.5, text: 'Select the Model' })
 			gsap.to('.modelsubtitle', {
-				duration: 1,
+				duration: 0.5,
 				// eslint-disable-next-line quotes
 				text: "The specific design or type of vehicle within the manufacturer's lineup (e.g. Corolla, Civic, Mustang)",
-				delay: 1
+				delay: 0.5
 			})
 			gsap.to('.modelSuggest', {
-				duration: 1,
+				duration: 0.5,
 				text: 'Suggested Models',
-				delay: 3
+				delay: 1.5
 			})
 			gsap.from('.suggestedGridModel', {
 				y: 80,
 				opacity: 0,
-				duration: 1,
-				delay: 4
+				duration: 0.5,
+				delay: 2
 			})
 		} else {
-			gsap.from('.selectModel', { y: 80, opacity: 0, duration: 1 })
-			gsap.to('.modeltitle', { duration: 1, text: 'Select the Model' })
+			gsap.from('.selectModel', { y: 80, opacity: 0, duration: 0.5 })
+			gsap.to('.modeltitle', { duration: 0.5, text: 'Select the Model' })
 			gsap.to('.modelsubtitle', {
-				duration: 1,
+				duration: 0.5,
 				// eslint-disable-next-line quotes
 				text: "The specific design or type of vehicle within the manufacturer's lineup (e.g. Corolla, Civic, Mustang)"
 			})
 			gsap.to('.modelSuggest', {
-				duration: 1,
+				duration: 0.5,
 				text: 'Suggested Models'
 			})
 			gsap.from('.suggestedGridModel', {
 				y: 80,
 				opacity: 0,
-				duration: 1
+				duration: 0.5
 			})
 		}
 	})
@@ -121,7 +121,7 @@ export function SelectModel() {
 
 	return (
 		<div className={cn('flex flex-col gap-7', { 'min-h-[65vh]': vehicleData.model === '' })}>
-			<div className='-ml-16 flex flex-row items-center gap-4'>
+			<div className='-ml-14 flex flex-row items-center gap-4 lg:-ml-16'>
 				<div className='min-h-12 min-w-12 overflow-hidden rounded-full'>
 					<Image
 						alt='face'
@@ -137,13 +137,13 @@ export function SelectModel() {
 			</div>
 			<div className='selectModel'>
 				{modelsList.length === 0 ? (
-					<Skeleton className='h-16 w-3/4' />
+					<Skeleton className='h-16 w-full lg:w-3/4' />
 				) : (
 					<Select
 						value={vehicleData.modelID}
 						onValueChange={updateModel}>
 						<SelectTrigger
-							className='w-3/4'
+							className='w-full lg:w-3/4'
 							title='Select the Model'
 							value={vehicleData.modelID}>
 							<SelectValue />
@@ -163,7 +163,7 @@ export function SelectModel() {
 				)}
 			</div>
 			<h2 className='modelSuggest font-jakarta text-lg font-bold'></h2>
-			<div className='suggestedGridModel grid grid-cols-5 gap-4'>
+			<div className='suggestedGridModel grid grid-cols-3 gap-4 lg:grid-cols-5'>
 				{modelsList.slice(0, 5).map((model) => {
 					return (
 						<div

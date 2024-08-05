@@ -11,6 +11,7 @@ import { useAppSelector } from '@/redux/hooks'
 import { useToast } from '../ui/use-toast'
 import ClipLoader from 'react-spinners/ClipLoader'
 import { BackButton } from '../common/back_btn'
+import { UploadVehileDocumentsForm } from './upload-vehicle-documents-form'
 
 export function VehicleDetailsForm() {
 	const [current, setCurrent] = useState(1)
@@ -92,17 +93,17 @@ export function VehicleDetailsForm() {
 	}
 
 	return (
-		<section className='flex h-full w-full flex-col gap-10'>
+		<section className='flex h-full w-full flex-col gap-6 md:gap-10'>
 			<BackButton />
-			<div className='flex flex-col gap-5'>
-				<h1 className='font-roboto text-5xl font-semibold text-blue-300'>
+			<div className='flex flex-col gap-2 md:gap-5'>
+				<h1 className='font-roboto text-4xl font-semibold text-blue-300 md:text-5xl'>
 					Vehicle Details
 				</h1>
-				<h5 className='font-roboto text-sm text-gray-550'>
+				<h5 className='font-roboto text-xs text-gray-550 md:text-sm'>
 					Hello, please fill in the forms below
 				</h5>
 			</div>
-			<section className='flex flex-col gap-10 border-l border-dashed border-blue-925'>
+			<section className='flex flex-col gap-6 border-l border-dashed border-blue-925 md:gap-10'>
 				<MotorDetailsField
 					current={current}
 					goNext={goNext}
@@ -121,14 +122,14 @@ export function VehicleDetailsForm() {
 					goSpecific={goSpecific}
 					pos={3}
 				/>
-				{/* <EnergySpecificationField
+				<UploadVehileDocumentsForm
 					current={current}
 					goNext={goNext}
 					goSpecific={goSpecific}
-					pos={3}
-				/> */}
+					pos={4}
+				/>
 			</section>
-			{current === 4 && (
+			{current === 5 && (
 				<Button
 					variant='bluebtn'
 					onClick={navigateToPay}>

@@ -28,6 +28,10 @@ export function MoreDetailsPage() {
 		pageStart.current?.scrollIntoView({ behavior: 'smooth' })
 	}
 
+	// function scrollToBottom() {
+	// 	pageEnd.current?.scrollIntoView({ behavior: 'smooth' })
+	// }
+
 	const isFilled =
 		vehicleData.policyStartDate !== '' &&
 		vehicleData.policyEndDate !== '' &&

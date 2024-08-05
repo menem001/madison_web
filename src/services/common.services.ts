@@ -58,7 +58,10 @@ import {
 	type PaymentTypeRequest,
 	type SaveDriverRes,
 	type SaveDriverRequest,
-	saveDriverResSchema
+	saveDriverResSchema,
+	type TypeRes,
+	type TypeRequest,
+	titletypeResSchema
 } from './models/common.models'
 import { MotorMakeSchema, type MotorList, type CommonModalRequest } from './models/common.models'
 import {
@@ -101,7 +104,7 @@ export async function getMotorList(data: CommonModalRequest, token: string | nul
 export type MotorModelListResponse = TResponse<MotorModelList>
 
 export async function getMotorModelList(data: MotorModalRequest, token: string | null) {
-	return api.post<MotorList>(endPoints.modelList, data, MotorModelListSchema, {
+	return api.post<MotorModelList>(endPoints.modelList, data, MotorModelListSchema, {
 		headers: { Authorization: token }
 	})
 }
@@ -109,7 +112,7 @@ export async function getMotorModelList(data: MotorModalRequest, token: string |
 export type BodyTypeListResponse = TResponse<BodyTypeList>
 
 export async function getBodyTypeList(data: vehicleUsageRequest, token: string | null) {
-	return api.post<MotorList>(endPoints.bodyTypeList, data, BodyTypeSchema, {
+	return api.post<BodyTypeList>(endPoints.bodyTypeList, data, BodyTypeSchema, {
 		headers: { Authorization: token }
 	})
 }
@@ -150,7 +153,7 @@ export async function getPolicyEndDates(data: { date: string }, token: string | 
 export type OTPResponse = TResponse<GenerateOTPResponse>
 
 export async function generateOTP(data: GenerateOTPRequest, token: string | null) {
-	return api.post<MotorList>(endPoints.generateOTP, data, GenerateOTPResponseSchema, {
+	return api.post<GenerateOTPResponse>(endPoints.generateOTP, data, GenerateOTPResponseSchema, {
 		headers: { Authorization: token }
 	})
 }
@@ -158,7 +161,7 @@ export async function generateOTP(data: GenerateOTPRequest, token: string | null
 export type verifyOTPResponse = TResponse<ValidateOTPResponse>
 
 export async function verifyOTP(data: GenerateOTPRequest, token: string | null) {
-	return api.post<MotorList>(endPoints.verifyOTP, data, validateOTPResponseSchema, {
+	return api.post<ValidateOTPResponse>(endPoints.verifyOTP, data, validateOTPResponseSchema, {
 		headers: { Authorization: token }
 	})
 }
@@ -299,6 +302,14 @@ export type SaveDriverResponse = TResponse<SaveDriverRes>
 
 export async function saveDriverDetails(data: SaveDriverRequest, token: string | null) {
 	return api.post<PaymentTypeRes>(endPoints.saveDriver, data, saveDriverResSchema, {
+		headers: { Authorization: token }
+	})
+}
+
+export type TitleTypeResponse = TResponse<TypeRes>
+
+export async function getTitleTypes(data: TypeRequest, token: string | null) {
+	return api.post<PaymentTypeRes>(endPoints.titleType, data, titletypeResSchema, {
 		headers: { Authorization: token }
 	})
 }

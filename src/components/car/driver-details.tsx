@@ -53,7 +53,7 @@ export function DriverDetails() {
 
 	return (
 		<div className='flex w-full flex-col items-center justify-between gap-6'>
-			<div className='flex w-full flex-row items-center justify-between'>
+			<div className='flex w-full flex-col items-center justify-between gap-4 lg:flex-row lg:gap-0'>
 				<div className='flex flex-col gap-2'>
 					<h1 className='Drivertitle font-jakarta text-xl font-bold text-blue-300'></h1>
 					<span className='Driversubtitle font-roboto text-sm font-medium text-gray-500'></span>
@@ -83,7 +83,7 @@ export function DriverDetails() {
 					</div>
 				</div>
 			</div>
-			<div className='selectDriver flex w-full flex-row gap-10'>
+			<div className='selectDriver flex w-full flex-col gap-10 lg:flex-row'>
 				<div className='flex-grow'>
 					<Label htmlFor='idnumber'>Driver ID(Driving License)</Label>
 					<Input
@@ -96,7 +96,7 @@ export function DriverDetails() {
 						}}
 					/>
 				</div>
-				<div className='flex-grow'>
+				<div className='flex-grow pb-6 lg:pb-0'>
 					<Label htmlFor='dob'>Driver DOB</Label>
 					<Popover>
 						<PopoverTrigger asChild>

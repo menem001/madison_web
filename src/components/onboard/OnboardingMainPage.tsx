@@ -23,9 +23,9 @@ export default function OnboardingMainPage() {
 		<OnboardingLayout>
 			<div className='flex h-full w-full items-center justify-center'>
 				<div className='flex h-full flex-col items-center justify-center gap-6 py-6 font-roboto lg:gap-12 lg:py-0'>
-					<div className='flex flex-col items-center justify-center font-roboto'>
+					<div className='flex flex-col items-center justify-center gap-4 font-jakarta'>
 						<h1 className='text-3xl font-medium lg:text-[40px]'>Get Started With Us</h1>
-						<span className='max-w-[340px] text-center text-base lg:text-xl'>
+						<span className='max-w-[340px] text-center font-inter text-base lg:text-xl'>
 							Complete these easy steps to register your account.
 						</span>
 					</div>

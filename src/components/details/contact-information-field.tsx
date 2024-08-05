@@ -95,7 +95,7 @@ export function ContactInformationField(props: contactInformationFieldProps) {
 								</div>
 							</div>
 						</div>
-						<div className='flex w-full flex-row gap-4'>
+						<div className='flex w-full flex-row gap-2 lg:gap-4'>
 							<div className='flex-grow'>
 								<FormField
 									name='contact1Code'
@@ -141,7 +141,7 @@ export function ContactInformationField(props: contactInformationFieldProps) {
 								/>
 							</div>
 						</div>
-						<div className='flex w-full flex-row gap-4'>
+						<div className='flex w-full flex-row gap-2 lg:gap-4'>
 							<div className='flex-grow'>
 								<FormField
 									name='contact2Code'

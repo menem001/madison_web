@@ -53,7 +53,7 @@ export function ManufactureYear() {
 			className={cn('flex flex-col gap-7', {
 				'min-h-[68vh]': vehicleData.year === 0 || vehicleData.excessLimit === 0
 			})}>
-			<div className='-ml-16 flex flex-row items-center gap-4'>
+			<div className='-ml-14 flex flex-row items-center gap-4 lg:-ml-16'>
 				<div className='min-h-12 min-w-12 overflow-hidden rounded-full'>
 					<Image
 						alt='face'
@@ -67,7 +67,7 @@ export function ManufactureYear() {
 					<span className='Yearsubtitle font-roboto text-sm font-medium text-gray-500'></span>
 				</div>
 			</div>
-			<div className='selectManufacture flex flex-row gap-10'>
+			<div className='selectManufacture flex flex-col gap-10 lg:flex-row'>
 				<div className='flex flex-grow flex-col'>
 					<Label htmlFor='year'>Manufacture Year</Label>
 					<Select

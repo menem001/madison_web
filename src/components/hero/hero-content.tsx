@@ -15,8 +15,6 @@ export function HeroContent() {
 	useGSAP(() => {
 		gsap.from('.leftAnimation', { x: -80, opacity: 0, duration: 1 })
 		gsap.from('.topAnimation', { y: -80, opacity: 0, duration: 1, delay: 1 })
-		gsap.from('.bottomAnimation', { y: 80, opacity: 0, duration: 1, delay: 2 })
-		gsap.from('.rightAnimation', { x: 80, opacity: 0, duration: 1, delay: 3 })
 	})
 
 	function buy() {

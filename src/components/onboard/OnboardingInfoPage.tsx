@@ -5,7 +5,7 @@ import OnboardingLayout from './OnboardingLayout'
 import { CloudUpload, Info, X } from 'lucide-react'
 import { Label } from '../ui/label'
 import { Button, Input } from '../ui'
-import { useRouter } from 'next/navigation'
+// import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { type WhiteBookResponse } from '@/services/models/common.models'
@@ -20,9 +20,11 @@ import {
 import { useGuestLoginMutation } from '@/redux/api/commonApi'
 import { setGuestLoginDetails } from '@/redux/slices'
 import { skipToken } from '@reduxjs/toolkit/query'
+import { Dialog, DialogContent } from '../ui/dialog'
+import { OnboardingModal } from './onboarding-modal'
 
 export default function OnboardingInfoPage() {
-	const route = useRouter()
+	// const route = useRouter()
 
 	const dispatch = useAppDispatch()
 
@@ -46,6 +48,7 @@ export default function OnboardingInfoPage() {
 	const { data: vehicleDetails } = useGetVehicleListQuery(shouldFetch ? req : skipToken)
 
 	const [showError, setShowError] = useState<boolean>(false)
+	const [showDetails, setShowDetails] = useState<boolean>(false)
 
 	function loginAsGuest() {
 		const res = guestLogin()
@@ -114,6 +117,7 @@ export default function OnboardingInfoPage() {
 					value.data.data.Result ===
 						'Vehicle record was not found. Please contact the RTSA Call Centre to resolve this.'
 				) {
+					setIsLoading(false)
 					setShowError(true)
 				}
 			})
@@ -153,7 +157,8 @@ export default function OnboardingInfoPage() {
 			)
 			setShouldFetch(false)
 			setIsLoading(false)
-			route.push('/car-insurance/1')
+			// route.push('/car-insurance/1')
+			setShowDetails(true)
 		}
 	}, [vehicleDetails])
 
@@ -168,7 +173,7 @@ export default function OnboardingInfoPage() {
 			request.append('file', file)
 			axios
 				.post<WhiteBookResponse>(
-					'http://13.201.115.50/api/V1/whitebook_parser/parse_user_vehicle_info/',
+					'https://whitebook.arunkarthik.pro/api/V1/whitebook_parser/parse_user_vehicle_info/',
 					request
 				)
 				.then((response) => {
@@ -204,7 +209,8 @@ export default function OnboardingInfoPage() {
 							})
 						)
 						setIsLoading(false)
-						route.push('/car-insurance/1')
+						// route.push('/car-insurance/1')
+						setShowDetails(true)
 					}
 				})
 				.catch((err) => {
@@ -320,6 +326,15 @@ export default function OnboardingInfoPage() {
 							</div>
 						</div>
 					</div>
+					<Dialog
+						open={showDetails}
+						onOpenChange={() => {
+							setShowDetails(false)
+						}}>
+						<DialogContent className='overflow-hidden p-0'>
+							<OnboardingModal />
+						</DialogContent>
+					</Dialog>
 					<Button
 						className='w-full'
 						variant='bluebtn'
