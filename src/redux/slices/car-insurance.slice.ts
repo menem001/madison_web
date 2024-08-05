@@ -14,7 +14,7 @@ const initialState: CarDetails = {
 	description: '',
 	policyStartDate: '',
 	policyEndDate: '',
-	currency: '',
+	currency: 'ZMW',
 	insuranceClass: 'Comprehensive',
 	sumInsured: null,
 	claims: null,
@@ -80,6 +80,24 @@ export const carInsuranceSlice = createSlice({
 	name: 'carInsurance',
 	initialState: initialState,
 	reducers: {
+		updateVehicleBodyType(
+			state: CarDetails,
+			action: PayloadAction<{ bodyType: string; id: string }>
+		) {
+			state.bodyType = action.payload.bodyType
+			state.bodyTypeID = action.payload.id
+			state.mark = ''
+			state.makeID = ''
+			state.year = 0
+			state.model = ''
+			state.modelID = ''
+			state.value = 0
+			state.vehicleUsage = ''
+			state.vehicleUsageID = ''
+			state.year = 0
+			state.value = 0
+			state.seat = 0
+		},
 		updateVehicleMark(
 			state: CarDetails,
 			action: PayloadAction<{ mark: string; makeID: string }>
@@ -92,8 +110,6 @@ export const carInsuranceSlice = createSlice({
 			state.value = 0
 			state.vehicleUsage = ''
 			state.vehicleUsageID = ''
-			state.bodyType = ''
-			state.bodyTypeID = ''
 			state.seat = 0
 		},
 		updateVehicleModel(
@@ -106,8 +122,6 @@ export const carInsuranceSlice = createSlice({
 			state.value = 0
 			state.vehicleUsage = ''
 			state.vehicleUsageID = ''
-			state.bodyType = ''
-			state.bodyTypeID = ''
 			state.seat = 0
 		},
 		updateVehicleUsage(
@@ -117,20 +131,8 @@ export const carInsuranceSlice = createSlice({
 			state.vehicleUsage = action.payload.usage
 			state.vehicleUsageID = action.payload.id
 			state.seat = 0
-			state.bodyType = ''
-			state.bodyTypeID = ''
 			state.year = 0
 			state.value = 0
-		},
-		updateVehicleBodyType(
-			state: CarDetails,
-			action: PayloadAction<{ bodyType: string; id: string }>
-		) {
-			state.bodyType = action.payload.bodyType
-			state.bodyTypeID = action.payload.id
-			state.year = 0
-			state.value = 0
-			state.seat = 0
 		},
 		updateSeats(state: CarDetails, action: PayloadAction<number>) {
 			state.seat = action.payload

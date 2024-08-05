@@ -59,6 +59,10 @@ export function SelectMark() {
 	const [MotorMakeList] = useGetMotorMakeListMutation()
 	const [motorListArr, setmotorListArr] = useState<{ value: string; label: string }[]>([])
 
+	const [showCaseBrands, setShowCaseBrands] = useState<
+		{ id: string; name: string; logo: string; code: number }[]
+	>([])
+
 	useGSAP(() => {
 		if (vehicleData.mark === '') {
 			gsap.from('.select', { y: 80, opacity: 0, duration: 0.5, delay: 1 })
@@ -81,6 +85,22 @@ export function SelectMark() {
 			})
 		}
 	})
+
+	useEffect(() => {
+		if (motorListArr.length !== 0) {
+			const showCase: { id: string; name: string; logo: string; code: number }[] = []
+			brands.forEach((brand) => {
+				const pos = motorListArr.findIndex((item) => {
+					return +item.value === brand.code
+				})
+
+				if (pos !== -1) {
+					showCase.push(brand)
+				}
+			})
+			setShowCaseBrands(showCase)
+		}
+	}, [motorListArr])
 
 	function updateMark(makeID: string) {
 		const markpos = motorListArr.findIndex((item) => {
@@ -108,7 +128,11 @@ export function SelectMark() {
 	}
 
 	useEffect(() => {
-		const request = { InsuranceId: appsData.insuranceID, BranchCode: appsData.branchCode }
+		const request = {
+			InsuranceId: appsData.insuranceID,
+			BranchCode: appsData.branchCode,
+			BodyId: vehicleData.bodyTypeID
+		}
 		const tempArr: { value: string; label: string }[] = []
 		const res = MotorMakeList(request)
 		res.then((value) => {
@@ -178,7 +202,7 @@ export function SelectMark() {
 			</div>
 			<h2 className='popular font-Diesel text-lg font-bold'></h2>
 			<div className='grid grid-cols-3 gap-2 lg:grid-cols-5 lg:gap-4'>
-				{brands.slice(0, 5).map((brand) => {
+				{showCaseBrands.slice(0, 5).map((brand) => {
 					return (
 						<MarkCard
 							key={brand.id}

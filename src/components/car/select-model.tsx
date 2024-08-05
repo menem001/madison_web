@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from '@/redux/hooks'
 import { updateVehicleModel } from '@/redux/slices'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui'
+import { Button, Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui'
 import { useGetMotorModelListMutation } from '@/redux/api/commonApi'
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
@@ -22,6 +22,8 @@ export function SelectModel() {
 	const [modelsList, setModelsList] = useState<{ value: string; label: string }[]>([])
 
 	const dispatch = useAppDispatch()
+
+	const [vehicleModelDesc, setVehicleModelDesc] = useState<string>('')
 
 	useGSAP(() => {
 		if (vehicleData.model === '') {
@@ -93,25 +95,34 @@ export function SelectModel() {
 	}
 
 	useEffect(() => {
-		const request = {
-			InsuranceId: appsData.insuranceID,
-			BranchCode: appsData.branchCode,
-			MakeId: vehicleData.makeID
-		}
-		const tempArr: { value: string; label: string }[] = []
-		const res = getModel(request)
-		res.then((value) => {
-			if (value.data?.type === 'success' && value.data?.data !== undefined) {
-				value.data.data!.Result.map((value) => {
-					tempArr.push({
-						value: value.Code,
-						label: value.CodeDesc
-					})
-				})
-				setModelsList(tempArr)
+		if (+vehicleData.bodyTypeID < 5) {
+			const request = {
+				InsuranceId: appsData.insuranceID,
+				BranchCode: appsData.branchCode,
+				MakeId: vehicleData.makeID,
+				BodyId: vehicleData.bodyTypeID
 			}
-		})
-	}, [appsData.branchCode, appsData.insuranceID, getModel, vehicleData.makeID])
+			const tempArr: { value: string; label: string }[] = []
+			const res = getModel(request)
+			res.then((value) => {
+				if (value.data?.type === 'success' && value.data?.data !== undefined) {
+					value.data.data!.Result.map((value) => {
+						tempArr.push({
+							value: value.Code,
+							label: value.CodeDesc
+						})
+					})
+					setModelsList(tempArr)
+				}
+			})
+		}
+	}, [
+		appsData.branchCode,
+		appsData.insuranceID,
+		getModel,
+		vehicleData.makeID,
+		vehicleData.bodyTypeID
+	])
 
 	useEffect(() => {
 		if (modelsList.length !== 0) {
@@ -136,47 +147,78 @@ export function SelectModel() {
 				</div>
 			</div>
 			<div className='selectModel'>
-				{modelsList.length === 0 ? (
-					<Skeleton className='h-16 w-full lg:w-3/4' />
+				{+vehicleData.bodyTypeID < 5 ? (
+					<>
+						{modelsList.length === 0 ? (
+							<Skeleton className='h-16 w-full lg:w-3/4' />
+						) : (
+							<Select
+								value={vehicleData.modelID}
+								onValueChange={updateModel}>
+								<SelectTrigger
+									className='w-full lg:w-3/4'
+									title='Select the Model'
+									value={vehicleData.modelID}>
+									<SelectValue />
+								</SelectTrigger>
+								<SelectContent>
+									{modelsList.map((item, index) => {
+										return (
+											<SelectItem
+												key={index}
+												value={item.value}>
+												{item.label}
+											</SelectItem>
+										)
+									})}
+								</SelectContent>
+							</Select>
+						)}
+					</>
 				) : (
-					<Select
-						value={vehicleData.modelID}
-						onValueChange={updateModel}>
-						<SelectTrigger
-							className='w-full lg:w-3/4'
-							title='Select the Model'
-							value={vehicleData.modelID}>
-							<SelectValue />
-						</SelectTrigger>
-						<SelectContent>
-							{modelsList.map((item, index) => {
-								return (
-									<SelectItem
-										key={index}
-										value={item.value}>
-										{item.label}
-									</SelectItem>
+					<div className='flex flex-col gap-6'>
+						<Input
+							placeholder='Model Description'
+							value={vehicleModelDesc}
+							onChange={(e) => {
+								setVehicleModelDesc(e.target.value)
+							}}
+						/>
+						<Button
+							className='w-1/2'
+							variant='bluebtn'
+							onClick={() => {
+								dispatch(
+									updateVehicleModel({
+										model: vehicleModelDesc,
+										modelID: '99999'
+									})
 								)
-							})}
-						</SelectContent>
-					</Select>
+							}}>
+							Continue
+						</Button>
+					</div>
 				)}
 			</div>
-			<h2 className='modelSuggest font-jakarta text-lg font-bold'></h2>
-			<div className='suggestedGridModel grid grid-cols-3 gap-4 lg:grid-cols-5'>
-				{modelsList.slice(0, 5).map((model) => {
-					return (
-						<div
-							key={model.value}
-							className='flex cursor-pointer items-center justify-center rounded-md py-3 font-inter text-sm shadow-md hover:shadow-xl'
-							onClick={() => {
-								updateModel(model.value)
-							}}>
-							{model.label}
-						</div>
-					)
-				})}
-			</div>
+			{+vehicleData.bodyTypeID < 5 && (
+				<>
+					<h2 className='modelSuggest font-jakarta text-lg font-bold'></h2>
+					<div className='suggestedGridModel grid grid-cols-3 gap-4 lg:grid-cols-5'>
+						{modelsList.slice(0, 5).map((model) => {
+							return (
+								<div
+									key={model.value}
+									className='flex cursor-pointer items-center justify-center rounded-md py-3 font-inter text-sm shadow-md hover:shadow-xl'
+									onClick={() => {
+										updateModel(model.value)
+									}}>
+									{model.label}
+								</div>
+							)
+						})}
+					</div>
+				</>
+			)}
 		</div>
 	)
 }

@@ -9,6 +9,11 @@ export function RightSideBarList() {
 
 	const displayDataPage1 = [
 		{
+			id: 'Body Type',
+			field: 'Body Type',
+			name: vehicleData.bodyType
+		},
+		{
 			id: 'Car Brand',
 			field: 'Car Brand',
 			name: vehicleData.mark
@@ -22,11 +27,6 @@ export function RightSideBarList() {
 			id: 'Vehicle Usage',
 			field: 'Vehicle Usage',
 			name: vehicleData.vehicleUsage
-		},
-		{
-			id: 'Body Type',
-			field: 'Body Type',
-			name: vehicleData.bodyType
 		},
 		{
 			id: 'Seat Count',
