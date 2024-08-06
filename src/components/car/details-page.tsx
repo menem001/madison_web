@@ -129,10 +129,17 @@ export function DetailsPage() {
 							<BackButton />
 						</div>
 						<div
-							ref={appData.scrollTo === 1 ? specificRef : undefined}
+							ref={appData.scrollTo === 4 ? specificRef : undefined}
 							className='flex flex-col gap-6'>
-							<SelectMark />
+							<BodyType />
 						</div>
+					</div>
+				)}
+				{vehicleData.bodyType !== '' && (
+					<div
+						ref={appData.scrollTo === 1 ? specificRef : undefined}
+						className='flex flex-col gap-6'>
+						<SelectMark />
 					</div>
 				)}
 				{vehicleData.mark !== '' && (
@@ -151,13 +158,6 @@ export function DetailsPage() {
 				)}
 
 				{vehicleData.vehicleUsage !== '' && (
-					<div
-						ref={appData.scrollTo === 4 ? specificRef : undefined}
-						className='flex flex-col gap-6'>
-						<BodyType />
-					</div>
-				)}
-				{vehicleData.bodyType !== '' && (
 					<div
 						ref={appData.scrollTo === 5 ? specificRef : undefined}
 						className='flex flex-col gap-6'>

@@ -114,7 +114,7 @@ export const commonApi = createApi({
 			): {
 				url: string
 				method: string
-				body: vehicleUsageRequest
+				body: CommonModalRequest
 				headers: { Authorization: string }
 			} => ({
 				url: 'get_motor_list',
@@ -129,7 +129,7 @@ export const commonApi = createApi({
 			): {
 				url: string
 				method: string
-				body: vehicleUsageRequest
+				body: MotorModalRequest
 				headers: { Authorization: string }
 			} => ({
 				url: 'get_motor_model',
