@@ -9,7 +9,7 @@ import { useAppSelector } from '@/redux/hooks'
 import { Button, Input } from '../ui'
 import { Label } from '../ui/label'
 import { Dialog, DialogContent } from '../ui/dialog'
-// import { Check } from 'lucide-react'
+import { Check } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 // import { QRDetails } from './qr-details'
 
@@ -180,7 +180,7 @@ export function PaymentTypes() {
 										<Dialog open={isPaid}>
 											<DialogContent className='max-w-[90svw] md:max-w-[78svw] lg:max-w-[60svw]'>
 												<div className='flex h-full w-full flex-col items-center justify-center gap-2 p-2'>
-													{/* <div className='flex h-28 w-28 items-center justify-center rounded-full bg-green-320'>
+													<div className='flex h-28 w-28 items-center justify-center rounded-full bg-green-320'>
 														<div className='flex h-16 w-16 items-center justify-center rounded-full bg-green-300'>
 															<Check
 																color='white'
@@ -188,7 +188,7 @@ export function PaymentTypes() {
 																width={30}
 															/>
 														</div>
-													</div> */}
+													</div>
 													<div className='flex w-full flex-col items-center justify-center gap-3 rounded-md border border-gray-450 border-opacity-60 p-4'>
 														<h1 className='font-jakarta text-lg font-bold text-green-200'>
 															Hurray!!! Policy Generated Successfully
