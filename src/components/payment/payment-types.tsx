@@ -9,7 +9,7 @@ import { useAppSelector } from '@/redux/hooks'
 import { Button, Input } from '../ui'
 import { Label } from '../ui/label'
 import { Dialog, DialogContent } from '../ui/dialog'
-import { Check } from 'lucide-react'
+// import { Check } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 // import { QRDetails } from './qr-details'
 
@@ -23,8 +23,12 @@ export function PaymentTypes() {
 	const route = useRouter()
 
 	const [paymentId, setPaymentId] = useState<string>('')
+	const [policyNumber, setPolicyNumber] = useState<string>('')
+	const [debitNoteNumber, setDebitNoteNumber] = useState<string>('')
+	const [merchantRefNumber, setMerchantRefNumber] = useState<string>('')
 
 	const appData = useAppSelector((state) => state.apps)
+	const requestNumber = useAppSelector((state) => state.motor.RequestReferenceNo)
 	const customerName = useAppSelector((state) => state.customerDetails.name)
 	const customerMobile = useAppSelector((state) => state.customerDetails.mobile)
 	const QuoteNo = useAppSelector((state) => state.motor.QuoteNo)
@@ -120,6 +124,13 @@ export function PaymentTypes() {
 				response.data.data.Result &&
 				response.data.data.Result.Response === 'Policy Converted'
 			) {
+				setPolicyNumber(response.data.data.Result.PaymentId)
+
+				if (response.data.data.Result.DebitNoteNo !== null) {
+					setDebitNoteNumber(response.data.data.Result.DebitNoteNo)
+				}
+
+				setMerchantRefNumber(response.data.data.Result.MerchantReference)
 				setIsPaid(true)
 			}
 		})
@@ -167,9 +178,9 @@ export function PaymentTypes() {
 											Pay
 										</Button>
 										<Dialog open={isPaid}>
-											<DialogContent>
-												<div className='flex h-full w-full flex-col items-center justify-center gap-3 p-10'>
-													<div className='flex h-28 w-28 items-center justify-center rounded-full bg-green-320'>
+											<DialogContent className='max-w-[90svw] md:max-w-[78svw] lg:max-w-[60svw]'>
+												<div className='flex h-full w-full flex-col items-center justify-center gap-2 p-2'>
+													{/* <div className='flex h-28 w-28 items-center justify-center rounded-full bg-green-320'>
 														<div className='flex h-16 w-16 items-center justify-center rounded-full bg-green-300'>
 															<Check
 																color='white'
@@ -177,37 +188,79 @@ export function PaymentTypes() {
 																width={30}
 															/>
 														</div>
+													</div> */}
+													<div className='flex w-full flex-col items-center justify-center gap-3 rounded-md border border-gray-450 border-opacity-60 p-4'>
+														<h1 className='font-jakarta text-lg font-bold text-green-200'>
+															Hurray!!! Policy Generated Successfully
+														</h1>
+														<div className='grid w-full grid-cols-3 border-b border-gray-450 border-opacity-60 pb-4'>
+															<div className='flex h-full flex-col justify-between'>
+																<span className='text-xs md:text-base'>
+																	Reference Number
+																</span>
+																<h4 className='text-xs font-semibold text-blue-450 md:text-base'>
+																	{requestNumber}
+																</h4>
+															</div>
+															<div className='flex h-full flex-col justify-between'>
+																<span className='text-xs md:text-base'>
+																	Quote Number
+																</span>
+																<h4 className='text-xs font-semibold text-blue-450 md:text-base'>
+																	{QuoteNo}
+																</h4>
+															</div>
+															<div className='flex h-full flex-col justify-between'>
+																<span className='text-xs md:text-base'>
+																	Policy Number
+																</span>
+																<h4 className='text-xs font-semibold text-blue-450 md:text-base'>
+																	{policyNumber}
+																</h4>
+															</div>
+														</div>
+														<div className='grid w-full grid-cols-3 border-b border-gray-450 border-opacity-60 pb-4'>
+															<div className='flex h-full flex-col justify-between'>
+																<span className='text-xs md:text-base'>
+																	Debit Note No
+																</span>
+																<h4 className='text-xs font-semibold text-blue-450 md:text-base'>
+																	{debitNoteNumber}
+																</h4>
+															</div>
+															<div className='flex h-full flex-col justify-between'>
+																<span className='text-xs md:text-base'>
+																	Merchant Reference No
+																</span>
+																<h4 className='text-xs font-semibold text-blue-450 md:text-base'>
+																	{merchantRefNumber}
+																</h4>
+															</div>
+														</div>
+														<div className='flex w-full flex-row justify-center gap-2'>
+															<Button
+																className='w-1/4 text-xs'
+																size='lg'
+																variant='whiteBlackOutlined'>
+																Debit Note PDF
+															</Button>
+															<Button
+																className='w-1/4 text-xs'
+																size='lg'
+																variant='whiteBlackOutlined'>
+																Schedule PDF
+															</Button>
+														</div>
 													</div>
-													<h1 className='font-jakarta text-xl font-bold'>
-														Transfer Successful!
-													</h1>
-													<div className='flex flex-col items-center'>
-														<span>
-															You have successfully transferred{' '}
-															{fixedTotal}
-														</span>
-														<span className='text-blue-300'>
-															Bank Name: United Bank Of Africa
-														</span>
-														<span className='text-blue-300'>
-															{customerMobile}
-														</span>
-													</div>
-													<div className='flex w-full flex-col gap-2'>
+													<div className='flex w-full flex-row justify-center gap-2'>
 														<Button
-															className='w-full'
+															className='w-1/5'
 															size='lg'
 															variant='bluebtn'
 															onClick={() => {
 																route.push('/dashboard')
 															}}>
-															Go to Dashboard
-														</Button>
-														<Button
-															className='w-full'
-															size='lg'
-															variant='whiteBlackOutlined'>
-															Download receipt
+															Proceed
 														</Button>
 													</div>
 												</div>

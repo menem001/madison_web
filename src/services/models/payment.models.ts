@@ -67,11 +67,11 @@ export const InsertPaymentResponseSchema = z.object({
 			Response: z.string(),
 			MerchantReference: z.string(),
 			PolicyNo: z.string(),
-			DebitNoteNo: z.null(),
+			DebitNoteNo: z.string().nullable(),
 			CreditNoteNo: z.string(),
-			paymentUrl: z.null(),
-			isError: z.null(),
-			DepositResponse: z.null()
+			paymentUrl: z.string().nullable(),
+			isError: z.boolean().nullable(),
+			DepositResponse: z.string().nullable()
 		})
 		.nullable(),
 	ErroCode: z.number()
