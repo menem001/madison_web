@@ -134,6 +134,10 @@ export const carInsuranceSlice = createSlice({
 			state.year = 0
 			state.value = 0
 		},
+		updateSeatsYear(state: CarDetails, action: PayloadAction<{ seat: string; year: string }>) {
+			state.seat = +action.payload.seat
+			state.year = +action.payload.year
+		},
 		updateSeats(state: CarDetails, action: PayloadAction<number>) {
 			state.seat = action.payload
 			state.year = 0
@@ -250,5 +254,6 @@ export const {
 	updateCurrency,
 	updateVehicleDetails,
 	updateAdditionalDetails,
-	updatePolicyDaysCount
+	updatePolicyDaysCount,
+	updateSeatsYear
 } = carInsuranceSlice.actions

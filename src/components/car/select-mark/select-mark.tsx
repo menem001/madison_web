@@ -1,55 +1,34 @@
 'use client'
 
-import { assets } from '@/assets'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui'
-import { cn } from '@/lib'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
 import { updateVehicleMark } from '@/redux/slices'
-import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { TextPlugin } from 'gsap/all'
-import { MarkCard } from './mark-card'
 import { useGetMotorMakeListMutation } from '@/redux/api/commonApi'
 import { useEffect, useState } from 'react'
-import Image from 'next/image'
-import { Skeleton } from '@/components/ui/skeleton'
-
-const brands = [
-	{
-		id: 'Audi',
-		name: 'Audi',
-		logo: assets.images.audi,
-		code: 21
-	},
-	{
-		id: 'Bentley',
-		name: 'Bentley',
-		logo: assets.images.bentley,
-		code: 33
-	},
-	{
-		id: 'Nissan',
-		name: 'Nissan',
-		logo: assets.images.nissan,
-		code: 4
-	},
-	{
-		id: 'Volkswagen',
-		name: 'Volkswagen',
-		logo: assets.images.vw,
-		code: 26
-	},
-	{
-		id: 'Ford',
-		name: 'Ford',
-		logo: assets.images.ford,
-		code: 98
-	}
-]
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
+import { type UseFormReturn } from 'react-hook-form'
 
 gsap.registerPlugin(TextPlugin)
 
-export function SelectMark() {
+type selectMarkProps = {
+	form: UseFormReturn<
+		{
+			motorUsage: string
+			bodyType: string
+			make: string
+			model: string
+			manufactureyear: string
+			numberOfSeats: string
+		},
+		unknown,
+		undefined
+	>
+	setSubmittedStatus: () => void
+}
+
+export function SelectMark(props: selectMarkProps) {
 	const vehicleData = useAppSelector((state) => state.carInsurance)
 	const appsData = useAppSelector((state) => state.apps)
 	const make = useAppSelector((state) => state.whitebookdetails.Make)
@@ -58,49 +37,6 @@ export function SelectMark() {
 
 	const [MotorMakeList] = useGetMotorMakeListMutation()
 	const [motorListArr, setmotorListArr] = useState<{ value: string; label: string }[]>([])
-
-	const [showCaseBrands, setShowCaseBrands] = useState<
-		{ id: string; name: string; logo: string; code: number }[]
-	>([])
-
-	useGSAP(() => {
-		if (vehicleData.mark === '') {
-			gsap.from('.select', { y: 80, opacity: 0, duration: 0.5, delay: 1 })
-			gsap.to('.popular', { duration: 0.5, text: 'Popular Brands', delay: 1.5 })
-			gsap.from('.suggestedGrid1', { y: 80, opacity: 0, duration: 0.5, delay: 2 })
-			gsap.to('.marktitle', { duration: 0.5, text: 'Select the Mark' })
-			gsap.to('.marksubtitle', {
-				duration: 0.5,
-				text: 'The manufacturer or brand of the vehicle (e.g. Toyota, Honda, Ford)',
-				delay: 0.5
-			})
-		} else {
-			gsap.from('.select', { y: 80, opacity: 0, duration: 0.5 })
-			gsap.to('.popular', { duration: 0.5, text: 'Popular Brands' })
-			gsap.from('.suggestedGrid1', { y: 80, opacity: 0, duration: 0.5 })
-			gsap.to('.marktitle', { duration: 0.5, text: 'Select the Mark' })
-			gsap.to('.marksubtitle', {
-				duration: 0.5,
-				text: 'The manufacturer or brand of the vehicle (e.g. Toyota, Honda, Ford)'
-			})
-		}
-	})
-
-	useEffect(() => {
-		if (motorListArr.length !== 0) {
-			const showCase: { id: string; name: string; logo: string; code: number }[] = []
-			brands.forEach((brand) => {
-				const pos = motorListArr.findIndex((item) => {
-					return +item.value === brand.code
-				})
-
-				if (pos !== -1) {
-					showCase.push(brand)
-				}
-			})
-			setShowCaseBrands(showCase)
-		}
-	}, [motorListArr])
 
 	function updateMark(makeID: string) {
 		const markpos = motorListArr.findIndex((item) => {
@@ -128,25 +64,33 @@ export function SelectMark() {
 	}
 
 	useEffect(() => {
-		const request = {
-			InsuranceId: appsData.insuranceID,
-			BranchCode: appsData.branchCode,
-			BodyId: vehicleData.bodyTypeID
+		if (vehicleData.mark === '') {
+			props.form.setValue('make', '')
 		}
-		const tempArr: { value: string; label: string }[] = []
-		const res = MotorMakeList(request)
-		res.then((value) => {
-			if (value.data?.type === 'success' && value.data?.data !== undefined) {
-				value.data.data!.Result.map((value) => {
-					tempArr.push({
-						value: value.Code,
-						label: value.CodeDesc
-					})
-				})
-				setmotorListArr(tempArr)
+	}, [vehicleData.mark])
+
+	useEffect(() => {
+		if (vehicleData.bodyTypeID !== '') {
+			const request = {
+				InsuranceId: appsData.insuranceID,
+				BranchCode: appsData.branchCode,
+				BodyId: vehicleData.bodyTypeID
 			}
-		})
-	}, [])
+			const tempArr: { value: string; label: string }[] = []
+			const res = MotorMakeList(request)
+			res.then((value) => {
+				if (value.data?.type === 'success' && value.data?.data !== undefined) {
+					value.data.data!.Result.map((value) => {
+						tempArr.push({
+							value: value.Code,
+							label: value.CodeDesc
+						})
+					})
+					setmotorListArr(tempArr)
+				}
+			})
+		}
+	}, [vehicleData.bodyTypeID])
 
 	useEffect(() => {
 		if (motorListArr.length !== 0) {
@@ -155,66 +99,104 @@ export function SelectMark() {
 	}, [make, motorListArr])
 
 	return (
-		<div
-			className={cn('flex flex-col gap-7', {
-				'min-h-[60svh]': vehicleData.mark === ''
-			})}>
-			<div className='-ml-14 flex flex-row items-center gap-4 lg:-ml-16'>
-				<div className='min-h-12 min-w-12 overflow-hidden rounded-full'>
-					<Image
-						alt='face'
-						height={60}
-						src={assets.images.imageFace}
-						width={60}
-					/>
-				</div>
-				<div className='flex flex-col gap-2'>
-					<h1 className='marktitle font-jakarta text-xl font-bold text-blue-300'></h1>
-					<span className='marksubtitle font-inter text-sm font-medium text-gray-500'></span>
-				</div>
-			</div>
-			<div className='select'>
-				{motorListArr.length === 0 ? (
-					<Skeleton className='w-full lg:w-3/4' />
-				) : (
-					<Select
-						value={vehicleData.makeID}
-						onValueChange={updateMark}>
-						<SelectTrigger
-							className='w-full lg:w-3/4'
-							title='Select the Mark'
-							value={vehicleData.makeID}>
-							<SelectValue />
-						</SelectTrigger>
-						<SelectContent>
-							{motorListArr.map((item, index) => {
-								return (
-									<SelectItem
-										key={index}
-										value={item.value}>
-										{item.label}
-									</SelectItem>
-								)
-							})}
-						</SelectContent>
-					</Select>
-				)}
-			</div>
-			<h2 className='popular font-Diesel text-lg font-bold'></h2>
-			<div className='grid grid-cols-3 gap-2 lg:grid-cols-5 lg:gap-4'>
-				{showCaseBrands.slice(0, 5).map((brand) => {
-					return (
-						<MarkCard
-							key={brand.id}
-							className='suggestedGrid1'
-							code={brand.code}
-							logo={brand.logo}
-							name={brand.name}
-							onClick={updateMark}
-						/>
-					)
-				})}
-			</div>
-		</div>
+		<FormField
+			control={props.form.control}
+			name='make'
+			render={({ field }) => (
+				<FormItem className='w-full'>
+					<FormLabel className='text-blue-325'>Make</FormLabel>
+					<FormControl>
+						<Select
+							disabled={field.disabled}
+							name={field.name}
+							value={field.value}
+							onValueChange={(e) => {
+								field.onChange(e)
+								updateMark(e)
+								props.setSubmittedStatus()
+							}}>
+							<SelectTrigger
+								ref={field.ref}
+								className='border-gray-360 shadow-inputShadowDrop border'>
+								<SelectValue placeholder='Select Make' />
+							</SelectTrigger>
+							<SelectContent>
+								{motorListArr.map((brand, index) => {
+									return (
+										<SelectItem
+											key={index}
+											value={brand.value}>
+											{brand.label}
+										</SelectItem>
+									)
+								})}
+							</SelectContent>
+						</Select>
+					</FormControl>
+					<FormMessage />
+				</FormItem>
+			)}
+		/>
+		// <div
+		// 	className={cn('flex flex-col gap-7', {
+		// 		'min-h-[60svh]': vehicleData.mark === ''
+		// 	})}>
+		// 	<div className='-ml-14 flex flex-row items-center gap-4 lg:-ml-16'>
+		// 		<div className='min-h-12 min-w-12 overflow-hidden rounded-full'>
+		// 			<Image
+		// 				alt='face'
+		// 				height={60}
+		// 				src={assets.images.imageFace}
+		// 				width={60}
+		// 			/>
+		// 		</div>
+		// 		<div className='flex flex-col gap-2'>
+		// 			<h1 className='marktitle font-jakarta text-xl font-bold text-blue-300'></h1>
+		// 			<span className='marksubtitle font-inter text-sm font-medium text-gray-500'></span>
+		// 		</div>
+		// 	</div>
+		// 	<div className='select'>
+		// 		{motorListArr.length === 0 ? (
+		// 			<Skeleton className='w-full lg:w-3/4' />
+		// 		) : (
+		// 			<Select
+		// 				value={vehicleData.makeID}
+		// 				onValueChange={updateMark}>
+		// 				<SelectTrigger
+		// 					className='w-full lg:w-3/4'
+		// 					title='Select the Mark'
+		// 					value={vehicleData.makeID}>
+		// 					<SelectValue />
+		// 				</SelectTrigger>
+		// 				<SelectContent>
+		// 					{motorListArr.map((item, index) => {
+		// 						return (
+		// 							<SelectItem
+		// 								key={index}
+		// 								value={item.value}>
+		// 								{item.label}
+		// 							</SelectItem>
+		// 						)
+		// 					})}
+		// 				</SelectContent>
+		// 			</Select>
+		// 		)}
+		// 	</div>
+		// 	<h2 className='popular font-Diesel text-lg font-bold'></h2>
+		// 	<div className='grid grid-cols-3 gap-2 lg:grid-cols-5 lg:gap-4'>
+		// 		{showCaseBrands.slice(0, 5).map((brand) => {
+		// 			return (
+		// 				<MarkCard
+		// 					key={brand.id}
+		// 					className='suggestedGrid1'
+		// 					code={brand.code}
+		// 					logo={brand.logo}
+		// 					name={brand.name}
+		// 					onClick={updateMark}
+		// 				/>
+		// 			)
+		// 		})}
+		// 	</div>
+		// </div>
 	)
 }

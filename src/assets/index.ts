@@ -43,6 +43,8 @@ export const assets = {
 		appStore: '/images/appStore.png',
 		googlePlay: '/images/googlePlay.png',
 		imageFace: '/images/madisonImage.jpg',
-		family: '/images/family.png'
+		family: '/images/family.png',
+		vehicleSketch: '/images/vehicleSketch.svg',
+		sClass: '/images/SClass.png'
 	}
 }
