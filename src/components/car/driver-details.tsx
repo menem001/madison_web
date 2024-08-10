@@ -2,9 +2,9 @@
 
 import { cn, formatDateDDMMYYYY } from '@/lib'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Button, Input, Popover, PopoverContent, PopoverTrigger } from '../ui'
-import { updateDriverDetails } from '@/redux/slices'
+import { updateDriverDOB, updateDriverID, updateDriverorOwner } from '@/redux/slices'
 import { Label } from '../ui/label'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
@@ -30,8 +30,6 @@ export function DriverDetails() {
 	)
 	const [driverID, setDriverID] = useState(vehicleData.DriverID)
 
-	const [isSent, setIsSent] = useState<boolean>(false)
-
 	useGSAP(() => {
 		if (driverID === '') {
 			gsap.from('.selectDriver', { y: 80, opacity: 0, duration: 0.5, delay: 1 })
@@ -51,6 +49,10 @@ export function DriverDetails() {
 		}
 	}, [])
 
+	useEffect(() => {
+		dispatch(updateDriverorOwner('Owner'))
+	}, [])
+
 	return (
 		<div className='flex w-full flex-col items-center justify-between gap-6'>
 			<div className='flex w-full flex-col items-center justify-between gap-4 lg:flex-row lg:gap-0'>
@@ -66,7 +68,7 @@ export function DriverDetails() {
 						)}
 						onClick={() => {
 							setIsDriver(1)
-							setIsSent(false)
+							dispatch(updateDriverorOwner('Driver'))
 						}}>
 						Driver
 					</div>
@@ -77,7 +79,7 @@ export function DriverDetails() {
 						)}
 						onClick={() => {
 							setIsDriver(2)
-							setIsSent(false)
+							dispatch(updateDriverorOwner('Owner'))
 						}}>
 						Owner
 					</div>
@@ -92,7 +94,7 @@ export function DriverDetails() {
 						value={driverID}
 						onChange={(e) => {
 							setDriverID(e.target.value)
-							setIsSent(false)
+							dispatch(updateDriverID(e.target.value))
 						}}
 					/>
 				</div>
@@ -143,7 +145,7 @@ export function DriverDetails() {
 									onSelect={(e) => {
 										if (e) {
 											setDriverDOB(e)
-											setIsSent(false)
+											dispatch(updateDriverDOB(formatDateDDMMYYYY(e)))
 										}
 									}}
 								/>
@@ -152,23 +154,6 @@ export function DriverDetails() {
 					</Popover>
 				</div>
 			</div>
-			{!isSent && driverDOB && (
-				<Button
-					className='w-1/2'
-					variant='bluebtn'
-					onClick={() => {
-						dispatch(
-							updateDriverDetails({
-								driverOrOwner: isDriver === 1 ? 'Driver' : 'Owner',
-								DriverDOB: formatDateDDMMYYYY(driverDOB),
-								DriverID: driverID
-							})
-						)
-						setIsSent(true)
-					}}>
-					Save
-				</Button>
-			)}
 		</div>
 	)
 }

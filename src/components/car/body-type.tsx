@@ -17,6 +17,7 @@ type bodyTypeProps = {
 			model: string
 			manufactureyear: string
 			numberOfSeats: string
+			excessLimit: string
 		},
 		unknown,
 		undefined
@@ -33,20 +34,22 @@ export function BodyType(props: bodyTypeProps) {
 	const [bodyTypeList, setBodyTypeList] = useState<{ value: string; label: string }[]>([])
 
 	useEffect(() => {
-		const tempArr: { value: string; label: string }[] = []
-		const request = { InsuranceId: appsData.insuranceID, BranchCode: appsData.branchCode }
-		const res = BodyType(request)
-		res.then((value) => {
-			if (value.data?.type === 'success' && value.data.data !== undefined) {
-				value.data.data.Result.map((value) => {
-					tempArr.push({
-						value: value.Code,
-						label: value.CodeDesc
+		if (bodyTypeList.length === 0) {
+			const tempArr: { value: string; label: string }[] = []
+			const request = { InsuranceId: appsData.insuranceID, BranchCode: appsData.branchCode }
+			const res = BodyType(request)
+			res.then((value) => {
+				if (value.data?.type === 'success' && value.data.data !== undefined) {
+					value.data.data.Result.map((value) => {
+						tempArr.push({
+							value: value.Code,
+							label: value.CodeDesc
+						})
 					})
-				})
-				setBodyTypeList(tempArr)
-			}
-		})
+					setBodyTypeList(tempArr)
+				}
+			})
+		}
 	}, [BodyType, appsData.branchCode, appsData.insuranceID])
 
 	function updateBody(id: string) {
@@ -63,40 +66,42 @@ export function BodyType(props: bodyTypeProps) {
 		<FormField
 			control={props.form.control}
 			name='bodyType'
-			render={({ field }) => (
-				<FormItem className='w-full'>
-					<FormLabel className='text-blue-325'>Body Type</FormLabel>
-					<FormControl>
-						<Select
-							disabled={field.disabled}
-							name={field.name}
-							value={field.value}
-							onValueChange={(e) => {
-								field.onChange(e)
-								updateBody(e)
-								props.setSubmittedStatus()
-							}}>
-							<SelectTrigger
-								ref={field.ref}
-								className='border-gray-360 shadow-inputShadowDrop border'>
-								<SelectValue placeholder='Select Body Type' />
-							</SelectTrigger>
-							<SelectContent>
-								{bodyTypeList.map((bodyType, index) => {
-									return (
-										<SelectItem
-											key={index}
-											value={bodyType.value}>
-											{bodyType.label}
-										</SelectItem>
-									)
-								})}
-							</SelectContent>
-						</Select>
-					</FormControl>
-					<FormMessage />
-				</FormItem>
-			)}
+			render={({ field }) => {
+				return (
+					<FormItem className='w-full'>
+						<FormLabel className='text-blue-325'>Body Type</FormLabel>
+						<FormControl>
+							<Select
+								disabled={field.disabled}
+								name={field.name}
+								value={field.value}
+								onValueChange={(e) => {
+									field.onChange(e)
+									updateBody(e)
+									props.setSubmittedStatus()
+								}}>
+								<SelectTrigger
+									ref={field.ref}
+									className='border-gray-360 border shadow-inputShadowDrop'>
+									<SelectValue placeholder='Select Body Type' />
+								</SelectTrigger>
+								<SelectContent>
+									{bodyTypeList.map((bodyType, index) => {
+										return (
+											<SelectItem
+												key={index}
+												value={bodyType.value}>
+												{bodyType.label}
+											</SelectItem>
+										)
+									})}
+								</SelectContent>
+							</Select>
+						</FormControl>
+						<FormMessage />
+					</FormItem>
+				)
+			}}
 		/>
 		// <div
 		// 	className={cn('flex flex-col gap-7', {

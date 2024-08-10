@@ -17,6 +17,7 @@ type selectModelProps = {
 			model: string
 			manufactureyear: string
 			numberOfSeats: string
+			excessLimit: string
 		},
 		unknown,
 		undefined
@@ -166,7 +167,7 @@ export function SelectModel(props: selectModelProps) {
 							}}>
 							<SelectTrigger
 								ref={field.ref}
-								className='border-gray-360 shadow-inputShadowDrop border'>
+								className='border-gray-360 border shadow-inputShadowDrop'>
 								<SelectValue placeholder='Select Model' />
 							</SelectTrigger>
 							<SelectContent>

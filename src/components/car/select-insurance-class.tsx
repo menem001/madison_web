@@ -30,10 +30,9 @@ import {
 	useGetInsuranceClassMutation,
 	useGetPolicyEndDateQuery
 } from '@/redux/api/commonApi'
-import Image from 'next/image'
-import { assets } from '@/assets'
+// import Image from 'next/image'
+// import { assets } from '@/assets'
 import { Skeleton } from '../ui/skeleton'
-// import { useGetPolicyEndDateQuery } from '@/redux/api/commonApi'
 
 type CurrencyRateList = { value: string; label: string; rate: string }
 
@@ -177,15 +176,15 @@ export function SelectInsuranceClass() {
 
 	return (
 		<div className='flex flex-col gap-7'>
-			<div className='-ml-16 flex flex-row items-center gap-4'>
-				<div className='min-h-12 min-w-12 overflow-hidden rounded-full'>
+			<div className='flex flex-row items-center gap-4'>
+				{/* <div className='min-h-12 min-w-12 overflow-hidden rounded-full'>
 					<Image
 						alt='face'
 						height={60}
 						src={assets.images.imageFace}
 						width={60}
 					/>
-				</div>
+				</div> */}
 				<div className='flex flex-col gap-2'>
 					<h1 className='InsClasstitle font-jakarta text-xl font-bold text-blue-300'></h1>
 					<span className='InsClasssubtitle font-roboto text-sm font-medium text-gray-500'></span>

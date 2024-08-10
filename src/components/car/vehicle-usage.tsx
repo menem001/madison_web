@@ -23,6 +23,7 @@ type VehicleUsageProps = {
 			model: string
 			manufactureyear: string
 			numberOfSeats: string
+			excessLimit: string
 		},
 		unknown,
 		undefined
@@ -127,7 +128,7 @@ export function VehicleUsage(props: VehicleUsageProps) {
 							}}>
 							<SelectTrigger
 								ref={field.ref}
-								className='border-gray-360 shadow-inputShadowDrop border'>
+								className='border-gray-360 border shadow-inputShadowDrop'>
 								<SelectValue placeholder='Usage' />
 							</SelectTrigger>
 							<SelectContent>

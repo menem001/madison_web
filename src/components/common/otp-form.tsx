@@ -5,10 +5,11 @@ import { useRouter } from 'next/navigation'
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '../ui/input-otp'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
 import { useGenerateOTPMutation, useVerifyOTPMutation } from '@/redux/api/commonApi'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { setGuestLoginDetails, setOTPToken, updateMobile } from '@/redux/slices'
 import { cn } from '@/lib'
 import { BackButton } from './back_btn'
+import ClipLoader from 'react-spinners/ClipLoader'
 
 export function OtpForm() {
 	const route = useRouter()
@@ -55,6 +56,10 @@ export function OtpForm() {
 			}
 		})
 	}
+
+	useEffect(() => {
+		generateOtp()
+	}, [])
 
 	function validate() {
 		const request = {
@@ -193,12 +198,9 @@ export function OtpForm() {
 				</>
 			) : (
 				<>
-					<Button
-						className='w-3/4'
-						variant='bluebtn'
-						onClick={generateOtp}>
-						Generate Otp
-					</Button>
+					<div className='flex w-4/5 flex-col items-center justify-center gap-4'>
+						<ClipLoader color='#0C7BC4' />
+					</div>
 				</>
 			)}
 		</section>

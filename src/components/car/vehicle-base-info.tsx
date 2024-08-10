@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector } from '@/redux/hooks'
 import { useGSAP } from '@gsap/react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import gsap from 'gsap'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form'
@@ -20,7 +20,8 @@ const vehicleBaseSchema = z.object({
 	make: z.string().min(1, { message: 'Required' }),
 	model: z.string().min(1, { message: 'Required' }),
 	manufactureyear: z.string().min(4, { message: 'Required' }),
-	numberOfSeats: z.string().min(1, { message: 'Required' })
+	numberOfSeats: z.string().min(1, { message: 'Required' }),
+	excessLimit: z.string()
 })
 
 export function VehcileBaseInfo() {
@@ -44,14 +45,27 @@ export function VehcileBaseInfo() {
 	const form = useForm<z.infer<typeof vehicleBaseSchema>>({
 		resolver: zodResolver(vehicleBaseSchema),
 		defaultValues: {
-			motorUsage: vehicleData.vehicleUsage,
-			bodyType: vehicleData.bodyType,
-			make: vehicleData.mark,
-			model: vehicleData.model,
+			motorUsage: vehicleData.vehicleUsageID,
+			bodyType: vehicleData.bodyTypeID,
+			make: vehicleData.makeID,
+			model: vehicleData.modelID,
 			manufactureyear: vehicleData.year !== 0 ? vehicleData.year + '' : '',
-			numberOfSeats: vehicleData.seat !== 0 ? vehicleData.seat + '' : ''
+			numberOfSeats: vehicleData.seat !== 0 ? vehicleData.seat + '' : '',
+			excessLimit: vehicleData.excessLimit !== 0 ? vehicleData.excessLimit + '' : ''
 		}
 	})
+
+	useEffect(() => {
+		const isFilled =
+			vehicleData.vehicleUsageID !== '' &&
+			vehicleData.bodyTypeID !== '' &&
+			vehicleData.makeID !== '' &&
+			vehicleData.modelID !== ''
+
+		if (isFilled) {
+			setIsSubmitted(true)
+		}
+	}, [])
 
 	function onSubmit(values: z.infer<typeof vehicleBaseSchema>) {
 		dispatch(
@@ -74,11 +88,11 @@ export function VehcileBaseInfo() {
 			<div className='flex w-full flex-col items-center gap-4'>
 				<div className='flex flex-row -space-x-7'>
 					<div className='h-10 w-10 rounded-full bg-black'></div>
-					<div className='bg-blue-475 flex h-10 w-10 items-center justify-center rounded-full text-lg font-medium text-white'>
+					<div className='flex h-10 w-10 items-center justify-center rounded-full bg-blue-475 text-lg font-medium text-white'>
 						1
 					</div>
 				</div>
-				<h1 className='text-blue-325 text-center font-inter text-4xl font-bold'>
+				<h1 className='text-center font-inter text-4xl font-bold text-blue-325'>
 					Vehicle Information
 				</h1>
 				<p className='w-4/5 text-center font-roboto text-sm text-gray-500'>
@@ -102,10 +116,38 @@ export function VehcileBaseInfo() {
 							/>
 						</div>
 						<div className='selectVehicleBaseInfo flex flex-col gap-5 lg:flex-row lg:gap-16'>
-							<SelectModel
-								form={form}
-								setSubmittedStatus={setSubmittedStatus}
-							/>
+							{+vehicleData.bodyTypeID > 5 ? (
+								<FormField
+									control={form.control}
+									name='model'
+									render={({ field }) => (
+										<FormItem className='w-full'>
+											<FormLabel className='text-blue-325'>Model</FormLabel>
+											<FormControl>
+												<Input
+													{...field}
+													autoComplete='name'
+													className='border-gray-360 border shadow-inputShadowDrop'
+													id='vehicleValue'
+													placeholder='Model Description'
+													onChange={(e) => {
+														field.onChange(e)
+
+														if (isSubmitted) {
+															setIsSubmitted(false)
+														}
+													}}
+												/>
+											</FormControl>
+										</FormItem>
+									)}
+								/>
+							) : (
+								<SelectModel
+									form={form}
+									setSubmittedStatus={setSubmittedStatus}
+								/>
+							)}
 							<VehicleUsage
 								form={form}
 								setSubmittedStatus={setSubmittedStatus}
@@ -124,7 +166,7 @@ export function VehcileBaseInfo() {
 											<Input
 												{...field}
 												autoComplete='name'
-												className='border-gray-360 shadow-inputShadowDrop border'
+												className='border-gray-360 border shadow-inputShadowDrop'
 												id='vehicleValue'
 												placeholder='Number of Seats'
 												onChange={(e) => {
@@ -167,7 +209,7 @@ export function VehcileBaseInfo() {
 												}}>
 												<SelectTrigger
 													ref={field.ref}
-													className='border-gray-360 shadow-inputShadowDrop border'>
+													className='border-gray-360 border shadow-inputShadowDrop'>
 													<SelectValue placeholder='Manufacture Year' />
 												</SelectTrigger>
 												<SelectContent>
@@ -182,6 +224,36 @@ export function VehcileBaseInfo() {
 													})}
 												</SelectContent>
 											</Select>
+										</FormControl>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
+						</div>
+						<div className='selectVehicleBaseInfo flex flex-col gap-5 lg:flex-row lg:gap-16'>
+							<FormField
+								control={form.control}
+								name='excessLimit'
+								render={({ field }) => (
+									<FormItem className='w-full'>
+										<FormLabel className='text-blue-325'>
+											Excess Limit
+										</FormLabel>
+										<FormControl>
+											<Input
+												{...field}
+												autoComplete='name'
+												className='border-gray-360 border shadow-inputShadowDrop'
+												id='excessLimit'
+												placeholder='Excess Limit'
+												onChange={(e) => {
+													field.onChange(e)
+
+													if (isSubmitted) {
+														setIsSubmitted(false)
+													}
+												}}
+											/>
 										</FormControl>
 										<FormMessage />
 									</FormItem>

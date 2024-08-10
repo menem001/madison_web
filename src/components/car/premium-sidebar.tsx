@@ -3,8 +3,6 @@
 import { assets } from '@/assets'
 import Image from 'next/image'
 import { Button } from '../ui'
-// import { MobileLinkDetails } from './mobile-link-details'
-import { usePathname, useRouter } from 'next/navigation'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
 import { useEffect, useState } from 'react'
 import {
@@ -20,14 +18,16 @@ import { useToast } from '../ui/use-toast'
 import { storePremiumData } from '@/redux/slices/premium-motor-slice'
 import { Skeleton } from '../ui/skeleton'
 
-export function PremiumSideBar() {
-	const route = useRouter()
+type PremiumSidebarProps = {
+	getOtp: () => void
+}
+
+export function PremiumSideBar(props: PremiumSidebarProps) {
+	// const route = useRouter()
 	const customerData = useAppSelector((state) => state.customerDetails)
 	const motorData = useAppSelector((state) => state.motor)
 	const appData = useAppSelector((state) => state.apps)
 	const vehicleData = useAppSelector((state) => state.carInsurance)
-
-	const path = usePathname()
 
 	const { toast } = useToast()
 
@@ -277,7 +277,7 @@ export function PremiumSideBar() {
 	}, [accessories.PremiumIncludedTax, basicDetails.PremiumIncludedTax])
 
 	return (
-		<div className='flex h-full w-full flex-col gap-4 px-5 py-20 font-roboto'>
+		<div className='flex h-full w-3/4 flex-col gap-4 font-roboto'>
 			{customerData.premium && (
 				<div className='flex flex-col gap-4 rounded-lg p-6 shadow-md'>
 					<div className='flex flex-row gap-6'>
@@ -432,22 +432,20 @@ export function PremiumSideBar() {
 										<span>Grand Total</span>
 										<span>{`${total} ${vehicleData.currency}`}</span>
 									</div>
-									{path === '/car-insurance/2' && (
-										<Button
-											variant='bluebtn'
-											onClick={() => {
-												route.push('/car-insurance/confirm/otp-verify')
-											}}>
-											Buy Policy
-										</Button>
-									)}
+									<Button
+										variant='bluebtn'
+										onClick={() => {
+											props.getOtp()
+											// route.push('/car-insurance/confirm/otp-verify')
+										}}>
+										Buy Policy
+									</Button>
 								</>
 							)}
 						</>
 					)}
 				</div>
 			)}
-			{/* <MobileLinkDetails /> */}
 		</div>
 	)
 }

@@ -122,12 +122,13 @@ export function DetailsPage() {
 						<ClipLoader color='#0C7BC4' />
 					</div>
 				)}
-				{token !== '' && <VehcileBaseInfo />}
+				{/* {token !== '' && <VehcileBaseInfo />} */}
 				{token !== '' && (
 					<div className='flex flex-col gap-10'>
 						<div className='-ml-16'>
 							<BackButton />
 						</div>
+						<VehcileBaseInfo />
 						{/* <div
 							ref={appData.scrollTo === 4 ? specificRef : undefined}
 							className='flex flex-col gap-6'>
@@ -176,14 +177,14 @@ export function DetailsPage() {
 						<ManufactureYear />
 					</div>
 				)} */}
-				{vehicleData.year !== 0 && vehicleData.excessLimit !== 0 && (
+				{vehicleData.value !== 0 && (
 					<div
 						ref={appData.scrollTo === 8 ? specificRef : undefined}
 						className='flex flex-col gap-6'>
 						<DriverDetails />
 					</div>
 				)}
-				{vehicleData.driverOrOwner !== '' && (
+				{vehicleData.DriverDOB !== '' && (
 					<Button
 						className='w-full'
 						variant='bluebtn'

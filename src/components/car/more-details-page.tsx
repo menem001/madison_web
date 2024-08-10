@@ -2,11 +2,13 @@
 
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
 import { setScrollTo } from '@/redux/slices'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 // import { Button } from '../ui'
 import { CustomerInfo } from './customer-info'
 import { SelectInsuranceClass } from './select-insurance-class'
 import { BackButton } from '../common/back_btn'
+import { PremiumSideBar } from './premium-sidebar'
+import { OTPDialogBox } from './otp-dialog-box'
 // import { HorsePowerTonnage } from './horse-power-tonnage'
 // import { SumInsuredDeductibles } from './sum-insured-deductibles'
 // import { cn } from '@/lib'
@@ -19,18 +21,28 @@ export function MoreDetailsPage() {
 
 	// const [current, setCurrent] = useState<number>(0)
 
+	const [otpOpen, setOtpOpen] = useState<boolean>(false)
+
 	const pageEnd = useRef<HTMLDivElement>(null)
 	const specificRef = useRef<HTMLDivElement>(null)
 	const customerRef = useRef<HTMLDivElement>(null)
 	const pageStart = useRef<HTMLDivElement | null>(null)
 
-	function scrollToTop() {
-		pageStart.current?.scrollIntoView({ behavior: 'smooth' })
+	// function scrollToTop() {
+	// 	pageStart.current?.scrollIntoView({ behavior: 'smooth' })
+	// }
+
+	function getOtpDialogOpen() {
+		setOtpOpen(true)
 	}
 
-	// function scrollToBottom() {
-	// 	pageEnd.current?.scrollIntoView({ behavior: 'smooth' })
-	// }
+	function closeOTPDialog() {
+		setOtpOpen(false)
+	}
+
+	function scrollToBottom() {
+		pageEnd.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+	}
 
 	const isFilled =
 		vehicleData.policyStartDate !== '' &&
@@ -71,10 +83,15 @@ export function MoreDetailsPage() {
 				<SelectInsuranceClass />
 				{isFilled && (
 					<div ref={customerRef}>
-						<CustomerInfo scrollToTop={scrollToTop} />
+						<CustomerInfo scrollToTop={scrollToBottom} />
 					</div>
 				)}
+				<PremiumSideBar getOtp={getOtpDialogOpen} />
 				<div ref={pageEnd}></div>
+				<OTPDialogBox
+					closeDialog={closeOTPDialog}
+					otpOpen={otpOpen}
+				/>
 			</section>
 		</section>
 	)

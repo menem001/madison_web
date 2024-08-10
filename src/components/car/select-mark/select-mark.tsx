@@ -21,6 +21,7 @@ type selectMarkProps = {
 			model: string
 			manufactureyear: string
 			numberOfSeats: string
+			excessLimit: string
 		},
 		unknown,
 		undefined
@@ -117,7 +118,7 @@ export function SelectMark(props: selectMarkProps) {
 							}}>
 							<SelectTrigger
 								ref={field.ref}
-								className='border-gray-360 shadow-inputShadowDrop border'>
+								className='border-gray-360 border shadow-inputShadowDrop'>
 								<SelectValue placeholder='Select Make' />
 							</SelectTrigger>
 							<SelectContent>
