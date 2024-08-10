@@ -12,7 +12,7 @@ import { VehicleUsage } from './vehicle-usage'
 import { BodyType } from './body-type'
 import { SelectMark } from './select-mark'
 import { SelectModel } from './select-model'
-import { updateSeatsYear } from '@/redux/slices'
+import { updateSeatsYear, updateVehicleModel } from '@/redux/slices'
 
 const vehicleBaseSchema = z.object({
 	motorUsage: z.string().min(1, { message: 'Required' }),
@@ -26,6 +26,7 @@ const vehicleBaseSchema = z.object({
 
 export function VehcileBaseInfo() {
 	const vehicleData = useAppSelector((state) => state.carInsurance)
+	const whiteBookData = useAppSelector((state) => state.whitebookdetails)
 	const [isSubmitted, setIsSubmitted] = useState<boolean>(false)
 
 	const dispatch = useAppDispatch()
@@ -49,8 +50,18 @@ export function VehcileBaseInfo() {
 			bodyType: vehicleData.bodyTypeID,
 			make: vehicleData.makeID,
 			model: vehicleData.modelID,
-			manufactureyear: vehicleData.year !== 0 ? vehicleData.year + '' : '',
-			numberOfSeats: vehicleData.seat !== 0 ? vehicleData.seat + '' : '',
+			manufactureyear:
+				whiteBookData.YearOfMake !== ''
+					? whiteBookData.YearOfMake
+					: vehicleData.year !== 0
+						? vehicleData.year + ''
+						: '',
+			numberOfSeats:
+				whiteBookData.SeatingCapacity !== ''
+					? whiteBookData.SeatingCapacity
+					: vehicleData.seat !== 0
+						? vehicleData.seat + ''
+						: '',
 			excessLimit: vehicleData.excessLimit !== 0 ? vehicleData.excessLimit + '' : ''
 		}
 	})
@@ -132,6 +143,12 @@ export function VehcileBaseInfo() {
 													placeholder='Model Description'
 													onChange={(e) => {
 														field.onChange(e)
+														dispatch(
+															updateVehicleModel({
+																model: e.target.value,
+																modelID: '99999'
+															})
+														)
 
 														if (isSubmitted) {
 															setIsSubmitted(false)

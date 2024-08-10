@@ -108,6 +108,7 @@ export function SelectModel(props: selectModelProps) {
 			dispatch(
 				updateVehicleModel({ model: modelsList[pos].label, modelID: modelsList[pos].value })
 			)
+			props.form.setValue('model', modelsList[pos].value)
 		}
 	}
 
@@ -157,7 +158,7 @@ export function SelectModel(props: selectModelProps) {
 					<FormLabel className='text-blue-325'>Model</FormLabel>
 					<FormControl>
 						<Select
-							disabled={field.disabled}
+							disabled={field.disabled || vehicleData.mark === ''}
 							name={field.name}
 							value={field.value}
 							onValueChange={(e) => {

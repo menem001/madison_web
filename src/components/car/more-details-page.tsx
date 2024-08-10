@@ -41,7 +41,7 @@ export function MoreDetailsPage() {
 	}
 
 	function scrollToBottom() {
-		pageEnd.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+		pageEnd.current?.scrollIntoView({ behavior: 'smooth', block: 'end' })
 	}
 
 	const isFilled =

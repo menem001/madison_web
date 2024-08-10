@@ -61,6 +61,7 @@ export function SelectMark(props: selectMarkProps) {
 					makeID: motorListArr[markpos].value
 				})
 			)
+			props.form.setValue('make', motorListArr[markpos].value)
 		}
 	}
 
@@ -108,7 +109,7 @@ export function SelectMark(props: selectMarkProps) {
 					<FormLabel className='text-blue-325'>Make</FormLabel>
 					<FormControl>
 						<Select
-							disabled={field.disabled}
+							disabled={field.disabled || vehicleData.bodyType === ''}
 							name={field.name}
 							value={field.value}
 							onValueChange={(e) => {

@@ -118,7 +118,7 @@ export function VehicleUsage(props: VehicleUsageProps) {
 					<FormLabel className='text-blue-325'>Motor Usage</FormLabel>
 					<FormControl>
 						<Select
-							disabled={field.disabled}
+							disabled={field.disabled || model === ''}
 							name={field.name}
 							value={field.value}
 							onValueChange={(e) => {
