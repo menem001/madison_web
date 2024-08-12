@@ -38,12 +38,12 @@ export function CustomerInfo(props: CustomerInfoProps) {
 
 	useGSAP(() => {
 		gsap.from('.selectCustomerInfo', { y: 80, opacity: 0, duration: 0.5, delay: 1 })
-		gsap.to('.CustomerInfotitle', { duration: 0.5, text: 'Personal Details' })
-		gsap.to('.CustomerInfosubtitle', {
-			duration: 0.5,
-			text: 'Please provide your details to proceed',
-			delay: 0.5
-		})
+		// gsap.to('.CustomerInfotitle', { duration: 0.5, text: 'Personal Details' })
+		// gsap.to('.CustomerInfosubtitle', {
+		// 	duration: 0.5,
+		// 	text: 'Please provide your details to proceed',
+		// 	delay: 0.5
+		// })
 	})
 
 	function goToConfirm() {
@@ -159,8 +159,12 @@ export function CustomerInfo(props: CustomerInfoProps) {
 			</div>
 			<div className='flex flex-col gap-7'>
 				<div className='flex flex-col gap-2'>
-					<h1 className='CustomerInfotitle font-jakarta text-xl font-bold text-blue-300'></h1>
-					<span className='CustomerInfosubtitle font-roboto text-sm font-medium text-gray-500'></span>
+					<h1 className='CustomerInfotitle font-jakarta text-xl font-bold text-blue-300'>
+						Personal Details
+					</h1>
+					<span className='CustomerInfosubtitle font-roboto text-sm font-medium text-gray-500'>
+						Please provide your details to proceed
+					</span>
 				</div>
 				<div className='selectCustomerInfo flex flex-row gap-10'>
 					<div className='flex-grow'>

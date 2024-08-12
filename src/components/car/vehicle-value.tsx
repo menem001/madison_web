@@ -22,25 +22,25 @@ export function VehicleValue() {
 	useGSAP(() => {
 		if (vehicleData.value === 0) {
 			gsap.from('.selectVehicleDesciption', { y: 80, opacity: 0, duration: 0.5, delay: 1 })
-			gsap.to('.Valuetitle', {
-				duration: 0.5,
-				text: 'Vehicle Value & Electrical Accessories'
-			})
-			gsap.to('.Valuesubtitle', {
-				duration: 0.5,
-				text: 'How the vehicle is used, such as for personal, business, or commercial purposes',
-				delay: 0.5
-			})
+			// gsap.to('.Valuetitle', {
+			// 	duration: 0.5,
+			// 	text: 'Vehicle Value & Electrical Accessories'
+			// })
+			// gsap.to('.Valuesubtitle', {
+			// 	duration: 0.5,
+			// 	text: 'How the vehicle is used, such as for personal, business, or commercial purposes',
+			// 	delay: 0.5
+			// })
 		} else {
 			gsap.from('.selectVehicleDesciption', { y: 80, opacity: 0, duration: 0.5 })
-			gsap.to('.Valuetitle', {
-				duration: 0.5,
-				text: 'Vehicle Value & Electrical Accessories'
-			})
-			gsap.to('.Valuesubtitle', {
-				duration: 0.5,
-				text: 'How the vehicle is used, such as for personal, business, or commercial purposes'
-			})
+			// gsap.to('.Valuetitle', {
+			// 	duration: 0.5,
+			// 	text: 'Vehicle Value & Electrical Accessories'
+			// })
+			// gsap.to('.Valuesubtitle', {
+			// 	duration: 0.5,
+			// 	text: 'How the vehicle is used, such as for personal, business, or commercial purposes'
+			// })
 		}
 	})
 
@@ -87,8 +87,13 @@ export function VehicleValue() {
 					/>
 				</div> */}
 				<div className='flex flex-col gap-2'>
-					<h1 className='Valuetitle font-jakarta text-xl font-bold text-blue-300'></h1>
-					<span className='Valuesubtitle font-roboto text-sm font-medium text-gray-500'></span>
+					<h1 className='Valuetitle font-jakarta text-xl font-bold text-blue-300'>
+						Vehicle Value & Electrical Accessories
+					</h1>
+					<span className='Valuesubtitle font-roboto text-sm font-medium text-gray-500'>
+						How the vehicle is used, such as for personal, business, or commercial
+						purposes
+					</span>
 				</div>
 			</div>
 			<div className='selectVehicleDesciption flex flex-col gap-10 lg:flex-row'>

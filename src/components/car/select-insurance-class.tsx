@@ -66,18 +66,18 @@ export function SelectInsuranceClass() {
 
 	useGSAP(() => {
 		gsap.from('.selectInsClass', { y: 80, opacity: 0, duration: 0.5, delay: 1 })
-		gsap.to('.InsClasstitle', { duration: 0.5, text: 'Insurance Class' })
-		gsap.to('.InsClasssubtitle', {
-			duration: 0.5,
-			text: 'Fill out the vehicle details section completely.',
-			delay: 0.5
-		})
-		gsap.to('.Policytitle', { duration: 0.5, text: 'Policy Details' })
-		gsap.to('.Policysubtitle', {
-			duration: 0.5,
-			text: 'Fill out the vehicle details section completely.',
-			delay: 0.5
-		})
+		// gsap.to('.InsClasstitle', { duration: 0.5, text: 'Insurance Class' })
+		// gsap.to('.InsClasssubtitle', {
+		// 	duration: 0.5,
+		// 	text: 'Fill out the vehicle details section completely.',
+		// 	delay: 0.5
+		// })
+		// gsap.to('.Policytitle', { duration: 0.5, text: 'Policy Details' })
+		// gsap.to('.Policysubtitle', {
+		// 	duration: 0.5,
+		// 	text: 'Fill out the vehicle details section completely.',
+		// 	delay: 0.5
+		// })
 	})
 
 	useEffect(() => {
@@ -186,8 +186,12 @@ export function SelectInsuranceClass() {
 					/>
 				</div> */}
 				<div className='flex flex-col gap-2'>
-					<h1 className='InsClasstitle font-jakarta text-xl font-bold text-blue-300'></h1>
-					<span className='InsClasssubtitle font-roboto text-sm font-medium text-gray-500'></span>
+					<h1 className='InsClasstitle font-jakarta text-xl font-bold text-blue-300'>
+						Insurance Class
+					</h1>
+					<span className='InsClasssubtitle font-roboto text-sm font-medium text-gray-500'>
+						Fill out the vehicle details section completely.
+					</span>
 				</div>
 			</div>
 			{classTypeList.length === 0 ? (
@@ -223,8 +227,12 @@ export function SelectInsuranceClass() {
 			{classTypeList && (
 				<>
 					<div className='flex flex-col gap-2'>
-						<h1 className='Policytitle font-jakarta text-xl font-bold text-blue-300'></h1>
-						<span className='Policysubtitle font-roboto text-sm font-medium text-gray-500'></span>
+						<h1 className='Policytitle font-jakarta text-xl font-bold text-blue-300'>
+							Policy Details
+						</h1>
+						<span className='Policysubtitle font-roboto text-sm font-medium text-gray-500'>
+							Fill out the vehicle details section completely.
+						</span>
 					</div>
 					<div className=''>
 						<div className='selectInsClass flex flex-col gap-10 md:w-full md:flex-row'>

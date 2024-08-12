@@ -3,7 +3,7 @@
 import { useState, type PropsWithChildren } from 'react'
 import { Header } from '../header'
 import { ChatBot } from '../support'
-import { CarBanner } from './car-banner'
+// import { CarBanner } from './car-banner'
 import { usePathname } from 'next/navigation'
 import { CarRightSideBar } from './car-right-side-bar'
 import { cn } from '@/lib'
@@ -55,7 +55,7 @@ export function CarLayout(props: PropsWithChildren) {
 		<section className='relative flex w-full flex-col'>
 			<Header />
 			{/* <ProgressIndicator /> */}
-			<CarBanner />
+			{/* <CarBanner /> */}
 			<section className='grid flex-grow grid-cols-4 px-4 lg:px-12'>
 				<div className='col-span-4 lg:col-span-3'>{props.children}</div>
 				<div

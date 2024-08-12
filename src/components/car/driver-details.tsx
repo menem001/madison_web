@@ -33,19 +33,19 @@ export function DriverDetails() {
 	useGSAP(() => {
 		if (driverID === '') {
 			gsap.from('.selectDriver', { y: 80, opacity: 0, duration: 0.5, delay: 1 })
-			gsap.to('.Drivertitle', { duration: 0.5, text: 'Are you Owner or Driver' })
-			gsap.to('.Driversubtitle', {
-				duration: 0.5,
-				text: 'How the vehicle is used, such as for personal, business, or commercial purposes',
-				delay: 0.5
-			})
+			// gsap.to('.Drivertitle', { duration: 0.5, text: 'Are you Owner or Driver' })
+			// gsap.to('.Driversubtitle', {
+			// 	duration: 0.5,
+			// 	text: 'How the vehicle is used, such as for personal, business, or commercial purposes',
+			// 	delay: 0.5
+			// })
 		} else {
 			gsap.from('.selectDriver', { y: 80, opacity: 0, duration: 0.5 })
-			gsap.to('.Drivertitle', { duration: 0.5, text: 'Are you Owner or Driver' })
-			gsap.to('.Driversubtitle', {
-				duration: 0.5,
-				text: 'How the vehicle is used, such as for personal, business, or commercial purposes'
-			})
+			// gsap.to('.Drivertitle', { duration: 0.5, text: 'Are you Owner or Driver' })
+			// gsap.to('.Driversubtitle', {
+			// 	duration: 0.5,
+			// 	text: 'How the vehicle is used, such as for personal, business, or commercial purposes'
+			// })
 		}
 	}, [])
 
@@ -57,8 +57,13 @@ export function DriverDetails() {
 		<div className='flex w-full flex-col items-center justify-between gap-6'>
 			<div className='flex w-full flex-col items-center justify-between gap-4 lg:flex-row lg:gap-0'>
 				<div className='flex flex-col gap-2'>
-					<h1 className='Drivertitle font-jakarta text-xl font-bold text-blue-300'></h1>
-					<span className='Driversubtitle font-roboto text-sm font-medium text-gray-500'></span>
+					<h1 className='Drivertitle font-jakarta text-xl font-bold text-blue-300'>
+						Are you Owner or Driver
+					</h1>
+					<span className='Driversubtitle font-roboto text-sm font-medium text-gray-500'>
+						How the vehicle is used, such as for personal, business, or commercial
+						purposes
+					</span>
 				</div>
 				<div className='selectDriver flex flex-row gap-5'>
 					<div
