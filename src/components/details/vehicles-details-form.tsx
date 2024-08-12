@@ -75,6 +75,14 @@ export function VehicleDetailsForm() {
 				value.data.data.ErrorMessage !== null &&
 				value.data.data.ErrorMessage.length !== 0
 			) {
+				if (
+					value.data.data.ErrorMessage[0].Message.startsWith(
+						'Seating Capacity Must be under'
+					)
+				) {
+					goSpecific(1)
+				}
+
 				setIsLoading(false)
 				toast({
 					variant: 'destructive',

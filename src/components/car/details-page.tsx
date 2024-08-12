@@ -63,7 +63,7 @@ export function DetailsPage() {
 
 			dispatch(setScrollTo(0))
 		}
-	}, [appData, dispatch])
+	}, [appData.scrollTo, dispatch])
 
 	function loginAsGuest() {
 		const res = guestLogin()
@@ -128,7 +128,9 @@ export function DetailsPage() {
 						<div className='-ml-16'>
 							<BackButton />
 						</div>
-						<VehcileBaseInfo />
+						<div ref={appData.scrollTo === 1 ? specificRef : undefined}>
+							<VehcileBaseInfo />
+						</div>
 						{/* <div
 							ref={appData.scrollTo === 4 ? specificRef : undefined}
 							className='flex flex-col gap-6'>
@@ -166,7 +168,7 @@ export function DetailsPage() {
 					</div>
 				)} */}
 				{vehicleData.seat !== 0 && (
-					<div ref={appData.scrollTo === 6 ? specificRef : undefined}>
+					<div ref={appData.scrollTo === 2 ? specificRef : undefined}>
 						<VehicleValue />
 					</div>
 				)}
@@ -179,7 +181,7 @@ export function DetailsPage() {
 				)} */}
 				{vehicleData.value !== 0 && (
 					<div
-						ref={appData.scrollTo === 8 ? specificRef : undefined}
+						ref={appData.scrollTo === 3 ? specificRef : undefined}
 						className='flex flex-col gap-6'>
 						<DriverDetails />
 					</div>

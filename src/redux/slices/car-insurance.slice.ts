@@ -217,6 +217,7 @@ export const carInsuranceSlice = createSlice({
 				engineNumber: string
 				engineCapacity: string
 				color: string
+				seat: string
 			}>
 		) {
 			state.registrationNumber = action.payload.registrationNumber
@@ -224,6 +225,7 @@ export const carInsuranceSlice = createSlice({
 			state.engineNumber = action.payload.engineNumber
 			state.engineCapacity = action.payload.engineCapacity
 			state.color = action.payload.color
+			state.seat = +action.payload.seat
 		},
 		updateAdditionalDetails(
 			state: CarDetails,

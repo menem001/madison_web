@@ -32,7 +32,8 @@ const formSchema = z.object({
 	engineCapacity: z.string().min(1, {
 		message: 'Please enter Engine Capacity'
 	}),
-	color: z.string().optional()
+	color: z.string().optional(),
+	seats: z.string().min(1, { message: 'Required' })
 })
 
 export function MotorDetailsField(props: motorDetailsFieldProps) {
@@ -64,7 +65,8 @@ export function MotorDetailsField(props: motorDetailsFieldProps) {
 				vehicleData.engineCapacity !== ''
 					? vehicleData.engineCapacity
 					: whitebookData.EngineCapacity,
-			color: vehicleData.color !== '' ? vehicleData.color : whitebookData.Colour
+			color: vehicleData.color !== '' ? vehicleData.color : whitebookData.Colour,
+			seats: vehicleData.seat + ''
 		}
 	})
 
@@ -77,7 +79,8 @@ export function MotorDetailsField(props: motorDetailsFieldProps) {
 				chassisNumber: values.chassisNo,
 				engineNumber: values.engineNo,
 				engineCapacity: values.engineCapacity,
-				color: values.color ? values.color : ''
+				color: values.color ? values.color : '',
+				seat: values.seats
 			})
 		)
 		props.goNext()
@@ -147,6 +150,11 @@ export function MotorDetailsField(props: motorDetailsFieldProps) {
 													className='border-2 border-blue-925'
 													id='regNo'
 													placeholder='Registration Number'
+													onChange={(e) => {
+														if (e.target.value.length < 20) {
+															field.onChange(e)
+														}
+													}}
 												/>
 											</FormControl>
 											<FormMessage />
@@ -170,6 +178,11 @@ export function MotorDetailsField(props: motorDetailsFieldProps) {
 													className='border-2 border-blue-925'
 													id='chassisNo'
 													placeholder='Enter Chassis number'
+													onChange={(e) => {
+														if (e.target.value.length < 20) {
+															field.onChange(e)
+														}
+													}}
 												/>
 											</FormControl>
 											<FormMessage />
@@ -194,6 +207,11 @@ export function MotorDetailsField(props: motorDetailsFieldProps) {
 													className='border-2 border-blue-925'
 													id='engineNo'
 													placeholder='Enter Engine Number'
+													onChange={(e) => {
+														if (e.target.value.length < 20) {
+															field.onChange(e)
+														}
+													}}
 												/>
 											</FormControl>
 											<FormMessage />
@@ -217,6 +235,11 @@ export function MotorDetailsField(props: motorDetailsFieldProps) {
 													className='border-2 border-blue-925'
 													id='engineCapacity'
 													placeholder='Enter Engine Capacity'
+													onChange={(e) => {
+														if (e.target.value.length < 6) {
+															field.onChange(e)
+														}
+													}}
 												/>
 											</FormControl>
 											<FormMessage />
@@ -225,45 +248,70 @@ export function MotorDetailsField(props: motorDetailsFieldProps) {
 								/>
 							</div>
 						</div>
-						<div className='flex-grow'>
-							<FormField
-								control={form.control}
-								name='color'
-								render={({ field }) => (
-									<FormItem className='w-full'>
-										<FormLabel>Color</FormLabel>
-										<FormControl>
-											{colors.length === 0 ? (
-												<Skeleton className='h-10 w-full' />
-											) : (
-												<Select
-													disabled={field.disabled}
-													name={field.name}
-													value={field.value}
-													onValueChange={field.onChange}>
-													<SelectTrigger
-														ref={field.ref}
-														className='border-2 border-blue-925'>
-														<SelectValue placeholder='Colors' />
-													</SelectTrigger>
-													<SelectContent>
-														{colors.map((color, index) => {
-															return (
-																<SelectItem
-																	key={index}
-																	value={color.value}>
-																	{color.label}
-																</SelectItem>
-															)
-														})}
-													</SelectContent>
-												</Select>
-											)}
-										</FormControl>
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
+						<div className='flex w-full flex-row gap-2 md:gap-8'>
+							<div className='w-1/4 flex-grow'>
+								<FormField
+									control={form.control}
+									name='color'
+									render={({ field }) => (
+										<FormItem className='w-full'>
+											<FormLabel>Color</FormLabel>
+											<FormControl>
+												{colors.length === 0 ? (
+													<Skeleton className='h-10 w-full' />
+												) : (
+													<Select
+														disabled={field.disabled}
+														name={field.name}
+														value={field.value}
+														onValueChange={field.onChange}>
+														<SelectTrigger
+															ref={field.ref}
+															className='border-2 border-blue-925'>
+															<SelectValue placeholder='Colors' />
+														</SelectTrigger>
+														<SelectContent>
+															{colors.map((color, index) => {
+																return (
+																	<SelectItem
+																		key={index}
+																		value={color.value}>
+																		{color.label}
+																	</SelectItem>
+																)
+															})}
+														</SelectContent>
+													</Select>
+												)}
+											</FormControl>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+							</div>
+							<div className='flex-grow'>
+								<FormField
+									control={form.control}
+									name='seats'
+									render={({ field }) => (
+										<FormItem className='w-full'>
+											<FormLabel>
+												Seat Capacity
+												<span className='text-red-500'>*</span>
+											</FormLabel>
+											<FormControl>
+												<Input
+													{...field}
+													className='border-2 border-blue-925'
+													id='seats'
+													placeholder='Enter Seat Capacity'
+												/>
+											</FormControl>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+							</div>
 						</div>
 						<Button
 							className='w-32'

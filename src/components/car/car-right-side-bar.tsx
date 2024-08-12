@@ -7,13 +7,10 @@ export function CarRightSideBar() {
 			<h3 className='text-lg font-medium text-gray-700'>
 				Maximize you experience! Edit you selections...
 			</h3>
-			<div className='w-3/4'>
-				<ProgressBar />
-			</div>
+			<ProgressBar />
 
-			<div className='flex w-3/4 flex-col gap-4'>
+			<div className='flex w-5/6 flex-col gap-4'>
 				<RightSideBarList />
-				{/* <MobileLinkDetails /> */}
 			</div>
 		</div>
 	)

@@ -277,17 +277,17 @@ export function PremiumSideBar(props: PremiumSidebarProps) {
 	}, [accessories.PremiumIncludedTax, basicDetails.PremiumIncludedTax])
 
 	return (
-		<div className='flex h-full w-3/4 flex-col gap-4 font-roboto'>
+		<div className='flex h-full w-full flex-col gap-4 font-roboto'>
 			{customerData.premium && (
 				<>
-					<div className='flex flex-col gap-2'>
+					{/* <div className='flex flex-col gap-2'>
 						<h1 className='font-jakarta text-xl font-bold text-blue-300'>
 							Premium Details
 						</h1>
 						<span className='font-roboto text-sm font-medium text-gray-500'>
 							The amount and calculations for the premium value
 						</span>
-					</div>
+					</div> */}
 					<div className='flex flex-col gap-4 rounded-lg p-6 shadow-md'>
 						<div className='flex flex-row gap-6'>
 							<div className='h-32 w-32'>

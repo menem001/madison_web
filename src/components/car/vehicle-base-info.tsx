@@ -187,10 +187,7 @@ export function VehcileBaseInfo() {
 												id='vehicleValue'
 												placeholder='Number of Seats'
 												onChange={(e) => {
-													if (
-														e.target.value.length < 3 &&
-														+e.target.value < 13
-													) {
+													if (e.target.value.length < 3) {
 														field.onChange(e)
 													}
 

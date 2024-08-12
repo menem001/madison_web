@@ -12,6 +12,7 @@ type ShowCurrentProps = {
 		field: string
 	}
 	index: number
+	isSec?: boolean
 }
 
 export function ShowCurrent(props: ShowCurrentProps) {
@@ -24,8 +25,10 @@ export function ShowCurrent(props: ShowCurrentProps) {
 	const dispatch = useAppDispatch()
 
 	function scrollTo(to: number) {
+		const Locpos = props.isSec ? to + 1 : 1
+
 		return function () {
-			dispatch(setScrollTo(to))
+			dispatch(setScrollTo(Locpos))
 		}
 	}
 
