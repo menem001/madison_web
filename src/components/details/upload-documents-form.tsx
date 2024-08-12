@@ -48,6 +48,28 @@ export function UploadDocumentsForm(props: UploadDocumentsFormProps) {
 		setFileDataList(newList)
 	}
 
+	function addId(label: string) {
+		setDocTypesList((prev) => [...prev, { value: '', label: label + '1' }])
+		setFileDataList((prev) => [
+			...prev,
+			{
+				QuoteNo: QuoteNo,
+				IdType: 'REGISTER_NUMBER',
+				Id: 'ALL',
+				SectionId: '99999',
+				InsuranceId: appData.insuranceID,
+				RiskId: '99999',
+				LocationId: '1',
+				LocationName: 'Motor',
+				ProductId: appData.productId,
+				UploadedBy: appData.loginId,
+				file: null,
+				MandatoryStatus: 'N',
+				isUploaded: false
+			}
+		])
+	}
+
 	function getTheDocumentTypes() {
 		const request = {
 			InsuranceId: appData.insuranceID,
@@ -153,14 +175,27 @@ export function UploadDocumentsForm(props: UploadDocumentsFormProps) {
 				<div className='flex flex-col gap-3 font-inter'>
 					{docTypesList.map((type, index) => {
 						return (
-							<UploadField
+							<div
 								key={index}
-								fileDataList={fileDataList}
-								handleFileChange={handleFileChange}
-								index={index}
-								type={type}
-								uploadDocument={uploadDocument}
-							/>
+								className='flex flex-row items-center gap-2'>
+								<UploadField
+									key={index}
+									fileDataList={fileDataList}
+									handleFileChange={handleFileChange}
+									index={index}
+									type={type}
+									uploadDocument={uploadDocument}
+								/>
+								<Button
+									size='sm'
+									type='button'
+									variant='bluebtn'
+									onClick={() => {
+										addId(type.label)
+									}}>
+									Add
+								</Button>
+							</div>
 						)
 					})}
 				</div>
