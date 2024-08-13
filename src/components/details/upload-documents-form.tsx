@@ -6,6 +6,7 @@ import { FormFieldLayout } from './form-field-layout'
 import { useEffect, useState } from 'react'
 import { useAppSelector } from '@/redux/hooks'
 import UploadField from './upload-field'
+import { Plus } from 'lucide-react'
 
 type UploadDocumentsFormProps = {
 	current: number
@@ -49,7 +50,18 @@ export function UploadDocumentsForm(props: UploadDocumentsFormProps) {
 	}
 
 	function addId(label: string) {
-		setDocTypesList((prev) => [...prev, { value: '', label: label + '1' }])
+		const length = label.length
+		const lastChar = label[length - 1]
+		let newLabel
+
+		if (!isNaN(+lastChar)) {
+			const number = parseInt(lastChar, 10)
+			newLabel = label.slice(0, length - 1) + (number + 1)
+		} else {
+			newLabel = label + '1'
+		}
+
+		setDocTypesList((prev) => [...prev, { value: '', label: newLabel }])
 		setFileDataList((prev) => [
 			...prev,
 			{
@@ -193,7 +205,7 @@ export function UploadDocumentsForm(props: UploadDocumentsFormProps) {
 									onClick={() => {
 										addId(type.label)
 									}}>
-									Add
+									<Plus />
 								</Button>
 							</div>
 						)

@@ -15,6 +15,7 @@ import {
 	type SaveDriverRequest
 	// type SaveMotorDetailRequest
 } from '@/services/models/common.models'
+import { Plus } from 'lucide-react'
 // import { DriverDetails } from '../car/driver-details'
 // import { updateDetails } from '@/redux/slices/motor-detail.slice'
 // import { Skeleton } from '../ui/skeleton'
@@ -244,7 +245,7 @@ export function AdditionalVehicleInfo(props: additionalVehicleInfoProps) {
 			pos={props.pos}
 			show={props.current === 2}
 			subTitle='Additional information around Step 2'
-			title='Step 2 - Additional details'>
+			title='Step 2 - Driver details'>
 			<>
 				<div className='flex w-full flex-col gap-2 md:gap-8'>
 					{driversDetails.map((driver, index) => {
@@ -290,11 +291,10 @@ export function AdditionalVehicleInfo(props: additionalVehicleInfoProps) {
 								</div>
 								{index === driversDetails.length - 1 && (
 									<Button
-										className='w-32'
 										type='button'
 										variant='bluebtn'
 										onClick={addDriver}>
-										Add Driver
+										<Plus />
 									</Button>
 								)}
 							</div>

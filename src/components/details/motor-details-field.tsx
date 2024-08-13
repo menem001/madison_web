@@ -26,6 +26,7 @@ import {
 	useGetVehicleListQuery
 } from '@/redux/api/registrationApi'
 import { skipToken } from '@reduxjs/toolkit/query'
+import { Search } from 'lucide-react'
 
 type motorDetailsFieldProps = {
 	current: number
@@ -128,7 +129,19 @@ export function MotorDetailsField(props: motorDetailsFieldProps) {
 		}
 	}, [TokenData])
 
-	useEffect(() => {}, [vehicleDetails])
+	useEffect(() => {
+		if (
+			vehicleDetails?.type === 'success' &&
+			vehicleDetails.data &&
+			vehicleDetails.data.Result.length !== 0
+		) {
+			const result = vehicleDetails.data.Result[0]
+			form.setValue('chassisNo', result.ChassisNo)
+			form.setValue('engineNo', result.EngineNo)
+			form.setValue('color', result.Color)
+			setShouldFetch(false)
+		}
+	}, [vehicleDetails])
 
 	function getDataInserted() {
 		if (token !== '' && form.getValues('regNo').length === 9) {
@@ -363,7 +376,10 @@ export function MotorDetailsField(props: motorDetailsFieldProps) {
 									type='button'
 									variant='bluebtn'
 									onClick={getDataInserted}>
-									Get
+									<Search
+										height={16}
+										width={16}
+									/>
 								</Button>
 							</div>
 							<div className='flex-grow'>
