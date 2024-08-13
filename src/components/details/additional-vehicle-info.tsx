@@ -15,7 +15,7 @@ import {
 	type SaveDriverRequest
 	// type SaveMotorDetailRequest
 } from '@/services/models/common.models'
-import { Plus } from 'lucide-react'
+import { Minus, Plus } from 'lucide-react'
 // import { DriverDetails } from '../car/driver-details'
 // import { updateDetails } from '@/redux/slices/motor-detail.slice'
 // import { Skeleton } from '../ui/skeleton'
@@ -69,6 +69,10 @@ export function AdditionalVehicleInfo(props: additionalVehicleInfoProps) {
 
 	function addDriver() {
 		setDriversDetails((prevDetails) => [...prevDetails, { driverName: '', driverLicense: '' }])
+	}
+
+	function removeDriver(index: number) {
+		setDriversDetails((prevDetails) => prevDetails.filter((_, i) => i !== index))
 	}
 
 	function saveDriverDetails() {
@@ -295,6 +299,16 @@ export function AdditionalVehicleInfo(props: additionalVehicleInfoProps) {
 										variant='bluebtn'
 										onClick={addDriver}>
 										<Plus />
+									</Button>
+								)}
+								{index !== 0 && (
+									<Button
+										type='button'
+										variant='bluebtn'
+										onClick={() => {
+											removeDriver(index)
+										}}>
+										<Minus />
 									</Button>
 								)}
 							</div>

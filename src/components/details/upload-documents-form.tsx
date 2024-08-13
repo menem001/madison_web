@@ -6,7 +6,7 @@ import { FormFieldLayout } from './form-field-layout'
 import { useEffect, useState } from 'react'
 import { useAppSelector } from '@/redux/hooks'
 import UploadField from './upload-field'
-import { Plus } from 'lucide-react'
+import { Minus, Plus } from 'lucide-react'
 
 type UploadDocumentsFormProps = {
 	current: number
@@ -40,6 +40,8 @@ export function UploadDocumentsForm(props: UploadDocumentsFormProps) {
 	const appData = useAppSelector((state) => state.apps)
 	const QuoteNo = useAppSelector((state) => state.motor.QuoteNo)
 
+	const [defaultLength, setDefaultLength] = useState<number>(0)
+
 	const [fileDataList, setFileDataList] = useState<FileDataListType>([])
 	const [isAllFilled, setIsAllFilled] = useState<boolean>(false)
 
@@ -50,16 +52,25 @@ export function UploadDocumentsForm(props: UploadDocumentsFormProps) {
 	}
 
 	function addId(label: string) {
-		const length = label.length
-		const lastChar = label[length - 1]
-		let newLabel
+		const baseMatch = label.match(/^\D+/)
+		const baseLabel = baseMatch !== null ? baseMatch[0] : ''
+		let maxNumber = 0
 
-		if (!isNaN(+lastChar)) {
-			const number = parseInt(lastChar, 10)
-			newLabel = label.slice(0, length - 1) + (number + 1)
-		} else {
-			newLabel = label + '1'
-		}
+		docTypesList.forEach((label) => {
+			if (label.label.startsWith(baseLabel)) {
+				const suffix = label.label.slice(baseLabel.length)
+
+				if (!isNaN(+suffix) && suffix !== '') {
+					const number = parseInt(suffix, 10)
+
+					if (number > maxNumber) {
+						maxNumber = number
+					}
+				}
+			}
+		})
+
+		const newLabel = baseLabel + (maxNumber + 1)
 
 		setDocTypesList((prev) => [...prev, { value: '', label: newLabel }])
 		setFileDataList((prev) => [
@@ -82,6 +93,11 @@ export function UploadDocumentsForm(props: UploadDocumentsFormProps) {
 		])
 	}
 
+	function removeId(index: number) {
+		setDocTypesList((prevDetails) => prevDetails.filter((_, i) => i !== index))
+		setFileDataList((prevDetails) => prevDetails.filter((_, i) => i !== index))
+	}
+
 	function getTheDocumentTypes() {
 		const request = {
 			InsuranceId: appData.insuranceID,
@@ -93,6 +109,7 @@ export function UploadDocumentsForm(props: UploadDocumentsFormProps) {
 			if (value.data?.type === 'success' && value.data.data !== undefined) {
 				const tempArr: { value: string; label: string }[] = []
 				const tempFileArray: FileDataListType = []
+				setDefaultLength(value.data.data.Result.length)
 				value.data.data.Result.map((value) => {
 					tempArr.push({
 						value: value.Code,
@@ -207,6 +224,17 @@ export function UploadDocumentsForm(props: UploadDocumentsFormProps) {
 									}}>
 									<Plus />
 								</Button>
+								{defaultLength < index + 1 && (
+									<Button
+										size='sm'
+										type='button'
+										variant='bluebtn'
+										onClick={() => {
+											removeId(index)
+										}}>
+										<Minus />
+									</Button>
+								)}
 							</div>
 						)
 					})}
