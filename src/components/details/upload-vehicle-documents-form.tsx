@@ -10,6 +10,7 @@ import { FormFieldLayout } from './form-field-layout'
 import { useEffect, useState } from 'react'
 import { useAppSelector } from '@/redux/hooks'
 import UploadField from './upload-field'
+import { Plus } from 'lucide-react'
 
 type UploadDocumentsFormProps = {
 	current: number
@@ -49,10 +50,45 @@ export function UploadVehileDocumentsForm(props: UploadDocumentsFormProps) {
 	const [fileDataList, setFileDataList] = useState<FileDataListType>([])
 	const [isAllFilled, setIsAllFilled] = useState<boolean>(false)
 
+	const [riskId, setRiskId] = useState<string>('')
+
 	function handleFileChange(files: File, index: number) {
 		const newList = [...fileDataList]
 		newList[index].file = files
 		setFileDataList(newList)
+	}
+
+	function addId(label: string) {
+		const length = label.length
+		const lastChar = label[length - 1]
+		let newLabel
+
+		if (!isNaN(+lastChar)) {
+			const number = parseInt(lastChar, 10)
+			newLabel = label.slice(0, length - 1) + (number + 1)
+		} else {
+			newLabel = label + '1'
+		}
+
+		setDocTypesList((prev) => [...prev, { value: '', label: newLabel }])
+		setFileDataList((prev) => [
+			...prev,
+			{
+				QuoteNo: QuoteNo,
+				IdType: 'REGISTER_NUMBER',
+				Id: vehicleData.registrationNumber,
+				SectionId: sectionID,
+				InsuranceId: appData.insuranceID,
+				RiskId: riskId,
+				LocationId: '1',
+				LocationName: 'Motor',
+				ProductId: appData.productId,
+				UploadedBy: appData.loginId,
+				file: null,
+				MandatoryStatus: 'N',
+				isUploaded: false
+			}
+		])
 	}
 
 	function getTheDocumentTypes(riskID: string) {
@@ -101,6 +137,7 @@ export function UploadVehileDocumentsForm(props: UploadDocumentsFormProps) {
 		res.then((value) => {
 			if (value.data?.type === 'success' && value.data.data !== undefined) {
 				getTheDocumentTypes(value.data.data.Result.RiskDetails[0].RiskId)
+				setRiskId(value.data.data.Result.RiskDetails[0].RiskId)
 			}
 		})
 	}, [QuoteNo, vehicleData.registrationNumber])
@@ -168,14 +205,27 @@ export function UploadVehileDocumentsForm(props: UploadDocumentsFormProps) {
 				<div className='flex flex-col gap-3 font-inter'>
 					{docTypesList.map((type, index) => {
 						return (
-							<UploadField
+							<div
 								key={index}
-								fileDataList={fileDataList}
-								handleFileChange={handleFileChange}
-								index={index}
-								type={type}
-								uploadDocument={uploadDocument}
-							/>
+								className='flex flex-row items-center gap-2'>
+								<UploadField
+									key={index}
+									fileDataList={fileDataList}
+									handleFileChange={handleFileChange}
+									index={index}
+									type={type}
+									uploadDocument={uploadDocument}
+								/>
+								<Button
+									size='sm'
+									type='button'
+									variant='bluebtn'
+									onClick={() => {
+										addId(type.label)
+									}}>
+									<Plus />
+								</Button>
+							</div>
 						)
 					})}
 				</div>

@@ -452,6 +452,7 @@ export function MotorDetailsField(props: motorDetailsFieldProps) {
 													className='border-2 border-blue-925'
 													id='engineCapacity'
 													placeholder='Enter Engine Capacity'
+													type='number'
 													onChange={(e) => {
 														if (e.target.value.length < 6) {
 															field.onChange(e)
