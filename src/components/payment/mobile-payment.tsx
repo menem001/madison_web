@@ -91,23 +91,27 @@ export function MobilePayment(props: MobilePaymentProps) {
 			InsuranceId: appData.insuranceID,
 			merchantRef: MerchantReference
 		}
-		createOrder(request).then((response) => {
-			if (
-				response.data?.type === 'success' &&
-				response.data.data &&
-				response.data.data.status === 'Pending'
-			) {
-				checkOrderStatusPending()
-			} else if (
-				response.data?.type === 'success' &&
-				response.data.data &&
-				response.data.data.status === 'Success'
-			) {
-				setIsPaid(true)
-			} else {
+		createOrder(request)
+			.then((response) => {
+				if (
+					response.data?.type === 'success' &&
+					response.data.data &&
+					response.data.data.status === 'Pending'
+				) {
+					checkOrderStatusPending()
+				} else if (
+					response.data?.type === 'success' &&
+					response.data.data &&
+					response.data.data.status === 'Success'
+				) {
+					setIsPaid(true)
+				} else {
+					setIsFailed(true)
+				}
+			})
+			.catch(() => {
 				setIsFailed(true)
-			}
-		})
+			})
 	}
 
 	function checkOrderStatusPending() {
