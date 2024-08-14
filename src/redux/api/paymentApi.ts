@@ -2,8 +2,17 @@ import type { Action, PayloadAction } from '@reduxjs/toolkit'
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { HYDRATE } from 'next-redux-wrapper'
 import { store } from '../store'
-import { type InsertPaymentResponse, type MakePaymentResponse } from '@/services/payment.services'
-import { type InsertPaymentReq, type MakePaymentReq } from '@/services/models/payment.models'
+import {
+	type OrderStatusResponse,
+	type CreateOrderResponse,
+	type InsertPaymentResponse,
+	type MakePaymentResponse
+} from '@/services/payment.services'
+import {
+	type CreateOrderRequest,
+	type InsertPaymentReq,
+	type MakePaymentReq
+} from '@/services/models/payment.models'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type RootState = any // normally inferred from state
@@ -53,8 +62,43 @@ export const paymentApi = createApi({
 				body: data,
 				headers: { Authorization: `Bearer ${store.getState().apps.token}` }
 			})
+		}),
+		createOrder: build.mutation<CreateOrderResponse, CreateOrderRequest>({
+			query: (
+				data
+			): {
+				url: string
+				method: string
+				body: CreateOrderRequest
+				headers: { Authorization: string }
+			} => ({
+				url: 'create_order',
+				method: 'POST',
+				body: data,
+				headers: { Authorization: `Bearer ${store.getState().apps.token}` }
+			})
+		}),
+		orderStatus: build.mutation<OrderStatusResponse, string>({
+			query: (
+				data
+			): {
+				url: string
+				method: string
+				body: { QuoteNo: string }
+				headers: { Authorization: string }
+			} => ({
+				url: 'order_status',
+				method: 'POST',
+				body: { QuoteNo: data },
+				headers: { Authorization: `Bearer ${store.getState().apps.token}` }
+			})
 		})
 	})
 })
 
-export const { useMakePaymentMutation, useInsertPaymentMutation } = paymentApi
+export const {
+	useMakePaymentMutation,
+	useInsertPaymentMutation,
+	useCreateOrderMutation,
+	useOrderStatusMutation
+} = paymentApi

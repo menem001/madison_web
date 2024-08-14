@@ -30,6 +30,8 @@ const endPoints = {
 	makePayment: 'EwayCommonApi/payment/makepayment',
 	insertPayment: 'EwayCommonApi/payment/insertpaymentdetails',
 	saveDriver: 'EwayMotorApi/api/savemotordrivers',
-	titleType: 'EwayCommonApi/master/getbyitemvalue'
+	titleType: 'EwayCommonApi/master/getbyitemvalue',
+	createOrder: 'EwayCommonApi/selcom/v1/checkout/create-order-minim',
+	orderStatus: 'EwayCommonApi/selcom/v1/checkout/order-status'
 }
 export default endPoints

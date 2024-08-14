@@ -8,19 +8,18 @@ import { useInsertPaymentMutation, useMakePaymentMutation } from '@/redux/api/pa
 import { useAppSelector } from '@/redux/hooks'
 import { Button, Input } from '../ui'
 import { Label } from '../ui/label'
-import { Dialog, DialogContent } from '../ui/dialog'
-import { Check } from 'lucide-react'
-import { useRouter } from 'next/navigation'
+import { MobilePayment } from './mobile-payment'
+import { PaymentSuccessDialog } from './payment-success-dialog'
 // import { QRDetails } from './qr-details'
 
 export function PaymentTypes() {
 	const [getPayment] = useGetPaymentTypesMutation()
-	const [paymentTypes, setPaymentTypes] = useState<{ value: string; label: string }[]>([])
+	const [paymentTypes, setPaymentTypes] = useState<
+		{ value: string; label: string; type: string | null }[]
+	>([])
 	const [makePayment] = useMakePaymentMutation()
 
 	const [insertPayment] = useInsertPaymentMutation()
-
-	const route = useRouter()
 
 	const [paymentId, setPaymentId] = useState<string>('')
 	const [policyNumber, setPolicyNumber] = useState<string>('')
@@ -66,7 +65,7 @@ export function PaymentTypes() {
 	}
 
 	useEffect(() => {
-		const tempArr: { value: string; label: string }[] = []
+		const tempArr: { value: string; label: string; type: string | null }[] = []
 		const request = {
 			BranchCode: '2',
 			InsuranceId: '100004',
@@ -83,7 +82,8 @@ export function PaymentTypes() {
 				value.data.data!.Result.map((value) => {
 					tempArr.push({
 						value: value.Code,
-						label: value.CodeDesc
+						label: value.CodeDesc,
+						type: value.Type
 					})
 				})
 				setPaymentTypes(tempArr)
@@ -177,96 +177,23 @@ export function PaymentTypes() {
 											onClick={insertPayments}>
 											Pay
 										</Button>
-										<Dialog open={isPaid}>
-											<DialogContent className='max-w-[90svw] md:max-w-[78svw] lg:max-w-[60svw]'>
-												<div className='flex h-full w-full flex-col items-center justify-center gap-2 p-2'>
-													<div className='flex h-28 w-28 items-center justify-center rounded-full bg-green-320'>
-														<div className='flex h-16 w-16 items-center justify-center rounded-full bg-green-300'>
-															<Check
-																color='white'
-																height={30}
-																width={30}
-															/>
-														</div>
-													</div>
-													<div className='flex w-full flex-col items-center justify-center gap-3 rounded-md border border-gray-450 border-opacity-60 p-4'>
-														<h1 className='font-jakarta text-lg font-bold text-green-200'>
-															Hurray!!! Policy Generated Successfully
-														</h1>
-														<div className='grid w-full grid-cols-3 border-b border-gray-450 border-opacity-60 pb-4'>
-															<div className='flex h-full flex-col justify-between'>
-																<span className='text-xs md:text-base'>
-																	Reference Number
-																</span>
-																<h4 className='text-xs font-semibold text-blue-450 md:text-base'>
-																	{requestNumber}
-																</h4>
-															</div>
-															<div className='flex h-full flex-col justify-between'>
-																<span className='text-xs md:text-base'>
-																	Quote Number
-																</span>
-																<h4 className='text-xs font-semibold text-blue-450 md:text-base'>
-																	{QuoteNo}
-																</h4>
-															</div>
-															<div className='flex h-full flex-col justify-between'>
-																<span className='text-xs md:text-base'>
-																	Policy Number
-																</span>
-																<h4 className='text-xs font-semibold text-blue-450 md:text-base'>
-																	{policyNumber}
-																</h4>
-															</div>
-														</div>
-														<div className='grid w-full grid-cols-3 border-b border-gray-450 border-opacity-60 pb-4'>
-															<div className='flex h-full flex-col justify-between'>
-																<span className='text-xs md:text-base'>
-																	Debit Note No
-																</span>
-																<h4 className='text-xs font-semibold text-blue-450 md:text-base'>
-																	{debitNoteNumber}
-																</h4>
-															</div>
-															<div className='flex h-full flex-col justify-between'>
-																<span className='text-xs md:text-base'>
-																	Merchant Reference No
-																</span>
-																<h4 className='text-xs font-semibold text-blue-450 md:text-base'>
-																	{merchantRefNumber}
-																</h4>
-															</div>
-														</div>
-														<div className='flex w-full flex-row justify-center gap-2'>
-															<Button
-																className='w-1/4 text-xs'
-																size='lg'
-																variant='whiteBlackOutlined'>
-																Debit Note PDF
-															</Button>
-															<Button
-																className='w-1/4 text-xs'
-																size='lg'
-																variant='whiteBlackOutlined'>
-																Schedule PDF
-															</Button>
-														</div>
-													</div>
-													<div className='flex w-full flex-row justify-center gap-2'>
-														<Button
-															className='w-1/5'
-															size='lg'
-															variant='bluebtn'
-															onClick={() => {
-																route.push('/dashboard')
-															}}>
-															Proceed
-														</Button>
-													</div>
-												</div>
-											</DialogContent>
-										</Dialog>
+										<PaymentSuccessDialog
+											debitNoteNumber={debitNoteNumber}
+											isPaid={isPaid}
+											merchantRefNumber={merchantRefNumber}
+											policyNumber={policyNumber}
+											QuoteNo={QuoteNo}
+											requestNumber={requestNumber}
+										/>
 									</div>
+								</TabsContent>
+							)
+						} else if (type.type === 'UPI') {
+							return (
+								<TabsContent
+									key={index}
+									value={type.value}>
+									<MobilePayment paymentId={paymentId} />
 								</TabsContent>
 							)
 						} else {

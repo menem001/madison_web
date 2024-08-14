@@ -1505,7 +1505,8 @@ export const paymentTypesResSchema = z.object({
 	Result: z.array(
 		z.object({
 			Code: z.string(),
-			CodeDesc: z.string()
+			CodeDesc: z.string(),
+			Type: z.string().nullable()
 		})
 	),
 	ErroCode: z.number()

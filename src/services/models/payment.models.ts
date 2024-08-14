@@ -50,8 +50,8 @@ export const InsertPaymentRequestSchema = z.object({
 	IbanNumber: z.null(),
 	WhatsappNo: z.null(),
 	WhatsappCode: z.null(),
-	MobileCode1: z.null(),
-	MobileNo1: z.null()
+	MobileCode1: z.string().nullable(),
+	MobileNo1: z.string().nullable()
 })
 
 export type InsertPaymentReq = z.infer<typeof InsertPaymentRequestSchema>
@@ -66,9 +66,9 @@ export const InsertPaymentResponseSchema = z.object({
 			PaymentId: z.string(),
 			Response: z.string(),
 			MerchantReference: z.string(),
-			PolicyNo: z.string(),
+			PolicyNo: z.string().nullable(),
 			DebitNoteNo: z.string().nullable(),
-			CreditNoteNo: z.string(),
+			CreditNoteNo: z.string().nullable(),
 			paymentUrl: z.string().nullable(),
 			isError: z.boolean().nullable(),
 			DepositResponse: z.string().nullable()
@@ -78,3 +78,36 @@ export const InsertPaymentResponseSchema = z.object({
 })
 
 export type InsertPaymentRes = z.infer<typeof InsertPaymentResponseSchema>
+
+export const createOrderReqSchema = z.object({
+	InsuranceId: z.string(),
+	merchantRef: z.string()
+})
+
+export type CreateOrderRequest = z.infer<typeof createOrderReqSchema>
+
+// export const createOrderResSchema = z.object({
+// 	reference: z.string(),
+// 	transid: z.string(),
+// 	resultcode: z.string(),
+// 	result: z.string(),
+// 	message: z.string(),
+// 	data: z.array(z.unknown())
+// })
+
+export const createOrderResSchema = z.object({
+	amount: z.number(),
+	transactionId: z.string(),
+	externalId: z.string(),
+	status: z.string(),
+	message: z.string()
+})
+
+export type CreateOrderRes = z.infer<typeof createOrderResSchema>
+
+export const orderStatusResSchema = z.object({
+	result: z.string(),
+	message: z.unknown()
+})
+
+export type OrderStatusRes = z.infer<typeof orderStatusResSchema>
