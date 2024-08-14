@@ -98,6 +98,14 @@ export function MobilePayment(props: MobilePaymentProps) {
 				response.data.data.status === 'Pending'
 			) {
 				checkOrderStatusPending()
+			} else if (
+				response.data?.type === 'success' &&
+				response.data.data &&
+				response.data.data.status === 'Success'
+			) {
+				setIsPaid(true)
+			} else {
+				setIsFailed(true)
 			}
 		})
 	}
