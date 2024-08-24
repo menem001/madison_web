@@ -194,10 +194,10 @@ export function UploadDocumentsForm(props: UploadDocumentsFormProps) {
 	return (
 		<FormFieldLayout
 			current={props.current}
-			done={props.current > 3}
+			done={props.current > props.pos}
 			goSpecific={props.goSpecific}
 			pos={props.pos}
-			show={props.current === 3}
+			show={props.current === props.pos}
 			subTitle='Additional information around Step 3'
 			title='Step 3 - Upload Document'>
 			<>

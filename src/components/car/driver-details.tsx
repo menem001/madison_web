@@ -3,8 +3,8 @@
 import { cn, formatDateDDMMYYYY } from '@/lib'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
 import { useEffect, useState } from 'react'
-import { Button, Input, Popover, PopoverContent, PopoverTrigger } from '../ui'
-import { updateDriverDOB, updateDriverID, updateDriverorOwner } from '@/redux/slices'
+import { Button, Popover, PopoverContent, PopoverTrigger } from '../ui'
+import { updateDriverDOB, updateDriverorOwner } from '@/redux/slices'
 import { Label } from '../ui/label'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
@@ -28,25 +28,14 @@ export function DriverDetails() {
 	const [driverDOB, setDriverDOB] = useState<Date | undefined>(
 		vehicleData.DriverDOB ? new Date(timestamp) : undefined
 	)
-	const [driverID, setDriverID] = useState(vehicleData.DriverID)
 
 	useGSAP(() => {
-		if (driverID === '') {
-			gsap.from('.selectDriver', { y: 80, opacity: 0, duration: 0.5, delay: 1 })
-			// gsap.to('.Drivertitle', { duration: 0.5, text: 'Are you Owner or Driver' })
-			// gsap.to('.Driversubtitle', {
-			// 	duration: 0.5,
-			// 	text: 'How the vehicle is used, such as for personal, business, or commercial purposes',
-			// 	delay: 0.5
-			// })
-		} else {
-			gsap.from('.selectDriver', { y: 80, opacity: 0, duration: 0.5 })
-			// gsap.to('.Drivertitle', { duration: 0.5, text: 'Are you Owner or Driver' })
-			// gsap.to('.Driversubtitle', {
-			// 	duration: 0.5,
-			// 	text: 'How the vehicle is used, such as for personal, business, or commercial purposes'
-			// })
-		}
+		gsap.from('.selectDriver', { y: 80, opacity: 0, duration: 0.5 })
+		// gsap.to('.Drivertitle', { duration: 0.5, text: 'Are you Owner or Driver' })
+		// gsap.to('.Driversubtitle', {
+		// 	duration: 0.5,
+		// 	text: 'How the vehicle is used, such as for personal, business, or commercial purposes'
+		// })
 	}, [])
 
 	useEffect(() => {
@@ -91,7 +80,7 @@ export function DriverDetails() {
 				</div>
 			</div>
 			<div className='selectDriver flex w-full flex-col gap-10 lg:flex-row'>
-				<div className='flex-grow'>
+				{/* <div className='flex-grow'>
 					<Label htmlFor='idnumber'>Driver ID(Driving License)</Label>
 					<Input
 						id='idnumber'
@@ -102,7 +91,7 @@ export function DriverDetails() {
 							dispatch(updateDriverID(e.target.value))
 						}}
 					/>
-				</div>
+				</div> */}
 				<div className='flex-grow pb-6 lg:pb-0'>
 					<Label htmlFor='dob'>Driver DOB</Label>
 					<Popover>

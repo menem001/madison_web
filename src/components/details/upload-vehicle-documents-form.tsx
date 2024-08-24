@@ -212,10 +212,10 @@ export function UploadVehileDocumentsForm(props: UploadDocumentsFormProps) {
 	return (
 		<FormFieldLayout
 			current={props.current}
-			done={props.current > 4}
+			done={props.current > props.pos}
 			goSpecific={props.goSpecific}
 			pos={props.pos}
-			show={props.current === 4}
+			show={props.current === props.pos}
 			subTitle='Additional information around Step 4'
 			title='Step 4 - Upload Vehicle Document'>
 			<>

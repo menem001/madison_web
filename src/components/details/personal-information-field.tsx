@@ -23,7 +23,7 @@ import { format } from 'date-fns'
 import { cn, formatDateDDMMYYYY } from '@/lib'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
 import { updatePersonalDetails } from '@/redux/slices'
-import { useGetOccupationListMutation, useTitleTypeMutation } from '@/redux/api/commonApi'
+import { useTitleTypeMutation } from '@/redux/api/commonApi'
 import { useEffect, useState } from 'react'
 import { Skeleton } from '../ui/skeleton'
 import { Label } from '../ui/label'
@@ -56,7 +56,7 @@ export function PersonalInformationField(props: personalInformationFieldProps) {
 	const customerData = useAppSelector((state) => state.customerDetails)
 	const vehicleData = useAppSelector((state) => state.carInsurance)
 	const insuranceID = useAppSelector((state) => state.apps.insuranceID)
-	const branchCode = useAppSelector((state) => state.apps.branchCode)
+	// const branchCode = useAppSelector((state) => state.apps.branchCode)
 
 	const [accountType, setAccountType] = useState<string>(customerData.accType)
 	const [isGenderEmpty, setIsGenderEmpty] = useState<boolean>(false)
@@ -72,33 +72,32 @@ export function PersonalInformationField(props: personalInformationFieldProps) {
 
 	const dispatch = useAppDispatch()
 
-	const [getOccupation] = useGetOccupationListMutation()
+	// const [getOccupation] = useGetOccupationListMutation()
 	const [getTitleTypes] = useTitleTypeMutation()
 
-	const [OccupationList, setOccupation] = useState<{ value: string; label: string }[]>([])
 	const [titleList, setTitleList] = useState<{ value: string; label: string }[]>([])
 
-	useEffect(() => {
-		const request = {
-			InsuranceId: insuranceID,
-			BranchCode: branchCode,
-			ProductId: '',
-			TitleType: ''
-		}
-		const tempArr: { value: string; label: string }[] = []
-		const res = getOccupation(request)
-		res.then((value) => {
-			if (value.data?.type === 'success' && value.data?.data !== undefined) {
-				value.data.data!.Result.map((value) => {
-					tempArr.push({
-						value: value.Code,
-						label: value.CodeDesc
-					})
-				})
-				setOccupation(tempArr)
-			}
-		})
-	}, [])
+	// useEffect(() => {
+	// 	const request = {
+	// 		InsuranceId: insuranceID,
+	// 		BranchCode: branchCode,
+	// 		ProductId: '',
+	// 		TitleType: ''
+	// 	}
+	// 	const tempArr: { value: string; label: string }[] = []
+	// 	const res = getOccupation(request)
+	// 	res.then((value) => {
+	// 		if (value.data?.type === 'success' && value.data?.data !== undefined) {
+	// 			value.data.data!.Result.map((value) => {
+	// 				tempArr.push({
+	// 					value: value.Code,
+	// 					label: value.CodeDesc
+	// 				})
+	// 			})
+	// 			setOccupation(tempArr)
+	// 		}
+	// 	})
+	// }, [])
 
 	useEffect(() => {
 		const request = {
@@ -356,36 +355,12 @@ export function PersonalInformationField(props: personalInformationFieldProps) {
 												Occupation<span className='text-red-500'>*</span>
 											</FormLabel>
 											<FormControl>
-												{OccupationList.length === 0 ? (
-													<Skeleton className='h-10 w-full' />
-												) : (
-													<Select
-														disabled={field.disabled}
-														name={field.name}
-														value={field.value}
-														onValueChange={field.onChange}>
-														<SelectTrigger
-															ref={field.ref}
-															className='border-2 border-blue-925'>
-															<SelectValue placeholder='Occupation' />
-														</SelectTrigger>
-														<SelectContent>
-															{OccupationList.map(
-																(occupation, index) => {
-																	return (
-																		<SelectItem
-																			key={index}
-																			value={
-																				occupation.value
-																			}>
-																			{occupation.label}
-																		</SelectItem>
-																	)
-																}
-															)}
-														</SelectContent>
-													</Select>
-												)}
+												<Input
+													{...field}
+													className='border-2 border-blue-925'
+													id='occupation'
+													placeholder='Occupation'
+												/>
 											</FormControl>
 											<FormMessage />
 										</FormItem>
