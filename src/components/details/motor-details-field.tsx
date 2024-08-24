@@ -475,7 +475,7 @@ export function MotorDetailsField(props: motorDetailsFieldProps) {
 										<FormItem className='w-full'>
 											<FormLabel>Color</FormLabel>
 											<FormControl>
-												{/* {colors.length === 0 ? (
+												{colors.length === 0 ? (
 													<Skeleton className='h-10 w-full' />
 												) : (
 													<Select
@@ -500,13 +500,13 @@ export function MotorDetailsField(props: motorDetailsFieldProps) {
 															})}
 														</SelectContent>
 													</Select>
-												)} */}
-												<Input
+												)}
+												{/* <Input
 													{...field}
 													className='border-2 border-blue-925'
 													id='zone'
 													placeholder='Color'
-												/>
+												/> */}
 											</FormControl>
 											<FormMessage />
 										</FormItem>
