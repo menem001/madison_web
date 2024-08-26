@@ -16,6 +16,7 @@ import ClipLoader from 'react-spinners/ClipLoader'
 // import { SelectMark } from './select-mark'
 import { BackButton } from '../common/back_btn'
 import { VehcileBaseInfo } from './vehicle-base-info'
+import { CustomerInfo } from './customer-info'
 
 export function DetailsPage() {
 	const router = useRouter()
@@ -23,7 +24,20 @@ export function DetailsPage() {
 	const dispatch = useAppDispatch()
 
 	const vehicleData = useAppSelector((state) => state.carInsurance)
+	const customerData = useAppSelector((state) => state.customerDetails)
 	const appData = useAppSelector((state) => state.apps)
+
+	const [isCustomerFilled, setIsCustomerFilled] = useState<boolean>(false)
+
+	useEffect(() => {
+		const isFilled =
+			customerData.name !== '' && customerData.email !== '' && customerData.mobile.length > 8
+
+		if (isFilled) {
+			setIsCustomerFilled(isFilled)
+			scrollToBottom()
+		}
+	}, [customerData.name, customerData.email, customerData.mobile.length])
 
 	const pageEnd = useRef<HTMLDivElement>(null)
 	const specificRef = useRef<HTMLDivElement>(null)
@@ -45,7 +59,7 @@ export function DetailsPage() {
 
 	useEffect(() => {
 		scrollToBottom()
-	}, [vehicleData])
+	}, [vehicleData, isCustomerFilled])
 
 	useEffect(() => {
 		if (appData.scrollTo !== 0) {
@@ -128,14 +142,18 @@ export function DetailsPage() {
 						<div className='-ml-16'>
 							<BackButton />
 						</div>
-						<div ref={appData.scrollTo === 1 ? specificRef : undefined}>
-							<VehcileBaseInfo />
-						</div>
+						<CustomerInfo />
+
 						{/* <div
 							ref={appData.scrollTo === 4 ? specificRef : undefined}
 							className='flex flex-col gap-6'>
 							<BodyType />
 						</div> */}
+					</div>
+				)}
+				{isCustomerFilled && (
+					<div ref={appData.scrollTo === 1 ? specificRef : undefined}>
+						<VehcileBaseInfo />
 					</div>
 				)}
 				{/* {vehicleData.bodyType !== '' && (

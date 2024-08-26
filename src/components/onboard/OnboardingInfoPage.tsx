@@ -22,6 +22,7 @@ import { setGuestLoginDetails } from '@/redux/slices'
 import { skipToken } from '@reduxjs/toolkit/query'
 import { Dialog, DialogContent } from '../ui/dialog'
 import { OnboardingModal } from './onboarding-modal'
+import { InfoFailedModal } from './InfoFailedModal'
 
 export default function OnboardingInfoPage() {
 	// const route = useRouter()
@@ -49,6 +50,7 @@ export default function OnboardingInfoPage() {
 
 	const [showError, setShowError] = useState<boolean>(false)
 	const [showDetails, setShowDetails] = useState<boolean>(false)
+	const [isFailed, setIsFailed] = useState<boolean>(false)
 
 	function loginAsGuest() {
 		const res = guestLogin()
@@ -93,6 +95,8 @@ export default function OnboardingInfoPage() {
 		) {
 			const tokenid = TokenData.data?.Result[0].token
 			setToken(tokenid)
+		} else {
+			refetch()
 		}
 	}, [TokenData])
 
@@ -167,6 +171,8 @@ export default function OnboardingInfoPage() {
 			alert('Upload your WhiteBook or registrationNumber to autoFill')
 		} else if (file === null && registrationNumber.length === 9) {
 			getDataInserted()
+		} else if (file === null && registrationNumber.length !== 9) {
+			alert('Please enter a valid registration Number')
 		} else if (file !== null) {
 			setIsLoading(true)
 			const request = new FormData()
@@ -216,6 +222,7 @@ export default function OnboardingInfoPage() {
 				.catch((err) => {
 					alert(err)
 					setIsLoading(false)
+					setIsFailed(true)
 				})
 		}
 	}
@@ -348,6 +355,15 @@ export default function OnboardingInfoPage() {
 							<span>Submit</span>
 						)}
 					</Button>
+					<Dialog
+						open={isFailed}
+						onOpenChange={() => {
+							setIsFailed(false)
+						}}>
+						<DialogContent className='overflow-hidden p-6'>
+							<InfoFailedModal />
+						</DialogContent>
+					</Dialog>
 				</div>
 			</div>
 		</OnboardingLayout>

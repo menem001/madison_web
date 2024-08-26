@@ -100,7 +100,7 @@ export function VehcileBaseInfo() {
 				<div className='flex flex-row -space-x-7'>
 					<div className='h-10 w-10 rounded-full bg-black'></div>
 					<div className='flex h-10 w-10 items-center justify-center rounded-full bg-blue-475 text-lg font-medium text-white'>
-						1
+						2
 					</div>
 				</div>
 				<h1 className='text-center font-inter text-4xl font-bold text-blue-325'>

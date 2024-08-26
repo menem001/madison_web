@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from '@/redux/hooks'
 import { setScrollTo } from '@/redux/slices'
 import { useEffect, useRef } from 'react'
 // import { Button } from '../ui'
-import { CustomerInfo } from './customer-info'
+// import { CustomerInfo } from './customer-info'
 import { SelectInsuranceClass } from './select-insurance-class'
 import { BackButton } from '../common/back_btn'
 // import { HorsePowerTonnage } from './horse-power-tonnage'
@@ -21,21 +21,21 @@ export function MoreDetailsPage() {
 
 	const pageEnd = useRef<HTMLDivElement>(null)
 	const specificRef = useRef<HTMLDivElement>(null)
-	const customerRef = useRef<HTMLDivElement>(null)
+	// const customerRef = useRef<HTMLDivElement>(null)
 	const pageStart = useRef<HTMLDivElement | null>(null)
 
-	function scrollToTop() {
-		pageStart.current?.scrollIntoView({ behavior: 'smooth' })
-	}
+	// function scrollToTop() {
+	// 	pageStart.current?.scrollIntoView({ behavior: 'smooth' })
+	// }
 
 	// function scrollToBottom() {
 	// 	pageEnd.current?.scrollIntoView({ behavior: 'smooth', block: 'end' })
 	// }
 
-	const isFilled =
-		vehicleData.policyStartDate !== '' &&
-		vehicleData.policyEndDate !== '' &&
-		vehicleData.currency
+	// const isFilled =
+	// 	vehicleData.policyStartDate !== '' &&
+	// 	vehicleData.policyEndDate !== '' &&
+	// 	vehicleData.currency
 
 	// function addCount() {
 	// 	setCurrent((pre) => pre + 1)
@@ -69,11 +69,11 @@ export function MoreDetailsPage() {
 					<BackButton />
 				</div>
 				<SelectInsuranceClass />
-				{isFilled && (
+				{/* {isFilled && (
 					<div ref={customerRef}>
 						<CustomerInfo scrollToTop={scrollToTop} />
 					</div>
-				)}
+				)} */}
 				{/* <PremiumSideBar getOtp={getOtpDialogOpen} /> */}
 				<div ref={pageEnd}></div>
 			</section>

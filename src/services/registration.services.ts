@@ -13,9 +13,13 @@ import endPoints from './endpoints'
 export type RegistrationToken = TResponse<RegistrationTokenResponse>
 
 export async function getRegistrationToken(token: string | null) {
-	return api.get(endPoints.registrationToken, RegistrationResponseSchema, {
-		headers: { Authorization: token }
-	})
+	return api.get<RegistrationTokenResponse>(
+		endPoints.registrationToken,
+		RegistrationResponseSchema,
+		{
+			headers: { Authorization: token }
+		}
+	)
 }
 
 export type RegistrationDetail = TResponse<RegistrationDetailResponse>
