@@ -40,9 +40,12 @@ const config = {
 					100: '#D8E4FC', // lightBlue
 					200: '#E5E5FE', // lavender
 					300: '#0C7BC4', // blue
+					325: '#054CA0',
 					350: '#03C3FF',
+					375: '#001937',
 					400: '#485AFF', // brightBlue
 					450: '#1849D6',
+					475: '#2E8ED3',
 					500: '#5452F6', // indigo
 					600: '#1E293B', // gunmetal
 					700: '#4285F4', // vibrantBlue
@@ -119,7 +122,8 @@ const config = {
 			},
 			boxShadow: {
 				confirmContainerShadow: '0px 4px 16px 0px rgba(17, 34, 17, 0.05)',
-				detailsContainerShadow: '0px 1.5px 2px 0px rgba(16, 24, 40, 0.1)'
+				detailsContainerShadow: '0px 1.5px 2px 0px rgba(16, 24, 40, 0.1)',
+				inputShadowDrop: '0px 2px 6px 0px rgba(19, 18, 66, 0.07)'
 			},
 			fontFamily: {
 				inter: ['var(--font-inter)'],

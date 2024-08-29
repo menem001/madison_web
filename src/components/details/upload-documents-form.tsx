@@ -6,6 +6,7 @@ import { FormFieldLayout } from './form-field-layout'
 import { useEffect, useState } from 'react'
 import { useAppSelector } from '@/redux/hooks'
 import UploadField from './upload-field'
+import { Minus, Plus } from 'lucide-react'
 
 type UploadDocumentsFormProps = {
 	current: number
@@ -39,6 +40,8 @@ export function UploadDocumentsForm(props: UploadDocumentsFormProps) {
 	const appData = useAppSelector((state) => state.apps)
 	const QuoteNo = useAppSelector((state) => state.motor.QuoteNo)
 
+	const [defaultLength, setDefaultLength] = useState<number>(0)
+
 	const [fileDataList, setFileDataList] = useState<FileDataListType>([])
 	const [isAllFilled, setIsAllFilled] = useState<boolean>(false)
 
@@ -46,6 +49,53 @@ export function UploadDocumentsForm(props: UploadDocumentsFormProps) {
 		const newList = [...fileDataList]
 		newList[index].file = files
 		setFileDataList(newList)
+	}
+
+	function addId(label: string) {
+		const baseMatch = label.match(/^\D+/)
+		const baseLabel = baseMatch !== null ? baseMatch[0] : ''
+		let maxNumber = 0
+
+		docTypesList.forEach((label) => {
+			if (label.label.startsWith(baseLabel)) {
+				const suffix = label.label.slice(baseLabel.length)
+
+				if (!isNaN(+suffix) && suffix !== '') {
+					const number = parseInt(suffix, 10)
+
+					if (number > maxNumber) {
+						maxNumber = number
+					}
+				}
+			}
+		})
+
+		const newLabel = baseLabel + (maxNumber + 1)
+
+		setDocTypesList((prev) => [...prev, { value: '', label: newLabel }])
+		setFileDataList((prev) => [
+			...prev,
+			{
+				QuoteNo: QuoteNo,
+				IdType: 'REGISTER_NUMBER',
+				Id: 'ALL',
+				SectionId: '99999',
+				InsuranceId: appData.insuranceID,
+				RiskId: '99999',
+				LocationId: '1',
+				LocationName: 'Motor',
+				ProductId: appData.productId,
+				UploadedBy: appData.loginId,
+				file: null,
+				MandatoryStatus: 'N',
+				isUploaded: false
+			}
+		])
+	}
+
+	function removeId(index: number) {
+		setDocTypesList((prevDetails) => prevDetails.filter((_, i) => i !== index))
+		setFileDataList((prevDetails) => prevDetails.filter((_, i) => i !== index))
 	}
 
 	function getTheDocumentTypes() {
@@ -59,6 +109,7 @@ export function UploadDocumentsForm(props: UploadDocumentsFormProps) {
 			if (value.data?.type === 'success' && value.data.data !== undefined) {
 				const tempArr: { value: string; label: string }[] = []
 				const tempFileArray: FileDataListType = []
+				setDefaultLength(value.data.data.Result.length)
 				value.data.data.Result.map((value) => {
 					tempArr.push({
 						value: value.Code,
@@ -143,24 +194,48 @@ export function UploadDocumentsForm(props: UploadDocumentsFormProps) {
 	return (
 		<FormFieldLayout
 			current={props.current}
-			done={props.current > 3}
+			done={props.current > props.pos}
 			goSpecific={props.goSpecific}
 			pos={props.pos}
-			show={props.current === 3}
+			show={props.current === props.pos}
 			subTitle='Additional information around Step 3'
 			title='Step 3 - Upload Document'>
 			<>
 				<div className='flex flex-col gap-3 font-inter'>
 					{docTypesList.map((type, index) => {
 						return (
-							<UploadField
+							<div
 								key={index}
-								fileDataList={fileDataList}
-								handleFileChange={handleFileChange}
-								index={index}
-								type={type}
-								uploadDocument={uploadDocument}
-							/>
+								className='flex flex-row items-center gap-2'>
+								<UploadField
+									key={index}
+									fileDataList={fileDataList}
+									handleFileChange={handleFileChange}
+									index={index}
+									type={type}
+									uploadDocument={uploadDocument}
+								/>
+								<Button
+									size='sm'
+									type='button'
+									variant='bluebtn'
+									onClick={() => {
+										addId(type.label)
+									}}>
+									<Plus />
+								</Button>
+								{defaultLength < index + 1 && (
+									<Button
+										size='sm'
+										type='button'
+										variant='bluebtn'
+										onClick={() => {
+											removeId(index)
+										}}>
+										<Minus />
+									</Button>
+								)}
+							</div>
 						)
 					})}
 				</div>

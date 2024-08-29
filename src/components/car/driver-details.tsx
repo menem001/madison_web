@@ -2,9 +2,9 @@
 
 import { cn, formatDateDDMMYYYY } from '@/lib'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
-import { useState } from 'react'
-import { Button, Input, Popover, PopoverContent, PopoverTrigger } from '../ui'
-import { updateDriverDetails } from '@/redux/slices'
+import { useEffect, useState } from 'react'
+import { Button, Popover, PopoverContent, PopoverTrigger } from '../ui'
+import { updateDriverDOB, updateDriverorOwner } from '@/redux/slices'
 import { Label } from '../ui/label'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
@@ -28,35 +28,31 @@ export function DriverDetails() {
 	const [driverDOB, setDriverDOB] = useState<Date | undefined>(
 		vehicleData.DriverDOB ? new Date(timestamp) : undefined
 	)
-	const [driverID, setDriverID] = useState(vehicleData.DriverID)
-
-	const [isSent, setIsSent] = useState<boolean>(false)
 
 	useGSAP(() => {
-		if (driverID === '') {
-			gsap.from('.selectDriver', { y: 80, opacity: 0, duration: 0.5, delay: 1 })
-			gsap.to('.Drivertitle', { duration: 0.5, text: 'Are you Owner or Driver' })
-			gsap.to('.Driversubtitle', {
-				duration: 0.5,
-				text: 'How the vehicle is used, such as for personal, business, or commercial purposes',
-				delay: 0.5
-			})
-		} else {
-			gsap.from('.selectDriver', { y: 80, opacity: 0, duration: 0.5 })
-			gsap.to('.Drivertitle', { duration: 0.5, text: 'Are you Owner or Driver' })
-			gsap.to('.Driversubtitle', {
-				duration: 0.5,
-				text: 'How the vehicle is used, such as for personal, business, or commercial purposes'
-			})
-		}
+		gsap.from('.selectDriver', { y: 80, opacity: 0, duration: 0.5 })
+		// gsap.to('.Drivertitle', { duration: 0.5, text: 'Are you Owner or Driver' })
+		// gsap.to('.Driversubtitle', {
+		// 	duration: 0.5,
+		// 	text: 'How the vehicle is used, such as for personal, business, or commercial purposes'
+		// })
+	}, [])
+
+	useEffect(() => {
+		dispatch(updateDriverorOwner('Owner'))
 	}, [])
 
 	return (
 		<div className='flex w-full flex-col items-center justify-between gap-6'>
 			<div className='flex w-full flex-col items-center justify-between gap-4 lg:flex-row lg:gap-0'>
 				<div className='flex flex-col gap-2'>
-					<h1 className='Drivertitle font-jakarta text-xl font-bold text-blue-300'></h1>
-					<span className='Driversubtitle font-roboto text-sm font-medium text-gray-500'></span>
+					<h1 className='Drivertitle font-jakarta text-xl font-bold text-blue-300'>
+						Are you Owner or Driver
+					</h1>
+					<span className='Driversubtitle font-roboto text-sm font-medium text-gray-500'>
+						How the vehicle is used, such as for personal, business, or commercial
+						purposes
+					</span>
 				</div>
 				<div className='selectDriver flex flex-row gap-5'>
 					<div
@@ -66,7 +62,7 @@ export function DriverDetails() {
 						)}
 						onClick={() => {
 							setIsDriver(1)
-							setIsSent(false)
+							dispatch(updateDriverorOwner('Driver'))
 						}}>
 						Driver
 					</div>
@@ -77,14 +73,14 @@ export function DriverDetails() {
 						)}
 						onClick={() => {
 							setIsDriver(2)
-							setIsSent(false)
+							dispatch(updateDriverorOwner('Owner'))
 						}}>
 						Owner
 					</div>
 				</div>
 			</div>
 			<div className='selectDriver flex w-full flex-col gap-10 lg:flex-row'>
-				<div className='flex-grow'>
+				{/* <div className='flex-grow'>
 					<Label htmlFor='idnumber'>Driver ID(Driving License)</Label>
 					<Input
 						id='idnumber'
@@ -92,10 +88,10 @@ export function DriverDetails() {
 						value={driverID}
 						onChange={(e) => {
 							setDriverID(e.target.value)
-							setIsSent(false)
+							dispatch(updateDriverID(e.target.value))
 						}}
 					/>
-				</div>
+				</div> */}
 				<div className='flex-grow pb-6 lg:pb-0'>
 					<Label htmlFor='dob'>Driver DOB</Label>
 					<Popover>
@@ -143,7 +139,7 @@ export function DriverDetails() {
 									onSelect={(e) => {
 										if (e) {
 											setDriverDOB(e)
-											setIsSent(false)
+											dispatch(updateDriverDOB(formatDateDDMMYYYY(e)))
 										}
 									}}
 								/>
@@ -152,23 +148,6 @@ export function DriverDetails() {
 					</Popover>
 				</div>
 			</div>
-			{!isSent && driverDOB && (
-				<Button
-					className='w-1/2'
-					variant='bluebtn'
-					onClick={() => {
-						dispatch(
-							updateDriverDetails({
-								driverOrOwner: isDriver === 1 ? 'Driver' : 'Owner',
-								DriverDOB: formatDateDDMMYYYY(driverDOB),
-								DriverID: driverID
-							})
-						)
-						setIsSent(true)
-					}}>
-					Save
-				</Button>
-			)}
 		</div>
 	)
 }

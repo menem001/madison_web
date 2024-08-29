@@ -4,7 +4,6 @@ import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { MotorDetailsField } from './motor-details-field'
 import { UploadDocumentsForm } from './upload-documents-form'
-import { AdditionalVehicleInfo } from './additional-vehicle-info'
 import { Button } from '../ui'
 import { useSaveVehicleInfoMutation } from '@/redux/api/commonApi'
 import { useAppSelector } from '@/redux/hooks'
@@ -75,6 +74,14 @@ export function VehicleDetailsForm() {
 				value.data.data.ErrorMessage !== null &&
 				value.data.data.ErrorMessage.length !== 0
 			) {
+				if (
+					value.data.data.ErrorMessage[0].Message.startsWith(
+						'Seating Capacity Must be under'
+					)
+				) {
+					goSpecific(1)
+				}
+
 				setIsLoading(false)
 				toast({
 					variant: 'destructive',
@@ -110,26 +117,26 @@ export function VehicleDetailsForm() {
 					goSpecific={goSpecific}
 					pos={1}
 				/>
-				<AdditionalVehicleInfo
+				{/* <AdditionalVehicleInfo
+					current={current}
+					goNext={goNext}
+					goSpecific={goSpecific}
+					pos={2}
+				/> */}
+				<UploadDocumentsForm
 					current={current}
 					goNext={goNext}
 					goSpecific={goSpecific}
 					pos={2}
 				/>
-				<UploadDocumentsForm
+				<UploadVehileDocumentsForm
 					current={current}
 					goNext={goNext}
 					goSpecific={goSpecific}
 					pos={3}
 				/>
-				<UploadVehileDocumentsForm
-					current={current}
-					goNext={goNext}
-					goSpecific={goSpecific}
-					pos={4}
-				/>
 			</section>
-			{current === 5 && (
+			{current === 4 && (
 				<Button
 					variant='bluebtn'
 					onClick={navigateToPay}>

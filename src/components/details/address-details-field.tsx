@@ -173,21 +173,36 @@ export function AddressDetailsField(props: addressDetailsFieldProps) {
 								<FormField
 									control={form.control}
 									name='pobox'
-									render={({ field }) => (
-										<FormItem>
-											<FormLabel>PO Box</FormLabel>
-											<FormControl>
-												<Input
-													{...field}
-													className='border-2 border-blue-925'
-													id='pobox'
-													placeholder='PO Box'
-													type='number'
-												/>
-											</FormControl>
-											<FormMessage />
-										</FormItem>
-									)}
+									render={({ field }) => {
+										const isCorrectFormat =
+											field.value &&
+											field.value !== '' &&
+											field.value.length < 6
+										return (
+											<FormItem>
+												<FormLabel>PO Box</FormLabel>
+												<FormControl>
+													<Input
+														{...field}
+														className='border-2 border-blue-925'
+														id='pobox'
+														placeholder='PO Box'
+														onChange={(e) => {
+															if (e.target.value.length < 9) {
+																field.onChange(e)
+															}
+														}}
+													/>
+												</FormControl>
+												{isCorrectFormat && (
+													<p className='text-xs font-light text-red-600'>
+														Atleast 6 Letters
+													</p>
+												)}
+												<FormMessage />
+											</FormItem>
+										)
+									}}
 								/>
 							</div>
 						</div>

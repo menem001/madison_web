@@ -13,8 +13,8 @@ export function getPolicyDateFormat(type: string, date?: Date): string {
 	const day = now.getDate()
 	const year = now.getFullYear()
 
-	const formattedDate = `${month} ${day}, ${year}`
-	const formattedEndDate = `${month} ${day}, ${year + 1}`
+	const formattedDate = `${day} ${month} ${year}`
+	const formattedEndDate = `${day} ${month} , ${year + 1}`
 
 	return type === 'start' ? formattedDate : formattedEndDate
 }

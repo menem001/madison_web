@@ -34,14 +34,14 @@ export function RightSideBarList() {
 			name: vehicleData.seat
 		},
 		{
-			id: 'Sum Insured',
-			field: 'Sum Insured',
-			name: vehicleData.value
-		},
-		{
 			id: 'Manufacture Year',
 			field: 'Manufacture Year',
 			name: vehicleData.year
+		},
+		{
+			id: 'Sum Insured',
+			field: 'Sum Insured',
+			name: vehicleData.value
 		},
 		{
 			id: 'Driver DOB',

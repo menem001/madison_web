@@ -37,6 +37,7 @@ export default function UploadField(props: UploadFieldProps) {
 			className='flex w-full flex-row items-center justify-between gap-2 rounded-lg border border-gray-850 px-2 py-4'>
 			<FileUploader
 				classes='flex flex-grow flex-row items-center justify-start gap-3'
+				disabled={props.fileDataList[props.index].isUploaded}
 				id='fileUpload'
 				label='Drag and Drop Files Here'
 				name='file'

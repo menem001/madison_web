@@ -18,7 +18,7 @@ export function HeroContent() {
 	})
 
 	function buy() {
-		router.push('/car-insurance')
+		router.push('/car-insurance/onboard/get-info')
 	}
 
 	return (

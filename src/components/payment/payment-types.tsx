@@ -8,23 +8,26 @@ import { useInsertPaymentMutation, useMakePaymentMutation } from '@/redux/api/pa
 import { useAppSelector } from '@/redux/hooks'
 import { Button, Input } from '../ui'
 import { Label } from '../ui/label'
-import { Dialog, DialogContent } from '../ui/dialog'
-import { Check } from 'lucide-react'
-import { useRouter } from 'next/navigation'
+import { MobilePayment } from './mobile-payment'
+import { PaymentSuccessDialog } from './payment-success-dialog'
 // import { QRDetails } from './qr-details'
 
 export function PaymentTypes() {
 	const [getPayment] = useGetPaymentTypesMutation()
-	const [paymentTypes, setPaymentTypes] = useState<{ value: string; label: string }[]>([])
+	const [paymentTypes, setPaymentTypes] = useState<
+		{ value: string; label: string; type: string | null }[]
+	>([])
 	const [makePayment] = useMakePaymentMutation()
 
 	const [insertPayment] = useInsertPaymentMutation()
 
-	const route = useRouter()
-
 	const [paymentId, setPaymentId] = useState<string>('')
+	const [policyNumber, setPolicyNumber] = useState<string>('')
+	const [debitNoteNumber, setDebitNoteNumber] = useState<string>('')
+	const [merchantRefNumber, setMerchantRefNumber] = useState<string>('')
 
 	const appData = useAppSelector((state) => state.apps)
+	const requestNumber = useAppSelector((state) => state.motor.RequestReferenceNo)
 	const customerName = useAppSelector((state) => state.customerDetails.name)
 	const customerMobile = useAppSelector((state) => state.customerDetails.mobile)
 	const QuoteNo = useAppSelector((state) => state.motor.QuoteNo)
@@ -62,7 +65,7 @@ export function PaymentTypes() {
 	}
 
 	useEffect(() => {
-		const tempArr: { value: string; label: string }[] = []
+		const tempArr: { value: string; label: string; type: string | null }[] = []
 		const request = {
 			BranchCode: '2',
 			InsuranceId: '100004',
@@ -79,7 +82,8 @@ export function PaymentTypes() {
 				value.data.data!.Result.map((value) => {
 					tempArr.push({
 						value: value.Code,
-						label: value.CodeDesc
+						label: value.CodeDesc,
+						type: value.Type
 					})
 				})
 				setPaymentTypes(tempArr)
@@ -120,6 +124,13 @@ export function PaymentTypes() {
 				response.data.data.Result &&
 				response.data.data.Result.Response === 'Policy Converted'
 			) {
+				setPolicyNumber(response.data.data.Result.PaymentId)
+
+				if (response.data.data.Result.DebitNoteNo !== null) {
+					setDebitNoteNumber(response.data.data.Result.DebitNoteNo)
+				}
+
+				setMerchantRefNumber(response.data.data.Result.MerchantReference)
 				setIsPaid(true)
 			}
 		})
@@ -166,54 +177,23 @@ export function PaymentTypes() {
 											onClick={insertPayments}>
 											Pay
 										</Button>
-										<Dialog open={isPaid}>
-											<DialogContent>
-												<div className='flex h-full w-full flex-col items-center justify-center gap-3 p-10'>
-													<div className='flex h-28 w-28 items-center justify-center rounded-full bg-green-320'>
-														<div className='flex h-16 w-16 items-center justify-center rounded-full bg-green-300'>
-															<Check
-																color='white'
-																height={30}
-																width={30}
-															/>
-														</div>
-													</div>
-													<h1 className='font-jakarta text-xl font-bold'>
-														Transfer Successful!
-													</h1>
-													<div className='flex flex-col items-center'>
-														<span>
-															You have successfully transferred{' '}
-															{fixedTotal}
-														</span>
-														<span className='text-blue-300'>
-															Bank Name: United Bank Of Africa
-														</span>
-														<span className='text-blue-300'>
-															{customerMobile}
-														</span>
-													</div>
-													<div className='flex w-full flex-col gap-2'>
-														<Button
-															className='w-full'
-															size='lg'
-															variant='bluebtn'
-															onClick={() => {
-																route.push('/dashboard')
-															}}>
-															Go to Dashboard
-														</Button>
-														<Button
-															className='w-full'
-															size='lg'
-															variant='whiteBlackOutlined'>
-															Download receipt
-														</Button>
-													</div>
-												</div>
-											</DialogContent>
-										</Dialog>
+										<PaymentSuccessDialog
+											debitNoteNumber={debitNoteNumber}
+											isPaid={isPaid}
+											merchantRefNumber={merchantRefNumber}
+											policyNumber={policyNumber}
+											QuoteNo={QuoteNo}
+											requestNumber={requestNumber}
+										/>
 									</div>
+								</TabsContent>
+							)
+						} else if (type.type === 'UPI') {
+							return (
+								<TabsContent
+									key={index}
+									value={type.value}>
+									<MobilePayment paymentId={paymentId} />
 								</TabsContent>
 							)
 						} else {

@@ -134,6 +134,10 @@ export const carInsuranceSlice = createSlice({
 			state.year = 0
 			state.value = 0
 		},
+		updateSeatsYear(state: CarDetails, action: PayloadAction<{ seat: string; year: string }>) {
+			state.seat = +action.payload.seat
+			state.year = +action.payload.year
+		},
 		updateSeats(state: CarDetails, action: PayloadAction<number>) {
 			state.seat = action.payload
 			state.year = 0
@@ -145,12 +149,11 @@ export const carInsuranceSlice = createSlice({
 		updateExcessLimit(state: CarDetails, action: PayloadAction<number>) {
 			state.excessLimit = +action.payload
 		},
-		updateValue(
-			state: CarDetails,
-			action: PayloadAction<{ value: number; accessories: number }>
-		) {
-			state.value = action.payload.value
-			state.AcccessoriesSumInsured = action.payload.accessories + ''
+		updateValue(state: CarDetails, action: PayloadAction<number>) {
+			state.value = action.payload
+		},
+		updateAssessories(state: CarDetails, action: PayloadAction<number>) {
+			state.AcccessoriesSumInsured = action.payload + ''
 		},
 		updateDescription(state: CarDetails, action: PayloadAction<string>) {
 			state.description = action.payload
@@ -167,6 +170,15 @@ export const carInsuranceSlice = createSlice({
 		},
 		updateGPSTraking(state: CarDetails, action: PayloadAction<boolean | null>) {
 			state.gpsTraking = action.payload
+		},
+		updateDriverorOwner(state: CarDetails, action: PayloadAction<string>) {
+			state.driverOrOwner = action.payload
+		},
+		updateDriverDOB(state: CarDetails, action: PayloadAction<string>) {
+			state.DriverDOB = action.payload
+		},
+		updateDriverID(state: CarDetails, action: PayloadAction<string>) {
+			state.DriverID = action.payload
 		},
 		updateDriverDetails(
 			state: CarDetails,
@@ -205,6 +217,9 @@ export const carInsuranceSlice = createSlice({
 				engineNumber: string
 				engineCapacity: string
 				color: string
+				seat: string
+				leased: boolean
+				bankName: string
 			}>
 		) {
 			state.registrationNumber = action.payload.registrationNumber
@@ -212,20 +227,19 @@ export const carInsuranceSlice = createSlice({
 			state.engineNumber = action.payload.engineNumber
 			state.engineCapacity = action.payload.engineCapacity
 			state.color = action.payload.color
+			state.seat = +action.payload.seat
+			state.leased = action.payload.leased
+			state.bankName = action.payload.bankName
 		},
 		updateAdditionalDetails(
 			state: CarDetails,
 			action: PayloadAction<{
 				driverName: string
 				driverID: string
-				leased: boolean
-				bankName: string
 			}>
 		) {
 			state.DriverName = action.payload.driverName
 			state.DriverID = action.payload.driverID
-			state.leased = action.payload.leased
-			state.bankName = action.payload.bankName
 		}
 	}
 })
@@ -243,6 +257,7 @@ export const {
 	updateSeats,
 	updateVehicleModel,
 	updateValue,
+	updateAssessories,
 	updateExcessLimit,
 	updateDriverDetails,
 	updatePolicyStartDate,
@@ -250,5 +265,9 @@ export const {
 	updateCurrency,
 	updateVehicleDetails,
 	updateAdditionalDetails,
-	updatePolicyDaysCount
+	updatePolicyDaysCount,
+	updateSeatsYear,
+	updateDriverDOB,
+	updateDriverID,
+	updateDriverorOwner
 } = carInsuranceSlice.actions

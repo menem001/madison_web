@@ -5,18 +5,18 @@ import { setGuestLoginDetails, setScrollTo } from '@/redux/slices'
 import { useRouter } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 import { Button } from '../ui'
-import { ManufactureYear } from './manufacture-year'
 import { VehicleValue } from './vehicle-value'
-import { SelectModel } from './select-model'
-import { VehicleUsage } from './vehicle-usage'
-import { BodyType } from './body-type'
-import { CarSeating } from './car-seating'
+// import { SelectModel } from './select-model'
+// import { VehicleUsage } from './vehicle-usage'
+// import { BodyType } from './body-type'
 import { DriverDetails } from './driver-details'
 import { useGuestLoginMutation } from '@/redux/api/commonApi'
 import ClipLoader from 'react-spinners/ClipLoader'
 // import { WhiteBook } from './white-book'
-import { SelectMark } from './select-mark'
+// import { SelectMark } from './select-mark'
 import { BackButton } from '../common/back_btn'
+import { VehcileBaseInfo } from './vehicle-base-info'
+import { CustomerInfo } from './customer-info'
 
 export function DetailsPage() {
 	const router = useRouter()
@@ -24,7 +24,20 @@ export function DetailsPage() {
 	const dispatch = useAppDispatch()
 
 	const vehicleData = useAppSelector((state) => state.carInsurance)
+	const customerData = useAppSelector((state) => state.customerDetails)
 	const appData = useAppSelector((state) => state.apps)
+
+	const [isCustomerFilled, setIsCustomerFilled] = useState<boolean>(false)
+
+	useEffect(() => {
+		const isFilled =
+			customerData.name !== '' && customerData.email !== '' && customerData.mobile.length > 8
+
+		if (isFilled) {
+			setIsCustomerFilled(isFilled)
+			scrollToBottom()
+		}
+	}, [customerData.name, customerData.email, customerData.mobile.length])
 
 	const pageEnd = useRef<HTMLDivElement>(null)
 	const specificRef = useRef<HTMLDivElement>(null)
@@ -46,7 +59,7 @@ export function DetailsPage() {
 
 	useEffect(() => {
 		scrollToBottom()
-	}, [vehicleData])
+	}, [vehicleData, isCustomerFilled])
 
 	useEffect(() => {
 		if (appData.scrollTo !== 0) {
@@ -64,7 +77,7 @@ export function DetailsPage() {
 
 			dispatch(setScrollTo(0))
 		}
-	}, [appData, dispatch])
+	}, [appData.scrollTo, dispatch])
 
 	function loginAsGuest() {
 		const res = guestLogin()
@@ -123,67 +136,75 @@ export function DetailsPage() {
 						<ClipLoader color='#0C7BC4' />
 					</div>
 				)}
+				{/* {token !== '' && <VehcileBaseInfo />} */}
 				{token !== '' && (
 					<div className='flex flex-col gap-10'>
 						<div className='-ml-16'>
 							<BackButton />
 						</div>
-						<div
+						<CustomerInfo />
+
+						{/* <div
 							ref={appData.scrollTo === 4 ? specificRef : undefined}
 							className='flex flex-col gap-6'>
 							<BodyType />
-						</div>
+						</div> */}
 					</div>
 				)}
-				{vehicleData.bodyType !== '' && (
+				{isCustomerFilled && (
+					<div ref={appData.scrollTo === 1 ? specificRef : undefined}>
+						<VehcileBaseInfo />
+					</div>
+				)}
+				{/* {vehicleData.bodyType !== '' && (
 					<div
 						ref={appData.scrollTo === 1 ? specificRef : undefined}
 						className='flex flex-col gap-6'>
 						<SelectMark />
 					</div>
-				)}
-				{vehicleData.mark !== '' && (
+				)} */}
+				{/* {vehicleData.mark !== '' && (
 					<div
 						ref={appData.scrollTo === 2 ? specificRef : undefined}
 						className='flex flex-col gap-6'>
 						<SelectModel />
 					</div>
-				)}
-				{vehicleData.model !== '' && (
+				)} */}
+				{/* {vehicleData.model !== '' && (
 					<div
 						ref={appData.scrollTo === 3 ? specificRef : undefined}
 						className='flex flex-col gap-6'>
 						<VehicleUsage />
 					</div>
-				)}
+				)} */}
 
-				{vehicleData.vehicleUsage !== '' && (
+				{/* {vehicleData.vehicleUsage !== '' && (
 					<div
 						ref={appData.scrollTo === 5 ? specificRef : undefined}
 						className='flex flex-col gap-6'>
 						<CarSeating />
 					</div>
-				)}
+				)} */}
 				{vehicleData.seat !== 0 && (
-					<div ref={appData.scrollTo === 6 ? specificRef : undefined}>
+					<div ref={appData.scrollTo === 2 ? specificRef : undefined}>
 						<VehicleValue />
 					</div>
 				)}
-				{vehicleData.value !== 0 && (
+				{/* {vehicleData.value !== 0 && (
 					<div
 						ref={appData.scrollTo === 7 ? specificRef : undefined}
 						className='flex flex-col gap-6'>
 						<ManufactureYear />
 					</div>
-				)}
-				{vehicleData.year !== 0 && vehicleData.excessLimit !== 0 && (
+				)} */}
+				{vehicleData.value !== 0 && (
 					<div
-						ref={appData.scrollTo === 8 ? specificRef : undefined}
+						ref={appData.scrollTo === 3 ? specificRef : undefined}
 						className='flex flex-col gap-6'>
 						<DriverDetails />
 					</div>
 				)}
-				{vehicleData.driverOrOwner !== '' && (
+				{vehicleData.DriverDOB !== '' && (
 					<Button
 						className='w-full'
 						variant='bluebtn'

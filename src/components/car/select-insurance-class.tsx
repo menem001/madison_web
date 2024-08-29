@@ -4,7 +4,8 @@ import {
 	updateCurrency,
 	updatePolicyDaysCount,
 	updatePolicyEndDate,
-	updatePolicyStartDate
+	updatePolicyStartDate,
+	updatePremium
 } from '@/redux/slices'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
@@ -28,12 +29,16 @@ import { Label } from '../ui/label'
 import {
 	useGetCurrencyListMutation,
 	useGetInsuranceClassMutation,
-	useGetPolicyEndDateQuery
+	useGetPolicyEndDateQuery,
+	useSaveMotorDetailsMutation
 } from '@/redux/api/commonApi'
-import Image from 'next/image'
-import { assets } from '@/assets'
+// import Image from 'next/image'
+// import { assets } from '@/assets'
 import { Skeleton } from '../ui/skeleton'
-// import { useGetPolicyEndDateQuery } from '@/redux/api/commonApi'
+import { type SaveMotorDetailRequest } from '@/services/models/common.models'
+import { useToast } from '../ui/use-toast'
+import { updateDetails } from '@/redux/slices/motor-detail.slice'
+import ClipLoader from 'react-spinners/ClipLoader'
 
 type CurrencyRateList = { value: string; label: string; rate: string }
 
@@ -41,7 +46,14 @@ export function SelectInsuranceClass() {
 	const dispatch = useAppDispatch()
 
 	const vehicleData = useAppSelector((state) => state.carInsurance)
-	const appsData = useAppSelector((state) => state.apps)
+	const customerData = useAppSelector((state) => state.customerDetails)
+	const appData = useAppSelector((state) => state.apps)
+
+	const [saveMotor] = useSaveMotorDetailsMutation()
+
+	const { toast } = useToast()
+
+	const [isLoading, setIsLoading] = useState<boolean>(false)
 
 	const [iclass, setIclass] = useState<number>(0)
 	const [iclassName, setIclassName] = useState<string>('')
@@ -65,20 +77,22 @@ export function SelectInsuranceClass() {
 	const [currencyList, setCurrenctList] = useState<CurrencyRateList[]>([])
 	const [classTypeList, setClassTypeList] = useState<{ value: string; label: string }[]>([])
 
+	const [isCustomerFilled, setIsCustomerFilled] = useState<boolean>(false)
+
 	useGSAP(() => {
 		gsap.from('.selectInsClass', { y: 80, opacity: 0, duration: 0.5, delay: 1 })
-		gsap.to('.InsClasstitle', { duration: 0.5, text: 'Insurance Class' })
-		gsap.to('.InsClasssubtitle', {
-			duration: 0.5,
-			text: 'Fill out the vehicle details section completely.',
-			delay: 0.5
-		})
-		gsap.to('.Policytitle', { duration: 0.5, text: 'Policy Details' })
-		gsap.to('.Policysubtitle', {
-			duration: 0.5,
-			text: 'Fill out the vehicle details section completely.',
-			delay: 0.5
-		})
+		// gsap.to('.InsClasstitle', { duration: 0.5, text: 'Insurance Class' })
+		// gsap.to('.InsClasssubtitle', {
+		// 	duration: 0.5,
+		// 	text: 'Fill out the vehicle details section completely.',
+		// 	delay: 0.5
+		// })
+		// gsap.to('.Policytitle', { duration: 0.5, text: 'Policy Details' })
+		// gsap.to('.Policysubtitle', {
+		// 	duration: 0.5,
+		// 	text: 'Fill out the vehicle details section completely.',
+		// 	delay: 0.5
+		// })
 	})
 
 	useEffect(() => {
@@ -115,9 +129,9 @@ export function SelectInsuranceClass() {
 
 	useEffect(() => {
 		const request = {
-			InsuranceId: appsData.insuranceID,
-			BranchCode: appsData.branchCode,
-			ProductId: appsData.productId
+			InsuranceId: appData.insuranceID,
+			BranchCode: appData.branchCode,
+			ProductId: appData.productId
 		}
 		const tempArr: { value: string; label: string; rate: string }[] = []
 		const res = getCurrencies(request)
@@ -137,10 +151,10 @@ export function SelectInsuranceClass() {
 
 	useEffect(() => {
 		const request = {
-			InsuranceId: appsData.insuranceID,
-			ProductId: appsData.productId,
-			BranchCode: appsData.branchCode,
-			LoginId: appsData.loginId
+			InsuranceId: appData.insuranceID,
+			ProductId: appData.productId,
+			BranchCode: appData.branchCode,
+			LoginId: appData.loginId
 		}
 		const tempArr: { value: string; label: string }[] = []
 		const res = SelectInsuranceClass(request)
@@ -175,20 +189,123 @@ export function SelectInsuranceClass() {
 		}
 	}
 
+	function doSaveMotorDetails() {
+		setIsLoading(true)
+		const req: SaveMotorDetailRequest = {
+			CustomerName: customerData.name,
+			LoginId: appData.loginId,
+			SubUserType: appData.subUserType,
+			UserType: appData.userType,
+			ApplicationId: '1', //
+			CustomerReferenceNo: null,
+			RequestReferenceNo: null,
+			VehicleId: '1',
+			CreatedBy: appData.loginId,
+			InsuranceId: appData.insuranceID,
+			BranchCode: appData.branchCode,
+			BrokerBranchCode: appData.brokerCode,
+			SectionId: vehicleData.classID,
+			AgencyCode: appData.agencyCode,
+			ProductId: appData.productId,
+			SavedFrom: 'SQ',
+			MobileCode: customerData.code,
+			MobileNumber: customerData.mobile,
+			Chassisnumber: '',
+			Insurancetype: [appData.insuranceID],
+			InsuranceClass: vehicleData.classID,
+			Motorusage: vehicleData.vehicleUsage,
+			MotorusageId: vehicleData.vehicleUsageID,
+			Vehiclemake: vehicleData.mark,
+			VehiclemakeId: vehicleData.makeID,
+			VehicleModel: vehicleData.model,
+			VehcilemodelId: vehicleData.modelID,
+			VehicleValueType: null,
+			DefenceValue: null,
+			PurchaseDate: null,
+			Deductibles: null,
+			Inflation: null,
+			ManufactureYear: vehicleData.year + '',
+			Gpstrackinginstalled: 'N',
+			NcdYn: 'N',
+			VehicleType: vehicleData.bodyType,
+			VehicleTypeId: vehicleData.bodyTypeID,
+			CarAlarmYn: 'N',
+			PolicyStartDate: vehicleData.policyStartDate,
+			PolicyEndDate: vehicleData.policyEndDate,
+			CustomerCode: appData.CustomerCode,
+			BdmCode: appData.CustomerCode,
+			SourceTypeId: appData.userType,
+			SumInsured: vehicleData.value,
+			AcccessoriesSumInsured: vehicleData.AcccessoriesSumInsured,
+			ExchangeRate: vehicleData.exchangeRate,
+			Currency: vehicleData.currency,
+			HavePromoCode: 'N',
+			SearchFromApi: false,
+			SeatingCapacity: vehicleData.seat,
+			CustomerStatus: 'Y',
+			Status: 'Y'
+		}
+		const res = saveMotor(req)
+		res.then((value) => {
+			if (
+				value.data?.type === 'success' &&
+				value.data.data !== undefined &&
+				value.data.data.IsError !== true &&
+				value.data.data.Result !== null
+			) {
+				dispatch(updatePremium(true))
+				dispatch(updateDetails(value.data.data.Result[0]))
+				// props.scrollToTop()
+				setIsLoading(false)
+			} else if (
+				value.data?.type === 'success' &&
+				value.data.data !== undefined &&
+				value.data.data.IsError === true &&
+				value.data.data.ErrorMessage !== null &&
+				value.data.data.ErrorMessage.length !== 0
+			) {
+				toast({
+					variant: 'destructive',
+					title: 'Uh oh! Something went wrong.',
+					description: value.data.data.ErrorMessage[0].Message
+				})
+			} else {
+				toast({
+					variant: 'destructive',
+					title: 'Uh oh! Something went wrong.',
+					description: 'There was a problem with your request.'
+				})
+			}
+		})
+	}
+
+	useEffect(() => {
+		const isFilled =
+			vehicleData.policyStartDate !== '' &&
+			vehicleData.policyEndDate !== '' &&
+			vehicleData.currency !== ''
+
+		setIsCustomerFilled(isFilled)
+	}, [vehicleData.policyStartDate, vehicleData.policyEndDate, vehicleData.currency])
+
 	return (
 		<div className='flex flex-col gap-7'>
-			<div className='-ml-16 flex flex-row items-center gap-4'>
-				<div className='min-h-12 min-w-12 overflow-hidden rounded-full'>
+			<div className='flex flex-row items-center gap-4'>
+				{/* <div className='min-h-12 min-w-12 overflow-hidden rounded-full'>
 					<Image
 						alt='face'
 						height={60}
 						src={assets.images.imageFace}
 						width={60}
 					/>
-				</div>
+				</div> */}
 				<div className='flex flex-col gap-2'>
-					<h1 className='InsClasstitle font-jakarta text-xl font-bold text-blue-300'></h1>
-					<span className='InsClasssubtitle font-roboto text-sm font-medium text-gray-500'></span>
+					<h1 className='InsClasstitle font-jakarta text-xl font-bold text-blue-300'>
+						Insurance Class
+					</h1>
+					<span className='InsClasssubtitle font-roboto text-sm font-medium text-gray-500'>
+						Fill out the vehicle details section completely.
+					</span>
 				</div>
 			</div>
 			{classTypeList.length === 0 ? (
@@ -224,8 +341,12 @@ export function SelectInsuranceClass() {
 			{classTypeList && (
 				<>
 					<div className='flex flex-col gap-2'>
-						<h1 className='Policytitle font-jakarta text-xl font-bold text-blue-300'></h1>
-						<span className='Policysubtitle font-roboto text-sm font-medium text-gray-500'></span>
+						<h1 className='Policytitle font-jakarta text-xl font-bold text-blue-300'>
+							Policy Details
+						</h1>
+						<span className='Policysubtitle font-roboto text-sm font-medium text-gray-500'>
+							Fill out the vehicle details section completely.
+						</span>
 					</div>
 					<div className=''>
 						<div className='selectInsClass flex flex-col gap-10 md:w-full md:flex-row'>
@@ -353,6 +474,21 @@ export function SelectInsuranceClass() {
 						)}
 					</div>
 				</>
+			)}
+			{isCustomerFilled && (
+				<Button
+					className='selectCustomerInfo w-full'
+					variant='bluebtn'
+					onClick={doSaveMotorDetails}>
+					{isLoading ? (
+						<ClipLoader
+							color='#FFFFFF'
+							size={20}
+						/>
+					) : (
+						<span>View Premium</span>
+					)}
+				</Button>
 			)}
 		</div>
 	)

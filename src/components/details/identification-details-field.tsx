@@ -3,7 +3,6 @@
 import { Button, Input } from '../ui'
 import { FormFieldLayout } from './form-field-layout'
 import { type ChangeEvent, useEffect, useRef, useState } from 'react'
-import { cn } from '@/lib'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
 import { updateIdentificationDetails } from '@/redux/slices'
 import { Label } from '../ui/label'
@@ -18,7 +17,7 @@ type identificationDetailsFieldProps = {
 export function IdentificationDetailsField(props: identificationDetailsFieldProps) {
 	const customerData = useAppSelector((state) => state.customerDetails)
 	const accountType = customerData.accType
-	const [isResident, setIsResident] = useState<boolean>(true)
+	// const [isResident, setIsResident] = useState<boolean>(true)
 	const [companyNumber, setCompanyNumber] = useState<string>(
 		customerData.companyRegistrationNumber !== null
 			? customerData.companyRegistrationNumber
@@ -27,12 +26,12 @@ export function IdentificationDetailsField(props: identificationDetailsFieldProp
 	const [nrc1, setNrc1] = useState<string>(customerData.nrc.substring(0, 6))
 	const [nrc2, setNrc2] = useState<string>(customerData.nrc.substring(6, 8))
 	const [nrc3, setNrc3] = useState<string>(customerData.nrc.substring(8))
-	const [passport, setPassport] = useState<string>(customerData.passport)
+	// const [passport, setPassport] = useState<string>(customerData.passport)
 
 	const dispatch = useAppDispatch()
 	const nrc2Ref = useRef<HTMLInputElement>(null)
 	const nrc3Ref = useRef<HTMLInputElement>(null)
-	const passportRef = useRef<HTMLInputElement>(null)
+	// const passportRef = useRef<HTMLInputElement>(null)
 
 	const [isDisabled, setIsDisabled] = useState<boolean>(false)
 
@@ -62,18 +61,18 @@ export function IdentificationDetailsField(props: identificationDetailsFieldProp
 		}
 	}
 
-	function handleChangePassport(e: ChangeEvent<HTMLInputElement>) {
-		if (e.target.value.length <= 9) {
-			setPassport(e.target.value)
-		}
-	}
+	// function handleChangePassport(e: ChangeEvent<HTMLInputElement>) {
+	// 	if (e.target.value.length <= 9) {
+	// 		setPassport(e.target.value)
+	// 	}
+	// }
 
 	function onSubmit() {
 		dispatch(
 			updateIdentificationDetails({
 				nrc: nrc1 + nrc2 + nrc3,
-				passport: passport,
-				isResident: isResident,
+				passport: '',
+				isResident: true,
 				companyNumber: companyNumber
 			})
 		)
@@ -82,16 +81,15 @@ export function IdentificationDetailsField(props: identificationDetailsFieldProp
 
 	useEffect(() => {
 		const nrcIsFilled = nrc1 !== '' && nrc2 !== '' && nrc3 !== ''
-		const passportFilled = passport !== '' && passport.length === 9
+		// const passportFilled = passport !== '' && passport.length === 9
 		const companyFilled = companyNumber !== ''
 
 		const Filled =
 			(accountType === 'Corporate' && companyFilled) ||
-			(accountType === 'Personal' && isResident && nrcIsFilled) ||
-			(accountType === 'Personal' && isResident && passportFilled)
+			(accountType === 'Personal' && nrcIsFilled)
 
 		setIsDisabled(Filled)
-	}, [accountType, companyNumber, nrc1, nrc2, nrc3, passport, isResident])
+	}, [accountType, companyNumber, nrc1, nrc2, nrc3])
 
 	return (
 		<FormFieldLayout
@@ -105,7 +103,7 @@ export function IdentificationDetailsField(props: identificationDetailsFieldProp
 			<>
 				{accountType === 'Personal' && (
 					<>
-						<div className='flex-grow'>
+						{/* <div className='flex-grow'>
 							<Label>
 								Are you a resident of Zambia<span className='text-red-500'>*</span>
 							</Label>
@@ -135,52 +133,52 @@ export function IdentificationDetailsField(props: identificationDetailsFieldProp
 									No
 								</div>
 							</div>
-						</div>
-						{isResident && (
-							<div className='flex flex-col gap-1'>
-								<Label>
-									NRC (National Registration card)
-									<span className='text-red-500'>*</span>
-								</Label>
-								<div className='flex w-full flex-row gap-4'>
-									<div className='flex-grow flex-col gap-0'>
-										<Input
-											className='border-2 border-blue-925'
-											id='nrc1'
-											placeholder=''
-											type='number'
-											value={nrc1}
-											onChange={handleChangeNrc1}
-										/>
-									</div>
-									<span className='text-3xl'>/</span>
-									<div className='flex-grow'>
-										<Input
-											ref={nrc2Ref}
-											className='border-2 border-blue-925'
-											id='nrc2'
-											placeholder=''
-											type='number'
-											value={nrc2}
-											onChange={handleChangeNrc2}
-										/>
-									</div>
-									<span className='text-3xl'>/</span>
-									<div className='flex-grow'>
-										<Input
-											ref={nrc3Ref}
-											className='border-2 border-blue-925'
-											id='nrc3'
-											placeholder=''
-											type='number'
-											value={nrc3}
-											onChange={handleChangeNrc3}
-										/>
-									</div>
+						</div> */}
+						{/* {isResident && ( */}
+						<div className='flex flex-col gap-1'>
+							<Label>
+								NRC (National Registration card)
+								<span className='text-red-500'>*</span>
+							</Label>
+							<div className='flex w-full flex-row gap-4'>
+								<div className='flex-grow flex-col gap-0'>
+									<Input
+										className='border-2 border-blue-925'
+										id='nrc1'
+										placeholder=''
+										type='number'
+										value={nrc1}
+										onChange={handleChangeNrc1}
+									/>
+								</div>
+								<span className='text-3xl'>/</span>
+								<div className='flex-grow'>
+									<Input
+										ref={nrc2Ref}
+										className='border-2 border-blue-925'
+										id='nrc2'
+										placeholder=''
+										type='number'
+										value={nrc2}
+										onChange={handleChangeNrc2}
+									/>
+								</div>
+								<span className='text-3xl'>/</span>
+								<div className='flex-grow'>
+									<Input
+										ref={nrc3Ref}
+										className='border-2 border-blue-925'
+										id='nrc3'
+										placeholder=''
+										type='number'
+										value={nrc3}
+										onChange={handleChangeNrc3}
+									/>
 								</div>
 							</div>
-						)}
-						{!isResident && (
+						</div>
+						{/* )} */}
+						{/* {!isResident && (
 							<div className='flex w-full flex-row gap-4'>
 								<div className='w-full flex-grow'>
 									<Label>
@@ -196,7 +194,7 @@ export function IdentificationDetailsField(props: identificationDetailsFieldProp
 									/>
 								</div>
 							</div>
-						)}
+						)} */}
 					</>
 				)}
 				{accountType === 'Corporate' && (
