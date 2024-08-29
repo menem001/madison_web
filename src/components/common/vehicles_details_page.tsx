@@ -15,7 +15,7 @@ export function VehicleDetailsPage() {
 					<ConfirmRightSideBar />
 				</div>
 			</section>
-			<div className='absolute bottom-4 right-4 lg:hidden'>
+			<div className='fixed bottom-4 right-4 lg:hidden'>
 				<PremiumPopup />
 			</div>
 		</section>

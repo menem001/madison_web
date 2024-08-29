@@ -13,7 +13,7 @@ export function ConfirmRightSideBar() {
 	const fixedTotal = total.toFixed(2)
 
 	return (
-		<section className='flex'>
+		<section className='flex rounded-lg shadow-inputShadowDrop'>
 			<div className='flex flex-col gap-4 rounded-lg p-6 lg:shadow-md'>
 				<div className='flex flex-row gap-6'>
 					<div className='h-32 w-32'>

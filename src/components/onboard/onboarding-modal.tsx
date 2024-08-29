@@ -102,6 +102,12 @@ export function OnboardingModal() {
 						</div>
 						<h4 className='font-semibold'>{whiteBookData.EngineNumber}</h4>
 					</div>
+					<div className='flex flex-row justify-between font-jakarta'>
+						<div className='flex flex-row gap-3'>
+							<h4>Engine Capacity</h4>
+						</div>
+						<h4 className='font-semibold'>{whiteBookData.EngineCapacity}</h4>
+					</div>
 				</div>
 			</div>
 

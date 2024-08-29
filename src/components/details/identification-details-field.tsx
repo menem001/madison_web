@@ -140,7 +140,7 @@ export function IdentificationDetailsField(props: identificationDetailsFieldProp
 								NRC (National Registration card)
 								<span className='text-red-500'>*</span>
 							</Label>
-							<div className='flex w-full flex-row gap-4'>
+							<div className='flex w-full flex-row items-center gap-1 lg:gap-4'>
 								<div className='flex-grow flex-col gap-0'>
 									<Input
 										className='border-2 border-blue-925'
@@ -151,7 +151,7 @@ export function IdentificationDetailsField(props: identificationDetailsFieldProp
 										onChange={handleChangeNrc1}
 									/>
 								</div>
-								<span className='text-3xl'>/</span>
+								<span className='text-lg lg:text-3xl'>/</span>
 								<div className='flex-grow'>
 									<Input
 										ref={nrc2Ref}
@@ -163,7 +163,7 @@ export function IdentificationDetailsField(props: identificationDetailsFieldProp
 										onChange={handleChangeNrc2}
 									/>
 								</div>
-								<span className='text-3xl'>/</span>
+								<span className='text-lg lg:text-3xl'>/</span>
 								<div className='flex-grow'>
 									<Input
 										ref={nrc3Ref}

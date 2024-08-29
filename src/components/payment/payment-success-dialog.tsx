@@ -17,7 +17,7 @@ export function PaymentSuccessDialog(props: PaymentSuccessProps) {
 
 	return (
 		<Dialog open={props.isPaid}>
-			<DialogContent className='max-w-[90svw] md:max-w-[78svw] lg:max-w-[60svw]'>
+			<DialogContent className='max-w-[90svw] p-0 md:max-w-[78svw] lg:max-w-[60svw]'>
 				<div className='flex h-full w-full flex-col items-center justify-center gap-2 p-2'>
 					<div className='flex h-28 w-28 items-center justify-center rounded-full bg-green-320'>
 						<div className='flex h-16 w-16 items-center justify-center rounded-full bg-green-300'>
@@ -28,11 +28,11 @@ export function PaymentSuccessDialog(props: PaymentSuccessProps) {
 							/>
 						</div>
 					</div>
-					<div className='flex w-full flex-col items-center justify-center gap-3 rounded-md border border-gray-450 border-opacity-60 p-4'>
+					<div className='flex flex-col items-center justify-center gap-3 rounded-md border border-gray-450 border-opacity-60 px-2 lg:p-4'>
 						<h1 className='font-jakarta text-lg font-bold text-green-200'>
 							Hurray!!! Policy Generated Successfully
 						</h1>
-						<div className='grid w-full grid-cols-3 border-b border-gray-450 border-opacity-60 pb-4'>
+						<div className='grid w-full grid-cols-2 gap-2 border-b border-gray-450 border-opacity-60 pb-4'>
 							<div className='flex h-full flex-col justify-between'>
 								<span className='text-xs md:text-base'>Reference Number</span>
 								<h4 className='text-xs font-semibold text-blue-450 md:text-base'>
@@ -68,13 +68,13 @@ export function PaymentSuccessDialog(props: PaymentSuccessProps) {
 						</div>
 						<div className='flex w-full flex-row justify-center gap-2'>
 							<Button
-								className='w-1/4 text-xs'
+								className='w-1/2 text-xs lg:w-1/4'
 								size='lg'
 								variant='whiteBlackOutlined'>
 								Debit Note PDF
 							</Button>
 							<Button
-								className='w-1/4 text-xs'
+								className='w-1/2 text-xs lg:w-1/4'
 								size='lg'
 								variant='whiteBlackOutlined'>
 								Schedule PDF
@@ -83,7 +83,7 @@ export function PaymentSuccessDialog(props: PaymentSuccessProps) {
 					</div>
 					<div className='flex w-full flex-row justify-center gap-2'>
 						<Button
-							className='w-1/5'
+							className='w-1/3 lg:w-1/5'
 							size='lg'
 							variant='bluebtn'
 							onClick={() => {

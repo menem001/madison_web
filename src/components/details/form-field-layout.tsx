@@ -46,7 +46,7 @@ export function FormFieldLayout(props: formFieldLayoutProps) {
 				</div>
 			</div>
 			<div
-				className={cn('flex w-full flex-col gap-8 pl-9', {
+				className={cn('flex w-full flex-col gap-2 pl-9 lg:gap-8', {
 					hidden: !props.show
 				})}>
 				{props.children}

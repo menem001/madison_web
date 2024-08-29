@@ -216,23 +216,31 @@ export function UploadDocumentsForm(props: UploadDocumentsFormProps) {
 									uploadDocument={uploadDocument}
 								/>
 								<Button
+									className='px-2 py-1'
 									size='sm'
 									type='button'
 									variant='bluebtn'
 									onClick={() => {
 										addId(type.label)
 									}}>
-									<Plus />
+									<Plus
+										size={16}
+										strokeWidth={4}
+									/>
 								</Button>
 								{defaultLength < index + 1 && (
 									<Button
+										className='px-2 py-1'
 										size='sm'
 										type='button'
 										variant='bluebtn'
 										onClick={() => {
 											removeId(index)
 										}}>
-										<Minus />
+										<Minus
+											size={16}
+											strokeWidth={4}
+										/>
 									</Button>
 								)}
 							</div>

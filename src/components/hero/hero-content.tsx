@@ -56,7 +56,7 @@ export function HeroContent() {
 								Buy Policy
 							</Button>
 						</div>
-						<div className='h-36 w-60 flex-shrink-0'>
+						<div className='h-36 w-40 flex-shrink-0 lg:w-60'>
 							<Image
 								alt='car'
 								className='h-auto w-full'

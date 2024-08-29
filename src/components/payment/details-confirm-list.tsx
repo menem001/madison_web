@@ -20,8 +20,8 @@ export function DetailsConfirmList() {
 
 	return (
 		<section className='flex flex-col gap-20 pb-10'>
-			<div className='flex flex-row gap-6'>
-				<div className='border-gray-375 shadow-detailsContainerShadow flex w-full flex-grow flex-col gap-5 rounded-md border p-6'>
+			<div className='flex flex-col gap-6 lg:flex-row'>
+				<div className='flex w-full flex-grow flex-col gap-5 rounded-md border border-gray-375 p-6 shadow-detailsContainerShadow'>
 					<h2 className='font-inter font-medium'>Customer</h2>
 					<div className='flex flex-col gap-3'>
 						<div className='flex flex-row items-center justify-between font-inter text-sm font-medium'>
@@ -34,7 +34,7 @@ export function DetailsConfirmList() {
 								/>
 								<h4>Customer</h4>
 							</div>
-							<h4>{customerData.name}</h4>
+							<h4 className='w-1/2 truncate text-right'>{customerData.name}</h4>
 						</div>
 						<div className='flex flex-row items-center justify-between font-inter text-sm font-medium'>
 							<div className='flex flex-row items-center gap-2'>
@@ -46,7 +46,7 @@ export function DetailsConfirmList() {
 								/>
 								<h4>Email</h4>
 							</div>
-							<h4>{customerData.email}</h4>
+							<h4 className='w-1/2 truncate text-right'>{customerData.email}</h4>
 						</div>
 						<div className='flex flex-row items-center justify-between font-inter text-sm font-medium'>
 							<div className='flex flex-row items-center gap-2'>
@@ -62,7 +62,7 @@ export function DetailsConfirmList() {
 						</div>
 					</div>
 				</div>
-				<div className='border-gray-375 shadow-detailsContainerShadow flex w-full flex-grow flex-col gap-5 rounded-md border p-6'>
+				<div className='flex w-full flex-grow flex-col gap-5 rounded-md border border-gray-375 p-6 shadow-detailsContainerShadow'>
 					<h2 className='font-inter font-medium'>Address</h2>
 					<div className='flex flex-col gap-6'>
 						<div className='flex flex-row items-center justify-between'>
@@ -76,6 +76,8 @@ export function DetailsConfirmList() {
 								<div className='flex w-full flex-col'>
 									<h4 className='text-gray-525'>Billing</h4>
 									<h4>{customerData.address}</h4>
+									<h4>{customerData.cityName}</h4>
+									<h4>{customerData.poBox}</h4>
 								</div>
 							</div>
 						</div>
@@ -90,12 +92,14 @@ export function DetailsConfirmList() {
 								<div className='flex w-full flex-col'>
 									<h4 className='text-gray-525'>Shipping</h4>
 									<h4>{customerData.address}</h4>
+									<h4>{customerData.cityName}</h4>
+									<h4>{customerData.poBox}</h4>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-				<div className='border-gray-375 shadow-detailsContainerShadow flex w-full flex-grow flex-col gap-5 rounded-md border p-6'>
+				<div className='flex w-full flex-grow flex-col gap-5 rounded-md border border-gray-375 p-6 shadow-detailsContainerShadow'>
 					<h2 className='font-inter font-medium'>PolicyDetails</h2>
 					<div className='flex flex-col gap-3'>
 						<div className='flex flex-row items-center justify-between font-inter text-sm font-medium'>
@@ -139,12 +143,12 @@ export function DetailsConfirmList() {
 			</div>
 			<div className='flex flex-col items-center justify-center gap-4'>
 				<Button
-					className='h-12 w-1/2 bg-blue-700'
+					className='h-12 w-3/4 bg-blue-700 lg:w-1/2'
 					variant='bluebtn'
 					onClick={goToPay}>
 					Preview & Submit
 				</Button>
-				<h5 className='w-1/2 text-center font-jakarta text-xs font-normal'>
+				<h5 className='w-1/2 text-center font-jakarta text-[10px] font-normal lg:text-xs'>
 					By confirming your subscription, you allow The Outdoor Inn Crowd Limited to
 					charge your card for this payment and future payments in accordance with their
 					terms. You can always cancel your subscription.

@@ -113,14 +113,14 @@ export function OtpForm() {
 
 	return (
 		<section className='flex h-full w-full flex-col items-center justify-center gap-10'>
-			<div className='w-3/4'>
+			<div className='w-full lg:w-3/4'>
 				<div className='self-start'>
 					<BackButton />
 				</div>
 			</div>
 			<div className='flex flex-col items-center justify-center gap-4 font-jakarta'>
 				<h1 className='text-[28px] font-semibold text-blue-300'>OTP Verification</h1>
-				<h3 className='w-3/4 text-center'>
+				<h3 className='w-full text-center lg:w-3/4'>
 					To buy the policy, Please enter the OTP here from SMS
 				</h3>
 			</div>
