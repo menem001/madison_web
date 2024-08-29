@@ -194,7 +194,7 @@ export function PersonalInformationField(props: personalInformationFieldProps) {
 			<>
 				<Form {...form}>
 					<form
-						className='space-y-8'
+						className='lg: flex flex-col gap-2 lg:gap-8'
 						onSubmit={form.handleSubmit(onSubmit)}>
 						<div className='flex-grow'>
 							<Label>
@@ -227,8 +227,8 @@ export function PersonalInformationField(props: personalInformationFieldProps) {
 								</div>
 							</div>
 						</div>
-						<div className='flex w-full flex-row gap-2 lg:gap-8'>
-							<div>
+						<div className='flex w-full flex-col gap-2 lg:flex-row lg:gap-8'>
+							<div className='flex-grow'>
 								<FormField
 									control={form.control}
 									name='title'
@@ -241,7 +241,7 @@ export function PersonalInformationField(props: personalInformationFieldProps) {
 												{titleList.length === 0 ? (
 													<Skeleton className='h-10 w-full' />
 												) : (
-													<div className='w-20'>
+													<div className='lg:w-20'>
 														<Select
 															disabled={field.disabled}
 															name={field.name}
@@ -297,7 +297,7 @@ export function PersonalInformationField(props: personalInformationFieldProps) {
 								/>
 							</div>
 						</div>
-						<div className='flex w-full flex-row gap-2 lg:gap-8'>
+						<div className='flex w-full flex-col gap-2 lg:flex-row lg:gap-8'>
 							{accountType === 'Personal' && (
 								<div className='min-w-32'>
 									<FormField
@@ -393,7 +393,7 @@ export function PersonalInformationField(props: personalInformationFieldProps) {
 								/>
 							</div>
 						</div>
-						<div className='flex w-full flex-row gap-2 lg:gap-8'>
+						<div className='flex w-full flex-col gap-2 lg:flex-row lg:gap-8'>
 							<div className='flex-grow'>
 								<FormField
 									control={form.control}

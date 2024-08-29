@@ -29,24 +29,29 @@ export default function ConfirmPremiumDetails() {
 	return (
 		<section className='flex flex-col gap-5'>
 			<BackButton />
-			<div className='flex flex-row items-end justify-between font-inter'>
-				<div className='text-2xl font-bold'>Premium Details</div>
-				<div className='flex flex-row items-end gap-8 font-jakarta'>
-					<h4 className='flex flex-row gap-2'>
+			<div className='flex flex-col items-start justify-between gap-2 font-inter lg:flex-row lg:items-end'>
+				<div className='text-lg font-bold lg:text-2xl'>Premium Details</div>
+				<div className='flex w-full flex-col items-start gap-2 font-jakarta lg:w-fit lg:flex-row lg:items-end lg:gap-8'>
+					<h4 className='flex flex-row gap-2 text-xs lg:text-base'>
 						BodyType:
 						<span className='font-inter font-bold'>{vehicleData.bodyType}</span>
 					</h4>
-					<h4 className='flex flex-row gap-2'>
-						Usage:
-						<span className='font-inter font-bold'>{vehicleData.vehicleUsage}</span>
-					</h4>
-					<h4 className='flex flex-row gap-2 text-3xl font-bold text-[#FF8682]'>
+					<div className='flex w-full flex-row items-center justify-between px-0 lg:w-fit lg:px-2'>
+						<h4 className='flex flex-row gap-2 text-xs lg:text-base'>
+							Usage:
+							<span className='font-inter font-bold'>{vehicleData.vehicleUsage}</span>
+						</h4>
+						<h4 className='flex flex-row gap-2 text-lg font-bold text-[#FF8682] lg:hidden lg:text-3xl'>
+							{fixedTotal} ZWM
+						</h4>
+					</div>
+					<h4 className='hidden flex-row gap-2 text-lg font-bold text-[#FF8682] lg:flex lg:text-3xl'>
 						{fixedTotal} ZWM
 					</h4>
 				</div>
 			</div>
 			<div className='flex flex-row items-center justify-start gap-6 rounded-md border-[0.5px] border-green-100 p-6'>
-				<div className='flex h-16 w-16 flex-shrink-0 items-center justify-center rounded-full bg-blue-300'>
+				<div className='flex min-h-12 min-w-12 flex-shrink-0 items-center justify-center rounded-full bg-blue-300'>
 					<Image
 						alt='car'
 						height={35}
@@ -55,7 +60,9 @@ export default function ConfirmPremiumDetails() {
 					/>
 				</div>
 				<div className='flex flex-grow flex-col gap-1'>
-					<span className='font-jakarta text-xl font-bold'>Quote No: {quoteNo}</span>
+					<span className='font-jakarta text-base font-bold lg:text-xl'>
+						Quote No: {quoteNo}
+					</span>
 					<span className='font-inter text-xs text-gray-500'>
 						Quote Date: {vehicleData.policyStartDate}
 					</span>
@@ -64,11 +71,11 @@ export default function ConfirmPremiumDetails() {
 					</span>
 				</div>
 				<div className='flex flex-col gap-1 font-jakarta'>
-					<h2 className='text-lg font-bold'>{policyStartDate}</h2>
+					<h2 className='text-sm font-bold lg:text-lg'>{policyStartDate}</h2>
 					<span className='font-inter text-xs text-gray-500'>Policy Start Date</span>
 				</div>
 				<div className='flex flex-col gap-1 font-jakarta'>
-					<h2 className='text-lg font-bold'>{policyEndDate}</h2>
+					<h2 className='text-sm font-bold lg:text-lg'>{policyEndDate}</h2>
 					<span className='font-inter text-xs text-gray-500'>Policy End Date</span>
 				</div>
 			</div>

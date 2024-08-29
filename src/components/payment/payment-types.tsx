@@ -137,7 +137,7 @@ export function PaymentTypes() {
 	}
 
 	return (
-		<div className='flex h-full w-3/4'>
+		<div className='flex h-full w-full lg:w-3/4'>
 			{paymentTypes.length === 0 ? (
 				<></>
 			) : (

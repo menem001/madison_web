@@ -358,7 +358,7 @@ export function SelectInsuranceClass() {
 											id='start'
 											variant='outline'
 											className={cn(
-												'w-full pl-3 text-left font-normal text-black',
+												'border-gray-360 w-full border pl-3 text-left font-normal text-black shadow-inputShadowDrop',
 												!startDate && 'text-muted-foreground'
 											)}>
 											{vehicleData.policyStartDate ? (
@@ -416,6 +416,7 @@ export function SelectInsuranceClass() {
 										value={vehicleData.policyEndDate}
 										onValueChange={updateEndDateWithDaysCount}>
 										<SelectTrigger
+											className='border-gray-360 border shadow-inputShadowDrop'
 											id='end'
 											value={vehicleData.policyEndDate}>
 											<SelectValue placeholder='Select Policy End Date' />
@@ -450,7 +451,7 @@ export function SelectInsuranceClass() {
 									)
 								}}>
 								<SelectTrigger
-									className='w-full lg:w-3/4'
+									className='border-gray-360 w-full border shadow-inputShadowDrop lg:w-3/4'
 									id='currency'
 									title='Select Currency'
 									value={vehicleData.currency + '~' + vehicleData.exchangeRate}>

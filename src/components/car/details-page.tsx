@@ -204,14 +204,16 @@ export function DetailsPage() {
 						<DriverDetails />
 					</div>
 				)}
-				{vehicleData.DriverDOB !== '' && (
-					<Button
-						className='w-full'
-						variant='bluebtn'
-						onClick={next}>
-						Next
-					</Button>
-				)}
+				<div className='flex w-full items-center justify-center lg:w-3/4'>
+					{vehicleData.DriverDOB !== '' && (
+						<Button
+							className='w-1/2'
+							variant='bluebtn'
+							onClick={next}>
+							Next
+						</Button>
+					)}
+				</div>
 				<div ref={pageEnd}></div>
 			</section>
 		</section>

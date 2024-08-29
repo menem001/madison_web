@@ -105,9 +105,9 @@ export function AddressDetailsField(props: addressDetailsFieldProps) {
 												<FormControl>
 													<Input
 														{...field}
-														autoComplete='address-level1'
+														autoComplete='address-level3'
 														className='border-2 border-blue-925'
-														id='nrc1'
+														id='residentialaddress'
 														placeholder='Please Enter Residential Address'
 													/>
 												</FormControl>

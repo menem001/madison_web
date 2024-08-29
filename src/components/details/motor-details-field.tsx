@@ -341,9 +341,9 @@ export function MotorDetailsField(props: motorDetailsFieldProps) {
 			<>
 				<Form {...form}>
 					<form
-						className='space-y-8'
+						className='flex flex-col gap-2 lg:gap-8'
 						onSubmit={form.handleSubmit(onSubmit)}>
-						<div className='flex w-full flex-row gap-2 md:gap-8'>
+						<div className='flex w-full flex-col gap-2 md:gap-8 lg:flex-row'>
 							<div className='flex flex-grow flex-row items-end gap-2'>
 								<FormField
 									control={form.control}
@@ -372,6 +372,7 @@ export function MotorDetailsField(props: motorDetailsFieldProps) {
 									)}
 								/>
 								<Button
+									className='p-5'
 									size='sm'
 									type='button'
 									variant='bluebtn'
@@ -411,7 +412,7 @@ export function MotorDetailsField(props: motorDetailsFieldProps) {
 								/>
 							</div>
 						</div>
-						<div className='flex w-full flex-row gap-2 md:gap-8'>
+						<div className='flex w-full flex-col gap-2 md:gap-8 lg:flex-row'>
 							<div className='flex-grow'>
 								<FormField
 									control={form.control}
@@ -466,8 +467,8 @@ export function MotorDetailsField(props: motorDetailsFieldProps) {
 								/>
 							</div>
 						</div>
-						<div className='flex w-full flex-row gap-2 md:gap-8'>
-							<div className='w-1/4 flex-grow'>
+						<div className='flex w-full flex-col gap-2 md:gap-8 lg:flex-row'>
+							<div className='w-full flex-grow lg:w-1/4'>
 								<FormField
 									control={form.control}
 									name='color'
@@ -602,7 +603,7 @@ export function MotorDetailsField(props: motorDetailsFieldProps) {
 							)}
 						</div>
 						{isLeased && borrowerType === 'Individual' && (
-							<div className='flex w-full flex-row gap-2 md:gap-8'>
+							<div className='flex w-full flex-col gap-2 md:gap-8 lg:flex-row'>
 								<div className='w-full flex-grow md:w-1/2'>
 									<Label
 										className='line-clamp-1'
@@ -638,7 +639,7 @@ export function MotorDetailsField(props: motorDetailsFieldProps) {
 							</div>
 						)}
 						{isLeased && borrowerType === 'Bank' && (
-							<div className='flex w-full flex-row gap-2 md:gap-8'>
+							<div className='flex w-full flex-col gap-2 md:gap-8 lg:flex-row'>
 								<div className='w-1/2 flex-grow'>
 									<Label htmlFor='zone'>Collateral Bank Name</Label>
 									{bankList.length === 0 ? (

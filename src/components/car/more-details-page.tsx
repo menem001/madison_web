@@ -2,11 +2,13 @@
 
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
 import { setScrollTo } from '@/redux/slices'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 // import { Button } from '../ui'
 // import { CustomerInfo } from './customer-info'
 import { SelectInsuranceClass } from './select-insurance-class'
 import { BackButton } from '../common/back_btn'
+import { PremiumSideBar } from './premium-sidebar'
+import { OTPDialogBox } from './otp-dialog-box'
 // import { HorsePowerTonnage } from './horse-power-tonnage'
 // import { SumInsuredDeductibles } from './sum-insured-deductibles'
 // import { cn } from '@/lib'
@@ -23,6 +25,16 @@ export function MoreDetailsPage() {
 	const specificRef = useRef<HTMLDivElement>(null)
 	// const customerRef = useRef<HTMLDivElement>(null)
 	const pageStart = useRef<HTMLDivElement | null>(null)
+
+	const [otpOpen, setOtpOpen] = useState<boolean>(false)
+
+	function getOtpDialogOpen() {
+		setOtpOpen(true)
+	}
+
+	function closeOTPDialog() {
+		setOtpOpen(false)
+	}
 
 	// function scrollToTop() {
 	// 	pageStart.current?.scrollIntoView({ behavior: 'smooth' })
@@ -74,7 +86,13 @@ export function MoreDetailsPage() {
 						<CustomerInfo scrollToTop={scrollToTop} />
 					</div>
 				)} */}
-				{/* <PremiumSideBar getOtp={getOtpDialogOpen} /> */}
+				<div className='flex lg:hidden'>
+					<PremiumSideBar getOtp={getOtpDialogOpen} />
+				</div>
+				<OTPDialogBox
+					closeDialog={closeOTPDialog}
+					otpOpen={otpOpen}
+				/>
 				<div ref={pageEnd}></div>
 			</section>
 		</section>

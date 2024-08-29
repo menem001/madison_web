@@ -43,7 +43,7 @@ export function DriverDetails() {
 	}, [])
 
 	return (
-		<div className='flex w-full flex-col items-center justify-between gap-6'>
+		<div className='flex w-full flex-col items-center justify-between gap-6 lg:w-4/5'>
 			<div className='flex w-full flex-col items-center justify-between gap-4 lg:flex-row lg:gap-0'>
 				<div className='flex flex-col gap-2'>
 					<h1 className='Drivertitle font-jakarta text-xl font-bold text-blue-300'>
@@ -100,7 +100,7 @@ export function DriverDetails() {
 								id='start'
 								variant='outline'
 								className={cn(
-									'w-full pl-3 text-left font-normal text-black',
+									'border-gray-360 w-full border pl-3 text-left font-normal text-black shadow-inputShadowDrop',
 									!driverDOB && 'text-muted-foreground'
 								)}>
 								{driverDOB ? (

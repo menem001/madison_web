@@ -74,7 +74,7 @@ export function VehicleValue() {
 
 	return (
 		<div
-			className={cn('flex flex-col gap-7', {
+			className={cn('flex w-full flex-col gap-16 lg:w-4/5', {
 				'min-h-[65vh]': vehicleData.value === 0
 			})}>
 			<div className='flex flex-row items-center gap-4'>
@@ -99,6 +99,7 @@ export function VehicleValue() {
 			<div className='selectVehicleDesciption flex flex-col gap-10 lg:flex-row'>
 				<div className='flex-grow'>
 					<Input
+						className='border-gray-360 border shadow-inputShadowDrop'
 						placeholder='Vehicle Value'
 						value={
 							formattedValue !== '' && formattedValue !== '0'
@@ -110,6 +111,7 @@ export function VehicleValue() {
 				</div>
 				<div className='flex-grow'>
 					<Input
+						className='border-gray-360 border shadow-inputShadowDrop'
 						placeholder='Electrical Accessories'
 						value={
 							formattedSum !== '' && formattedSum !== '0' ? formattedSum : undefined
