@@ -144,7 +144,6 @@ export function UploadDocumentsForm(props: UploadDocumentsFormProps) {
 	function uploadDocument(index: number, docType: string) {
 		const curData = fileDataList[index]
 		const fd = new FormData()
-		const newData = fileDataList
 
 		if (curData.file !== null) {
 			const request = {
@@ -171,8 +170,12 @@ export function UploadDocumentsForm(props: UploadDocumentsFormProps) {
 					value.data?.type === 'success' &&
 					value.data.data?.Result === 'File Upload Sucessfully'
 				) {
-					newData[index].isUploaded = true
-					setFileDataList(newData)
+					// setFileDataList(newData)
+					setFileDataList((prevList) =>
+						prevList.map((file, i) =>
+							i === index ? { ...file, isUploaded: true } : file
+						)
+					)
 				} else {
 					alert('Upload has failed. Please try again')
 				}
@@ -184,11 +187,13 @@ export function UploadDocumentsForm(props: UploadDocumentsFormProps) {
 		const mandatoryList = fileDataList.filter((files) => {
 			return files.MandatoryStatus === 'Y'
 		})
+
 		return mandatoryList.every((file) => file.isUploaded)
 	}
 
 	useEffect(() => {
-		setIsAllFilled(allFilesUploaded(fileDataList))
+		const isFilled = allFilesUploaded(fileDataList)
+		setIsAllFilled(isFilled)
 	}, [fileDataList])
 
 	return (
@@ -198,8 +203,8 @@ export function UploadDocumentsForm(props: UploadDocumentsFormProps) {
 			goSpecific={props.goSpecific}
 			pos={props.pos}
 			show={props.current === props.pos}
-			subTitle='Additional information around Step 3'
-			title='Step 3 - Upload Document'>
+			subTitle='Additional information around Step 2'
+			title='Step 2 - Upload Document'>
 			<>
 				<div className='flex flex-col gap-3 font-inter'>
 					{docTypesList.map((type, index) => {

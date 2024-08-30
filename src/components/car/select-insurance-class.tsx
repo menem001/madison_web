@@ -100,7 +100,7 @@ export function SelectInsuranceClass() {
 	}, [dispatch, iclass, iclassName])
 
 	useEffect(() => {
-		setIclass(+vehicleData.classID)
+		setIclass(vehicleData.classID === '' ? 0 : +vehicleData.classID)
 		setIclassName(vehicleData.insuranceClass)
 
 		if (!vehicleData.policyStartDate) {
@@ -166,7 +166,7 @@ export function SelectInsuranceClass() {
 						label: value.CodeDesc
 					})
 
-					if (index === 0) {
+					if (index === 0 && vehicleData.classID === '') {
 						setIclass(+value.Code)
 						setIclassName(value.CodeDesc)
 					}

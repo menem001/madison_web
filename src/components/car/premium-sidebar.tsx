@@ -34,7 +34,7 @@ export function PremiumSideBar(props: PremiumSidebarProps) {
 	const [isLoading, setIsLoading] = useState<boolean>(false)
 	const [isMotorLoading, setIsMotorLoading] = useState<boolean>(false)
 
-	const [needUpdatedData, setNeedUpdatedData] = useState<boolean>(false)
+	const [needUpdatedData, setNeedUpdatedData] = useState<boolean>(true)
 
 	const [premiumCalculator] = usePremiumCalcMutation()
 	const [viewPremium] = useViewPremiumCalcMutation()
@@ -121,6 +121,7 @@ export function PremiumSideBar(props: PremiumSidebarProps) {
 			) {
 				dispatch(updatePremium(true))
 				dispatch(updateDetails(value.data.data.Result[0]))
+				setNeedUpdatedData(false)
 				setIsLoading(false)
 			} else if (
 				value.data?.type === 'success' &&
@@ -266,7 +267,6 @@ export function PremiumSideBar(props: PremiumSidebarProps) {
 				)
 			}
 
-			setNeedUpdatedData(false)
 			setIsLoading(false)
 		})
 	}

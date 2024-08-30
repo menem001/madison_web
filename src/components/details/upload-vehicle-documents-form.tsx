@@ -162,7 +162,6 @@ export function UploadVehileDocumentsForm(props: UploadDocumentsFormProps) {
 	function uploadDocument(index: number, docType: string) {
 		const curData = fileDataList[index]
 		const fd = new FormData()
-		const newData = fileDataList
 
 		if (curData.file !== null) {
 			const request = {
@@ -189,8 +188,11 @@ export function UploadVehileDocumentsForm(props: UploadDocumentsFormProps) {
 					value.data?.type === 'success' &&
 					value.data.data?.Result === 'File Upload Sucessfully'
 				) {
-					newData[index].isUploaded = true
-					setFileDataList(newData)
+					setFileDataList((prevList) =>
+						prevList.map((file, i) =>
+							i === index ? { ...file, isUploaded: true } : file
+						)
+					)
 				} else {
 					alert('Upload has failed. Please try again')
 				}
@@ -206,7 +208,8 @@ export function UploadVehileDocumentsForm(props: UploadDocumentsFormProps) {
 	}
 
 	useEffect(() => {
-		setIsAllFilled(allFilesUploaded(fileDataList))
+		const isFilled = allFilesUploaded(fileDataList)
+		setIsAllFilled(isFilled)
 	}, [fileDataList])
 
 	return (
@@ -216,55 +219,59 @@ export function UploadVehileDocumentsForm(props: UploadDocumentsFormProps) {
 			goSpecific={props.goSpecific}
 			pos={props.pos}
 			show={props.current === props.pos}
-			subTitle='Additional information around Step 4'
-			title='Step 4 - Upload Vehicle Document'>
+			subTitle='Additional information around Step 3'
+			title='Step 3 - Upload Vehicle Document'>
 			<>
-				<div className='flex flex-col gap-3 font-inter'>
-					{docTypesList.map((type, index) => {
-						return (
-							<div
-								key={index}
-								className='flex flex-row items-center gap-2'>
-								<UploadField
+				{sectionID === '3' && fileDataList.length === 0 ? (
+					<h2>No Vehicle Documents Required for TPO</h2>
+				) : (
+					<div className='flex flex-col gap-3 font-inter'>
+						{docTypesList.map((type, index) => {
+							return (
+								<div
 									key={index}
-									fileDataList={fileDataList}
-									handleFileChange={handleFileChange}
-									index={index}
-									type={type}
-									uploadDocument={uploadDocument}
-								/>
-								<Button
-									className='px-2 py-1'
-									size='sm'
-									type='button'
-									variant='bluebtn'
-									onClick={() => {
-										addId(type.label)
-									}}>
-									<Plus
-										size={16}
-										strokeWidth={4}
+									className='flex flex-row items-center gap-2'>
+									<UploadField
+										key={index}
+										fileDataList={fileDataList}
+										handleFileChange={handleFileChange}
+										index={index}
+										type={type}
+										uploadDocument={uploadDocument}
 									/>
-								</Button>
-								{defaultLength < index + 1 && (
 									<Button
 										className='px-2 py-1'
 										size='sm'
 										type='button'
 										variant='bluebtn'
 										onClick={() => {
-											removeId(index)
+											addId(type.label)
 										}}>
-										<Minus
+										<Plus
 											size={16}
 											strokeWidth={4}
 										/>
 									</Button>
-								)}
-							</div>
-						)
-					})}
-				</div>
+									{defaultLength < index + 1 && (
+										<Button
+											className='px-2 py-1'
+											size='sm'
+											type='button'
+											variant='bluebtn'
+											onClick={() => {
+												removeId(index)
+											}}>
+											<Minus
+												size={16}
+												strokeWidth={4}
+											/>
+										</Button>
+									)}
+								</div>
+							)
+						})}
+					</div>
+				)}
 				{isAllFilled && (
 					<Button
 						className='w-32'

@@ -1213,7 +1213,7 @@ export const viewQuoteResponseSchema = z.object({
 			UserType: z.string(),
 			BdmCode: z.any().nullable(),
 			SourceType: z.string(),
-			CustomerCode: z.string(),
+			CustomerCode: z.string().nullable(),
 			BrokerBranchName: z.string(),
 			BranchName: z.string(),
 			PrevPaymentType: z.any().nullable(),
