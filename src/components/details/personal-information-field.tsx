@@ -274,7 +274,7 @@ export function PersonalInformationField(props: personalInformationFieldProps) {
 									)}
 								/>
 							</div>
-							<div className='flex-grow'>
+							<div className='w-full flex-grow'>
 								<FormField
 									control={form.control}
 									name='name'
