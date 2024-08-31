@@ -81,22 +81,20 @@ export function VehicleUsage(props: VehicleUsageProps) {
 	// })
 
 	useEffect(() => {
-		if (model !== '') {
-			const tempArr: { value: string; label: string }[] = []
-			const request = { InsuranceId: appsData.insuranceID, BranchCode: appsData.branchCode }
-			const res = vehicleUsage(request)
-			res.then((value) => {
-				if (value.data?.type === 'success' && value.data.data !== undefined) {
-					value.data.data.Result.map((value) => {
-						tempArr.push({
-							value: value.Code,
-							label: value.CodeDesc
-						})
+		const tempArr: { value: string; label: string }[] = []
+		const request = { InsuranceId: appsData.insuranceID, BranchCode: appsData.branchCode }
+		const res = vehicleUsage(request)
+		res.then((value) => {
+			if (value.data?.type === 'success' && value.data.data !== undefined) {
+				value.data.data.Result.map((value) => {
+					tempArr.push({
+						value: value.Code,
+						label: value.CodeDesc
 					})
-					setVehicleUsageList(tempArr)
-				}
-			})
-		}
+				})
+				setVehicleUsageList(tempArr)
+			}
+		})
 	}, [appsData.branchCode, appsData.insuranceID, vehicleUsage, model])
 
 	function updateUsage(id: string) {
@@ -118,7 +116,7 @@ export function VehicleUsage(props: VehicleUsageProps) {
 					<FormLabel className='text-blue-325'>Motor Usage</FormLabel>
 					<FormControl>
 						<Select
-							disabled={field.disabled || model === ''}
+							disabled={field.disabled}
 							name={field.name}
 							value={field.value}
 							onValueChange={(e) => {

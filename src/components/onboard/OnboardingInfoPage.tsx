@@ -46,7 +46,9 @@ export default function OnboardingInfoPage() {
 	const [req, setReq] = useState<{ RegNo: string }>({
 		RegNo: ''
 	})
-	const { data: vehicleDetails } = useGetVehicleListQuery(shouldFetch ? req : skipToken)
+	const { data: vehicleDetails, refetch: VehicleRefetch } = useGetVehicleListQuery(
+		shouldFetch ? req : skipToken
+	)
 
 	const [showError, setShowError] = useState<boolean>(false)
 	const [showDetails, setShowDetails] = useState<boolean>(false)
@@ -101,7 +103,9 @@ export default function OnboardingInfoPage() {
 	}, [TokenData])
 
 	function getDataInserted() {
-		if (token !== '' && registrationNumber.length === 9) {
+		const regex = /^[A-Z]{3}\d{4}[A-Z]{2}$/
+
+		if (token !== '' && regex.test(registrationNumber)) {
 			const request = {
 				RegNo: registrationNumber,
 				RequestToken: token
@@ -115,6 +119,12 @@ export default function OnboardingInfoPage() {
 					value.data.data.Result === 'Inserted Successfully......'
 				) {
 					setShouldFetch(true)
+
+					if (vehicleDetails) {
+						VehicleRefetch().then(() => {
+							updateVehicle()
+						})
+					}
 				} else if (
 					value.data?.type === 'success' &&
 					value.data?.data !== undefined &&
@@ -122,13 +132,14 @@ export default function OnboardingInfoPage() {
 						'Vehicle record was not found. Please contact the RTSA Call Centre to resolve this.'
 				) {
 					setIsLoading(false)
+					setIsFailed(true)
 					setShowError(true)
 				}
 			})
 		}
 	}
 
-	useEffect(() => {
+	function updateVehicle() {
 		if (
 			vehicleDetails?.type === 'success' &&
 			vehicleDetails.data &&
@@ -159,20 +170,25 @@ export default function OnboardingInfoPage() {
 					CurrentLinenseExpDate: result.CurrentLinenseExpDate
 				})
 			)
-			setShouldFetch(false)
 			setIsLoading(false)
 			// route.push('/car-insurance/1')
 			setShowDetails(true)
 		}
+	}
+
+	useEffect(() => {
+		updateVehicle()
 	}, [vehicleDetails])
 
 	function getMotorDetails() {
+		const regex = /^[A-Z]{3}\d{4}[A-Z]{2}$/
+
 		if (file === null && registrationNumber === '') {
 			alert('Upload your WhiteBook or registrationNumber to autoFill')
-		} else if (file === null && registrationNumber.length === 9) {
+		} else if (file === null && regex.test(registrationNumber)) {
 			getDataInserted()
-		} else if (file === null && registrationNumber.length !== 9) {
-			alert('Please enter a valid registration Number')
+		} else if (file === null && !regex.test(registrationNumber)) {
+			alert('Please enter a valid registration Number - ABC1234DE')
 		} else if (file !== null) {
 			setIsLoading(true)
 			const request = new FormData()
@@ -305,7 +321,7 @@ export default function OnboardingInfoPage() {
 								className='w-full'
 								disabled={file !== null}
 								id='registrationNo'
-								placeholder='Enter your registration number'
+								placeholder='Enter your registration number (ABC1234DE)'
 								onChange={(e) => {
 									setRegistrationNumber(e.target.value)
 

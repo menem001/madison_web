@@ -363,7 +363,7 @@ export function PremiumSideBar(props: PremiumSidebarProps) {
 													size={20}
 												/>
 											) : (
-												<span>Refresh Premium Amount</span>
+												<span>View Premium Amount</span>
 											)}
 										</Button>
 									</>

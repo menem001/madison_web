@@ -487,7 +487,7 @@ export function SelectInsuranceClass() {
 							size={20}
 						/>
 					) : (
-						<span>View Premium</span>
+						<span>Save</span>
 					)}
 				</Button>
 			)}

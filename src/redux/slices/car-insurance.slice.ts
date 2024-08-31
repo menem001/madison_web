@@ -88,15 +88,8 @@ export const carInsuranceSlice = createSlice({
 			state.bodyTypeID = action.payload.id
 			state.mark = ''
 			state.makeID = ''
-			state.year = 0
 			state.model = ''
 			state.modelID = ''
-			state.value = 0
-			state.vehicleUsage = ''
-			state.vehicleUsageID = ''
-			state.year = 0
-			state.value = 0
-			state.seat = 0
 		},
 		updateVehicleMark(
 			state: CarDetails,
@@ -104,13 +97,8 @@ export const carInsuranceSlice = createSlice({
 		) {
 			state.mark = action.payload.mark
 			state.makeID = action.payload.makeID
-			state.year = 0
 			state.model = ''
 			state.modelID = ''
-			state.value = 0
-			state.vehicleUsage = ''
-			state.vehicleUsageID = ''
-			state.seat = 0
 		},
 		updateVehicleModel(
 			state: CarDetails,
@@ -118,11 +106,6 @@ export const carInsuranceSlice = createSlice({
 		) {
 			state.model = action.payload.model
 			state.modelID = action.payload.modelID
-			state.year = 0
-			state.value = 0
-			state.vehicleUsage = ''
-			state.vehicleUsageID = ''
-			state.seat = 0
 		},
 		updateVehicleUsage(
 			state: CarDetails,
@@ -130,9 +113,6 @@ export const carInsuranceSlice = createSlice({
 		) {
 			state.vehicleUsage = action.payload.usage
 			state.vehicleUsageID = action.payload.id
-			state.seat = 0
-			state.year = 0
-			state.value = 0
 		},
 		updateSeatsYear(state: CarDetails, action: PayloadAction<{ seat: string; year: string }>) {
 			state.seat = +action.payload.seat
