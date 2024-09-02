@@ -1,7 +1,13 @@
 'use client'
 
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
-import { updateEmail, updateMobile, updateName } from '@/redux/slices'
+import {
+	type CustomerDetails,
+	// updateEmail,
+	updateField
+	// updateMobile,
+	// updateName
+} from '@/redux/slices'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 // import { useRouter } from 'next/navigation'
@@ -10,7 +16,8 @@ import { Input } from '../ui'
 import { Label } from '../ui/label'
 // import { type SaveMotorDetailRequest } from '@/services/models/common.models'
 // import { updateDetails } from '@/redux/slices/motor-detail.slice'
-import { useState } from 'react'
+// import { useState } from 'react'
+import { FormDetails } from '@/lib'
 // import ClipLoader from 'react-spinners/ClipLoader'
 // import { useToast } from '../ui/use-toast'
 // import { isValidEmail } from '@/lib'
@@ -28,9 +35,9 @@ export function CustomerInfo() {
 
 	const dispatch = useAppDispatch()
 
-	const [isNameNotValid, setIssNameNotValid] = useState<boolean>(false)
-	const [isEmailNotValid, setIsEmailNotValid] = useState<boolean>(false)
-	const [isMobileNotValid, setIsMobileNotValid] = useState<boolean>(false)
+	// const [isNameNotValid, setIssNameNotValid] = useState<boolean>(false)
+	// const [isEmailNotValid, setIsEmailNotValid] = useState<boolean>(false)
+	// const [isMobileNotValid, setIsMobileNotValid] = useState<boolean>(false)
 
 	useGSAP(() => {
 		gsap.from('.selectCustomerInfo', { y: 80, opacity: 0, duration: 0.5, delay: 1 })
@@ -170,7 +177,41 @@ export function CustomerInfo() {
 						Please provide your details to proceed
 					</span>
 				</div> */}
-				<div className='selectCustomerInfo flex flex-row gap-10'>
+				{FormDetails.CustomerDetails.map((fields) => {
+					const key = fields.reduxName as keyof CustomerDetails
+					return (
+						<div
+							key={fields.key}
+							className='selectCustomerInfo flex flex-row gap-10'>
+							<div className={fields.templateOptions.styleClasses}>
+								{fields.type === 'input' && (
+									<>
+										<Label key={fields.key}>
+											{fields.templateOptions.label}
+										</Label>
+										{typeof customerData[key] === 'string' && (
+											<Input
+												id={fields.key}
+												placeholder={fields.templateOptions.placeholder}
+												value={customerData[key]}
+												onChange={(e) => {
+													dispatch(
+														updateField({
+															fieldName: key,
+															value: e.target.value
+														})
+													)
+												}}
+											/>
+										)}
+									</>
+								)}
+							</div>
+						</div>
+					)
+				})}
+
+				{/* <div className='selectCustomerInfo flex flex-row gap-10'>
 					<div className='flex-grow'>
 						<Label htmlFor='name'>Customer Name</Label>
 						<Input
@@ -238,7 +279,7 @@ export function CustomerInfo() {
 							</span>
 						)}
 					</div>
-				</div>
+				</div> */}
 			</div>
 			<span className='selectCustomerInfo -mt-6 font-jakarta text-xs text-gray-500'>
 				We&apos;ll call or text you to confirm your number. Standard message and data rates

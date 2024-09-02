@@ -24,6 +24,11 @@ const initialState: CustomerDetails = {
 	isResident: true
 }
 
+type UpdateFieldPayload<K extends keyof CustomerDetails> = {
+	fieldName: K
+	value: CustomerDetails[K] // Ensure value matches the field type
+}
+
 export type CustomerDetails = {
 	name: string
 	code: string
@@ -132,6 +137,13 @@ export const customerDetailsSlice = createSlice({
 			state.mobile = action.payload.mobile
 			state.code2 = action.payload.code2
 			state.code2 = action.payload.code2
+		},
+		updateField<K extends keyof CustomerDetails>(
+			state: CustomerDetails,
+			action: PayloadAction<UpdateFieldPayload<K>>
+		) {
+			const { fieldName, value } = action.payload
+			state[fieldName] = value // TypeScript now enforces type safety
 		}
 	}
 })
@@ -145,5 +157,6 @@ export const {
 	updatePersonalDetails,
 	updateIdentificationDetails,
 	updateAddressDetails,
-	updateContactInformation
+	updateContactInformation,
+	updateField
 } = customerDetailsSlice.actions

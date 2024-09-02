@@ -105,36 +105,42 @@ export const onBoardingOptions = [
 export const FormDetails = {
 	CustomerDetails: [
 		{
-			key: 'ClientName',
+			key: 'CustomerName',
 			type: 'input',
+			reduxName: 'name',
 			templateOptions: {
-				label: 'Client Name',
-				placeholder: 'Enter Client Name',
+				label: 'Customer Name',
+				placeholder: 'Enter Customer Name',
 				required: true,
 				miniumum: 4,
-				type: 'text'
+				type: 'text',
+				styleClasses: 'flex-grow'
 			}
 		},
 		{
-			key: 'ClientEmail',
+			key: 'CustomerEmail',
 			type: 'input',
+			reduxName: 'email',
 			templateOptions: {
-				label: 'Client Email',
-				placeholder: 'Enter Client Email',
+				label: 'Customer Email',
+				placeholder: 'Enter Customer Email',
 				required: true,
 				miniumum: 4,
-				type: 'email'
+				type: 'email',
+				styleClasses: 'flex-grow'
 			}
 		},
 		{
-			key: 'Clientmobile',
+			key: 'Customermobile',
 			type: 'input',
+			reduxName: 'mobile',
 			templateOptions: {
-				label: 'Client Mobile',
-				placeholder: 'Enter Client Mobile',
+				label: 'Customer Mobile',
+				placeholder: 'Enter Customer Mobile',
 				required: true,
 				miniumum: 9,
-				type: 'number'
+				type: 'number',
+				styleClasses: 'flex-grow'
 			}
 		}
 	]
