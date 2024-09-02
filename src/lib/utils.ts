@@ -53,3 +53,23 @@ export function isValidEmail(email: string) {
 	const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
 	return regex.test(email)
 }
+
+export function pick<T, K extends keyof T>(obj: T, ...keys: K[]): Pick<T, K> {
+	const ret = {} as Pick<T, K>
+
+	for (const key of keys) {
+		ret[key] = obj[key]
+	}
+
+	return ret
+}
+
+export function omit<T, K extends keyof T>(obj: T, ...keys: K[]): Omit<T, K> {
+	const ret = { ...obj }
+
+	for (const key of keys) {
+		delete ret[key]
+	}
+
+	return ret
+}

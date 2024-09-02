@@ -61,7 +61,8 @@ import {
 	saveDriverResSchema,
 	type TypeRes,
 	type TypeRequest,
-	titletypeResSchema
+	titletypeResSchema,
+	type ValidateOTPRequest
 } from './models/common.models'
 import { MotorMakeSchema, type MotorList, type CommonModalRequest } from './models/common.models'
 import {
@@ -153,15 +154,15 @@ export async function getPolicyEndDates(data: { date: string }, token: string | 
 export type OTPResponse = TResponse<GenerateOTPResponse>
 
 export async function generateOTP(data: GenerateOTPRequest, token: string | null) {
-	return api.post<MotorList>(endPoints.generateOTP, data, GenerateOTPResponseSchema, {
+	return api.post<GenerateOTPResponse>(endPoints.generateOTP, data, GenerateOTPResponseSchema, {
 		headers: { Authorization: token }
 	})
 }
 
 export type verifyOTPResponse = TResponse<ValidateOTPResponse>
 
-export async function verifyOTP(data: GenerateOTPRequest, token: string | null) {
-	return api.post<MotorList>(endPoints.verifyOTP, data, validateOTPResponseSchema, {
+export async function verifyOTP(data: ValidateOTPRequest, token: string | null) {
+	return api.post<ValidateOTPResponse>(endPoints.verifyOTP, data, validateOTPResponseSchema, {
 		headers: { Authorization: token }
 	})
 }
