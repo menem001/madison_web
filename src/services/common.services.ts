@@ -61,7 +61,8 @@ import {
 	saveDriverResSchema,
 	type TypeRes,
 	type TypeRequest,
-	titletypeResSchema
+	titletypeResSchema,
+	type ValidateOTPRequest
 } from './models/common.models'
 import { MotorMakeSchema, type MotorList, type CommonModalRequest } from './models/common.models'
 import {
@@ -160,7 +161,7 @@ export async function generateOTP(data: GenerateOTPRequest, token: string | null
 
 export type verifyOTPResponse = TResponse<ValidateOTPResponse>
 
-export async function verifyOTP(data: GenerateOTPRequest, token: string | null) {
+export async function verifyOTP(data: ValidateOTPRequest, token: string | null) {
 	return api.post<ValidateOTPResponse>(endPoints.verifyOTP, data, validateOTPResponseSchema, {
 		headers: { Authorization: token }
 	})

@@ -101,3 +101,41 @@ export const onBoardingOptions = [
 			'You can get everything you want if you work hard, trust the process, and stick to the plan.'
 	}
 ]
+
+export const FormDetails = {
+	CustomerDetails: [
+		{
+			key: 'ClientName',
+			type: 'input',
+			templateOptions: {
+				label: 'Client Name',
+				placeholder: 'Enter Client Name',
+				required: true,
+				miniumum: 4,
+				type: 'text'
+			}
+		},
+		{
+			key: 'ClientEmail',
+			type: 'input',
+			templateOptions: {
+				label: 'Client Email',
+				placeholder: 'Enter Client Email',
+				required: true,
+				miniumum: 4,
+				type: 'email'
+			}
+		},
+		{
+			key: 'Clientmobile',
+			type: 'input',
+			templateOptions: {
+				label: 'Client Mobile',
+				placeholder: 'Enter Client Mobile',
+				required: true,
+				miniumum: 9,
+				type: 'number'
+			}
+		}
+	]
+}

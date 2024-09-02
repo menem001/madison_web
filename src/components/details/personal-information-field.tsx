@@ -27,6 +27,7 @@ import { useGetOccupationListMutation, useTitleTypeMutation } from '@/redux/api/
 import { useEffect, useState } from 'react'
 import { Skeleton } from '../ui/skeleton'
 import { Label } from '../ui/label'
+import { enUS } from 'date-fns/locale'
 
 type personalInformationFieldProps = {
 	current: number
@@ -439,7 +440,9 @@ export function PersonalInformationField(props: personalInformationFieldProps) {
 																		'text-muted-foreground'
 																)}>
 																{field.value ? (
-																	format(field.value, 'PPP')
+																	format(field.value, 'PPP', {
+																		locale: enUS
+																	})
 																) : (
 																	<span>Pick a date</span>
 																)}
