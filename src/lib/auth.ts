@@ -17,7 +17,8 @@ export const authOptions: AuthOptions = {
 				CreateUser: {},
 				CustomerId: {},
 				ReferenceNo: {},
-				tokens: {}
+				tokens: {},
+				reduxData: {}
 			},
 			async authorize(data) {
 				try {

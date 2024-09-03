@@ -113,6 +113,7 @@ export const FormDetails = {
 				placeholder: 'Enter Customer Name',
 				required: true,
 				miniumum: 4,
+				maximum: null,
 				type: 'text',
 				styleClasses: 'flex-grow'
 			}
@@ -126,6 +127,7 @@ export const FormDetails = {
 				placeholder: 'Enter Customer Email',
 				required: true,
 				miniumum: 4,
+				maximum: null,
 				type: 'email',
 				styleClasses: 'flex-grow'
 			}
@@ -139,6 +141,7 @@ export const FormDetails = {
 				placeholder: 'Enter Customer Mobile',
 				required: true,
 				miniumum: 9,
+				maximum: 9,
 				type: 'number',
 				styleClasses: 'flex-grow'
 			}

@@ -80,7 +80,11 @@ export function OtpForm() {
 	}
 
 	useEffect(() => {
-		if (session.data !== null && session.data !== undefined) {
+		if (
+			session.data !== null &&
+			session.data !== undefined &&
+			session.data.user.Result !== undefined
+		) {
 			const insuranceId: string | null =
 				session.data.user.Result.LoginBranchDetails[0].InsuranceId
 			const brokerCode: string | null =

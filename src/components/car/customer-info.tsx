@@ -11,13 +11,15 @@ import {
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 // import { useRouter } from 'next/navigation'
-import { Input } from '../ui'
-// import { useSaveMotorDetailsMutation } from '@/redux/api/commonApi'
-import { Label } from '../ui/label'
+// import { Input } from '../ui'
+// // import { useSaveMotorDetailsMutation } from '@/redux/api/commonApi'
+// import { Label } from '../ui/label'
 // import { type SaveMotorDetailRequest } from '@/services/models/common.models'
 // import { updateDetails } from '@/redux/slices/motor-detail.slice'
 // import { useState } from 'react'
 import { FormDetails } from '@/lib'
+import { FormFieldJson } from '../common/form-field-json'
+import { type ChangeEvent } from 'react'
 // import ClipLoader from 'react-spinners/ClipLoader'
 // import { useToast } from '../ui/use-toast'
 // import { isValidEmail } from '@/lib'
@@ -151,6 +153,15 @@ export function CustomerInfo() {
 	// 	})
 	// }
 
+	function dispatchOnChange(fieldName: keyof CustomerDetails, value: string | boolean) {
+		dispatch(
+			updateField({
+				fieldName: fieldName,
+				value: value
+			})
+		)
+	}
+
 	return (
 		<section className='flex w-full flex-col gap-10 lg:w-4/5'>
 			<div className='flex w-full flex-col items-center gap-4'>
@@ -178,35 +189,24 @@ export function CustomerInfo() {
 					</span>
 				</div> */}
 				{FormDetails.CustomerDetails.map((fields) => {
-					const key = fields.reduxName as keyof CustomerDetails
+					const keyName = fields.reduxName as keyof CustomerDetails
 					return (
 						<div
 							key={fields.key}
 							className='selectCustomerInfo flex flex-row gap-10'>
-							<div className={fields.templateOptions.styleClasses}>
-								{fields.type === 'input' && (
-									<>
-										<Label key={fields.key}>
-											{fields.templateOptions.label}
-										</Label>
-										{typeof customerData[key] === 'string' && (
-											<Input
-												id={fields.key}
-												placeholder={fields.templateOptions.placeholder}
-												value={customerData[key]}
-												onChange={(e) => {
-													dispatch(
-														updateField({
-															fieldName: key,
-															value: e.target.value
-														})
-													)
-												}}
-											/>
-										)}
-									</>
-								)}
-							</div>
+							<FormFieldJson
+								key={fields.key}
+								label={fields.templateOptions.label}
+								maximum={fields.templateOptions.maximum}
+								minimum={fields.templateOptions.miniumum}
+								placeholder={fields.templateOptions.placeholder}
+								styleClasses={fields.templateOptions.styleClasses}
+								type={fields.type}
+								value={customerData[keyName]}
+								onChange={(e: ChangeEvent<HTMLInputElement>) => {
+									dispatchOnChange(keyName, e.target.value)
+								}}
+							/>
 						</div>
 					)
 				})}
