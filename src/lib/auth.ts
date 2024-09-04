@@ -103,8 +103,6 @@ export const authOptions: AuthOptions = {
 				} catch (error) {
 					console.log('Authorization error:', error)
 				}
-
-				return { id: 1 }
 			}
 		})
 	],
@@ -129,9 +127,6 @@ export const authOptions: AuthOptions = {
 			const misc = pick(_token, 'iat', 'exp', 'jti')
 
 			return { ...session, ...misc, user, token }
-		},
-		async redirect({ baseUrl }) {
-			return `${baseUrl}/car-insurance/2`
 		}
 	}
 }

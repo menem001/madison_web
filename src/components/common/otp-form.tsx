@@ -64,7 +64,7 @@ export function OtpForm() {
 		generateOtp()
 	}, [])
 
-	function validate() {
+	async function validate() {
 		const request = {
 			CompanyId: appData.insuranceID,
 			ProductId: appData.productId,
@@ -76,7 +76,13 @@ export function OtpForm() {
 			ReferenceNo: motorData.RequestReferenceNo,
 			tokens: appData.token
 		}
-		signIn('verify-otp', request)
+		const res = await signIn('verify-otp', request)
+
+		console.log(res)
+
+		if (res?.ok) {
+			route.push('/car-insurance/details/customer-details')
+		}
 	}
 
 	useEffect(() => {
@@ -106,7 +112,7 @@ export function OtpForm() {
 					userType: session.data.user.Result.UserType
 				})
 			)
-			route.push('/car-insurance/details/customer-details')
+			// route.push('/car-insurance/details/customer-details')
 		}
 	}, [])
 

@@ -13,6 +13,8 @@ export function Header() {
 
 	const [loggedIn, setLoggedIn] = useState<boolean>(false)
 
+	console.log(session)
+
 	useEffect(() => {
 		if (session.data?.user.Message === 'Success') {
 			setLoggedIn(true)
@@ -20,7 +22,7 @@ export function Header() {
 	})
 
 	function logOut() {
-		signOut({ callbackUrl: '/car-insurance' })
+		signOut({ callbackUrl: '/' })
 	}
 
 	return (
