@@ -180,14 +180,6 @@ export function CustomerInfo() {
 				</p>
 			</div>
 			<div className='flex flex-col gap-7'>
-				{/* <div className='flex flex-col gap-2'>
-					<h1 className='CustomerInfotitle font-jakarta text-xl font-bold text-blue-300'>
-						Personal Details
-					</h1>
-					<span className='CustomerInfosubtitle font-roboto text-sm font-medium text-gray-500'>
-						Please provide your details to proceed
-					</span>
-				</div> */}
 				{FormDetails.CustomerDetails.map((fields) => {
 					const keyName = fields.reduxName as keyof CustomerDetails
 					return (
@@ -196,6 +188,7 @@ export function CustomerInfo() {
 							className='selectCustomerInfo flex flex-row gap-10'>
 							<FormFieldJson
 								key={fields.key}
+								isForm={fields.isForm}
 								label={fields.templateOptions.label}
 								maximum={fields.templateOptions.maximum}
 								minimum={fields.templateOptions.miniumum}
@@ -203,8 +196,10 @@ export function CustomerInfo() {
 								styleClasses={fields.templateOptions.styleClasses}
 								type={fields.type}
 								value={customerData[keyName]}
-								onChange={(e: ChangeEvent<HTMLInputElement>) => {
-									dispatchOnChange(keyName, e.target.value)
+								onChange={(e: ChangeEvent<HTMLInputElement> | string) => {
+									if (typeof e !== 'string') {
+										dispatchOnChange(keyName, e.target.value)
+									}
 								}}
 							/>
 						</div>

@@ -41,45 +41,6 @@ export function VehicleUsage(props: VehicleUsageProps) {
 
 	const [vehicleUsageList, setVehicleUsageList] = useState<{ value: string; label: string }[]>([])
 
-	// useGSAP(() => {
-	// 	if (vehicleData.vehicleUsage === '') {
-	// 		gsap.from('.selectUsage', { y: 80, opacity: 0, duration: 0.5, delay: 1 })
-	// 		gsap.to('.usagetitle', { duration: 0.5, text: 'Vehicle Usage' })
-	// 		gsap.to('.usagesubtitle', {
-	// 			duration: 0.5,
-	// 			text: 'How the vehicle is used, such as for personal, business, or commercial purposes',
-	// 			delay: 0.5
-	// 		})
-	// 		// gsap.to('.usageSuggest', {
-	// 		// 	duration: 0.5,
-	// 		// 	text: 'Suggested Usage Types',
-	// 		// 	delay: 1.5
-	// 		// })
-	// 		// gsap.from('.suggestedGridusage', {
-	// 		// 	y: 80,
-	// 		// 	opacity: 0,
-	// 		// 	duration: 0.5,
-	// 		// 	delay: 2
-	// 		// })
-	// 	} else {
-	// 		gsap.from('.selectUsage', { y: 80, opacity: 0, duration: 0.5 })
-	// 		gsap.to('.usagetitle', { duration: 0.5, text: 'Vehicle Usage' })
-	// 		gsap.to('.usagesubtitle', {
-	// 			duration: 0.5,
-	// 			text: 'How the vehicle is used, such as for personal, business, or commercial purposes'
-	// 		})
-	// 		// gsap.to('.usageSuggest', {
-	// 		// 	duration: 0.5,
-	// 		// 	text: 'Suggested Usage Types'
-	// 		// })
-	// 		// gsap.from('.suggestedGridusage', {
-	// 		// 	y: 80,
-	// 		// 	opacity: 0,
-	// 		// 	duration: 0.5
-	// 		// })
-	// 	}
-	// })
-
 	useEffect(() => {
 		const tempArr: { value: string; label: string }[] = []
 		const request = { InsuranceId: appsData.insuranceID, BranchCode: appsData.branchCode }

@@ -4,18 +4,18 @@ import { useState, type ChangeEvent } from 'react'
 import { Input } from '../ui'
 import { Label } from '../ui/label'
 
-type FieldInput = {
+type FieldInputProps = {
 	key: string
 	placeholder: string
 	minimum: number
 	value: unknown
-	onChange: (e: ChangeEvent<HTMLInputElement>) => void
+	onChange: (e: ChangeEvent<HTMLInputElement> | string) => void
 	maximum: null | number
 	label: string
 }
 
-export function FieldInput(props: FieldInput) {
-	const [isMinimumReached, setIsMinimumReached] = useState<boolean>(false)
+export function FieldInput(props: FieldInputProps) {
+	const [isMinimumReached, setIsMinimumReached] = useState<boolean>(true)
 	return (
 		<>
 			<Label key={props.key}>{props.label}</Label>
@@ -23,6 +23,25 @@ export function FieldInput(props: FieldInput) {
 				<Input
 					id={props.key}
 					placeholder={props.placeholder}
+					value={props.value}
+					onChange={(e) => {
+						if (props.maximum === null) {
+							props.onChange(e)
+							setIsMinimumReached(e.target.value.length >= props.minimum)
+						} else {
+							if (e.target.value.length <= props.maximum) {
+								props.onChange(e)
+								setIsMinimumReached(e.target.value.length >= props.minimum)
+							}
+						}
+					}}
+				/>
+			)}
+			{typeof props.value === 'number' && (
+				<Input
+					id={props.key}
+					placeholder={props.placeholder}
+					type='number'
 					value={props.value}
 					onChange={(e) => {
 						if (props.maximum === null) {

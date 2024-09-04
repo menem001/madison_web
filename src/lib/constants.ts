@@ -108,6 +108,7 @@ export const FormDetails = {
 			key: 'CustomerName',
 			type: 'input',
 			reduxName: 'name',
+			isForm: false,
 			templateOptions: {
 				label: 'Customer Name',
 				placeholder: 'Enter Customer Name',
@@ -122,6 +123,7 @@ export const FormDetails = {
 			key: 'CustomerEmail',
 			type: 'input',
 			reduxName: 'email',
+			isForm: false,
 			templateOptions: {
 				label: 'Customer Email',
 				placeholder: 'Enter Customer Email',
@@ -136,6 +138,7 @@ export const FormDetails = {
 			key: 'Customermobile',
 			type: 'input',
 			reduxName: 'mobile',
+			isForm: false,
 			templateOptions: {
 				label: 'Customer Mobile',
 				placeholder: 'Enter Customer Mobile',
@@ -144,6 +147,120 @@ export const FormDetails = {
 				maximum: 9,
 				type: 'number',
 				styleClasses: 'flex-grow'
+			}
+		}
+	],
+	VehcileMotorDetails: [
+		{
+			key: 'bodyType',
+			type: 'select',
+			reduxName: 'bodyTypeID',
+			isForm: true,
+			formName: 'bodyType',
+			templateOptions: {
+				label: 'Body Type',
+				placeholder: 'Select Body Type',
+				required: true,
+				miniumum: 0,
+				maximum: null,
+				type: 'text',
+				styleClasses: ''
+			}
+		},
+		{
+			key: 'Make',
+			type: 'select',
+			reduxName: 'makeID',
+			isForm: true,
+			formName: 'make',
+			templateOptions: {
+				label: 'Make',
+				placeholder: 'Select Make',
+				required: true,
+				miniumum: 0,
+				maximum: null,
+				type: 'text',
+				styleClasses: ''
+			}
+		},
+		{
+			key: 'Model',
+			type: 'select',
+			reduxName: 'modelID',
+			isForm: true,
+			formName: 'model',
+			templateOptions: {
+				label: 'Model',
+				placeholder: 'Select Model',
+				required: true,
+				miniumum: 0,
+				maximum: null,
+				type: 'text',
+				styleClasses: ''
+			}
+		},
+		{
+			key: 'MotorUsage',
+			type: 'select',
+			reduxName: 'vehicleUsageID',
+			isForm: true,
+			formName: 'motorUsage',
+			templateOptions: {
+				label: 'Motor Usage',
+				placeholder: 'Select Motor Usage',
+				required: true,
+				miniumum: 0,
+				maximum: null,
+				type: 'text',
+				styleClasses: ''
+			}
+		},
+		{
+			key: 'NumberOfSeats',
+			type: 'input',
+			reduxName: 'seat',
+			isForm: true,
+			formName: 'numberOfSeats',
+			templateOptions: {
+				label: 'Number of seats',
+				placeholder: 'Select Number of seats',
+				required: true,
+				miniumum: 0,
+				maximum: null,
+				type: 'text',
+				styleClasses: ''
+			}
+		},
+		{
+			key: 'ManufactureYear',
+			type: 'select',
+			reduxName: 'year',
+			isForm: true,
+			formName: 'manufactureyear',
+			templateOptions: {
+				label: 'Manufacture Year',
+				placeholder: 'Select Manufacture Year',
+				required: true,
+				miniumum: 0,
+				maximum: null,
+				type: 'text',
+				styleClasses: ''
+			}
+		},
+		{
+			key: 'ExcessLimit',
+			type: 'input',
+			reduxName: 'excessLimit',
+			isForm: true,
+			formName: 'excessLimit',
+			templateOptions: {
+				label: 'Excess Limit',
+				placeholder: 'Excess Limit',
+				required: true,
+				miniumum: 0,
+				maximum: null,
+				type: 'text',
+				styleClasses: ''
 			}
 		}
 	]

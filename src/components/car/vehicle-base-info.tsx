@@ -3,16 +3,37 @@ import { useAppDispatch, useAppSelector } from '@/redux/hooks'
 import { useGSAP } from '@gsap/react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import gsap from 'gsap'
-import { useEffect, useState } from 'react'
+import { type ChangeEvent, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form'
-import { Button, Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui'
-import { VehicleUsage } from './vehicle-usage'
-import { BodyType } from './body-type'
-import { SelectMark } from './select-mark'
-import { SelectModel } from './select-model'
-import { updateSeatsYear, updateVehicleModel } from '@/redux/slices'
+import {
+	Form
+	// FormControl, FormField, FormItem, FormLabel, FormMessage
+} from '../ui/form'
+import {
+	Button
+	// Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue
+} from '../ui'
+// import { VehicleUsage } from './vehicle-usage'
+// import { BodyType } from './body-type'
+// import { SelectMark } from './select-mark'
+// import { SelectModel } from './select-model'
+import {
+	type CarDetails,
+	updateSeatsYear,
+	updateVehicleBodyType,
+	updateVehicleMark,
+	updateVehicleModel,
+	updateVehicleUsage
+} from '@/redux/slices'
+import { FormDetails } from '@/lib'
+import { FormFieldJson } from '../common/form-field-json'
+import {
+	useGetBodyTypeListMutation,
+	useGetMotorMakeListMutation,
+	useGetMotorModelListMutation,
+	useGetVehicleUsageListMutation
+} from '@/redux/api/commonApi'
 
 const vehicleBaseSchema = z.object({
 	motorUsage: z.string().min(1, { message: 'Required' }),
@@ -28,15 +49,38 @@ export function VehcileBaseInfo() {
 	const vehicleData = useAppSelector((state) => state.carInsurance)
 	const whiteBookData = useAppSelector((state) => state.whitebookdetails)
 	const [isSubmitted, setIsSubmitted] = useState<boolean>(false)
+	const make = useAppSelector((state) => state.whitebookdetails.Make)
+	const model = useAppSelector((state) => state.whitebookdetails.Model)
+
+	const appsData = useAppSelector((state) => state.apps)
 
 	const dispatch = useAppDispatch()
 
-	const years: string[] = []
+	const [bodyTypeList, setBodyTypeList] = useState<{ value: string; label: string }[]>([])
+
+	const [BodyType] = useGetBodyTypeListMutation()
+
+	const [MotorMakeList] = useGetMotorMakeListMutation()
+
+	const [motorListArr, setmotorListArr] = useState<{ value: string; label: string }[]>([])
+
+	const [getModel] = useGetMotorModelListMutation()
+
+	const [modelsList, setModelsList] = useState<{ value: string; label: string }[]>([])
+
+	const [vehicleUsage] = useGetVehicleUsageListMutation()
+
+	const [vehicleUsageList, setVehicleUsageList] = useState<{ value: string; label: string }[]>([])
+
+	const years: {
+		value: string
+		label: string
+	}[] = []
 
 	const currentYear = new Date(Date.now()).getFullYear()
 
 	for (let i = currentYear; i > currentYear - 30; i--) {
-		years.push(i + '')
+		years.push({ value: i + '', label: i + '' })
 	}
 
 	useGSAP(() => {
@@ -65,6 +109,189 @@ export function VehcileBaseInfo() {
 			excessLimit: vehicleData.excessLimit !== 0 ? vehicleData.excessLimit + '' : ''
 		}
 	})
+
+	function updateMark(makeID: string) {
+		const markpos = motorListArr.findIndex((item) => {
+			return item.value === makeID
+		})
+
+		if (markpos !== -1) {
+			dispatch(updateVehicleMark({ mark: motorListArr[markpos].label, makeID: makeID }))
+		}
+	}
+
+	function updateMarkFromName(make: string) {
+		const markpos = motorListArr.findIndex((item) => {
+			return item.label.toLowerCase() === make.toLowerCase()
+		})
+
+		if (markpos !== -1) {
+			dispatch(
+				updateVehicleMark({
+					mark: motorListArr[markpos].label,
+					makeID: motorListArr[markpos].value
+				})
+			)
+			form.setValue('make', motorListArr[markpos].value)
+		}
+	}
+
+	function updateModel(modelid: string) {
+		const pos = modelsList.findIndex((item) => {
+			return item.value === modelid
+		})
+
+		if (pos !== -1) {
+			dispatch(updateVehicleModel({ model: modelsList[pos].label, modelID: modelid }))
+		}
+	}
+
+	function updateModelByName(model: string) {
+		const pos = modelsList.findIndex((item) => {
+			return item.label.toLowerCase() === model.toLowerCase()
+		})
+
+		if (pos !== -1) {
+			dispatch(
+				updateVehicleModel({ model: modelsList[pos].label, modelID: modelsList[pos].value })
+			)
+			form.setValue('model', modelsList[pos].value)
+		}
+	}
+
+	useEffect(() => {
+		const tempArr: { value: string; label: string }[] = []
+		const request = { InsuranceId: appsData.insuranceID, BranchCode: appsData.branchCode }
+		const res = vehicleUsage(request)
+		res.then((value) => {
+			if (value.data?.type === 'success' && value.data.data !== undefined) {
+				value.data.data.Result.map((value) => {
+					tempArr.push({
+						value: value.Code,
+						label: value.CodeDesc
+					})
+				})
+				setVehicleUsageList(tempArr)
+			}
+		})
+	}, [appsData.branchCode, appsData.insuranceID, vehicleUsage, model])
+
+	function updateUsage(id: string) {
+		const pos = vehicleUsageList.findIndex((item) => {
+			return item.value === id
+		})
+
+		if (pos !== -1) {
+			dispatch(updateVehicleUsage({ usage: vehicleUsageList[pos].label, id: id }))
+		}
+	}
+
+	useEffect(() => {
+		if (vehicleData.mark === '') {
+			form.setValue('make', '')
+		}
+	}, [vehicleData.mark])
+
+	useEffect(() => {
+		if (vehicleData.bodyTypeID !== '') {
+			const request = {
+				InsuranceId: appsData.insuranceID,
+				BranchCode: appsData.branchCode,
+				BodyId: vehicleData.bodyTypeID
+			}
+			const tempArr: { value: string; label: string }[] = []
+			const res = MotorMakeList(request)
+			res.then((value) => {
+				if (value.data?.type === 'success' && value.data?.data !== undefined) {
+					value.data.data!.Result.map((value) => {
+						tempArr.push({
+							value: value.Code,
+							label: value.CodeDesc
+						})
+					})
+					setmotorListArr(tempArr)
+				}
+			})
+		}
+	}, [vehicleData.bodyTypeID])
+
+	useEffect(() => {
+		if (motorListArr.length !== 0) {
+			updateMarkFromName(make)
+		}
+	}, [make, motorListArr])
+
+	useEffect(() => {
+		if (bodyTypeList.length === 0) {
+			const tempArr: { value: string; label: string }[] = []
+			const request = { InsuranceId: appsData.insuranceID, BranchCode: appsData.branchCode }
+			const res = BodyType(request)
+			res.then((value) => {
+				if (value.data?.type === 'success' && value.data.data !== undefined) {
+					value.data.data.Result.map((value) => {
+						tempArr.push({
+							value: value.Code,
+							label: value.CodeDesc
+						})
+					})
+					setBodyTypeList(tempArr)
+				}
+			})
+		}
+	}, [BodyType, appsData.branchCode, appsData.insuranceID])
+
+	useEffect(() => {
+		if (vehicleData.model === '') {
+			form.setValue('model', '')
+		}
+	}, [vehicleData.model])
+
+	useEffect(() => {
+		if (+vehicleData.bodyTypeID < 5 && vehicleData.mark !== '') {
+			const request = {
+				InsuranceId: appsData.insuranceID,
+				BranchCode: appsData.branchCode,
+				MakeId: vehicleData.makeID,
+				BodyId: vehicleData.bodyTypeID
+			}
+			const tempArr: { value: string; label: string }[] = []
+			const res = getModel(request)
+			res.then((value) => {
+				if (value.data?.type === 'success' && value.data?.data !== undefined) {
+					value.data.data!.Result.map((value) => {
+						tempArr.push({
+							value: value.Code,
+							label: value.CodeDesc
+						})
+					})
+					setModelsList(tempArr)
+				}
+			})
+		}
+	}, [
+		appsData.branchCode,
+		appsData.insuranceID,
+		getModel,
+		vehicleData.makeID,
+		vehicleData.bodyTypeID,
+		vehicleData.mark
+	])
+
+	useEffect(() => {
+		if (modelsList.length !== 0) {
+			updateModelByName(model)
+		}
+	}, [model, modelsList])
+
+	function updateBody(id: string) {
+		const pos = bodyTypeList.findIndex((item) => {
+			return item.value === id
+		})
+
+		if (pos !== -1) {
+			dispatch(updateVehicleBodyType({ bodyType: bodyTypeList[pos].label, id: id }))
+		}
+	}
 
 	useEffect(() => {
 		const isFilled =
@@ -114,9 +341,62 @@ export function VehcileBaseInfo() {
 			<div className='flex flex-col gap-4'>
 				<Form {...form}>
 					<form
-						className='space-y-8'
+						className='grid grid-cols-2 gap-4'
 						onSubmit={form.handleSubmit(onSubmit)}>
-						<div className='selectVehicleBaseInfo flex flex-col gap-5 lg:flex-row lg:gap-16'>
+						{FormDetails.VehcileMotorDetails.map((fields) => {
+							const keyName = fields.reduxName as keyof CarDetails
+							let itemsList: {
+								value: string
+								label: string
+							}[] = []
+
+							if (keyName === 'bodyTypeID') {
+								itemsList = bodyTypeList
+							} else if (keyName === 'makeID') {
+								itemsList = motorListArr
+							} else if (keyName === 'modelID') {
+								itemsList = modelsList
+							} else if (keyName === 'vehicleUsageID') {
+								itemsList = vehicleUsageList
+							} else if (keyName === 'year') {
+								itemsList = years
+							}
+
+							function changeFunction(e: ChangeEvent<HTMLInputElement> | string) {
+								if (keyName === 'bodyTypeID' && typeof e === 'string') {
+									updateBody(e)
+									setSubmittedStatus()
+								} else if (keyName === 'makeID' && typeof e === 'string') {
+									updateMark(e)
+									setSubmittedStatus()
+								} else if (keyName === 'modelID' && typeof e === 'string') {
+									updateModel(e)
+									setSubmittedStatus()
+								} else if (keyName === 'vehicleUsageID' && typeof e === 'string') {
+									updateUsage(e)
+									setSubmittedStatus()
+								}
+							}
+
+							return (
+								<FormFieldJson
+									key={fields.key}
+									form={form}
+									formName={fields.formName}
+									isForm={fields.isForm}
+									itemsList={itemsList}
+									label={fields.templateOptions.label}
+									maximum={fields.templateOptions.maximum}
+									minimum={fields.templateOptions.miniumum}
+									placeholder={fields.templateOptions.placeholder}
+									styleClasses={fields.templateOptions.styleClasses}
+									type={fields.type}
+									value={vehicleData[keyName]}
+									onChange={changeFunction}
+								/>
+							)
+						})}
+						{/* <div className='selectVehicleBaseInfo flex flex-col gap-5 lg:flex-row lg:gap-16'>
 							<BodyType
 								form={form}
 								setSubmittedStatus={setSubmittedStatus}
@@ -273,8 +553,8 @@ export function VehcileBaseInfo() {
 									</FormItem>
 								)}
 							/>
-						</div>
-						<div className='flex w-full items-center justify-center'>
+						</div> */}
+						<div className='col-span-2 flex w-full flex-col items-center justify-center'>
 							{!isSubmitted && (
 								<Button
 									className='rounded-3xl px-10 py-5'
