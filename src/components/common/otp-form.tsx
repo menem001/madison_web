@@ -76,9 +76,7 @@ export function OtpForm() {
 			ReferenceNo: motorData.RequestReferenceNo,
 			tokens: appData.token
 		}
-		const res = await signIn('verify-otp', request)
-
-		console.log(res)
+		const res = await signIn('verify-otp', { ...request, redirect: false })
 
 		if (res?.ok) {
 			route.push('/car-insurance/details/customer-details')
